@@ -35,7 +35,8 @@ android {
         jvmTarget = '1.8'
     }
 }
-
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -58,7 +59,16 @@ dependencies {
     // https://github.com/ybq/Android-SpinKit
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:28.0.1')
+    // Add the dependency for the Firebase SDK for Google Analytics
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-database:20.0.0'
+    /*implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-analytics:19.0.0'
+    implementation 'com.google.firebase:firebase-core:19.0.0'
+    implementation 'com.google.firebase:firebase-database:20.0.0'*/
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

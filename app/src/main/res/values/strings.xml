@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">coupangEats</string>
+    <string name="main_btm_nav_home_title">홈</string>
+    <string name="main_btm_nav_search_title">검색</string>
+    <string name="main_btm_nav_favorites_title">즐겨찾기</string>
+    <string name="main_btm_nav_order_title">주문내역</string>
+    <string name="main_btm_nav_myeats_title">My 이츠</string>
+    <string name="search_edit_hint">검색어를 입력하세요.</string>
 </resources>

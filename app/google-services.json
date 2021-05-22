@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1005356575024",
+    "project_id": "coupangeats-721e3",
+    "storage_bucket": "coupangeats-721e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1005356575024:android:26552afef2d7a7ad6340f5",
+        "android_client_info": {
+          "package_name": "com.example.coupangeats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1005356575024-kb5cr7f9u2j8s1ed52i1eg7pgclb71v5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.coupangeats",
+            "certificate_hash": "6d04e6bc365c1f7de8acd226ebc695d9c71f8712"
+          }
+        },
+        {
+          "client_id": "1005356575024-nc5lrh06g179kot84h6rnt143bvnqjdj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNYCvt9dHX-5pmgVG0W54BeQckHauWzn8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1005356575024-nc5lrh06g179kot84h6rnt143bvnqjdj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

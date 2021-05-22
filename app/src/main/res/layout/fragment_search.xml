@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:paddingVertical="10sp"
+        android:paddingHorizontal="15sp">
+
+        <LinearLayout
+            android:visibility="visible"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            android:orientation="horizontal"
+            tools:ignore="NestedWeights">
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/search_back_img"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/search_arrow"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:background="@drawable/search_editbox">
+
+                <EditText
+                    android:scrollbars = "vertical"
+                    android:maxLines="1"
+                    android:id="@+id/search_edit_text"
+                    android:hint="@string/search_edit_hint"
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingHorizontal="25sp"
+                    android:textColorHint="@color/searchHint"
+                    android:textColor="@color/black"
+                    android:background="@null"
+                    tools:ignore="NestedWeights" />
+
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/search_edit_delete"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="10dp"
+                    android:src="@drawable/search_delete"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/search_search_img"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:padding="9sp"
+            android:src="@drawable/nav_click_search"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/search_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="9"/>
+
+</LinearLayout>
