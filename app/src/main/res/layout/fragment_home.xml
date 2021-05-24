@@ -5,57 +5,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" android:orientation="vertical" android:background="@color/white">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="?actionBarSize"
         android:paddingHorizontal="10sp"
         android:paddingVertical="6sp"
-        android:layout_weight="1"
         android:orientation="horizontal">
 
         <ImageView
+            android:contentDescription="@string/image_no"
+            android:id="@+id/home_gps_img"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@drawable/main_gps"
-            android:layout_marginEnd="10sp"/>
-
+            android:adjustViewBounds="true"
+            android:padding="14dp"
+            android:src="@drawable/ic_home_gps"/>
         <TextView
+            android:id="@+id/home_gps_address"
+            android:layout_toEndOf="@+id/home_gps_img"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:ellipsize="end"
-            android:text="집을 가지고 싶은 자여"/>
+            android:textColor="@color/black"
+            android:text="@string/home_address_need"/>
 
         <ImageView
-            android:layout_width="0sp"
-            android:layout_weight="1"
+            android:contentDescription="@string/image_no"
+            android:layout_toEndOf="@+id/home_gps_address"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/main_address_arrow"
             android:adjustViewBounds="true"
             android:padding="15sp"
-            android:scaleType="fitStart"
             tools:ignore="NestedWeights" />
 
         <ImageView
+            android:id="@+id/home_search"
+            android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="10sp"
+            android:padding="10dp"
             android:adjustViewBounds="true"
-            android:src="@drawable/nav_click_search"/>
-    </LinearLayout>
+            android:src="@drawable/ic_nav_click_search"
+            android:contentDescription="@string/image_no" />
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0.7sp"
-        android:background="@color/baseColor"
+        android:background="@color/lightGray"
         tools:ignore="SmallSp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9"
+        android:layout_weight="1"
         android:orientation="vertical">
 
 
@@ -80,10 +90,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
-
         </androidx.core.widget.NestedScrollView>
-
-
     </LinearLayout>
-
 </LinearLayout>

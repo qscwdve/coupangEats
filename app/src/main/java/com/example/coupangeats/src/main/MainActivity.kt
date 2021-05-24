@@ -17,13 +17,21 @@ import com.example.coupangeats.src.main.order.OrderFragment
 import com.example.coupangeats.src.main.search.AdvencedSearchFragment
 import com.example.coupangeats.src.main.search.SearchFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     private var mfragmentIndex = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 처음 화면 HomeFragment로 지정
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.main_frm, HomeFragment())
+                .commitAllowingStateLoss()
+
         binding.mainBtmNav.itemIconTintList = null
+        updateLogin()
 
         binding.mainBtmNav.setOnNavigationItemSelectedListener(
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -38,7 +46,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     R.id.menu_main_btm_nav_search -> {
                         mfragmentIndex = 2
                         supportFragmentManager.beginTransaction()
-                            .replace(R.id.main_frm, SearchFragment(this))
+                            .replace(R.id.main_frm, SearchFragment(this, 1))
                             .commitAllowingStateLoss()
                         return@OnNavigationItemSelectedListener true
                     }
@@ -68,31 +76,33 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     override fun onBackPressed() {
-        if(mfragmentIndex != 1){
-            setBottomNavigationBarVisible()
-            binding.mainBtmNav.selectedItemId = R.id.menu_main_btm_nav_home
+        if(mfragmentIndex != 1) {
+            setHomeFragment()
         } else {
             super.onBackPressed()
         }
     }
 
-    // search Fragment 에서 사용할 기능
-    fun setAdvencedSearchFragment() {
-        binding.mainBtmNav.visibility = View.GONE
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frm, AdvencedSearchFragment())
-            .commitAllowingStateLoss()
-    }
-    fun setSearchFramgment() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_frm, SearchFragment(this))
-            .commitAllowingStateLoss()
-    }
     fun setBottomNavigationBarGone() { binding.mainBtmNav.visibility = View.GONE }
     fun setBottomNavigationBarVisible() {binding.mainBtmNav.visibility = View.VISIBLE}
-    fun setKeyBoardShutDown(editText: EditText){
-        // 키보드 내리기
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(editText.windowToken, 0)
+
+    // 자동 로그인
+    fun updateLogin() {
+        val shared = ApplicationClass.sSharedPreferences
+        val userId = shared.getString("userId", "")
+        if(userId != "") {
+            // 자동 로그인 할 수 있음 -> 서버에 로그인 시도
+            showCustomToast("자동 로그인 시도")
+        }
+    }
+
+    fun setHomeFragment() {
+        setBottomNavigationBarVisible()
+        binding.mainBtmNav.selectedItemId = R.id.menu_main_btm_nav_home
+    }
+    fun setSearchAdvencedFragment() {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.main_frm, SearchFragment(this, 2))
+                .commitAllowingStateLoss()
     }
 }

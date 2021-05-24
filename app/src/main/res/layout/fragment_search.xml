@@ -8,11 +8,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="?actionBarSize"
         android:orientation="horizontal"
-        android:paddingVertical="10sp"
-        android:paddingHorizontal="15sp">
+        android:paddingBottom="5dp"
+        android:paddingHorizontal="15dp">
 
         <LinearLayout
             android:visibility="visible"
@@ -24,10 +23,13 @@
 
             <ImageView
                 android:visibility="gone"
+                android:padding="18sp"
+                android:adjustViewBounds="true"
                 android:id="@+id/search_back_img"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/search_arrow"/>
+                android:src="@drawable/left_arrow"
+                android:contentDescription="@string/image_no" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -43,6 +45,7 @@
                     android:hint="@string/search_edit_hint"
                     android:layout_width="0dp"
                     android:layout_weight="7"
+                    android:inputType="text"
                     android:layout_height="match_parent"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -53,6 +56,8 @@
                     tools:ignore="NestedWeights" />
 
                 <ImageView
+                    android:contentDescription="@string/image_no"
+                    android:padding="6dp"
                     android:visibility="gone"
                     android:id="@+id/search_edit_delete"
                     android:layout_weight="1"
@@ -60,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginEnd="10dp"
-                    android:src="@drawable/search_delete"/>
+                    android:src="@drawable/ic_search_delete"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -70,14 +75,14 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:padding="9sp"
-            android:src="@drawable/nav_click_search"/>
+            android:padding="10sp"
+            android:src="@drawable/ic_nav_click_search"/>
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/search_fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="9"/>
+        android:layout_weight="1"/>
 
 </LinearLayout>

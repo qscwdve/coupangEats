@@ -11,13 +11,15 @@ import java.util.concurrent.TimeUnit
 
 // 앱이 실행될때 1번만 실행이 됩니다.
 class ApplicationClass : Application() {
-    val API_URL = "https://members.softsquared.com/"
+    //val API_URL = "https://members.softsquared.com/"
 
     // 테스트 서버 주소
     // val API_URL = "http://dev-api.test.com/"
 
     // 실 서버 주소
-    // val API_URL = "http://api.test.com/"
+    val API_URL = "https://prod.hellosilver.shop/"
+    // 도로명 팝업 API : devU01TX0FVVEgyMDIxMDUyNDIyMjAwMDExMTE5ODk=
+    // 주소 검색 API : devU01TX0FVVEgyMDIxMDUyNDIyMjMwMzExMTE5OTA=
 
     // 코틀린의 전역변수 문법
     companion object {

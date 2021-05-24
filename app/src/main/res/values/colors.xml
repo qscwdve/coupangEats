@@ -7,9 +7,21 @@
     <!-- 기본 -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="lightBlack">#202020</color>
 
     <color name="baseColor">#949DA6</color>
     <color name="colorHighlight">#878787</color>
     <color name="searchHint">#9E9EA0</color>
     <color name="searchEditBackground">#F3F3F5</color>
+    <color name="lightGray">#E6E4E4</color>
+    <!-- 다이얼로그 로그인 -->
+    <color name="loginBlue">#00AFFE</color>
+    
+    <!-- 회원가입 -->
+    <color name="middleGray">#CCCCCC</color>
+    <color name="blue">#4472C4</color>
+    <color name="backgroundGray">#FAFAFA</color>
+    <color name="ErrorRed">#C4263A</color>
+    <color name="passwordChecked">#35763F</color>
+    <color name="agreeSend">#0075E9</color>
 </resources>
