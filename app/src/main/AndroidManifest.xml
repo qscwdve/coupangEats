@@ -10,8 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".src.signUp.SignUpActivity"></activity>
-        <activity android:name=".src.login.LoginActivity" />
+        <activity android:name=".src.signUp.SignUpActivity"/>
+        <activity android:name=".src.login.LoginActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".src.main.MainActivity"
             android:windowSoftInputMode="adjustNothing" />

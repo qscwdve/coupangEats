@@ -8,6 +8,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="lightBlack">#202020</color>
+    <color name="lightBlue">#AEE0F8</color>
 
     <color name="baseColor">#949DA6</color>
     <color name="colorHighlight">#878787</color>
@@ -23,5 +24,5 @@
     <color name="backgroundGray">#FAFAFA</color>
     <color name="ErrorRed">#C4263A</color>
     <color name="passwordChecked">#35763F</color>
-    <color name="agreeSend">#0075E9</color>
+    <color name="agreeSend">#0E6CCA</color>
 </resources>

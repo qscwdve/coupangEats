@@ -58,5 +58,11 @@
     <string name="sign_up_agree_five">[필수] 개인정보 제공 동의</string>
     <string name="sign_up_agree_error">필수항목에 모두 동의해주세요</string>
     <string name="sign_up_email_duplicate">이미 가입된 이메일 주소입니다. 다른 이메일을 입력하여 주세요.</string>
-
+    <string name="login_notice_need_id">아이디를 입력해주세요</string>
+    <string name="login_notice_email_format">아이디는 이메일주소 형식으로 입력해주세요</string>
+    <string name="login_notice_password_need">비밀번호를 입력해주세요</string>
+    <string name="login_notice_error">오류가 없습니다</string>
+    <string name="ok">확인</string>
+    <string name="dialog_login_check_text">입력하신 아이디 또는 비밀번호가 일치하지 않습니다</string>
+    <string name="sign_up_phone_certification">휴대폰 인증</string>
 </resources>

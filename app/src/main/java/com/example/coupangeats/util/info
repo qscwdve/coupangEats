@@ -1,0 +1,9 @@
+SharedPreferenced 에 저장된 유저 정보
+userIdx : Int  -> 이 정보를 보고 자동 로그인! -1이면 로그아웃된 상태, 그 외의 번호면 자동로그인 가능
+email : String  -> 유저 이메일
+password : String  -> 유저 패스워드
+ApplicationClass.X_ACCESS_TOKEN : String  -> 유저 인증을 위한 jwt, 로그인 할때마다 값이 달라진다
+phone : String  ->  핸드폰 번호  , 보류..
+
+자동로그인
+- MainActivity 의 updateLogin()

@@ -9,7 +9,7 @@ import com.example.coupangeats.src.login.LoginActivity
 import com.example.coupangeats.src.signUp.SignUpActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class LoginBottomSheetDialog() : BottomSheetDialogFragment() {
+class LoginBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var binding : DialogLoginBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DialogLoginBinding.inflate(layoutInflater)
@@ -17,7 +17,8 @@ class LoginBottomSheetDialog() : BottomSheetDialogFragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.dialogLoginSingUp.setOnClickListener {
+
+        binding.dialogLoginSignUpParent.setOnClickListener {
             // 회원가입
             startActivity(Intent(activity, SignUpActivity::class.java))
         }

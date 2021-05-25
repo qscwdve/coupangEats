@@ -34,8 +34,7 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/dialog_login_social"/>
-
+        android:background="@drawable/box_round_blue_ripple"/>
     <TextView
         android:gravity="center"
         android:id="@+id/dialog_login_basic"
@@ -49,6 +48,8 @@
         android:background="@drawable/dialog_login_basic"/>
 
     <LinearLayout
+        android:id="@+id/dialog_login_sign_up_parent"
+        android:background="@drawable/white_to_gray_ripple"
         android:layout_gravity="center"
         android:layout_marginVertical="25sp"
         android:layout_width="wrap_content"
@@ -63,7 +64,8 @@
             android:textColor="@color/black"/>
 
         <TextView
-            android:id="@+id/dialog_login_sing_up"
+            android:layout_marginStart="3dp"
+            android:id="@+id/dialog_login_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/loginBlue"

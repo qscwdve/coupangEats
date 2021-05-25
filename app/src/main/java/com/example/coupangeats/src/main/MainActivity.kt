@@ -31,7 +31,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 .commitAllowingStateLoss()
 
         binding.mainBtmNav.itemIconTintList = null
-        updateLogin()
 
         binding.mainBtmNav.setOnNavigationItemSelectedListener(
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -85,16 +84,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     fun setBottomNavigationBarGone() { binding.mainBtmNav.visibility = View.GONE }
     fun setBottomNavigationBarVisible() {binding.mainBtmNav.visibility = View.VISIBLE}
-
-    // 자동 로그인
-    fun updateLogin() {
-        val shared = ApplicationClass.sSharedPreferences
-        val userId = shared.getString("userId", "")
-        if(userId != "") {
-            // 자동 로그인 할 수 있음 -> 서버에 로그인 시도
-            showCustomToast("자동 로그인 시도")
-        }
-    }
 
     fun setHomeFragment() {
         setBottomNavigationBarVisible()

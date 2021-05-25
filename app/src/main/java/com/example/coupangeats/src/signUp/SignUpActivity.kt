@@ -15,6 +15,7 @@ import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivitySignupBinding
 import com.example.coupangeats.src.login.LoginActivity
 import com.example.coupangeats.src.signUp.model.emailDuplicated.EmailDuplicatedResponse
+import com.example.coupangeats.src.signUp.model.phoneDuplicated.PhoneDuplicatedResponse
 import com.example.coupangeats.src.signUp.model.userSignUp.UserSignUpRequest
 import com.example.coupangeats.src.signUp.model.userSignUp.UserSignUpResponse
 import com.softsquared.template.kotlin.config.BaseActivity
@@ -228,6 +229,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                 mNowEditText = 0
             }
         }
+
         // 핸드폰 번호 검증
         val patternPhone = Pattern.compile("^01(?:0|1|[6-9])[0-9]{4}[0-9]{4}\$")
         binding.signUpPhoneText.setOnFocusChangeListener { v, hasFocus ->
@@ -250,18 +252,22 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                 mNowEditText = 4
             } else {
                 // 포커스 벗어남
-                val password = binding.signUpPhoneText.text.toString()
-                if(checkedStr(password, patternPhone)){
+                val phone = binding.signUpPhoneText.text.toString()
+                if(checkedStr(phone, patternPhone)){
                     // 검증 성공
+                    binding.signUpPhoneDuplicateCertification.visibility = View.GONE
                     binding.signUpPhoneLine.visibility = View.INVISIBLE
                     binding.signUpPhoneChecked.visibility = View.VISIBLE
                     binding.signUpPhoneError.visibility = View.GONE
-                    mSignUpChecked[3] = true
+                    // 핸드폰 번호 겹치는 거 확인 -> 서버 통신
+                    SignUpService(this).tryGetPhoneDuplicated(phone)
+                // mSignUpChecked[3] = true
                 } else {
                     // 검증 실패
+                    binding.signUpPhoneDuplicateCertification.visibility = View.GONE
                     binding.signUpPhoneError.visibility = View.VISIBLE
                     binding.signUpPhoneLine.setBackgroundColor(Color.parseColor(mErrorColor))
-                    if (password == "") binding.signUpPhoneError.setText(R.string.Sign_up_phone_error2)
+                    if (phone == "") binding.signUpPhoneError.setText(R.string.Sign_up_phone_error2)
                     else binding.signUpPhoneError.setText(R.string.Sign_up_phone_error1)
                     mSignUpChecked[3] = false
                 }
@@ -298,6 +304,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                 val userName = binding.signUpNameText.text.toString()
                 val phone = binding.signUpPhoneText.text.toString()
                 val userSignUpRequest = UserSignUpRequest(email, password, userName, phone)
+                Log.d("signup info", "password : $password")
                 showLoadingDialog(this)
                 SignUpService(this).tryPostSignUp(userSignUpRequest)
             }
@@ -335,6 +342,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
 
         // 뒤로 가기
         binding.signUpBack.setOnClickListener { finish() }
+
     }
 
     fun agreeAllChange(resource : Int, agree : Boolean) {
@@ -411,7 +419,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     fun checkedPasswordError3(target: String): Boolean {
         return !(mSignUpChecked[0] && target == binding.signUpEmailText.text.toString())
     }
-    fun checkedSignUpReady() : Boolean {
+    private fun checkedSignUpReady() : Boolean {
         for(check in mSignUpChecked){
             if(!check) return false
         }
@@ -428,6 +436,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         dismissLoadingDialog()
         if(response.code == 1000){
             showCustomToast("회원가입 성공 -> userIdx : ${response.userSignUpResponseResult!!.userIdx}")
+            finish()
         } else {
             showCustomToast("회원가입 실패")
         }
@@ -436,7 +445,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     override fun onPostSignUpFailure(message: String) {
         // 회원가입 실패
         dismissLoadingDialog()
-        showCustomToast("회원가입 실패")
+        showCustomToast("회원가입 실패 error message : $message")
     }
 
     override fun onGetEmailDuplicatedSuccess(response: EmailDuplicatedResponse) {
@@ -461,6 +470,33 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     override fun onGetEmailDuplicatedFailure(message: String) {
         // 이메일 중복 여부 판단 실패
         showCustomToast("EmailDuplicated 통신 오류")
+    }
+
+    override fun onGetPhoneDuplicatedSuccess(response: PhoneDuplicatedResponse) {
+        // 핸드폰 번호 중복 여부 판단 성공
+        if(response.code == 1000){
+            showCustomToast("핸드폰 중복 여부 판단 성공")
+            if(response.result.isDuplicated){
+                // 중복됨
+                mSignUpChecked[3] = false
+                binding.signUpPhoneChecked.visibility = View.INVISIBLE
+                binding.signUpPhoneError.visibility = View.VISIBLE
+                binding.signUpPhoneLine.visibility = View.VISIBLE
+                binding.signUpPhoneLine.setBackgroundColor(Color.parseColor(mErrorColor))
+                val phoneDuplicated = response.result.duplicatedEmail + " 아이디(이메일)로 가입된 휴대혼 번호입니다."
+                binding.signUpPhoneError.text = phoneDuplicated
+                binding.signUpPhoneDuplicateCertification.visibility = View.VISIBLE
+            } else {
+                mSignUpChecked[3] = true
+            }
+        } else {
+            showCustomToast(response.message ?: "핸드폰 중복 여부 판단 실패")
+        }
+    }
+
+    override fun onGetPhoneDuplicatedFailure(message: String) {
+        // 핸드폰 번호 중복 여부 판단 실패
+        showCustomToast("PhoneDuplicated 통신 오류")
     }
 
 }

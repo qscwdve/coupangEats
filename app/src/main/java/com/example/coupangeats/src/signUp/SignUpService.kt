@@ -1,6 +1,8 @@
 package com.example.coupangeats.src.signUp
 
 import com.example.coupangeats.src.signUp.model.emailDuplicated.EmailDuplicatedResponse
+import com.example.coupangeats.src.signUp.model.phoneDuplicated.PhoneDuplicatedResponse
+import com.example.coupangeats.src.signUp.model.phoneDuplicated.PhoneDuplicatedResponseResult
 import com.example.coupangeats.src.signUp.model.userSignUp.UserSignUpRequest
 import com.example.coupangeats.src.signUp.model.userSignUp.UserSignUpResponse
 import com.softsquared.template.kotlin.config.ApplicationClass
@@ -41,6 +43,24 @@ class SignUpService(val view: SignUpActivityView) {
 
                 override fun onFailure(call: Call<EmailDuplicatedResponse>, t: Throwable) {
                     view.onGetEmailDuplicatedFailure(t.message ?: "통신 오류")
+                }
+
+            })
+    }
+
+    fun tryGetPhoneDuplicated(phone: String){
+        val signUpRetrofitInterface = ApplicationClass.sRetrofit.create(SignUpRetrofitInterface::class.java)
+        signUpRetrofitInterface.getPhoneDuplicated(phone)
+            .enqueue(object : Callback<PhoneDuplicatedResponse>{
+                override fun onResponse(
+                    call: Call<PhoneDuplicatedResponse>,
+                    response: Response<PhoneDuplicatedResponse>
+                ) {
+                    view.onGetPhoneDuplicatedSuccess(response.body() as PhoneDuplicatedResponse)
+                }
+
+                override fun onFailure(call: Call<PhoneDuplicatedResponse>, t: Throwable) {
+                    view.onGetPhoneDuplicatedFailure(t.message ?: "통신 오류")
                 }
 
             })
