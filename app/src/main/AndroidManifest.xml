@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.coupangeats">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name="com.softsquared.template.kotlin.config.ApplicationClass"
         android:allowBackup="true"
@@ -10,9 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".src.signUp.SignUpActivity"/>
-        <activity android:name=".src.login.LoginActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".src.setting.SettingActivity"></activity>
+        <activity android:name=".src.deliveryAddressSetting.deliveryAddressSettingActivity" />
+        <activity android:name=".src.signUp.SignUpActivity" />
+        <activity
+            android:name=".src.login.LoginActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".src.main.MainActivity"
             android:windowSoftInputMode="adjustNothing" />
@@ -27,6 +33,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="2w3o4zjo8d" />
     </application>
 
 </manifest>

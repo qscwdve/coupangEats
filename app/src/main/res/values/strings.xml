@@ -65,4 +65,26 @@
     <string name="ok">확인</string>
     <string name="dialog_login_check_text">입력하신 아이디 또는 비밀번호가 일치하지 않습니다</string>
     <string name="sign_up_phone_certification">휴대폰 인증</string>
+    <string name="gps_active_info">더 나은 사용 환경을 위해 Google 위치 서비스를 사용하는 기기 위치 기능을 사용 설정하세요. ∨</string>
+    <string name="no">아니요</string>
+    <string name="home_no_address_title">곧 찾아갈게요!</string>
+    <string name="home_no_address_content">쿠팡이츠가 고객님이 계신 곳에 서비스를 준비 중입니다. 배달 가능한 다른 지역에서 둘러보시는건 어때요?</string>
+    <string name="myeats_address_manage">배달 주소 관리</string>
+    <string name="myeats_discount">할인쿠폰</string>
+    <string name="myeats_favorites">즐겨찾기</string>
+    <string name="myeats_event">진행중인 이벤트</string>
+    <string name="myeats_pay">결제관리</string>
+    <string name="myeats_patner">배달파트너 모집</string>
+    <string name="myeats_question">자주 묻는 질문</string>
+    <string name="myeats_tell">고객 지원</string>
+    <string name="myeats_setting">설정</string>
+    <string name="myeats_notice">공지사항</string>
+    <string name="myeats_agree">약관·개인정보 처리방침</string>
+    <string name="delivery_now_agree">배달 현황 알림</string>
+    <string name="coupon_info"><![CDATA[쿠폰&혜택 정보 알림]]></string>
+    <string name="lanauge">언어</string>
+    <string name="logout">로그아웃</string>
+    <string name="appVersion">App ver.1.2.19</string>
+    <string name="logout_info">정말 로그아웃 하시겠습니까?</string>
+    <string name="logout_text">로그아웃</string>
 </resources>

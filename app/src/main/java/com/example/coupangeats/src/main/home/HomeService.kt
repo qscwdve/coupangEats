@@ -10,21 +10,4 @@ import retrofit2.Response
 
 class HomeService(val view: HomeFragmentView) {
 
-    fun tryPostLogin(userLoginRequest: UserLoginRequest) {
-        val homeRetrofitInterface = ApplicationClass.sRetrofit.create(HomeRetrofitInterface::class.java)
-        homeRetrofitInterface.postLogin(userLoginRequest)
-            .enqueue(object : Callback<UserLoginResponse> {
-                override fun onResponse(
-                    call: Call<UserLoginResponse>,
-                    response: Response<UserLoginResponse>
-                ) {
-                    view.onPostLoginSuccess(response.body() as UserLoginResponse)
-                }
-
-                override fun onFailure(call: Call<UserLoginResponse>, t: Throwable) {
-                    view.onPostLoginFailure(t.message ?: "통신 오류")
-                }
-
-            })
-    }
 }

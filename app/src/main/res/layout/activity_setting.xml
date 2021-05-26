@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".src.setting.SettingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:orientation="horizontal"
+        android:paddingHorizontal="15dp"
+        android:paddingBottom="5dp">
+
+        <ImageView
+            android:id="@+id/setting_back_img"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/image_no"
+            android:padding="18sp"
+            android:src="@drawable/left_arrow"
+            android:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:text="@string/myeats_setting"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="20dp"
+        android:orientation="horizontal"
+        tools:ignore="RtlSymmetry">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:paddingVertical="13dp"
+            android:text="@string/delivery_now_agree"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <Switch
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:gravity="center"
+            android:layout_gravity="center"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="20dp"
+        android:orientation="horizontal"
+        tools:ignore="RtlSymmetry">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="6"
+            android:paddingVertical="13dp"
+            android:text="@string/coupon_info"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <Switch
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:gravity="center"
+            android:layout_gravity="center"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="20dp"
+        android:orientation="horizontal"
+        tools:ignore="RtlSymmetry">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingVertical="13dp"
+            android:text="@string/lanauge"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:paddingVertical="13dp"
+            android:text="시스템기본설정 >"
+            android:textSize="18sp"
+            android:textColor="@color/blue"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/setting_logout"
+        android:background="@drawable/white_to_gray_ripple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="20dp"
+        android:orientation="horizontal"
+        tools:ignore="RtlSymmetry">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingVertical="13dp"
+            android:text="@string/logout"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:layout_marginStart="15dp"
+        android:textColor="@color/baseColor"
+        android:text="@string/appVersion"/>
+</LinearLayout>

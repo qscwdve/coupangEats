@@ -97,6 +97,9 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                 }
                 passwordChangeLook()
                 binding.signUpPasswordLine.visibility = View.VISIBLE
+                if(binding.signUpPasswordInfo.visibility == View.GONE && binding.signUpPasswordErrorParent.visibility == View.GONE){
+                    binding.signUpPasswordErrorParent.visibility = View.VISIBLE
+                }
                 mNowEditText = 2
             } else {
                 mNowEditText = 0
@@ -214,7 +217,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                 mNowEditText = 3
             } else {
                 // 포커스 벗어남
-                if(checkedStr(binding.signUpNameText.text.toString(), patternName)){
+                if(checkedStr(binding.signUpNameText.text.toString(), patternName) && binding.signUpNameText.text.toString().length > 1){
                     // 검증 설공
                     binding.signUpNameLine.visibility = View.INVISIBLE
                     binding.signUpNameChecked.visibility = View.VISIBLE
@@ -296,17 +299,19 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         binding.signUpAgreeThree.setOnClickListener { agreeChange(2) }
         binding.signUpAgreeFour.setOnClickListener { agreeChange(3) }
         binding.signUpAgreeFive.setOnClickListener { agreeChange(4) }
+
         // 서버로 회원가입 정보 보냄
         binding.signUpSend.setOnClickListener {
-            if(checkedSignUpReady()){
-                val email = binding.signUpEmailText.text.toString()
-                val password = binding.signUpPasswordText.text.toString()
-                val userName = binding.signUpNameText.text.toString()
-                val phone = binding.signUpPhoneText.text.toString()
-                val userSignUpRequest = UserSignUpRequest(email, password, userName, phone)
-                Log.d("signup info", "password : $password")
-                showLoadingDialog(this)
-                SignUpService(this).tryPostSignUp(userSignUpRequest)
+            val email = binding.signUpEmailText.text.toString()
+            val password = binding.signUpPasswordText.text.toString()
+            val userName = binding.signUpNameText.text.toString()
+            val phone = binding.signUpPhoneText.text.toString()
+            val userSignUpRequest = UserSignUpRequest(email, password, userName, phone)
+            Log.d("signup info", "password : $password")
+            showLoadingDialog(this)
+            SignUpService(this).tryPostSignUp(userSignUpRequest)
+            if(checkSignUpReady()){
+
             }
         }
 
@@ -381,6 +386,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
             binding.signUpAgreeError.visibility = View.GONE
             binding.signUpAgreeAllImg.setImageResource(R.drawable.ic_agree_checked)
             mSignUpAgreeAllChecked = true
+            binding.signUpAgreeError.visibility = View.GONE
         }
         if(mSignUpAgreeCheckedNum < 5){
             binding.signUpAgreeAllImg.setImageResource(R.drawable.ic_agree_not_checked)
@@ -388,14 +394,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         }
     }
 
-    fun checkSignUpReady(): Boolean {
-        if(mSignUpAgreeAllChecked){
-
-        }
-        return true
-    }
-
-    fun checkedStr(str: String, ps: Pattern) : Boolean = ps.matcher(str).matches()
+    private fun checkedStr(str: String, ps: Pattern) : Boolean = ps.matcher(str).matches()
 
     fun checkedPasswordError1(target: String): Boolean {
         // 영문/숫자/특수문자 2가지 이상 조합(8~20자)
@@ -419,12 +418,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     fun checkedPasswordError3(target: String): Boolean {
         return !(mSignUpChecked[0] && target == binding.signUpEmailText.text.toString())
     }
-    private fun checkedSignUpReady() : Boolean {
-        for(check in mSignUpChecked){
-            if(!check) return false
-        }
-        return true
-    }
+
     fun passwordChangeLook(){
         if(mPasswordLookImg)
             binding.signUpPasswordLookImg.setImageResource(R.drawable.ic_sign_up_password_hide)
@@ -499,4 +493,77 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         showCustomToast("PhoneDuplicated 통신 오류")
     }
 
+    fun checkSignUpReady(): Boolean {
+        var check : Int = 0
+        var targetError = -1
+        if(!mSignUpAgreeAllChecked){
+            check += 1
+            binding.signUpAgreeError.visibility = View.VISIBLE
+        }
+        if(!mSignUpChecked[0]){
+            if(targetError == -1) targetError = 0
+            if(binding.signUpEmailError.visibility == View.GONE){
+                // 이메일 오류 표시
+                binding.signUpEmailLine.setBackgroundColor(Color.parseColor(mErrorColor))
+                binding.signUpEmailError.visibility = View.VISIBLE
+                binding.signUpEmailChecked.visibility = View.INVISIBLE
+                binding.signUpEmailLine.visibility = View.VISIBLE
+                if(binding.signUpEmailText.text.toString() == "") binding.signUpEmailError.setText(R.string.Sign_up_email_error2)
+                else binding.signUpEmailError.setText(R.string.Sign_up_email_error1)
+                mSignUpChecked[0] = false
+                binding.signUpEmailDuplicateLogin.visibility = View.GONE
+                binding.signUpEmailDuplicatePasswordFind.visibility = View.GONE
+            }
+        } else check += 1
+        if(!mSignUpChecked[1]){
+            if(targetError == -1) targetError = 1
+            if(binding.signUpPasswordInfo.visibility == View.GONE && binding.signUpPasswordErrorParent.visibility == View.GONE){
+                // 비밀번호 오류 표시
+                binding.signUpPasswordError1Img.setImageResource(R.drawable.sign_up_password_error)
+                binding.signUpPasswordError1Text.setTextColor(Color.parseColor(mErrorColor))
+                binding.signUpPasswordError2Img.setImageResource(R.drawable.sign_up_password_error)
+                binding.signUpPasswordError2Text.setTextColor(Color.parseColor(mErrorColor))
+                binding.signUpPasswordError3Img.setImageResource(R.drawable.sign_up_password_error)
+                binding.signUpPasswordError3Text.setTextColor(Color.parseColor(mErrorColor))
+                binding.signUpPasswordTextLook.visibility = View.GONE
+                binding.signUpPasswordErrorParent.visibility = View.VISIBLE
+                binding.signUpPasswordLine.visibility = View.VISIBLE
+                binding.signUpPasswordLine.setBackgroundColor(Color.parseColor(mErrorColor))
+                Log.d("passworderror", "오류 맞음!!")
+            }
+        } else check += 1
+        if(!mSignUpChecked[2]){
+            if(targetError == -1) targetError = 2
+            if(binding.signUpNameError.visibility == View.GONE){
+                // 이름 오류 표시
+                binding.signUpNameError.visibility = View.VISIBLE
+                binding.signUpNameLine.visibility = View.VISIBLE
+                binding.signUpNameLine.setBackgroundColor(Color.parseColor(mErrorColor))
+                mSignUpChecked[2] = false
+            }
+        } else check += 1
+        if(!mSignUpChecked[3]){
+            if(targetError == -1) targetError = 3
+            if(binding.signUpPhoneError.visibility == View.GONE){
+                // 핸드폰 오류
+                binding.signUpPhoneDuplicateCertification.visibility = View.GONE
+                binding.signUpPhoneError.visibility = View.VISIBLE
+                binding.signUpPhoneLine.visibility = View.VISIBLE
+                binding.signUpPhoneLine.setBackgroundColor(Color.parseColor(mErrorColor))
+                binding.signUpPhoneError.setText(R.string.Sign_up_phone_error2)
+            }
+        } else check += 1
+
+
+        if(targetError != -1) {
+            when (targetError) {
+                1 -> binding.signUpEmailText.requestFocus()
+                2 -> binding.signUpPasswordText.requestFocus()
+                3 -> binding.signUpNameText.requestFocus()
+                4 -> binding.signUpPhoneText.requestFocus()
+            }
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        }
+        return check == 5
+    }
 }

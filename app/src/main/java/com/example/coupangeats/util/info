@@ -7,3 +7,6 @@ phone : String  ->  핸드폰 번호  , 보류..
 
 자동로그인
 - MainActivity 의 updateLogin()
+
+sSharedPrefereced 에 저장된 gps Permission 정보
+gps : Boolean  -> true : gps 사용 가능 , false : gps 사용 불가능

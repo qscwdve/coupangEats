@@ -133,20 +133,25 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
             val result = response.userLoginResponseResult
             if(result.jwt != null) {
                 edit.putString(ApplicationClass.X_ACCESS_TOKEN, result.jwt)
+                edit.putInt("userIdx", result.userIdx)
+                edit.apply()
                 mLoginCheck = true
                 finish()
             }
             else {
                 edit.putInt("userIdx", -1)
+                edit.putString(ApplicationClass.X_ACCESS_TOKEN, null)
+                edit.apply()
                 mLoginCheck = false
                 showDialogLoginCheck()
             }
         } else {
             showDialogLoginCheck(response.message ?: "")
             edit.putInt("userIdx", -1)
+            edit.putString(ApplicationClass.X_ACCESS_TOKEN, null)
+            edit.apply()
             mLoginCheck = false
         }
-        edit.apply()
     }
 
     override fun onPostLoginFailure(message: String) {
@@ -154,8 +159,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         val shared = ApplicationClass.sSharedPreferences
         val edit = shared.edit()
         edit.putInt("userIdx", -1)
-        mLoginCheck = false
+        edit.putString(ApplicationClass.X_ACCESS_TOKEN, null)
         edit.apply()
+        mLoginCheck = false
         showDialogLoginCheck("로그인 실패 error message : $message")
     }
     private fun toggle(notice : Int) {
