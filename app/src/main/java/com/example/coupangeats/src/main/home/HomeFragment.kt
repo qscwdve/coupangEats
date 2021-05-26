@@ -19,6 +19,7 @@ import com.softsquared.template.kotlin.config.BaseFragment
 class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home), HomeFragmentView {
     private var mLoginCheck = false
     private lateinit var mGpsControl : GpsControl
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -37,8 +38,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         // 주소지 클릭
         binding.homeGpsAddress.setOnClickListener {
             if(!loginCheck()) {
-                val loginBottomSheetDialog : LoginBottomSheetDialog = LoginBottomSheetDialog()
-                loginBottomSheetDialog.show(activity!!.supportFragmentManager, "Login")
+                (activity as MainActivity).loginBottomSheetDialogShow()
             } else {
                 // 로그인이 되어 있는 경우 배달지 주소 설정으로 넘어감
 
@@ -69,8 +69,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
     }
 
     fun loginCheck() : Boolean {
-        return false
-        //return ApplicationClass.sSharedPreferences.getInt("userIdx", -1) != -1
+        return ApplicationClass.sSharedPreferences.getInt("userIdx", -1) != -1
     }
 
     /*// 자동 로그인

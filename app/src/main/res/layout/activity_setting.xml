@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".src.setting.SettingActivity">
 
@@ -11,10 +12,10 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:orientation="horizontal"
-        android:paddingHorizontal="15dp"
         android:paddingBottom="5dp">
 
         <ImageView
+            android:background="@drawable/circle_ripple_white_to_gray"
             android:id="@+id/setting_back_img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -28,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="5dp"
             android:text="@string/myeats_setting"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -144,7 +145,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="13sp"
-        android:layout_marginStart="15dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="20dp"
         android:textColor="@color/baseColor"
         android:text="@string/appVersion"/>
 </LinearLayout>

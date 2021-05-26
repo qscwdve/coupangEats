@@ -22,7 +22,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
         }
         binding.settingLogout.setOnClickListener {
             // 로그아웃
-
+            showDialogLogoutCheck()
         }
     }
 
@@ -49,6 +49,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
             // 로그아웃
             loginFailure()
             alertDialog.dismiss()
+            finish()
         }
         logoutBinding.dialogLogoutNo.setOnClickListener {
             // 로그아웃 취소

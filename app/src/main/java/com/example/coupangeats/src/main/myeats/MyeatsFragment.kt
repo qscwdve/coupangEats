@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentMyeatsBinding
+import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.setting.SettingActivity
+import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseFragment
 
 class MyeatsFragment : BaseFragment<FragmentMyeatsBinding>(FragmentMyeatsBinding::bind, R.layout.fragment_myeats) {
@@ -28,5 +30,15 @@ class MyeatsFragment : BaseFragment<FragmentMyeatsBinding>(FragmentMyeatsBinding
         binding.myeatsPay.setOnClickListener {  }
         binding.myeatsQuestion.setOnClickListener {  }
         binding.myeatsTell.setOnClickListener {  }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(!loginCheck()){
+            (activity as MainActivity).setHomeFragment()
+        }
+    }
+    fun loginCheck() : Boolean {
+        return ApplicationClass.sSharedPreferences.getInt("userIdx", -1) != -1
     }
 }

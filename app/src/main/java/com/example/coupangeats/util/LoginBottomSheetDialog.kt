@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.view.*
 import com.example.coupangeats.databinding.DialogLoginBinding
 import com.example.coupangeats.src.login.LoginActivity
+import com.example.coupangeats.src.main.MainActivity
+import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.signUp.SignUpActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.softsquared.template.kotlin.config.ApplicationClass
 
-class LoginBottomSheetDialog : BottomSheetDialogFragment() {
+class LoginBottomSheetDialog(val mainActivity: MainActivity) : BottomSheetDialogFragment() {
     private lateinit var binding : DialogLoginBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DialogLoginBinding.inflate(layoutInflater)
@@ -30,6 +33,17 @@ class LoginBottomSheetDialog : BottomSheetDialogFragment() {
             // 쿠팡 앱으로 로그인
 
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(loginCheck()){
+            // 로그인에 성공했을 경우
+            mainActivity.loginBottomSheetDialogDismiss()
+        }
+    }
+    fun loginCheck() : Boolean {
+        return ApplicationClass.sSharedPreferences.getInt("userIdx", -1) != -1
     }
 
 }

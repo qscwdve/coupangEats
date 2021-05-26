@@ -32,11 +32,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
 
+    lateinit var loginBottomSheetDialog : LoginBottomSheetDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         gpsCheck()
-
+        loginBottomSheetDialog = LoginBottomSheetDialog(this)
         // 처음 화면 HomeFragment로 지정
         supportFragmentManager.beginTransaction()
                 .replace(R.id.main_frm, HomeFragment(), "homeFragment")
@@ -74,9 +76,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                                 .commitAllowingStateLoss()
                             return@OnNavigationItemSelectedListener true
                         } else {
-                            val loginBottomSheetDialog: LoginBottomSheetDialog =
-                                LoginBottomSheetDialog()
-                            loginBottomSheetDialog.show(supportFragmentManager, "Login")
+                            loginBottomSheetDialogShow()
                             return@OnNavigationItemSelectedListener false
                         }
                     }
@@ -88,9 +88,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                                 .commitAllowingStateLoss()
                             return@OnNavigationItemSelectedListener true
                         } else {
-                            val loginBottomSheetDialog: LoginBottomSheetDialog =
-                                LoginBottomSheetDialog()
-                            loginBottomSheetDialog.show(supportFragmentManager, "Login")
+                            loginBottomSheetDialogShow()
                             return@OnNavigationItemSelectedListener false
                         }
                     }
@@ -120,7 +118,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 .replace(R.id.main_frm, SearchFragment(this, 2))
                 .commitAllowingStateLoss()
     }
-
+    fun loginBottomSheetDialogDismiss() {
+        loginBottomSheetDialog.dismiss()
+    }
+    fun loginBottomSheetDialogShow(){
+        loginBottomSheetDialog.show(supportFragmentManager, "Login")
+    }
     // 로그인 여부 확인
     fun loginCheck() : Boolean {
         return ApplicationClass.sSharedPreferences.getInt("userIdx", -1) != -1

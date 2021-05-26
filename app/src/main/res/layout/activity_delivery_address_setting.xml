@@ -1,9 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="match_parent" android:background="@color/white"
+    android:layout_height="match_parent" android:orientation="vertical"
     tools:context=".src.deliveryAddressSetting.deliveryAddressSettingActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp">
+
+        <ImageView
+            android:id="@+id/delivery_address_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/image_no"
+            android:padding="18sp"
+            android:background="@drawable/circle_ripple_white_to_gray"
+            android:src="@drawable/cancel"
+            android:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:text="@string/divery_address_setting"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="9dp"
+            android:src="@drawable/ic_nav_click_search"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/image_no" />
+
+        <EditText
+            android:id="@+id/delivery_address_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:inputType="text"
+            android:background="@color/white"
+            android:hint="@string/address_info"
+            android:textColorHint="@color/baseColor"
+            android:textSize="15sp"
+            android:padding="10dp"/>
+
+        <ImageView
+            android:id="@+id/delivery_address_text_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="9dp"
+            android:src="@drawable/login_email_delete"
+            android:contentDescription="@string/image_no" />
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:background="@color/lightGray"/>
+
+
+</LinearLayout>

@@ -107,6 +107,8 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                     binding.signUpPasswordLine.visibility = View.INVISIBLE
                     binding.signUpPasswordLookImg.setImageResource(R.drawable.ic_sign_up_checked)
                     binding.signUpPasswordTextLook.visibility = View.GONE
+                }else if(binding.signUpPasswordText.text.toString() == ""){
+                    binding.signUpPasswordLine.visibility = View.INVISIBLE
                 }
             }
         }
@@ -445,7 +447,8 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     override fun onGetEmailDuplicatedSuccess(response: EmailDuplicatedResponse) {
         // 이메일 중복 여부 판단 성공
         if(response.code == 1000){
-            showCustomToast("이메일 중복 여부 판단 성공")
+            showCustomToast("이메일 중복 여부 판단 성공 ${response.result.isDuplicated}")
+            Log.d("network check value", "isDuplicated 값 확인 : ${response.result.isDuplicated}")
             mEmailDuplicatedCheck = !(response.result.isDuplicated)
             if(!mEmailDuplicatedCheck){
                 // 이메일 중복
