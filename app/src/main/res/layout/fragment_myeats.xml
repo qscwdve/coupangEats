@@ -4,6 +4,7 @@
     android:background="@color/white" android:layout_height="match_parent" android:orientation="vertical">
 
     <TextView
+        android:id="@+id/myeats_name"
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
@@ -14,6 +15,7 @@
         android:textStyle="bold"/>
 
     <TextView
+        android:id="@+id/myeats_phone"
         android:paddingVertical="5dp"
         android:layout_marginStart="20dp"
         android:layout_width="wrap_content"

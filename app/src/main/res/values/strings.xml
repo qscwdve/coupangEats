@@ -89,4 +89,16 @@
     <string name="logout_text">로그아웃</string>
     <string name="divery_address_setting">배달지 주소 설정</string>
     <string name="address_info">도로명, 건물명 또는 지번으로 검색</string>
+    <string name="delivery_address_now_gps">현재 위치로 주소 찾기</string>
+    <string name="home">집</string>
+    <string name="business">회사</string>
+    <string name="searchTip">검색Tip</string>
+    <string name="searchTopRoad">*도로명</string>
+    <string name="searchTopNum">+ 건물번호</string>
+    <string name="searchTopRoadEx">  (예: 송파대로 570)</string>
+    <string name="searchTipName">* 동/음/면/리</string>
+    <string name="searchTipNameNum">+ 번지</string>
+    <string name="searchTipNameEx">(예: 신천동 7-30)</string>
+    <string name="searchTipBuildingEx">(예: 반포자이아파트)</string>
+    <string name="searchTipBuilding">* 건물명, 아파트명</string>
 </resources>

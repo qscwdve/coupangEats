@@ -100,7 +100,7 @@ class GpsControl(val context: Context) : LocationListener {
             return null
         }
 
-        return "${addresses[2].locality} ${addresses[2].thoroughfare} ${addresses[2].featureName}"
+        return "${addresses[0].locality} ${addresses[0].thoroughfare} ${addresses[0].featureName}"
     }
     // LocationListener 관련 함수들
     override fun onLocationChanged(location: Location) {

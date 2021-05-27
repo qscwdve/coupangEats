@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityMainBinding
 import com.example.coupangeats.databinding.DialogGpsActiveCheckBinding
+import com.example.coupangeats.src.deliveryAddressSetting.DeliveryAddressSettingActivity
 import com.example.coupangeats.src.favorites.FavoritesActivity
 import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.main.myeats.MyeatsFragment
@@ -31,7 +32,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
-
+    val DRIVERYADDRESSSETTING = 1234
     lateinit var loginBottomSheetDialog : LoginBottomSheetDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,6 +124,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
     fun loginBottomSheetDialogShow(){
         loginBottomSheetDialog.show(supportFragmentManager, "Login")
+    }
+
+    fun startDeliveryAddressSettingActivityResult() {
+        startActivityForResult(Intent(this, DeliveryAddressSettingActivity::class.java), DRIVERYADDRESSSETTING)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == DRIVERYADDRESSSETTING && resultCode == RESULT_OK) {
+            val home = supportFragmentManager.findFragmentByTag("homeFragment") as HomeFragment
+            home.changeGpsInfo()
+        }
+
     }
     // 로그인 여부 확인
     fun loginCheck() : Boolean {
@@ -252,6 +266,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         val intent = Intent("android.location.GPS_ENABLED_CHANGE");
         intent.putExtra("enabled", true);
         sendBroadcast(intent);
+    }
+
+    override fun onDestroy() {
+        val edit = ApplicationClass.sSharedPreferences.edit()
+        edit.putInt("userIdx", -1)
+        edit.apply()
+        super.onDestroy()
     }
 
 }

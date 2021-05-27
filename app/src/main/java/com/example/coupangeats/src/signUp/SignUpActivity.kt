@@ -449,7 +449,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         if(response.code == 1000){
             showCustomToast("이메일 중복 여부 판단 성공 ${response.result.isDuplicated}")
             Log.d("network check value", "isDuplicated 값 확인 : ${response.result.isDuplicated}")
-            mEmailDuplicatedCheck = !(response.result.isDuplicated)
+            mEmailDuplicatedCheck = response.result.isDuplicated != "Y"
             if(!mEmailDuplicatedCheck){
                 // 이메일 중복
                 binding.signUpEmailDuplicateLogin.visibility = View.VISIBLE
@@ -473,7 +473,8 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         // 핸드폰 번호 중복 여부 판단 성공
         if(response.code == 1000){
             showCustomToast("핸드폰 중복 여부 판단 성공")
-            if(response.result.isDuplicated){
+            Log.d("duplicated", "phone : ${response.result.isDuplicated}")
+            if(response.result.isDuplicated == "Y"){
                 // 중복됨
                 mSignUpChecked[3] = false
                 binding.signUpPhoneChecked.visibility = View.INVISIBLE

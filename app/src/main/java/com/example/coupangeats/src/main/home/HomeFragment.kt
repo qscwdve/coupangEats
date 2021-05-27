@@ -1,20 +1,19 @@
 package com.example.coupangeats.src.main.home
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentHomeBinding
-import com.example.coupangeats.src.login.model.UserLoginRequest
-import com.example.coupangeats.src.login.model.UserLoginResponse
+import com.example.coupangeats.src.deliveryAddressSetting.DeliveryAddressSettingActivity
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.home.adapter.BaseAddressAdapter
 import com.example.coupangeats.util.GpsControl
-import com.example.coupangeats.util.LoginBottomSheetDialog
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseFragment
+import java.util.concurrent.DelayQueue
 
 class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home), HomeFragmentView {
     private var mLoginCheck = false
@@ -41,16 +40,25 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
                 (activity as MainActivity).loginBottomSheetDialogShow()
             } else {
                 // 로그인이 되어 있는 경우 배달지 주소 설정으로 넘어감
-
+                (activity as MainActivity).startDeliveryAddressSettingActivityResult()
             }
         }
+    }
+
+    fun changeGpsInfo(){
+        // 현재 주소에 변화가 생김
+        binding.homeGpsAddress.text = ApplicationClass.sSharedPreferences.getString("userMainAddressIdx", "주소 실패..")
+        // 팝업창 필요..!
     }
 
     override fun onResume() {
         super.onResume()
         var gpsCheck = false
-        // gps 사용 가능 여부 체크
-        if(ApplicationClass.sSharedPreferences.getBoolean("gps", false)){
+        if(ApplicationClass.sSharedPreferences.getInt("userAddressIdx", -1) != -1){
+            // 유저가 선택한 주소
+            gpsCheck = true
+            binding.homeGpsAddress.text = ApplicationClass.sSharedPreferences.getString("userMainAddressIdx", "주소 가져오기 실패")
+        } else if(ApplicationClass.sSharedPreferences.getBoolean("gps", false)){
             // gps 사용 가능
             val location = mGpsControl.getLocation()
             if(location != null){

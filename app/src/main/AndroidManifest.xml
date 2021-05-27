@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".src.setting.SettingActivity"></activity>
-        <activity android:name=".src.deliveryAddressSetting.deliveryAddressSettingActivity" />
+        <activity android:name=".src.deliveryAddressSetting.DeliveryAddressSettingActivity" />
         <activity android:name=".src.signUp.SignUpActivity" />
         <activity
             android:name=".src.login.LoginActivity"
