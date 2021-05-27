@@ -1,5 +1,7 @@
 package com.example.coupangeats.src.deliveryAddressSetting
 
+import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListRequest
+import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.UserAddrListResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.UserAddrListResponseResult
 import com.example.coupangeats.src.deliveryAddressSetting.model.UserCheckedAddressResponse
@@ -41,6 +43,24 @@ class DeliveryAddressSettingService(val view: DeliveryAddressSettingActivityView
 
                 override fun onFailure(call: Call<UserCheckedAddressResponse>, t: Throwable) {
                     view.onPathUserCheckedAddressFailure(t.message ?: "통신 오류")
+                }
+
+            })
+    }
+
+    fun tryGetSearchAddrList(request: SearchAddrListRequest){
+        val deliveryAddressSettingRetrofitInterface = ApplicationClass.searchRetrofit.create(DeliveryAddressSettingRetrofitInterface::class.java)
+        deliveryAddressSettingRetrofitInterface.getSearchAddrList(ApplicationClass.SEARCH_API_KEY, request.currentPage, request.countPerPage, request.keyword)
+            .enqueue(object : Callback<SearchAddrListResponse>{
+                override fun onResponse(
+                    call: Call<SearchAddrListResponse>,
+                    response: Response<SearchAddrListResponse>
+                ) {
+                    view.onGetSearchAddrListSuccess(response = response.body() as SearchAddrListResponse)
+                }
+
+                override fun onFailure(call: Call<SearchAddrListResponse>, t: Throwable) {
+                    view.onGetSearchAddrListFailure(t.message ?: "통신 오류")
                 }
 
             })

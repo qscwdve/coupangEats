@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
+    android:background="@drawable/white_to_gray_ripple"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:paddingTop="10dp"
+    android:paddingHorizontal="20dp"
+    android:layout_height="wrap_content">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:text="안동국시호면정"
+        android:id="@+id/item_delivery_address_setting_search_list_main_address"/>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/item_search_list_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_box"
+            android:text="도로명"
+            android:padding="3dp"
+            android:layout_gravity="center"
+            android:textSize="12sp"
+            android:layout_marginEnd="10dp"
+            android:textColor="@color/blue"/>
+
+        <TextView
+            android:id="@+id/item_search_list_sub_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:textColor="@color/baseColor"
+            android:text="수원시 장안구 팔달문"/>
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line"/>
+</LinearLayout>
