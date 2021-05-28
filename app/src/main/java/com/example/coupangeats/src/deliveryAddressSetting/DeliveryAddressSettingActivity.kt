@@ -46,6 +46,7 @@ class DeliveryAddressSettingActivity() :
     val GPS_SELECT = 1
     val DELIVERY_MANAGE = 2
     var version = GPS_SELECT
+    var mSelectedAddress = -1
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,19 +130,18 @@ class DeliveryAddressSettingActivity() :
             if (!mBackOrFinish) {
                 // 종료
                 Log.d("selected", "종료")
-                if(binding.detailAddressTitle.text.toString() == "배달지 상세 정보"){
+                if(version != GPS_SELECT && (binding.deliveryAddressManageParent.visibility != View.VISIBLE || binding.deliveryAddressSettingNowGpsFind.visibility != View.VISIBLE)){
                     Log.d("selected", "종료안되야함")
+                    binding.deliveryAddressManageParent.visibility = View.VISIBLE
+                    binding.deliveryAddressTextParent.visibility = View.GONE
                     binding.deliveryAddressDetailParent.visibility = View.GONE
                     binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
                     binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
                     binding.detailAddressUserList.visibility = View.VISIBLE
-                    binding.deliveryAddressTextParent.visibility = View.VISIBLE
-                    binding.deliveryAddressManageParent.visibility = View.GONE
                     binding.deliveryAddressBack.setImageResource(R.drawable.cancel)
                     binding.detailAddressTitle.setText("배달 주소 관리")
                     mSearchTip = true
-                }
-                else {
+                } else {
                     Log.d("selected", "종료")
                     setResult(RESULT_CANCELED)
                     finish()
@@ -233,6 +233,9 @@ class DeliveryAddressSettingActivity() :
     }
 
     fun deliveryCheckedAndFinish(){
+        binding.deliveryAddressSettingHomeDetail.visibility = View.VISIBLE
+        binding.deliveryAddressBusinessDetail.visibility = View.VISIBLE
+        showLoadingDialog(this)
         DeliveryAddressSettingService(this).tryPatchPathUserCheckedAddress(getUserIdx(), userAddressIdx)
     }
 
@@ -263,40 +266,46 @@ class DeliveryAddressSettingActivity() :
     override fun onGetUserAddressListSuccess(response: UserAddrListResponse) {
         dismissLoadingDialog()
         // 어댑터 생성!!
-        val home = response.result.home
-        val company = response.result.company
-        val addressList = response.result.addressList
-        if (home != null) {
-            binding.deliveryAddressSettingHomeDetail.text = home.subAddress
-            if (response.result.selectedAddressIdx == home.addressIdx) binding.deliveryAddressSettingHomeChecked.visibility =
-                View.VISIBLE
-            else binding.deliveryAddressSettingHomeChecked.visibility = View.INVISIBLE
-            isHome = true
-            mHomeMainAddress = response.result.home.mainAddress
-            mHomeaddressIdx = response.result.home.addressIdx
-        } else {
-            binding.deliveryAddressSettingHomeDetail.visibility = View.GONE
-            isHome = false
-        }
-        if (company != null) {
-            isCompany = true
-            mCompanyMainAddress = response.result.company.mainAddress
-            mCompanyaddressIdx = response.result.company.addressIdx
-            binding.deliveryAddressBusinessDetail.text = company.subAddress
-            if (response.result.selectedAddressIdx == company.addressIdx) binding.deliveryAddressBusinessChecked.visibility =
-                View.VISIBLE
-            else binding.deliveryAddressBusinessChecked.visibility = View.INVISIBLE
-        } else {
-            isCompany = false
-            binding.deliveryAddressBusinessDetail.visibility = View.GONE
-        }
-        if (addressList != null) {
-            binding.deliveryAddressSettingListRecyclerView.adapter = AddressListAdapter(
-                addressList as ArrayList<BaseAddress>,
-                response.result.selectedAddressIdx,
-                this
-            )
-            binding.deliveryAddressSettingListRecyclerView.layoutManager = LinearLayoutManager(this)
+        if(response.code == 1000){
+            val home = response.result.home
+            val company = response.result.company
+            val addressList = response.result.addressList
+            if (home != null) {
+                binding.deliveryAddressSettingHomeDetail.visibility = View.VISIBLE
+                binding.deliveryAddressSettingHomeDetail.text = home.subAddress
+                if (response.result.selectedAddressIdx == home.addressIdx) binding.deliveryAddressSettingHomeChecked.visibility =
+                    View.VISIBLE
+                else binding.deliveryAddressSettingHomeChecked.visibility = View.INVISIBLE
+                isHome = true
+                mHomeMainAddress = response.result.home.mainAddress
+                mHomeaddressIdx = response.result.home.addressIdx
+            } else {
+                binding.deliveryAddressSettingHomeDetail.visibility = View.GONE
+                isHome = false
+            }
+            if (company != null) {
+                isCompany = true
+                binding.deliveryAddressBusinessDetail.visibility = View.VISIBLE
+                binding.deliveryAddressBusinessImg.visibility = View.VISIBLE
+                mCompanyMainAddress = response.result.company.mainAddress
+                mCompanyaddressIdx = response.result.company.addressIdx
+                binding.deliveryAddressBusinessDetail.text = company.subAddress
+                if (response.result.selectedAddressIdx == company.addressIdx) binding.deliveryAddressBusinessChecked.visibility =
+                    View.VISIBLE
+                else binding.deliveryAddressBusinessChecked.visibility = View.INVISIBLE
+            } else {
+                isCompany = false
+                binding.deliveryAddressBusinessDetail.visibility = View.GONE
+            }
+            if (addressList != null) {
+                binding.deliveryAddressSettingListRecyclerView.adapter = AddressListAdapter(
+                    addressList as ArrayList<BaseAddress>,
+                    response.result.selectedAddressIdx,
+                    this
+                )
+                binding.deliveryAddressSettingListRecyclerView.layoutManager = LinearLayoutManager(this)
+            }
+            mSelectedAddress = response.result.selectedAddressIdx
         }
     }
 
@@ -308,17 +317,20 @@ class DeliveryAddressSettingActivity() :
     override fun onPathUserCheckedAddressSuccess(response: UserCheckedAddressResponse) {
         dismissLoadingDialog()
         if (response.code == 1000) {
-
             if (userMainAddress != "" && userAddressIdx != -1) {
                 Log.d("selected", "company")
                 setUserAddress(userMainAddress, userAddressIdx)
                 setResult(RESULT_OK)
                 finish()
             }
+            if(mSelectedAddress == -1){
+                setUserAddress("배달주소를 선택해주세요", -1)
+                setResult(RESULT_OK)
+                finish()
+            }
             setResult(RESULT_CANCELED)
             finish()
         }
-
     }
 
     override fun onPathUserCheckedAddressFailure(message: String) {
@@ -328,10 +340,25 @@ class DeliveryAddressSettingActivity() :
         finish()
     }
 
-    fun backClick() {
+    fun backClick(addressIdx: Int) {
+        binding.deliveryAddressManageParent.visibility = View.VISIBLE
+        binding.deliveryAddressTextParent.visibility = View.GONE
+        binding.deliveryAddressDetailParent.visibility = View.GONE
+        binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
+        binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
+        binding.detailAddressUserList.visibility = View.VISIBLE
+        binding.deliveryAddressBack.setImageResource(R.drawable.cancel)
+        binding.detailAddressTitle.setText("배달 주소 관리")
+        mSearchTip = true
+        binding.deliveryAddressBusinessDetail.visibility = View.VISIBLE
+        binding.deliveryAddressSettingHomeDetail.visibility = View.VISIBLE
+        if(addressIdx == mSelectedAddress){
+            // 선택 1번으로 해야함
+            DeliveryAddressSettingService(this).tryPatchPathUserCheckedAddress(getUserIdx(), 1)
+            mSelectedAddress = -1
+        }
         showLoadingDialog(this)
         DeliveryAddressSettingService(this).tryGetUserAddressList(getUserIdx())
-        binding.deliveryAddressBack.callOnClick()
     }
 
     override fun onGetSearchAddrListSuccess(response: SearchAddrListResponse) {
@@ -391,6 +418,8 @@ class DeliveryAddressSettingActivity() :
     fun startDeliveryAddressAdd() {
         showLoadingDialog(this)
         DeliveryAddressSettingService(this).tryPatchPathUserCheckedAddress(getUserIdx(), userAddressIdx)
+        binding.deliveryAddressSettingHomeDetail.visibility = View.VISIBLE
+        binding.deliveryAddressBusinessDetail.visibility = View.VISIBLE
     }
 
     override fun onPostDeliveryAddressAddFailure(message: String) {

@@ -53,7 +53,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     R.id.menu_main_btm_nav_home -> {
                         mfragmentIndex = 1
                         supportFragmentManager.beginTransaction()
-                            .replace(R.id.main_frm, HomeFragment())
+                            .replace(R.id.main_frm, HomeFragment(), "homeFragment")
                             .commitAllowingStateLoss()
                         return@OnNavigationItemSelectedListener true
                     }
@@ -266,15 +266,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             edit.apply()
         }
     }
-    private fun turnGPSOn() {
-        val intent = Intent("android.location.GPS_ENABLED_CHANGE");
-        intent.putExtra("enabled", true);
-        sendBroadcast(intent);
-    }
 
     override fun onDestroy() {
         val edit = ApplicationClass.sSharedPreferences.edit()
         edit.putInt("userIdx", -1)
+        edit.putInt("userMainAddressIdx", -1)
         edit.apply()
         super.onDestroy()
     }

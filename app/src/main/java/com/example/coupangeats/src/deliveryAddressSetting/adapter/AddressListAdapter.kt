@@ -19,8 +19,10 @@ class AddressListAdapter(val addressList: ArrayList<BaseAddress>, val selectedId
         fun bind(item: BaseAddress, selectedIdx: Int){
             mainAddress.text = item.mainAddress
             subAddress.text = item.subAddress
-            if(item.addressIdx == selectedIdx) check.visibility = View.VISIBLE
-            else check.visibility = View.INVISIBLE
+            if(deliveryAddressSettingActivity.version == deliveryAddressSettingActivity.GPS_SELECT){
+                if(item.addressIdx == selectedIdx) check.visibility = View.VISIBLE
+                else check.visibility = View.INVISIBLE
+            } else check.visibility = View.INVISIBLE
 
             itemView.setOnClickListener {
                 // 주소 선택 -> 배달지 주소 선택됨

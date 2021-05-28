@@ -1,29 +1,36 @@
 package com.example.coupangeats.src.main.home
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentHomeBinding
-import com.example.coupangeats.src.deliveryAddressSetting.DeliveryAddressSettingActivity
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.home.adapter.BaseAddressAdapter
+import com.example.coupangeats.src.main.home.adapter.CategoryAdapter
+import com.example.coupangeats.src.main.home.adapter.EventAdapter
+import com.example.coupangeats.src.main.home.model.HomeInfo.Events
+import com.example.coupangeats.src.main.home.model.HomeInfo.HomeInfoRequest
+import com.example.coupangeats.src.main.home.model.HomeInfo.HomeInfoResponse
+import com.example.coupangeats.src.main.home.model.HomeInfo.StoreCategories
+import com.example.coupangeats.src.main.home.model.userCheckAddress.UserCheckResponse
+import com.example.coupangeats.src.main.home.model.userCheckAddress.UserCheckResponseResult
 import com.example.coupangeats.util.GpsControl
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseFragment
-import java.util.concurrent.DelayQueue
 
 class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home), HomeFragmentView {
     private var mLoginCheck = false
     private lateinit var mGpsControl : GpsControl
-
+    private var mUserAddress : UserCheckResponseResult? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         mGpsControl = GpsControl(requireContext())
 
+        showLoadingDialog(requireContext())
+        HomeService(this).tryGetUserCheckAddress(getUserIdx())
         // no address recyclerView adapter setting
         binding.homeNoAddressRecyclerview.adapter = BaseAddressAdapter(this)
         binding.homeNoAddressRecyclerview.layoutManager = LinearLayoutManager(requireContext())
@@ -45,29 +52,43 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         }
     }
 
+    fun getUserIdx(): Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
+
     fun changeGpsInfo(){
         // 현재 주소에 변화가 생김
         binding.homeGpsAddress.text = ApplicationClass.sSharedPreferences.getString("userMainAddressIdx", "주소 실패..")
         // 팝업창 필요..!
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun loginCheck() : Boolean {
+        return ApplicationClass.sSharedPreferences.getInt("userIdx", -1) != -1
+    }
+
+    fun baseAddressResult(baseAddress : String) {
+        binding.homeNoAddress.visibility = View.GONE
+        binding.homeRealContent.visibility = View.VISIBLE
+    }
+
+    fun gpsCheck() {
         var gpsCheck = false
-        if(ApplicationClass.sSharedPreferences.getInt("userAddressIdx", -1) != -1){
-            // 유저가 선택한 주소
-            gpsCheck = true
-            binding.homeGpsAddress.text = ApplicationClass.sSharedPreferences.getString("userMainAddressIdx", "주소 가져오기 실패")
-        } else if(ApplicationClass.sSharedPreferences.getBoolean("gps", false)){
+        if(ApplicationClass.sSharedPreferences.getBoolean("gps", false)){
             // gps 사용 가능
             val location = mGpsControl.getLocation()
             if(location != null){
+                mUserAddress = UserCheckResponseResult(0, location.latitude.toString(), location.longitude.toString(), "종로구 종로1.2.3.4가동 164-7")
                 val address = mGpsControl.getCurrentAddress(location.latitude, location.longitude)
                 binding.homeGpsAddress.text = address
                 gpsCheck = true
+            } else {
+                mUserAddress = UserCheckResponseResult(0, (37.5724714912).toString(), (126.9911925560).toString(),"종로구 종로1.2.3.4가동 164-7")
+                binding.homeGpsAddress.text = mUserAddress!!.mainAddress
             }
+        } else {
+            mUserAddress = UserCheckResponseResult(0, (37.5724714912).toString(), (126.9911925560).toString(),"종로구 종로1.2.3.4가동 164-7")
+            binding.homeGpsAddress.text = mUserAddress!!.mainAddress
         }
         if(gpsCheck){
+            getMainData()
             binding.homeNoAddress.visibility = View.GONE
             binding.homeRealContent.visibility = View.VISIBLE
         } else {
@@ -76,55 +97,56 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         }
     }
 
-    fun loginCheck() : Boolean {
-        return ApplicationClass.sSharedPreferences.getInt("userIdx", -1) != -1
+    fun getMainData(){
+        // 홈 데이터 얻음
+        val re = HomeInfoRequest(mUserAddress!!.latitude, mUserAddress!!.longitude, "recomm", null, null, null, null, 1, 10)
+        showLoadingDialog(requireContext())
+        HomeService(this).tryGetHomeData(re)
     }
 
-    /*// 자동 로그인
-    private fun updateLogin() {
-        val shared = ApplicationClass.sSharedPreferences
-
-        // jwt 초기화
-        val edit = shared.edit()
-        edit.putString(ApplicationClass.X_ACCESS_TOKEN, null).apply()
-        val userId = shared.getInt("userIdx", -1)
-        if(userId != -1) {
-            val email = shared.getString("email", "") ?: ""
-            val password = shared.getString("password", "") ?: ""
-            if(email != "" && password != ""){
-                // 자동 로그인 할 수 있음 -> 서버에 로그인 시도
-                showCustomToast("자동 로그인 시도")
-                val userLoginRequest = UserLoginRequest(email, password)
-                HomeService(this).tryPostLogin(userLoginRequest)
+    override fun onUserCheckAddressSuccess(response: UserCheckResponse) {
+        dismissLoadingDialog()
+        if(response.code == 1000){
+            if(response.result.addressIdx != 0){
+                // 유저가 선택한 주소 있음
+                mUserAddress = response.result
+                binding.homeGpsAddress.text = mUserAddress!!.mainAddress
+                getMainData()
             } else {
-                edit.putInt("userIdx", -1)
-                edit.putString(ApplicationClass.X_ACCESS_TOKEN, null)
-                edit.apply()
+                // 유저가 선택한 주소 없음
+                gpsCheck()
             }
         }
     }
 
-    fun loginSuccess(jwt: String, userIdx: Int, email: String = "", password: String = ""){
-        val edit = ApplicationClass.sSharedPreferences.edit()
-        if(email != "" && password != ""){
-            edit.putString("email", email)
-            edit.putString("password", password)
+    override fun onUserCheckAddressFailure(message: String) {
+        dismissLoadingDialog()
+        showCustomToast("유저 선택 주소 실패")
+    }
+
+    override fun onGetHomeDataSuccess(response: HomeInfoResponse) {
+        dismissLoadingDialog()
+        if(response.code == 1000){
+            val events = response.result.events
+            val category = response.result.storeCategories
+            setEvent(events)
+            setCategory(category)
         }
-        edit.putString(ApplicationClass.X_ACCESS_TOKEN, jwt)
-        edit.putInt("userIdx", userIdx)
-        edit.apply()
-    }
-    fun loginFailure(){
-        val edit = ApplicationClass.sSharedPreferences.edit()
-        edit.putString(ApplicationClass.X_ACCESS_TOKEN, null)
-        edit.putInt("userIdx", -1)
-        edit.apply()
-    }*/
-
-    fun baseAddressResult(baseAddress : String) {
-        binding.homeNoAddress.visibility = View.GONE
-        binding.homeRealContent.visibility = View.VISIBLE
     }
 
+    override fun onGetHomeDataFailure(message: String) {
+        dismissLoadingDialog()
+        showCustomToast("홈 데이터 불러오기 실패")
+    }
 
+    // 어댑터 설정하기
+    fun setEvent(eventList: ArrayList<Events>){
+        binding.homeEventBannerViewpager.adapter = EventAdapter(eventList)
+        binding.homeEventBannerViewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+    }
+
+    fun setCategory(categoryList: ArrayList<StoreCategories>){
+        binding.homeCategoryRecyclerview.adapter = CategoryAdapter(categoryList)
+        binding.homeCategoryRecyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    }
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:padding="10dp"
+    android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/white_to_gray_ripple">
+
+    <ImageView
+        android:id="@+id/item_home_category_img"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/category_girll"/>
+
+    <TextView
+        android:id="@+id/item_home_category_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="신규 맛집"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="center"/>
+</LinearLayout>

@@ -183,8 +183,10 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         } else {
             val detailAddress = if(binding.detailAddressDetailText.text.toString().isNotEmpty()) binding.detailAddressDetailText.text.toString() else null
             val alias = if(binding.detailAddressAliasEditText.text.toString() == "") null else binding.detailAddressAliasEditText.text.toString()
-            if(aliasType == "HOME") mMainAddress = "집" else if(aliasType == "COMPANY") mMainAddress = "회사"
-            val deliveryAddressAddRequest = DeliveryAddressAddRequest(mMainAddress, mRoadAddress, detailAddress, aliasType, alias, getUserIdx())
+            // if(aliasType == "HOME") mMainAddress = "집" else if(aliasType == "COMPANY") mMainAddress = "회사"
+            val mainAddress = binding.detailAddressMainAddress.text.toString()
+            val roadAddress = binding.detailAddressRoadAddress.text.toString()
+            val deliveryAddressAddRequest = DeliveryAddressAddRequest(mainAddress, roadAddress, detailAddress, aliasType, alias, getUserIdx())
             (activity as DeliveryAddressSettingActivity).startDeliveryAdd(deliveryAddressAddRequest)
         }
 
@@ -324,7 +326,7 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
     }
 
     fun returnDeliveryAddressManageHome() {
-        (activity as DeliveryAddressSettingActivity).backClick()
+        (activity as DeliveryAddressSettingActivity).backClick(addressIdx)
     }
 
     override fun onDeliveryAddressDetailLookFailure(message: String) {

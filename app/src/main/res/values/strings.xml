@@ -116,4 +116,7 @@
     <string name="alias_address">주소 별칭</string>
     <string name="new_delivery">새 배달 주소 추가</string>
     <string name="detail_address_delete">이 주소 삭제하기</string>
+    <string name="event_total">이벤트 전체보기</string>
+    <string name="discount_super">할인 중인 맛집</string>
+    <string name="dot">·</string>
 </resources>

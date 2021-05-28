@@ -193,7 +193,7 @@
                         android:paddingTop="10dp">
 
                         <ImageView
-                            android:padding="5sp"
+                            android:scaleType="centerInside"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -282,13 +282,15 @@
                         android:paddingTop="20dp">
 
                         <ImageView
+                            android:id="@+id/delivery_address_business_img"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_marginStart="20dp"
                             android:layout_weight="1"
+                            android:scaleType="centerInside"
                             android:contentDescription="@string/image_no"
-                            android:padding="12dp"
+                            android:adjustViewBounds="true"
                             android:src="@drawable/ic_delivery_briefcase"
                             tools:ignore="RtlSymmetry" />
 
