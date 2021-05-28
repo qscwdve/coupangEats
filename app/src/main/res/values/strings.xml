@@ -103,4 +103,17 @@
     <string name="searchTipBuilding">* 건물명, 아파트명</string>
     <string name="address_search_error_text2">지번, 도로명, 건물명을 입력해주세요.</string>
     <string name="address_search_error_text1">검색 결과가 없습니다.</string>
+    <string name="detail_address">상세 주소</string>
+    <string name="detail_address_name">(아파트/동/호)</string>
+    <string name="ason">기타</string>
+    <string name="company">회사</string>
+    <string name="map_gps_check">지도에서 위치 확인하기</string>
+    <string name="ignore">무시하기</string>
+    <string name="detail_address_input">상세 주소 입력</string>
+    <string name="need_detail_address">상세 주소를 입력하세요</string>
+    <string name="replace">대체하기</string>
+    <string name="delete">취소</string>
+    <string name="alias_address">주소 별칭</string>
+    <string name="new_delivery">새 배달 주소 추가</string>
+    <string name="detail_address_delete">이 주소 삭제하기</string>
 </resources>

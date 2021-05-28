@@ -24,7 +24,12 @@ class AddressListAdapter(val addressList: ArrayList<BaseAddress>, val selectedId
 
             itemView.setOnClickListener {
                 // 주소 선택 -> 배달지 주소 선택됨
-                deliveryAddressSettingActivity.finishActivitySelectedData(item.mainAddress, item.addressIdx)
+                if(deliveryAddressSettingActivity.version == deliveryAddressSettingActivity.GPS_SELECT)
+                    deliveryAddressSettingActivity.finishActivitySelectedData(item.mainAddress, item.addressIdx)
+                else {
+                    // 배달지 수정
+                    deliveryAddressSettingActivity.startDeliveryAddressModify(item.addressIdx)
+                }
             }
         }
     }

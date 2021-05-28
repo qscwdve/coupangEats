@@ -17,17 +17,17 @@ import com.example.coupangeats.databinding.ActivityDeliveryAddressSettingBinding
 import com.example.coupangeats.src.deliveryAddressSetting.adapter.AddressListAdapter
 import com.example.coupangeats.src.deliveryAddressSetting.adapter.SearchAddressListAdapter
 import com.example.coupangeats.src.deliveryAddressSetting.adapter.data.SearchAddress
-import com.example.coupangeats.src.deliveryAddressSetting.model.BaseAddress
+import com.example.coupangeats.src.deliveryAddressSetting.detail.DetailAddressFragment
+import com.example.coupangeats.src.deliveryAddressSetting.model.*
+import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.DeliveryAddressResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListRequest
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListResponse
-import com.example.coupangeats.src.deliveryAddressSetting.model.UserAddrListResponse
-import com.example.coupangeats.src.deliveryAddressSetting.model.UserAddrListResponseResult
-import com.example.coupangeats.src.deliveryAddressSetting.model.UserCheckedAddressResponse
+import com.example.coupangeats.src.main.search.SearchFragment
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 import java.util.function.LongFunction
 
-class DeliveryAddressSettingActivity :
+class DeliveryAddressSettingActivity() :
     BaseActivity<ActivityDeliveryAddressSettingBinding>(ActivityDeliveryAddressSettingBinding::inflate),
     DeliveryAddressSettingActivityView {
     private var userMainAddress = ""
@@ -40,8 +40,12 @@ class DeliveryAddressSettingActivity :
     private var isCompany = false
     private var mBackOrFinish = false
     private var mSearchTip = true
+    private var mDetailAddress = false
+    private var mCategory = -1
     private lateinit var imm: InputMethodManager   // 키보드 숨기기
-
+    val GPS_SELECT = 1
+    val DELIVERY_MANAGE = 2
+    var version = GPS_SELECT
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +54,32 @@ class DeliveryAddressSettingActivity :
         showLoadingDialog(this)
         DeliveryAddressSettingService(this).tryGetUserAddressList(getUserIdx())
 
+        // 배달주소 관리인지 gps 선택인지
+        version = intent.getIntExtra("version", GPS_SELECT)
+
+        if(version == GPS_SELECT){
+            // 홈화면에서 바로 주소 선택
+            binding.deliveryAddressManageParent.visibility = View.GONE
+            binding.deliveryAddressTextParent.visibility = View.VISIBLE
+            binding.deliveryAddressSettingNowGpsFind.visibility = View.VISIBLE
+            binding.detailAddressTitle.text = "배달지 주소 설정"
+        } else {
+            // 배달주소 관리
+            binding.deliveryAddressManageParent.visibility = View.VISIBLE
+            binding.deliveryAddressTextParent.visibility = View.GONE
+            binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
+            binding.detailAddressTitle.text = "배달주소 관리"
+        }
+
+        //새 배달주소 추가 - DELIVERY_MANAGE
+        binding.deliveryAddressManageText.setOnClickListener {
+            binding.detailAddressUserList.visibility = View.INVISIBLE
+            binding.deliveryAddressManageParent.visibility = View.GONE
+            binding.deliveryAddressTextParent.visibility = View.VISIBLE
+            binding.deliveryAddressSettingNowGpsFind.visibility = View.VISIBLE
+            binding.deliveryAddressBack.setImageResource(R.drawable.left_arrow)
+            binding.detailAddressTitle.text = "배달지 주소 설정"
+        }
         binding.deliveryAddressText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 // 클릭됨
@@ -98,12 +128,35 @@ class DeliveryAddressSettingActivity :
         binding.deliveryAddressBack.setOnClickListener {
             if (!mBackOrFinish) {
                 // 종료
-                setResult(RESULT_CANCELED)
-                finish()
+                Log.d("selected", "종료")
+                if(binding.detailAddressTitle.text.toString() == "배달지 상세 정보"){
+                    Log.d("selected", "종료안되야함")
+                    binding.deliveryAddressDetailParent.visibility = View.GONE
+                    binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
+                    binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
+                    binding.detailAddressUserList.visibility = View.VISIBLE
+                    binding.deliveryAddressTextParent.visibility = View.VISIBLE
+                    binding.deliveryAddressManageParent.visibility = View.GONE
+                    binding.deliveryAddressBack.setImageResource(R.drawable.cancel)
+                    binding.detailAddressTitle.setText("배달 주소 관리")
+                    mSearchTip = true
+                }
+                else {
+                    Log.d("selected", "종료")
+                    setResult(RESULT_CANCELED)
+                    finish()
+                }
+            } else if(mDetailAddress){
+                Log.d("selected", "mDetailAddress")
+                binding.deliveryAddressDetailParent.visibility = View.GONE
+                binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
+                binding.detailAddressTitle.setText("배달지 주소 설정")
+                mDetailAddress = false
             } else {
                 // 뒤로 가기
+                Log.d("selected", "뒤로가기")
                 mSearchTip = true
-                binding.deliveryAddressBack.setImageResource(R.drawable.cancel)
+                if(version == GPS_SELECT) binding.deliveryAddressBack.setImageResource(R.drawable.cancel)
                 binding.deliveryAddressSettingSelectedParent.visibility = View.VISIBLE
                 binding.deliveryAddressSettingSearchParent.visibility = View.GONE
                 binding.deliveryAddressText.setText("")
@@ -114,18 +167,34 @@ class DeliveryAddressSettingActivity :
             }
         }
         binding.deliveryAddressSettingHomeParent.setOnClickListener {
-            if (isHome) {
+            if (isHome && version == 1) {
                 finishActivitySelectedData(mHomeMainAddress, mHomeaddressIdx)
+            } else if(version != 1 && isHome){
+                // 배달지 수정하러 감
+                startDeliveryAddressModify(mHomeaddressIdx)
             } else {
                 // 검색하러 가야함
+                mCategory = 1
+                // 검색팁 보여줌
+                binding.deliveryAddressSettingSelectedParent.visibility = View.GONE
+                binding.deliveryAddressSettingSearchParent.visibility = View.VISIBLE
+                mSearchTip = false
             }
+
         }
         binding.deliveryAddressSettingBusinessParent.setOnClickListener {
-            if (isCompany) {
+            if (isCompany && version == 1) {
                 finishActivitySelectedData(mCompanyMainAddress, mCompanyaddressIdx)
                 Log.d("selected", "company 선택됨")
+            } else if(isCompany && version != 1){
+                startDeliveryAddressModify(mCompanyaddressIdx)
             } else {
                 // 검색하러 가야함
+                mCategory = 2
+                // 검색팁 보여줌
+                binding.deliveryAddressSettingSelectedParent.visibility = View.GONE
+                binding.deliveryAddressSettingSearchParent.visibility = View.VISIBLE
+                mSearchTip = false
             }
         }
     }
@@ -143,8 +212,52 @@ class DeliveryAddressSettingActivity :
         // 서버통신한 다음에 저거 실행해야 함... selected 고치고 수정!! 이거할차례!
         userMainAddress = mainAddress
         userAddressIdx = addressIdx
-        showLoadingDialog(this)
-        DeliveryAddressSettingService(this).tryPatchPathUserCheckedAddress(getUserIdx(), addressIdx)
+        startDeliveryAddressAdd()
+    }
+
+    fun changeDetailAddress(searchAddress: SearchAddress){
+        binding.deliveryAddressDetailParent.visibility = View.VISIBLE
+        binding.deliveryAddressNotDetailParent.visibility = View.GONE
+        binding.detailAddressTitle.setText("배달지 상세 정보")
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.delivery_address_detail_parent, DetailAddressFragment().apply {
+                arguments = Bundle().apply {
+                    putString("mainAddress", searchAddress.mainAddress)
+                    putString("roadAddress", searchAddress.subAddress)
+                    putInt("category", mCategory)
+                }
+            }, )
+            .commitAllowingStateLoss()
+        mDetailAddress = true
+    }
+
+    fun deliveryCheckedAndFinish(){
+        DeliveryAddressSettingService(this).tryPatchPathUserCheckedAddress(getUserIdx(), userAddressIdx)
+    }
+
+    fun startDeliveryAdd(request: DeliveryAddressAddRequest){
+        // 배달 추가 시작 이것도 나중에 배달 추가를 위해서 구분할 필요가 있음
+        userMainAddress = request.address
+        if(version == GPS_SELECT){
+            showLoadingDialog(this)
+            DeliveryAddressSettingService(this).tryPostDeliveryAddressAdd(request)
+        } else {
+            DeliveryAddressSettingService(this).tryPostDeliveryAddressAdd(request)
+            binding.deliveryAddressDetailParent.visibility = View.GONE
+            binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
+            binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
+            binding.detailAddressUserList.visibility = View.VISIBLE
+            binding.deliveryAddressSettingSearchParent.visibility = View.GONE
+            binding.deliveryAddressSettingSelectedParent.visibility = View.VISIBLE
+            binding.deliveryAddressTextParent.visibility = View.GONE
+            binding.deliveryAddressManageParent.visibility = View.VISIBLE
+            binding.deliveryAddressBack.setImageResource(R.drawable.cancel)
+            binding.detailAddressTitle.setText("배달 주소 관리")
+            mSearchTip = true
+            mDetailAddress = false
+            mBackOrFinish = false
+        }
     }
 
     override fun onGetUserAddressListSuccess(response: UserAddrListResponse) {
@@ -195,10 +308,11 @@ class DeliveryAddressSettingActivity :
     override fun onPathUserCheckedAddressSuccess(response: UserCheckedAddressResponse) {
         dismissLoadingDialog()
         if (response.code == 1000) {
+
             if (userMainAddress != "" && userAddressIdx != -1) {
                 Log.d("selected", "company")
                 setUserAddress(userMainAddress, userAddressIdx)
-                setResult(RESULT_OK, intent)
+                setResult(RESULT_OK)
                 finish()
             }
             setResult(RESULT_CANCELED)
@@ -212,6 +326,12 @@ class DeliveryAddressSettingActivity :
         showCustomToast("서버에 선택 주소 수정 요청이 실패하였습니다")
         setResult(RESULT_CANCELED)
         finish()
+    }
+
+    fun backClick() {
+        showLoadingDialog(this)
+        DeliveryAddressSettingService(this).tryGetUserAddressList(getUserIdx())
+        binding.deliveryAddressBack.callOnClick()
     }
 
     override fun onGetSearchAddrListSuccess(response: SearchAddrListResponse) {
@@ -234,7 +354,7 @@ class DeliveryAddressSettingActivity :
                     addressList.add(SearchAddress(mainAddress, juso.roadAddrPart1!!))
                 }
                 binding.deliveryAddressSettingSearchList.adapter =
-                    SearchAddressListAdapter(addressList)
+                    SearchAddressListAdapter(addressList, this)
                 binding.deliveryAddressSettingSearchList.layoutManager = LinearLayoutManager(this)
 
             } else {
@@ -249,5 +369,52 @@ class DeliveryAddressSettingActivity :
 
     override fun onGetSearchAddrListFailure(message: String) {
         //dismissLoadingDialog()
+    }
+
+    override fun onPostDeliveryAddressAddSuccess(response: DeliveryAddressResponse) {
+        dismissLoadingDialog()
+        // 배달 주소 추가 완료...!
+        // 배달 주소 추가를 완료하면 두가지의 길이 있다. Home 과 myeats avtivity 변수로 받아본다..!
+        // 일단은 Home의 경우만 실행한다. -> checked 바로 수행
+        if(response.code == 1000){
+            if(version == GPS_SELECT){
+                userAddressIdx = response.result.addressIdx
+                setUserAddress(userMainAddress, userAddressIdx)
+                deliveryCheckedAndFinish()
+            } else {
+                showLoadingDialog(this)
+                DeliveryAddressSettingService(this).tryGetUserAddressList(getUserIdx())
+            }
+        }
+    }
+
+    fun startDeliveryAddressAdd() {
+        showLoadingDialog(this)
+        DeliveryAddressSettingService(this).tryPatchPathUserCheckedAddress(getUserIdx(), userAddressIdx)
+    }
+
+    override fun onPostDeliveryAddressAddFailure(message: String) {
+        // 배달 주소 추가 실패..
+        dismissLoadingDialog()
+        showCustomToast("배달 주소 추가 실패")
+    }
+
+    // 배달지 수정하러 가기
+    fun startDeliveryAddressModify(addressIdx: Int) {
+        binding.deliveryAddressDetailParent.visibility = View.VISIBLE
+        binding.deliveryAddressNotDetailParent.visibility = View.GONE
+        binding.detailAddressTitle.setText("배달지 상세 정보")
+        binding.deliveryAddressBack.setImageResource(R.drawable.left_arrow)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.delivery_address_detail_parent, DetailAddressFragment().apply {
+                arguments = Bundle().apply {
+                    putInt("version", 3)
+                    putInt("addressIdx", addressIdx)
+                }
+            }, "DeliveryAddressModify")
+            .commitAllowingStateLoss()
+        mDetailAddress = true
+        mBackOrFinish = false
     }
 }

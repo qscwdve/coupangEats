@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
+import com.example.coupangeats.src.deliveryAddressSetting.DeliveryAddressSettingActivity
 import com.example.coupangeats.src.deliveryAddressSetting.adapter.data.SearchAddress
+import kotlin.contracts.contract
 
-class SearchAddressListAdapter(val addressList: ArrayList<SearchAddress>) : RecyclerView.Adapter<SearchAddressListAdapter.SearchAddressViewHolder>() {
+class SearchAddressListAdapter(val addressList: ArrayList<SearchAddress>, val activity: DeliveryAddressSettingActivity) : RecyclerView.Adapter<SearchAddressListAdapter.SearchAddressViewHolder>() {
     private var nowCountPage = 1
-    class SearchAddressViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class SearchAddressViewHolder(itemView: View, val activity: DeliveryAddressSettingActivity) : RecyclerView.ViewHolder(itemView){
         val mainAddress = itemView.findViewById<TextView>(R.id.item_delivery_address_setting_search_list_main_address)
         val subAddress = itemView.findViewById<TextView>(R.id.item_search_list_sub_address)
 
@@ -20,13 +22,14 @@ class SearchAddressListAdapter(val addressList: ArrayList<SearchAddress>) : Recy
 
             itemView.setOnClickListener {
                 // 주소 선택
+                 activity.changeDetailAddress(item)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAddressViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_delivery_address_setting_search_list, parent, false)
-        return SearchAddressViewHolder(view)
+        return SearchAddressViewHolder(view, activity)
     }
 
     override fun onBindViewHolder(holder: SearchAddressViewHolder, position: Int) {

@@ -135,6 +135,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
                 edit.putString(ApplicationClass.X_ACCESS_TOKEN, result.jwt)
                 edit.putInt("userIdx", result.userIdx)
                 edit.apply()
+                Log.d("jwt", "${result.jwt}")
                 mLoginCheck = true
                 finish()
             }

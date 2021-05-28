@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:paddingVertical="30sp" android:background="@color/white"
+    android:paddingHorizontal="20dp"
+    android:layout_height="wrap_content" android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:text="@string/need_detail_address"
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_marginVertical="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_marginEnd="50dp"
+        android:text="아파트명/동/호 등의 정보를 입력하시면 더 정확하게 배달할 수 있습니다."
+        android:textColor="@color/baseColor"/>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/dialog_detail_address_input"
+        android:paddingVertical="17sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/detail_address_input"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/box_round_blue_ripple"/>
+    <TextView
+        android:gravity="center"
+        android:id="@+id/dialog_detail_address_ignore"
+        android:paddingVertical="17sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ignore"
+        android:textSize="15sp"
+        android:textColor="@color/loginBlue"
+        android:textStyle="bold"
+        android:background="@drawable/dialog_login_basic"/>
+</LinearLayout>

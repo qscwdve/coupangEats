@@ -126,8 +126,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         loginBottomSheetDialog.show(supportFragmentManager, "Login")
     }
 
-    fun startDeliveryAddressSettingActivityResult() {
-        startActivityForResult(Intent(this, DeliveryAddressSettingActivity::class.java), DRIVERYADDRESSSETTING)
+    fun startDeliveryAddressSettingActivityResult(version : Int = 1) {
+        // version = 1 : GPS 선택 , 2 : 배달주소 관리
+        intent = Intent(this, DeliveryAddressSettingActivity::class.java).apply {
+            this.putExtra("version", version)
+        }
+        startActivityForResult(intent, DRIVERYADDRESSSETTING)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

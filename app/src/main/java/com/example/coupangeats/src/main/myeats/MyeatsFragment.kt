@@ -23,7 +23,9 @@ class MyeatsFragment : BaseFragment<FragmentMyeatsBinding>(FragmentMyeatsBinding
             startActivity(Intent(requireContext(), SettingActivity::class.java))
 
         }
-        binding.myeatsAddressManage.setOnClickListener {  }
+        binding.myeatsAddressManage.setOnClickListener {
+            (activity as MainActivity).startDeliveryAddressSettingActivityResult(2)
+        }
         binding.myeatsAgree.setOnClickListener {  }
         binding.myeatsDiscount.setOnClickListener {  }
         binding.myeatsEvent.setOnClickListener {  }

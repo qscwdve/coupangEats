@@ -1,5 +1,7 @@
 package com.example.coupangeats.src.deliveryAddressSetting
 
+import com.example.coupangeats.src.deliveryAddressSetting.model.DeliveryAddressAddRequest
+import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.DeliveryAddressResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListRequest
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.UserAddrListResponse
@@ -26,7 +28,6 @@ class DeliveryAddressSettingService(val view: DeliveryAddressSettingActivityView
                 override fun onFailure(call: Call<UserAddrListResponse>, t: Throwable) {
                     view.onGetUserAddressListFailure(t.message ?: "통신 오류")
                 }
-
             })
     }
 
@@ -48,6 +49,7 @@ class DeliveryAddressSettingService(val view: DeliveryAddressSettingActivityView
             })
     }
 
+    // 검색 API
     fun tryGetSearchAddrList(request: SearchAddrListRequest){
         val deliveryAddressSettingRetrofitInterface = ApplicationClass.searchRetrofit.create(DeliveryAddressSettingRetrofitInterface::class.java)
         deliveryAddressSettingRetrofitInterface.getSearchAddrList(ApplicationClass.SEARCH_API_KEY, request.currentPage, request.countPerPage, request.keyword)
@@ -63,6 +65,22 @@ class DeliveryAddressSettingService(val view: DeliveryAddressSettingActivityView
                     view.onGetSearchAddrListFailure(t.message ?: "통신 오류")
                 }
 
+            })
+    }
+
+    fun tryPostDeliveryAddressAdd(request: DeliveryAddressAddRequest){
+        val deliveryAddressSettingRetrofitInterface = ApplicationClass.sRetrofit.create(DeliveryAddressSettingRetrofitInterface::class.java)
+        deliveryAddressSettingRetrofitInterface.postDeliveryAddressAdd(request)
+            .enqueue(object : Callback<DeliveryAddressResponse>{
+                override fun onResponse(
+                    call: Call<DeliveryAddressResponse>,
+                    response: Response<DeliveryAddressResponse>
+                ) {
+                    view.onPostDeliveryAddressAddSuccess(response.body() as DeliveryAddressResponse)
+                }
+                override fun onFailure(call: Call<DeliveryAddressResponse>, t: Throwable) {
+                    view.onPostDeliveryAddressAddFailure(t.message ?: "통신 오류")
+                }
             })
     }
 }

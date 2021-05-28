@@ -27,6 +27,7 @@
             android:visibility="visible" />
 
         <TextView
+            android:id="@+id/detail_address_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -37,6 +38,7 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <!-- 배달 상세 주소 페이지 -->
     <FrameLayout
         android:visibility="gone"
         android:layout_width="match_parent"
@@ -44,6 +46,7 @@
         android:layout_weight="1"
         android:id="@+id/delivery_address_detail_parent"/>
 
+    <!-- 주소 선택과 검색 페이지 -->
     <LinearLayout
         android:visibility="visible"
         android:id="@+id/delivery_address_not_detail_parent"
@@ -52,6 +55,7 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <!-- 홈화면에서의 주소 찾기 -->
         <LinearLayout
             android:id="@+id/delivery_address_text_parent"
             android:layout_width="match_parent"
@@ -90,6 +94,36 @@
                 android:contentDescription="@string/image_no"
                 android:padding="12dp"
                 android:src="@drawable/login_email_delete" />
+        </LinearLayout>
+
+        <!-- 배달주 소 관리 -->
+        <LinearLayout
+            android:id="@+id/delivery_address_manage_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/image_no"
+                android:padding="13dp"
+                android:src="@drawable/ic_new_address_plus" />
+
+            <TextView
+                android:background="@drawable/white_to_gray_ripple"
+                android:id="@+id/delivery_address_manage_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:text="@string/new_delivery"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
         </LinearLayout>
 
         <View
@@ -145,187 +179,194 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:paddingBottom="20dp"
-                    android:id="@+id/delivery_address_setting_home_parent"
+                    android:id="@+id/detail_address_user_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/white_to_gray_ripple"
-                    android:orientation="horizontal"
-                    android:paddingTop="10dp">
-
-                    <ImageView
-                        android:padding="5sp"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="20dp"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/image_no"
-                        android:src="@drawable/ic_delivery_home"
-                        tools:ignore="RtlSymmetry" />
-
+                    android:orientation="vertical">
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:paddingBottom="20dp"
+                        android:id="@+id/delivery_address_setting_home_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                        android:orientation="vertical">
+                        android:background="@drawable/white_to_gray_ripple"
+                        android:orientation="horizontal"
+                        android:paddingTop="10dp">
+
+                        <ImageView
+                            android:padding="5sp"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="20dp"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/image_no"
+                            android:src="@drawable/ic_delivery_home"
+                            tools:ignore="RtlSymmetry" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_weight="8"
+                            android:orientation="vertical">
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="8"
-                                android:orientation="vertical"
-                                android:paddingHorizontal="10dp"
-                                tools:ignore="NestedWeights">
+                                android:orientation="horizontal">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/home"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp" />
+                                    android:layout_weight="8"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="10dp"
+                                    tools:ignore="NestedWeights">
 
-                                <TextView
-                                    android:id="@+id/delivery_address_setting_home_detail"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:text="경기 수원시 영통구 광교호수로178"
-                                    android:textColor="@color/baseColor"
-                                    android:textSize="15sp" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/home"
+                                        android:textColor="@color/black"
+                                        android:textSize="17sp" />
+
+                                    <TextView
+                                        android:id="@+id/delivery_address_setting_home_detail"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
+                                        android:text="경기 수원시 영통구 광교호수로178"
+                                        android:textColor="@color/baseColor"
+                                        android:textSize="15sp" />
+
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:id="@+id/delivery_address_setting_home_checked"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="20dp"
+                                    android:layout_weight="1"
+                                    android:contentDescription="@string/image_no"
+                                    android:padding="8dp"
+                                    android:src="@drawable/ic_sign_up_checked"
+                                    android:visibility="invisible" />
 
                             </LinearLayout>
-
-                            <ImageView
-                                android:id="@+id/delivery_address_setting_home_checked"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginEnd="20dp"
-                                android:layout_weight="1"
-                                android:contentDescription="@string/image_no"
-                                android:padding="8dp"
-                                android:src="@drawable/ic_sign_up_checked"
-                                android:visibility="invisible" />
-
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="1.5dp"
-                        android:layout_marginStart="20dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="1.5dp"
+                            android:layout_marginStart="20dp"/>
 
-                    <View
-                        android:layout_weight="9"
-                        android:layout_width="0dp"
-                        android:layout_height="1.5dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@color/line" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/delivery_address_setting_business_parent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/white_to_gray_ripple"
-                    android:orientation="horizontal"
-                    android:paddingBottom="20dp"
-                    android:paddingTop="20dp">
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="20dp"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/image_no"
-                        android:padding="12dp"
-                        android:src="@drawable/ic_delivery_briefcase"
-                        tools:ignore="RtlSymmetry" />
+                        <View
+                            android:layout_weight="9"
+                            android:layout_width="0dp"
+                            android:layout_height="1.5dp"
+                            android:layout_marginEnd="20dp"
+                            android:background="@color/line" />
+                    </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:id="@+id/delivery_address_setting_business_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="8"
-                        android:orientation="vertical">
+                        android:background="@drawable/white_to_gray_ripple"
+                        android:orientation="horizontal"
+                        android:paddingBottom="20dp"
+                        android:paddingTop="20dp">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="20dp"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/image_no"
+                            android:padding="12dp"
+                            android:src="@drawable/ic_delivery_briefcase"
+                            tools:ignore="RtlSymmetry" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_weight="8"
+                            android:orientation="vertical">
 
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="8"
-                                android:orientation="vertical"
-                                android:paddingHorizontal="10dp"
-                                tools:ignore="NestedWeights">
+                                android:orientation="horizontal">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                <LinearLayout
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/business"
-                                    android:textColor="@color/black"
-                                    android:textSize="17sp" />
+                                    android:layout_weight="8"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="10dp"
+                                    tools:ignore="NestedWeights">
 
-                                <TextView
-                                    android:id="@+id/delivery_address_business_detail"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:text="경기 수원시 영통구 광교호수로178"
-                                    android:textColor="@color/baseColor"
-                                    android:textSize="15sp" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/business"
+                                        android:textColor="@color/black"
+                                        android:textSize="17sp" />
+
+                                    <TextView
+                                        android:id="@+id/delivery_address_business_detail"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="5dp"
+                                        android:text="경기 수원시 영통구 광교호수로178"
+                                        android:textColor="@color/baseColor"
+                                        android:textSize="15sp" />
+
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:id="@+id/delivery_address_business_checked"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginEnd="20dp"
+                                    android:layout_weight="1"
+                                    android:contentDescription="@string/image_no"
+                                    android:padding="8dp"
+                                    android:src="@drawable/ic_sign_up_checked"
+                                    android:visibility="invisible" />
 
                             </LinearLayout>
-
-                            <ImageView
-                                android:id="@+id/delivery_address_business_checked"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginEnd="20dp"
-                                android:layout_weight="1"
-                                android:contentDescription="@string/image_no"
-                                android:padding="8dp"
-                                android:src="@drawable/ic_sign_up_checked"
-                                android:visibility="invisible" />
-
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="1.5dp"
-                        android:layout_marginStart="20dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="1.5dp"
+                            android:layout_marginStart="20dp"/>
 
-                    <View
-                        android:layout_weight="9"
-                        android:layout_width="0dp"
-                        android:layout_height="1.5dp"
-                        android:layout_marginEnd="20dp"
-                        android:background="@color/line" />
+                        <View
+                            android:layout_weight="9"
+                            android:layout_width="0dp"
+                            android:layout_height="1.5dp"
+                            android:layout_marginEnd="20dp"
+                            android:background="@color/line" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/delivery_address_setting_list_recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/delivery_address_setting_list_recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
