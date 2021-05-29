@@ -119,4 +119,5 @@
     <string name="event_total">이벤트 전체보기</string>
     <string name="discount_super">할인 중인 맛집</string>
     <string name="dot">·</string>
+    <string name="new_super">새로 들어왔어요!</string>
 </resources>

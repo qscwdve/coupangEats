@@ -1,19 +1,15 @@
 package com.example.coupangeats.src.main.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentHomeBinding
 import com.example.coupangeats.src.main.MainActivity
-import com.example.coupangeats.src.main.home.adapter.BaseAddressAdapter
-import com.example.coupangeats.src.main.home.adapter.CategoryAdapter
-import com.example.coupangeats.src.main.home.adapter.EventAdapter
-import com.example.coupangeats.src.main.home.model.HomeInfo.Events
-import com.example.coupangeats.src.main.home.model.HomeInfo.HomeInfoRequest
-import com.example.coupangeats.src.main.home.model.HomeInfo.HomeInfoResponse
-import com.example.coupangeats.src.main.home.model.HomeInfo.StoreCategories
+import com.example.coupangeats.src.main.home.adapter.*
+import com.example.coupangeats.src.main.home.model.HomeInfo.*
 import com.example.coupangeats.src.main.home.model.userCheckAddress.UserCheckResponse
 import com.example.coupangeats.src.main.home.model.userCheckAddress.UserCheckResponseResult
 import com.example.coupangeats.util.GpsControl
@@ -119,6 +115,11 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         }
     }
 
+    // event 숫자 바꾸기
+    fun changeEventNum(text: String) {
+        binding.homeEventPageNum.text = text
+    }
+
     override fun onUserCheckAddressFailure(message: String) {
         dismissLoadingDialog()
         showCustomToast("유저 선택 주소 실패")
@@ -129,8 +130,23 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         if(response.code == 1000){
             val events = response.result.events
             val category = response.result.storeCategories
+            val salse = response.result.onSaleStores
+            val new = response.result.newStores
             setEvent(events)
             setCategory(category)
+            if (salse != null) {
+                setOnSalse(salse)
+                binding.homeDiscountSuper.visibility = View.VISIBLE
+            } else {
+                binding.homeDiscountSuper.visibility = View.GONE
+            }
+            if(new != null){
+                setNew(new)
+                Log.d("new", "있음  ${new}")
+                binding.homeNewSuper.visibility = View.VISIBLE
+            } else {
+                binding.homeNewSuper.visibility = View.GONE
+            }
         }
     }
 
@@ -141,12 +157,22 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
 
     // 어댑터 설정하기
     fun setEvent(eventList: ArrayList<Events>){
-        binding.homeEventBannerViewpager.adapter = EventAdapter(eventList)
+        binding.homeEventBannerViewpager.adapter = EventAdapter(eventList, this)
         binding.homeEventBannerViewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
     }
 
     fun setCategory(categoryList: ArrayList<StoreCategories>){
         binding.homeCategoryRecyclerview.adapter = CategoryAdapter(categoryList)
         binding.homeCategoryRecyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    }
+
+    fun setOnSalse(salseList: ArrayList<OnSaleStores>){
+        binding.homeDiscountSuperRecyclerview.adapter = SalseAdapter(salseList)
+        binding.homeDiscountSuperRecyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    }
+
+    fun setNew(newList: ArrayList<NewStores>) {
+        binding.homeNewSuperRecyclerview.adapter = NewAdapter(newList)
+        binding.homeNewSuperRecyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 }
