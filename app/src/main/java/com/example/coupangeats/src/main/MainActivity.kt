@@ -10,6 +10,8 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.module.AppGlideModule
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityMainBinding
 import com.example.coupangeats.databinding.DialogGpsActiveCheckBinding

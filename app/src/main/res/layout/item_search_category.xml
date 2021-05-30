@@ -4,6 +4,7 @@
     android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="15sp" android:paddingVertical="10sp">
 
     <ImageView
+        android:adjustViewBounds="true"
         android:id="@+id/search_category_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

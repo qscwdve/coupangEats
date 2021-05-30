@@ -16,6 +16,7 @@ class CategoryAdapter(val categoryList: ArrayList<StoreCategories>): RecyclerVie
         val categoryName = itemView.findViewById<TextView>(R.id.item_home_category_name)
 
         fun bind(item: StoreCategories){
+
             Glide.with(categoryImg).load(item.url).circleCrop().into(categoryImg)
             categoryName.text = item.categoryName
 

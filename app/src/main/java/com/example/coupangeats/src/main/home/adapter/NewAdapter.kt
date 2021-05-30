@@ -31,7 +31,7 @@ class NewAdapter(val newList: ArrayList<NewStores>): RecyclerView.Adapter<NewAda
             } else {
                 newParent.visibility = View.VISIBLE
                 thelook.visibility = View.GONE
-                Glide.with(img).load(item.url).into(img)
+                Glide.with(img).load(item.url).override(125, 90).into(img)
                 name.text = item.storeName
                 if(item.totalReview != null){
                     star.visibility = View.VISIBLE
@@ -47,7 +47,7 @@ class NewAdapter(val newList: ArrayList<NewStores>): RecyclerView.Adapter<NewAda
                     delivery.visibility = View.VISIBLE
                     delivery.text = item.deliveryPrice
                 } else {
-                    delivery.visibility = View.GONE
+                    delivery.visibility = View.INVISIBLE
                 }
             }
             itemView.setOnClickListener {

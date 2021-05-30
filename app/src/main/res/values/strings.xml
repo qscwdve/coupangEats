@@ -120,4 +120,10 @@
     <string name="discount_super">할인 중인 맛집</string>
     <string name="dot">·</string>
     <string name="new_super">새로 들어왔어요!</string>
+    <string name="filter_super_recommend">추천순</string>
+    <string name="filter_super_cheetah">치타배달</string>
+    <string name="filter_super_min_order">최소주문</string>
+    <string name="filter_super_delivery_price">배달비</string>
+    <string name="filter_supper_coupon">할인쿠폰</string>
+    <string name="dialog_filter_apply">적용하기</string>
 </resources>

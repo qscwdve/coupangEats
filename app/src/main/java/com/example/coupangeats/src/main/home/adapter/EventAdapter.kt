@@ -17,9 +17,7 @@ class EventAdapter(val eventList: ArrayList<Events>, val fragment: HomeFragment)
         val eventImg = itemView.findViewById<ImageView>(R.id.item_event_img)
 
         fun bind(item: Events, totalNum: Int) {
-            Glide.with(eventImg).load(item.url).into(eventImg)
-            val text = "${(item.eventIdx)} / $totalNum"
-            fragment.changeEventNum(text)
+            Glide.with(fragment.requireContext()).load(item.url).into(eventImg)
 
             itemView.setOnClickListener {
                 // 이벤트 클릭시

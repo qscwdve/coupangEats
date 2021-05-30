@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentSearchBinding
 import com.example.coupangeats.src.main.MainActivity
+import com.example.coupangeats.src.main.search.category.CategorySearchFragment
 import com.softsquared.template.kotlin.config.BaseFragment
 
 class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search) {

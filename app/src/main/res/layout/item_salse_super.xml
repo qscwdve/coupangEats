@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="145dp" android:background="@drawable/white_to_gray_ripple"
-    android:layout_height="170dp" android:orientation="vertical" android:paddingHorizontal="10dp">
+    android:layout_height="175dp" android:orientation="vertical" android:paddingHorizontal="10dp">
 
     <LinearLayout
         android:visibility="visible"
@@ -14,10 +14,9 @@
             android:id="@+id/item_salse_super_img"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:layout_width="match_parent"
+            android:layout_width="125dp"
             android:adjustViewBounds="true"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="90dp"
             android:src="@drawable/category_girll"
             android:contentDescription="@string/image_no" />
 
@@ -109,8 +108,8 @@
     <LinearLayout
         android:id="@+id/item_salse_end_parent"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:visibility="gone">
 
