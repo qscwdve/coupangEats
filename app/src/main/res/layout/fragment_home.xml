@@ -207,7 +207,7 @@
                             tools:ignore="RtlSymmetry">
                             <TextView
                                 android:layout_width="0dp"
-                                android:layout_weight="9"
+                                android:layout_weight="10"
                                 android:layout_height="wrap_content"
                                 android:text="@string/discount_super"
                                 android:textSize="20sp"
@@ -219,6 +219,7 @@
                                 android:background="@drawable/white_to_gray_ripple"
                                 android:layout_weight="1"
                                 android:layout_width="0dp"
+                                android:paddingHorizontal="5dp"
                                 android:layout_height="match_parent"
                                 android:src="@drawable/ic_arrow_pointing_to_right"
                                 android:contentDescription="@string/image_no" />
@@ -254,7 +255,7 @@
                             tools:ignore="RtlSymmetry">
                             <TextView
                                 android:layout_width="0dp"
-                                android:layout_weight="9"
+                                android:layout_weight="10"
                                 android:layout_height="wrap_content"
                                 android:text="@string/new_super"
                                 android:textSize="20sp"
@@ -266,6 +267,7 @@
                                 android:background="@drawable/white_to_gray_ripple"
                                 android:layout_weight="1"
                                 android:layout_width="0dp"
+                                android:paddingHorizontal="5dp"
                                 android:layout_height="match_parent"
                                 android:src="@drawable/ic_arrow_pointing_to_right"
                                 android:contentDescription="@string/image_no" />

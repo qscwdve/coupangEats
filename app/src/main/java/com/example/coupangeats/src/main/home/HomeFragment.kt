@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.DialogFilterSuperBinding
 import com.example.coupangeats.databinding.FragmentHomeBinding
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.home.adapter.*
 import com.example.coupangeats.src.main.home.model.HomeInfo.*
@@ -72,21 +73,11 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         }
         // 할인중인 맛집 보러가기
         binding.homeDiscountSuperLook.setOnClickListener {
-            val intent = Intent(requireContext(), SuperSearchActivity::class.java).apply {
-                this.putExtra("lat", mLat)
-                this.putExtra("lon", mLon)
-                this.putExtra("version", 1)
-            }
-            startActivity(intent)
+            startSalseSuper()
         }
         // 새로 들어왔어요! 보러가기
         binding.homeNewSuperLook.setOnClickListener {
-            val intent = Intent(requireContext(), SuperSearchActivity::class.java).apply {
-                this.putExtra("lat", mLat)
-                this.putExtra("lon", mLon)
-                this.putExtra("version", 2)
-            }
-            startActivity(intent)
+            startNewSuper()
         }
     }
 
@@ -210,7 +201,32 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         dismissLoadingDialog()
         showCustomToast("홈 데이터 불러오기 실패")
     }
-
+    
+    // 매장 조회하기
+    fun startSuper(storeIdx: Int){
+        val intent = Intent(requireContext(), DetailSuperActivity::class.java).apply {
+            this.putExtra("storeIdx", storeIdx)
+        }
+        startActivity(intent)
+    }
+    // 할인중인 맛집 보러가기
+    fun startSalseSuper() {
+        val intent = Intent(requireContext(), SuperSearchActivity::class.java).apply {
+            this.putExtra("lat", mLat)
+            this.putExtra("lon", mLon)
+            this.putExtra("version", 1)
+        }
+        startActivity(intent)
+    }
+    // 새로 들어왔어요! 보러가기
+    fun startNewSuper() {
+        val intent = Intent(requireContext(), SuperSearchActivity::class.java).apply {
+            this.putExtra("lat", mLat)
+            this.putExtra("lon", mLon)
+            this.putExtra("version", 2)
+        }
+        startActivity(intent)
+    }
     // 어댑터 설정하기
     fun setEvent(eventList: ArrayList<Events>){
         binding.homeEventBannerViewpager.adapter = EventAdapter(eventList, this)
@@ -232,17 +248,17 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
     }
 
     fun setOnSalse(salseList: ArrayList<OnSaleStores>){
-        binding.homeDiscountSuperRecyclerview.adapter = SalseAdapter(salseList)
+        binding.homeDiscountSuperRecyclerview.adapter = SalseAdapter(salseList, this)
         binding.homeDiscountSuperRecyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 
     fun setNew(newList: ArrayList<NewStores>) {
-        binding.homeNewSuperRecyclerview.adapter = NewAdapter(newList)
+        binding.homeNewSuperRecyclerview.adapter = NewAdapter(newList, this)
         binding.homeNewSuperRecyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 
     fun setRecommend(recommendList: ArrayList<RecommendStores>) {
-        binding.homeRecommendRecyclerview.adapter = RecommendAdapter(recommendList)
+        binding.homeRecommendRecyclerview.adapter = RecommendAdapter(recommendList, this)
         binding.homeRecommendRecyclerview.layoutManager = LinearLayoutManager(requireContext())
     }
 }

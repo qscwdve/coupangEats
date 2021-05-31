@@ -126,4 +126,8 @@
     <string name="filter_super_delivery_price">배달비</string>
     <string name="filter_supper_coupon">할인쿠폰</string>
     <string name="dialog_filter_apply">적용하기</string>
+    <string name="detail_minOrder">최소주문</string>
+    <string name="detail_delivery_price">배달비</string>
+    <string name="super_recomm_many_orer">주문많음</string>
+    <string name="super_recomm_many_review">리뷰많음</string>
 </resources>

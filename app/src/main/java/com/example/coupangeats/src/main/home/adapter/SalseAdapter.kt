@@ -10,10 +10,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
+import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.main.home.model.HomeInfo.OnSaleStores
 import org.w3c.dom.Text
 
-class SalseAdapter(val saleList: ArrayList<OnSaleStores>) : RecyclerView.Adapter<SalseAdapter.SalseViewHolder>() {
+class SalseAdapter(val saleList: ArrayList<OnSaleStores>, val fragment: HomeFragment) : RecyclerView.Adapter<SalseAdapter.SalseViewHolder>() {
     class SalseViewHolder(itemView: View, val salseAdapter: SalseAdapter) : RecyclerView.ViewHolder(itemView) {
         val img = itemView.findViewById<ImageView>(R.id.item_salse_super_img)
         val name = itemView.findViewById<TextView>(R.id.item_salse_super_name)
@@ -29,6 +30,11 @@ class SalseAdapter(val saleList: ArrayList<OnSaleStores>) : RecyclerView.Adapter
             if(item == null){
                 thelook.visibility = View.VISIBLE
                 slaseParent.visibility = View.GONE
+
+                itemView.setOnClickListener {
+                    // 할인 중인 맛집 더보기
+                    salseAdapter.fragment.startSalseSuper()
+                }
             } else {
                 thelook.visibility = View.GONE
                 slaseParent.visibility = View.VISIBLE
@@ -45,9 +51,11 @@ class SalseAdapter(val saleList: ArrayList<OnSaleStores>) : RecyclerView.Adapter
                 }
                 distance.text = item.distance
                 discount.text = item.coupon
-            }
-            itemView.setOnClickListener {
-                // 가게 선택함
+
+                itemView.setOnClickListener {
+                    // 가게 선택함
+                    salseAdapter.fragment.startSuper(item.storeIdx)
+                }
             }
         }
     }
@@ -61,7 +69,9 @@ class SalseAdapter(val saleList: ArrayList<OnSaleStores>) : RecyclerView.Adapter
         if(saleList.size <= position){
             holder.bind(null, position)
         }
-        else holder.bind(saleList[position], position)
+        else {
+            holder.bind(saleList[position], position)
+        }
     }
 
     override fun getItemCount(): Int = saleList.size + 1

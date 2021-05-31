@@ -9,10 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
+import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.main.home.model.HomeInfo.RecommendStores
 
-class RecommendAdapter(val recommendList: ArrayList<RecommendStores>) : RecyclerView.Adapter<RecommendAdapter.RecommendViewHolder>(){
-    class RecommendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragment: HomeFragment) : RecyclerView.Adapter<RecommendAdapter.RecommendViewHolder>(){
+    class RecommendViewHolder(itemView: View, val recommendAdapter: RecommendAdapter) : RecyclerView.ViewHolder(itemView) {
         val mainimg = itemView.findViewById<ImageView>(R.id.item_recommend_img)
         val subImgParent = itemView.findViewById<LinearLayout>(R.id.item_recommend_img_sub_parent)
         val sub1 = itemView.findViewById<ImageView>(R.id.item_recommend_img_sub1)
@@ -74,13 +75,14 @@ class RecommendAdapter(val recommendList: ArrayList<RecommendStores>) : Recycler
             }
             itemView.setOnClickListener {
                 // 매장 선택
+                recommendAdapter.fragment.startSuper(item.storeIdx)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecommendViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_recommend_super, parent, false)
-        return RecommendViewHolder(view)
+        return RecommendViewHolder(view, this)
     }
 
     override fun onBindViewHolder(holder: RecommendViewHolder, position: Int) {

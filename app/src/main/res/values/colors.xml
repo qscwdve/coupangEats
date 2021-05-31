@@ -17,6 +17,8 @@
     <color name="searchEditBackground">#F3F3F5</color>
     <color name="lightGray">#E6E4E4</color>
     <color name="line">#F4F3F3</color>
+    <color name="yellow">#FFC202</color>
+    <color name="couponGray">#DFE2E7</color>
     <!-- 다이얼로그 로그인 -->
     <color name="loginBlue">#00AFFE</color>
     

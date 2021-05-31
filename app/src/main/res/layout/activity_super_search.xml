@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="match_parent" android:background="@color/white"
     android:layout_height="match_parent" android:orientation="vertical"
     tools:context=".src.superSearch.SuperSearchActivity">
 
@@ -24,7 +24,7 @@
             android:visibility="visible" />
 
         <TextView
-            android:gravity="center"
+            android:gravity="start|center_vertical"
             android:id="@+id/super_search_title"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -47,6 +47,7 @@
 
     <!-- 필터 -->
     <HorizontalScrollView
+        android:layout_marginStart="7dp"
         android:layout_marginTop="3dp"
         android:scrollbars="none"
         android:layout_width="match_parent"
@@ -59,7 +60,7 @@
 
             <!-- 추천순 -->
             <LinearLayout
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 android:layout_gravity="center"
                 android:id="@+id/search_filter_recommend"
                 android:background="@drawable/white_to_gray_ripple"
@@ -68,7 +69,7 @@
 
                 <LinearLayout
                     android:id="@+id/search_filter_recommend_background"
-                    android:paddingVertical="5dp"
+                    android:paddingVertical="10dp"
                     android:paddingHorizontal="10dp"
                     android:background="@drawable/super_filter_no_click"
                     android:layout_width="wrap_content"
@@ -81,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/filter_super_recommend"
                         android:layout_marginEnd="3dp"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                     <ImageView
@@ -97,12 +98,13 @@
             <LinearLayout
                 android:id="@+id/search_filter_cheetah"
                 android:background="@drawable/white_to_gray_ripple"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:id="@+id/search_filter_cheetah_background"
-                    android:paddingVertical="5dp"
+                    android:paddingVertical="10dp"
                     android:paddingHorizontal="10dp"
                     android:background="@drawable/super_filter_no_click"
                     android:layout_width="wrap_content"
@@ -119,7 +121,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/filter_super_cheetah"
                         android:layout_marginEnd="3dp"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                 </LinearLayout>
@@ -129,12 +131,13 @@
             <LinearLayout
                 android:id="@+id/search_filter_delivery_price"
                 android:background="@drawable/white_to_gray_ripple"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:id="@+id/search_filter_delivery_price_background"
-                    android:paddingVertical="5dp"
+                    android:paddingVertical="10dp"
                     android:paddingHorizontal="10dp"
                     android:background="@drawable/super_filter_no_click"
                     android:layout_width="wrap_content"
@@ -147,7 +150,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/filter_super_delivery_price"
                         android:layout_marginEnd="3dp"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                     <ImageView
@@ -162,12 +165,13 @@
             <LinearLayout
                 android:id="@+id/search_filter_mini_order"
                 android:background="@drawable/white_to_gray_ripple"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:id="@+id/search_filter_mini_order_background"
-                    android:paddingVertical="5dp"
+                    android:paddingVertical="10dp"
                     android:paddingHorizontal="10dp"
                     android:background="@drawable/super_filter_no_click"
                     android:layout_width="wrap_content"
@@ -180,7 +184,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/filter_super_min_order"
                         android:layout_marginEnd="3dp"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                     <ImageView
@@ -195,12 +199,13 @@
             <LinearLayout
                 android:id="@+id/search_filter_coupon"
                 android:background="@drawable/white_to_gray_ripple"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:id="@+id/search_filter_coupon_background"
-                    android:paddingVertical="5dp"
+                    android:paddingVertical="10dp"
                     android:paddingHorizontal="10dp"
                     android:background="@drawable/super_filter_no_click"
                     android:layout_width="wrap_content"
@@ -212,7 +217,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/filter_supper_coupon"
                         android:layout_marginEnd="3dp"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                 </LinearLayout>

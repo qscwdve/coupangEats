@@ -9,11 +9,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
+import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.main.home.model.HomeInfo.NewStores
+import org.w3c.dom.DocumentFragment
 import org.w3c.dom.Text
 
-class NewAdapter(val newList: ArrayList<NewStores>): RecyclerView.Adapter<NewAdapter.NewViewHolder>() {
-    class NewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment): RecyclerView.Adapter<NewAdapter.NewViewHolder>() {
+    class NewViewHolder(itemView: View, val newAdapter: NewAdapter) : RecyclerView.ViewHolder(itemView) {
         val img = itemView.findViewById<ImageView>(R.id.item_new_super_img)
         val name = itemView.findViewById<TextView>(R.id.item_new_super_name)
         val star = itemView.findViewById<ImageView>(R.id.item_new_super_star)
@@ -28,6 +30,10 @@ class NewAdapter(val newList: ArrayList<NewStores>): RecyclerView.Adapter<NewAda
             if(item == null){
                 newParent.visibility = View.GONE
                 thelook.visibility = View.VISIBLE
+
+                itemView.setOnClickListener {
+                    newAdapter.fragment.startNewSuper()
+                }
             } else {
                 newParent.visibility = View.VISIBLE
                 thelook.visibility = View.GONE
@@ -49,16 +55,19 @@ class NewAdapter(val newList: ArrayList<NewStores>): RecyclerView.Adapter<NewAda
                 } else {
                     delivery.visibility = View.INVISIBLE
                 }
+
+                itemView.setOnClickListener {
+                    // 매장 선택
+                    newAdapter.fragment.startSuper(item.storeIdx)
+                }
             }
-            itemView.setOnClickListener {
-                // 매장 선택
-            }
+
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_new_super, parent, false)
-        return NewViewHolder(view)
+        return NewViewHolder(view, this)
     }
 
     override fun onBindViewHolder(holder: NewViewHolder, position: Int) {
