@@ -13,6 +13,6 @@ interface DetailSuperRetrofitInterface {
     @GET("/stores/{storesIdx}")
     fun getSuperInfo(@Path("storesIdx") storesIdx: Int) : Call<SuperResponse>
 
-    @POST("/coupons")
-    fun postCouponSave(@Body params: CouponSaveRequest) : Call<CouponSaveResponse>
+    @POST("/stores/{storeIdx}/coupons")
+    fun postCouponSave(@Path("storeIdx") storesIdx: Int, @Body params: CouponSaveRequest) : Call<CouponSaveResponse>
 }

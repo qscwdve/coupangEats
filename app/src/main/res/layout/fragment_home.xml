@@ -506,10 +506,11 @@
 
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/home_cart_bag"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="카트에 담기"
-        android:textSize="20dp"/>
+        android:textSize="20sp"/>
 </RelativeLayout>

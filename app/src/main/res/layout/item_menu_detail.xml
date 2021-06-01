@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:orientation="horizontal"
+    android:padding="15dp" android:clickable="true" android:background="@color/white"
+    android:layout_height="wrap_content"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/item_menu_detail_click"
+        android:adjustViewBounds="true"
+        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:src="@drawable/ic_necessary_option"/>
+
+    <TextView
+        android:layout_marginStart="5dp"
+        android:id="@+id/item_menu_detail_name"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="고기"
+        android:textSize="15sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/item_menu_detail_price"
+        android:layout_marginStart="5sp"
+        android:layout_gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:text="(+3000원)"
+        android:textSize="13sp"
+        android:textColor="@color/baseColor"/>
+
+</LinearLayout>

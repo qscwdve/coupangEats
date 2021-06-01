@@ -28,9 +28,9 @@ class DetailSuperService(val view: DetailSuperActivityView) {
             })
     }
 
-    fun tryPostCouponSave(request: CouponSaveRequest){
+    fun tryPostCouponSave(storesIdx: Int, request: CouponSaveRequest){
         val detailSuperRetrofitInterface = ApplicationClass.sRetrofit.create(DetailSuperRetrofitInterface::class.java)
-        detailSuperRetrofitInterface.postCouponSave(request)
+        detailSuperRetrofitInterface.postCouponSave(storesIdx, request)
             .enqueue(object : Callback<CouponSaveResponse>{
                 override fun onResponse(
                     call: Call<CouponSaveResponse>,

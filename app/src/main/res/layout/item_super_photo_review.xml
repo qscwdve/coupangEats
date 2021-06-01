@@ -34,7 +34,7 @@
                 android:maxLines="2"
                 android:layout_weight="2"
                 android:textColor="@color/black"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:text="너무 맛있어요!"
                 android:ellipsize="end"
                 tools:ignore="NestedWeights,SmallSp" />

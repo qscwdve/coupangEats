@@ -49,6 +49,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         binding.mainBtmNav.itemIconTintList = null
 
+        // 카트 초기화
+        resetCart()
+
         binding.mainBtmNav.setOnNavigationItemSelectedListener(
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
                 when (item.itemId) {
@@ -99,6 +102,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 false
             }
         )
+    }
+
+    fun resetCart() {
+        val edit = ApplicationClass.sSharedPreferences.edit()
+        edit.putInt("menuNum", 0).apply()
     }
 
     override fun onBackPressed() {

@@ -47,11 +47,11 @@ class SuperPhotoReviewAdapter(val reviewList: ArrayList<PhotoReview>) : Recycler
             star3.setImageResource(R.drawable.ic_star_no)
             star4.setImageResource(R.drawable.ic_star_no)
             star5.setImageResource(R.drawable.ic_star_no)
-            if(num <= 1) star1.setImageResource(R.drawable.ic_star)
-            if(num <= 2) star2.setImageResource(R.drawable.ic_star)
-            if(num <= 3) star3.setImageResource(R.drawable.ic_star)
-            if(num <= 4) star4.setImageResource(R.drawable.ic_star)
-            if(num <= 5) star5.setImageResource(R.drawable.ic_star)
+            if(num >= 1) star1.setImageResource(R.drawable.ic_star)
+            if(num >= 2) star2.setImageResource(R.drawable.ic_star)
+            if(num >= 3) star3.setImageResource(R.drawable.ic_star)
+            if(num >= 4) star4.setImageResource(R.drawable.ic_star)
+            if(num >= 5) star5.setImageResource(R.drawable.ic_star)
         }
     }
 

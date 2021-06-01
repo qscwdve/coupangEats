@@ -613,7 +613,7 @@
                             android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:adjustViewBounds="true"
-                            android:src="@drawable/ic_agree_not_checked"
+                            android:src="@drawable/ic_add_option"
                             android:contentDescription="@string/image_no"
                             tools:ignore="NestedWeights" />
 
@@ -693,7 +693,7 @@
                             android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:adjustViewBounds="true"
-                            android:src="@drawable/ic_agree_not_checked"
+                            android:src="@drawable/ic_add_option"
                             tools:ignore="NestedWeights" />
 
                         <TextView
@@ -733,7 +733,7 @@
                             android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:adjustViewBounds="true"
-                            android:src="@drawable/ic_agree_not_checked"
+                            android:src="@drawable/ic_add_option"
                             tools:ignore="NestedWeights" />
 
                         <TextView
@@ -776,7 +776,7 @@
                             android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:adjustViewBounds="true"
-                            android:src="@drawable/ic_agree_not_checked"
+                            android:src="@drawable/ic_add_option"
                             tools:ignore="NestedWeights" />
 
                         <TextView
@@ -820,7 +820,7 @@
                             android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:adjustViewBounds="true"
-                            android:src="@drawable/ic_agree_not_checked"
+                            android:src="@drawable/ic_add_option"
                             tools:ignore="NestedWeights" />
 
                         <TextView
@@ -864,7 +864,7 @@
                             android:layout_weight="1"
                             android:layout_height="match_parent"
                             android:adjustViewBounds="true"
-                            android:src="@drawable/ic_agree_not_checked"
+                            android:src="@drawable/ic_add_option"
                             tools:ignore="NestedWeights" />
 
                         <TextView

@@ -9,9 +9,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.detailSuper.model.MenuList
 
-class MenuAdapter(val menuList: ArrayList<MenuList>) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
+class MenuAdapter(val menuList: ArrayList<MenuList>, val activity: DetailSuperActivity) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
     class MenuViewHolder(itemView: View,val menuAdapter: MenuAdapter) : RecyclerView.ViewHolder(itemView){
         val name = itemView.findViewById<TextView>(R.id.item_menu_list_name)
         val price = itemView.findViewById<TextView>(R.id.item_menu_list_price)
@@ -45,7 +46,7 @@ class MenuAdapter(val menuList: ArrayList<MenuList>) : RecyclerView.Adapter<Menu
             line.visibility = if(position == menuAdapter.menuList.size) View.GONE else View.VISIBLE
             // 메뉴 선택!
             itemView.setOnClickListener {
-
+                menuAdapter.activity.startMenuSelect(item.menuIdx)
             }
         }
     }

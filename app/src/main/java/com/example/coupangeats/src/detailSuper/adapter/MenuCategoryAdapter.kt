@@ -8,10 +8,11 @@ import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.detailSuper.model.Menu
 
-class MenuCategoryAdapter(val menuCategoryList: ArrayList<Menu>) : RecyclerView.Adapter<MenuCategoryAdapter.MenuCategoryViewHolder>() {
-    class MenuCategoryViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class MenuCategoryAdapter(val menuCategoryList: ArrayList<Menu>, val activity: DetailSuperActivity) : RecyclerView.Adapter<MenuCategoryAdapter.MenuCategoryViewHolder>() {
+    class MenuCategoryViewHolder(itemView: View, val menuCategoryAdapter: MenuCategoryAdapter): RecyclerView.ViewHolder(itemView) {
         val categoryName = itemView.findViewById<TextView>(R.id.item_detail_menu_category_name)
         val categoryIntroduce = itemView.findViewById<TextView>(R.id.item_detail_menu_category_introduce)
         val menuRecyclerView = itemView.findViewById<RecyclerView>(R.id.item_detail_menuList_recyclerView)
@@ -28,14 +29,14 @@ class MenuCategoryAdapter(val menuCategoryList: ArrayList<Menu>) : RecyclerView.
             if(position + 1== menuRecyclerView.size) view.visibility = View.GONE
             else view.visibility = View.VISIBLE
             // 리사이클러뷰 생성
-            menuRecyclerView.adapter = MenuAdapter(item.menuList)
+            menuRecyclerView.adapter = MenuAdapter(item.menuList, menuCategoryAdapter.activity)
             menuRecyclerView.layoutManager = LinearLayoutManager(itemView.context)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuCategoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_detail_super_menu_parent, parent, false)
-        return MenuCategoryViewHolder(view)
+        return MenuCategoryViewHolder(view, this)
     }
 
     override fun onBindViewHolder(holder: MenuCategoryViewHolder, position: Int) {

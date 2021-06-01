@@ -284,16 +284,16 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         binding.signUpAgreeAll.setOnClickListener {
             if(mSignUpAgreeAllChecked){
                 // 전체 취소
-                agreeAllChange(R.drawable.ic_agree_not_checked, false)
+                agreeAllChange(R.drawable.ic_add_option, false)
                 mSignUpAgreeCheckedNum = 0
                 mSignUpAgreeAllChecked = false
-                binding.signUpAgreeAllImg.setImageResource(R.drawable.ic_agree_not_checked)
+                binding.signUpAgreeAllImg.setImageResource(R.drawable.ic_add_option)
             } else {
                 // 전체 동의
-                agreeAllChange(R.drawable.ic_agree_checked, true)
+                agreeAllChange(R.drawable.ic_add_option_click, true)
                 mSignUpAgreeCheckedNum = 5
                 mSignUpAgreeAllChecked = true
-                binding.signUpAgreeAllImg.setImageResource(R.drawable.ic_agree_checked)
+                binding.signUpAgreeAllImg.setImageResource(R.drawable.ic_add_option_click)
             }
         }
         binding.signUpAgreeOne.setOnClickListener { agreeChange(0) }
@@ -366,32 +366,32 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         if(mSignUpAgreeChecked[index]) {
             // 미동의 -> 동의
             when (index) {
-                0 -> { binding.signUpAgreeOneImg.setImageResource(R.drawable.ic_agree_checked) }
-                1 -> { binding.signUpAgreeTwoImg.setImageResource(R.drawable.ic_agree_checked) }
-                2 -> { binding.signUpAgreeThreeImg.setImageResource(R.drawable.ic_agree_checked) }
-                3 -> { binding.signUpAgreeFourImg.setImageResource(R.drawable.ic_agree_checked) }
-                4 -> { binding.signUpAgreeFiveImg.setImageResource(R.drawable.ic_agree_checked) }
+                0 -> { binding.signUpAgreeOneImg.setImageResource(R.drawable.ic_add_option_click) }
+                1 -> { binding.signUpAgreeTwoImg.setImageResource(R.drawable.ic_add_option_click) }
+                2 -> { binding.signUpAgreeThreeImg.setImageResource(R.drawable.ic_add_option_click) }
+                3 -> { binding.signUpAgreeFourImg.setImageResource(R.drawable.ic_add_option_click) }
+                4 -> { binding.signUpAgreeFiveImg.setImageResource(R.drawable.ic_add_option_click) }
             }
             mSignUpAgreeCheckedNum++
         } else {
             // 동의 -> 미동의
             when (index) {
-                0 -> { binding.signUpAgreeOneImg.setImageResource(R.drawable.ic_agree_not_checked) }
-                1 -> { binding.signUpAgreeTwoImg.setImageResource(R.drawable.ic_agree_not_checked) }
-                2 -> { binding.signUpAgreeThreeImg.setImageResource(R.drawable.ic_agree_not_checked) }
-                3 -> { binding.signUpAgreeFourImg.setImageResource(R.drawable.ic_agree_not_checked) }
-                4 -> { binding.signUpAgreeFiveImg.setImageResource(R.drawable.ic_agree_not_checked) }
+                0 -> { binding.signUpAgreeOneImg.setImageResource(R.drawable.ic_add_option) }
+                1 -> { binding.signUpAgreeTwoImg.setImageResource(R.drawable.ic_add_option) }
+                2 -> { binding.signUpAgreeThreeImg.setImageResource(R.drawable.ic_add_option) }
+                3 -> { binding.signUpAgreeFourImg.setImageResource(R.drawable.ic_add_option) }
+                4 -> { binding.signUpAgreeFiveImg.setImageResource(R.drawable.ic_add_option) }
             }
             mSignUpAgreeCheckedNum--
         }
         if(mSignUpAgreeCheckedNum == 5){
             binding.signUpAgreeError.visibility = View.GONE
-            binding.signUpAgreeAllImg.setImageResource(R.drawable.ic_agree_checked)
+            binding.signUpAgreeAllImg.setImageResource(R.drawable.ic_add_option_click)
             mSignUpAgreeAllChecked = true
             binding.signUpAgreeError.visibility = View.GONE
         }
         if(mSignUpAgreeCheckedNum < 5){
-            binding.signUpAgreeAllImg.setImageResource(R.drawable.ic_agree_not_checked)
+            binding.signUpAgreeAllImg.setImageResource(R.drawable.ic_add_option)
             mSignUpAgreeAllChecked = false
         }
     }
