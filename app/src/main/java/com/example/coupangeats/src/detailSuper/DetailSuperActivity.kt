@@ -33,7 +33,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         if(mSuperIdx != 36) textStoreIdx = 35
         // 매장 조회 시작
         //DetailSuperService(this).tryGetSuperInfo(mSuperIdx)
-        DetailSuperService(this).tryGetSuperInfo(textStoreIdx)  // Test
+        DetailSuperService(this).tryGetSuperInfo(mSuperIdx)  // Test
         // 카트 담긴거 있는지 확인
         cartChange()
 
@@ -42,7 +42,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             // 쿠폰 클릭
             if(mCouponStatus){
                 // 서버 통신 일반 매장 35번으로 고정
-                DetailSuperService(this).tryPostCouponSave(textStoreIdx , CouponSaveRequest(mCouponIdx, getUserIdx()))
+                DetailSuperService(this).tryPostCouponSave(mSuperIdx , CouponSaveRequest(mCouponIdx, getUserIdx()))
                 mCouponStatus = false
                 // 쿠폰 사용으로 바꿈
                 binding.detailSuperCoupon.setBackgroundResource(R.drawable.detail_super_coupon_select_box)
@@ -52,7 +52,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             }
         }
         // 카트 보기
-        binding.detailSuperCartPrice.setOnClickListener {
+        binding.detailSuperCartParent.setOnClickListener {
             startActivity(Intent(this, CartActivity::class.java))
         }
     }
@@ -103,7 +103,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         // 일단 매장 번호 35번
         val intent = Intent(this, MenuSelectActivity::class.java).apply{
             this.putExtra("menuIdx", menuIdx)
-            this.putExtra("storeIdx", textStoreIdx)
+            this.putExtra("storeIdx", mSuperIdx)
         }
         startActivityForResult(intent, MENU_SELECT_ACTIVITY)
     }
@@ -187,6 +187,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             setMenuCategory(result.menu)
             setMenu((result.menu))
         }
+
     }
 
     fun menuFouceItem(position: Int){

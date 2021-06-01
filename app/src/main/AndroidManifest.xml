@@ -14,7 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".src.cart.CartActivity"></activity>
+        <activity
+            android:name=".src.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".src.cart.CartActivity" />
         <activity android:name=".src.menuSelect.MenuSelectActivity" />
         <activity android:name=".src.detailSuper.DetailSuperActivity" />
         <activity android:name=".src.superSearch.SuperSearchActivity" />

@@ -38,7 +38,7 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
         }
         binding.menuSelectNumMinus.setOnClickListener {
             val num = binding.menuSelectNum.text.toString().toInt() - 1
-            if(num > 1){
+            if(num >= 1){
                 binding.menuSelectNum.text = num.toString()
                 val menuPrice = (mMenuPrice * num).toString() + "원"
                 binding.menuSelectMenuPrice.text = menuPrice

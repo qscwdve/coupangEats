@@ -77,6 +77,7 @@
                     android:inputType="textEmailAddress"
                     android:textColorHint="@color/baseColor"
                     android:textSize="15sp"
+                    android:textColor="@color/black"
                     android:layout_height="match_parent"
                     tools:ignore="NestedWeights,RtlSymmetry" />
 
@@ -128,6 +129,7 @@
                 android:background="@color/white"
                 android:layout_width="0dp"
                 android:layout_weight="5"
+                android:textColor="@color/black"
                 android:inputType="textPassword"
                 android:textColorHint="@color/baseColor"
                 android:textSize="15sp"
