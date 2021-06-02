@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="145dp" android:background="@drawable/white_to_gray_ripple"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="135dp" android:background="@drawable/white_to_gray_ripple"
     android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="10dp">
 
     <LinearLayout
@@ -13,9 +13,9 @@
             android:id="@+id/item_new_super_img"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:layout_width="wrap_content"
+            android:layout_width="115dp"
             android:adjustViewBounds="true"
-            android:layout_height="90dp"
+            android:layout_height="120dp"
             android:src="@drawable/category_girll"
             android:contentDescription="@string/image_no" />
 

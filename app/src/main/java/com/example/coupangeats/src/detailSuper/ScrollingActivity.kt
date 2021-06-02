@@ -3,15 +3,11 @@ package com.example.coupangeats.src.detailSuper
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
-import com.example.coupangeats.databinding.ActivityDetailSuperBinding
-import com.example.coupangeats.src.cart.CartActivity
+import com.example.coupangeats.databinding.ActivityScrollingBinding
 import com.example.coupangeats.src.detailSuper.adapter.CategoryNameAdapter
 import com.example.coupangeats.src.detailSuper.adapter.DetailSuperImgViewPagerAdapter
 import com.example.coupangeats.src.detailSuper.adapter.MenuCategoryAdapter
@@ -22,7 +18,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 
-class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDetailSuperBinding::inflate), DetailSuperActivityView {
+class ScrollingActivity : BaseActivity<ActivityScrollingBinding>(ActivityScrollingBinding::inflate), DetailSuperActivityView{
     private var mSuperIdx = -1
     private var mCouponStatus = true
     private var mCouponPrice = -1
@@ -36,16 +32,16 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         if(mSuperIdx != 36) textStoreIdx = 35
         // 매장 조회 시작
         //DetailSuperService(this).tryGetSuperInfo(mSuperIdx)
-        DetailSuperService(this).tryGetSuperInfo(textStoreIdx)  // Test
+        //DetailSuperService(this).tryGetSuperInfo(mSuperIdx)  // Test
         // 카트 담긴거 있는지 확인
-        cartChange()
+        //cartChange()
 
         // 쿠폰
         binding.detailSuperCoupon.setOnClickListener {
             // 쿠폰 클릭
             if(mCouponStatus){
                 // 서버 통신 일반 매장 35번으로 고정
-                DetailSuperService(this).tryPostCouponSave(textStoreIdx , CouponSaveRequest(mCouponIdx, getUserIdx()))
+                DetailSuperService(this).tryPostCouponSave(mSuperIdx , CouponSaveRequest(mCouponIdx, getUserIdx()))
                 mCouponStatus = false
                 // 쿠폰 사용으로 바꿈
                 binding.detailSuperCoupon.setBackgroundResource(R.drawable.detail_super_coupon_select_box)
@@ -54,14 +50,38 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                 binding.detailSuperCouponImg.visibility = View.GONE
             }
         }
-        //카트 보기
+        /*//카트 보기
         binding.detailSuperCartParent.setOnClickListener {
             startActivity(Intent(this, CartActivity::class.java))
-        }
+        }*/
 
+        // 메뉴 스크롤링
+        setSupportActionBar(binding.toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.hide()
+        binding.appBar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener{
+            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+                if(Math.abs(verticalOffset) > appBarLayout!!.totalScrollRange - 50){
+                    // 아직 액션바 안에 있음
+                    //Log.d("vertical", "아직 액션바 나옴")
+                    binding.toolbarItem.visibility = View.INVISIBLE
+                    binding.toolbar2.setBackgroundColor(Color.parseColor("#444444"))
+                    // supportActionBar!!.show()
+                    //binding.detailSuperTitle.visibility = View.VISIBLE
+                }
+                if(Math.abs(verticalOffset) < appBarLayout!!.totalScrollRange - 50){
+                    // 액션바에서 나옴
+                    //Log.d("vertical", "아직 액션바 안에 있음")
+                    binding.toolbarItem.visibility = View.VISIBLE
+                    binding.toolbar2.setBackgroundColor(Color.parseColor("#00000000"))
+                    //supportActionBar!!.hide()
+                    //binding.detailSuperTitle.visibility = View.INVISIBLE
+                }
+            }
 
+        })
     }
-
+/*
 
     fun cartChange() {
         // 카트 담긴거 있는지 확인
@@ -82,7 +102,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             binding.detailSuperCartParent.visibility = View.GONE
         }
     }
-
+*/
 
     fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1) ?: -1
 
@@ -110,7 +130,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         // 일단 매장 번호 35번
         val intent = Intent(this, MenuSelectActivity::class.java).apply{
             this.putExtra("menuIdx", menuIdx)
-            this.putExtra("storeIdx", textStoreIdx)
+            this.putExtra("storeIdx", mSuperIdx)
         }
         startActivityForResult(intent, MENU_SELECT_ACTIVITY)
     }
@@ -191,20 +211,20 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         }
         // 메뉴 설정
         if(result.menu != null) {
-            setMenuCategory(result.menu)
-            setMenu((result.menu))
+            //setMenuCategory(result.menu)
+            //setMenu((result.menu))
         }
 
     }
-
+/*
     fun menuFouceItem(position: Int){
         Handler(Looper.getMainLooper()).postDelayed({
             // 해당 항목으로 메뉴 리스트 리사이클러뷰 선택해야 함
-            binding.detailSuperMenuRecyclerview.scrollToPosition(position)
+            binding.contentParent.scrollSuperMenuRecyclerview.scrollToPosition(position)
 
         }, 300)
 
-    }
+    }*/
 
     // 어댑터 설정
     fun setSuperImgViewPager(imgList: ArrayList<String>) {
@@ -229,13 +249,45 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         binding.detailSuperPhotoReviewRecyclerview.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
+/*
     fun setMenuCategory(categoryList: ArrayList<Menu>){
-        binding.detailSuperMenuCategoryRecyclerview.adapter = CategoryNameAdapter(categoryList, this)
-        binding.detailSuperMenuCategoryRecyclerview.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.contentParent.detailSuperMenuCategoryRecyclerview.adapter = CategoryNameAdapter(categoryList, this)
+        binding.contentParent.detailSuperMenuCategoryRecyclerview.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
     fun setMenu(menuCategoryList: ArrayList<Menu>) {
-        binding.detailSuperMenuRecyclerview.adapter = MenuCategoryAdapter(menuCategoryList, this)
-        binding.detailSuperMenuRecyclerview.layoutManager = LinearLayoutManager(this)
-    }
+        binding.contentParent.detailSuperMenuRecyclerview.adapter = MenuCategoryAdapter(menuCategoryList, this)
+        binding.contentParent.detailSuperMenuRecyclerview.layoutManager = LinearLayoutManager(this)
+    }*/
+    /*override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setSupportActionBar(findViewById(R.id.toolbar))
+        //binding.toolbarLayout.title = title
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.hide()
+        binding.appBar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener{
+            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+                if(Math.abs(verticalOffset) > appBarLayout!!.totalScrollRange - 50){
+                    // 아직 액션바 안에 있음
+                    //Log.d("vertical", "아직 액션바 나옴")
+                   // binding.toolbarItem.visibility = View.INVISIBLE
+                    //binding.toolbar2.setBackgroundColor(Color.parseColor("#FFF"))
+                    //binding.detailSuperTitle.visibility = View.VISIBLE
+                }
+                if(Math.abs(verticalOffset) < appBarLayout!!.totalScrollRange - 50){
+                    // 액션바에서 나옴
+                    //Log.d("vertical", "아직 액션바 안에 있음")
+                    //binding.toolbarItem.visibility = View.VISIBLE
+                    //binding.toolbar2.setBackgroundColor(Color.parseColor("#00000000"))
+                    supportActionBar!!.hide()
+                    //binding.detailSuperTitle.visibility = View.INVISIBLE
+                }
+            }
+
+        })
+    }*/
+
 }

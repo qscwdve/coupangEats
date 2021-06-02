@@ -6,7 +6,7 @@
     <TextView
         android:id="@+id/myeats_name"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="28dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="이름"
@@ -43,7 +43,7 @@
             <LinearLayout
                 android:id="@+id/myeats_address_manage"
                 android:background="@drawable/white_to_gray_ripple"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -70,7 +70,7 @@
             <LinearLayout
                 android:id="@+id/myeats_favorites"
                 android:background="@drawable/white_to_gray_ripple"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -97,7 +97,7 @@
             <LinearLayout
                 android:id="@+id/myeats_discount"
                 android:background="@drawable/white_to_gray_ripple"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -124,7 +124,7 @@
             <LinearLayout
                 android:id="@+id/myeats_event"
                 android:background="@drawable/white_to_gray_ripple"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -151,7 +151,7 @@
             <LinearLayout
                 android:id="@+id/myeats_pay"
                 android:background="@drawable/white_to_gray_ripple"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -178,7 +178,7 @@
             <LinearLayout
                 android:id="@+id/myeats_patner"
                 android:background="@drawable/white_to_gray_ripple"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -204,7 +204,7 @@
             <LinearLayout
                 android:id="@+id/myeats_question"
                 android:background="@drawable/white_to_gray_ripple"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -231,7 +231,7 @@
             <LinearLayout
                 android:id="@+id/myeats_tell"
                 android:background="@drawable/white_to_gray_ripple"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -257,7 +257,7 @@
             <LinearLayout
                 android:id="@+id/myeats_setting"
                 android:background="@drawable/white_to_gray_ripple"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -284,7 +284,7 @@
             <LinearLayout
                 android:id="@+id/myeats_notice"
                 android:background="@drawable/white_to_gray_ripple"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -311,7 +311,7 @@
             <LinearLayout
                 android:id="@+id/myeats_agree"
                 android:background="@drawable/white_to_gray_ripple"
-                android:padding="5dp"
+                android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">

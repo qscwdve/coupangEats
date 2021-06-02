@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="145dp" android:background="@drawable/white_to_gray_ripple"
-    android:layout_height="175dp" android:orientation="vertical" android:paddingHorizontal="10dp">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="135dp" android:background="@drawable/white_to_gray_ripple"
+    android:layout_height="205dp" android:orientation="vertical" android:paddingHorizontal="10dp">
 
     <LinearLayout
         android:visibility="visible"
@@ -14,9 +16,9 @@
             android:id="@+id/item_salse_super_img"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:layout_width="125dp"
+            android:layout_width="115dp"
             android:adjustViewBounds="true"
-            android:layout_height="90dp"
+            android:layout_height="120dp"
             android:src="@drawable/category_girll"
             android:contentDescription="@string/image_no" />
 
@@ -82,7 +84,7 @@
             android:background="@drawable/dialog_login_basic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5dp"
+            android:padding="4dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -99,8 +101,9 @@
                 android:layout_height="wrap_content"
                 android:text="5000원 쿠폰"
                 android:textColor="@color/loginBlue"
-                android:textSize="13sp"
-                android:textStyle="bold"/>
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:ignore="SmallSp" />
         </LinearLayout>
 
     </LinearLayout>

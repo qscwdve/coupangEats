@@ -9,11 +9,13 @@
 
     <LinearLayout
         android:id="@+id/cart_action_bar"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
+        android:layout_alignParentTop="true"
         android:orientation="horizontal"
-        android:paddingBottom="5dp">
+        android:paddingStart="7dp"
+        android:paddingBottom="5dp"
+        tools:ignore="RtlSymmetry">
 
         <ImageView
             android:id="@+id/cart_back"
@@ -41,8 +43,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cart_action_bar"
-        android:layout_above="@+id/cart_ok">
+        android:layout_above="@+id/cart_ok"
+        android:layout_below="@+id/cart_action_bar">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,8 +54,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="10dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginVertical="20dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -118,7 +120,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="10dp"
                 android:background="@color/line" />
 
             <!-- 매장 보여주고 메뉴 보여줌 -->
@@ -127,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="15dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="25dp"
                 android:text="매장 이름"
                 android:textColor="@color/black"
                 android:textSize="17sp"
@@ -153,7 +155,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="15dp"
+                android:padding="17dp"
                 android:text="@string/cart_menu_add"
                 android:textColor="@color/loginBlue"
                 android:textSize="15sp"
@@ -161,7 +163,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="5dp"
+                android:layout_height="10dp"
                 android:background="@color/line" />
 
             <!-- 할인 쿠폰 -->
@@ -169,17 +171,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="15dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="25dp"
                 android:text="@string/cart_discount"
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
+            <!-- 주문 금액 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:background="@color/line"
+                android:layout_marginHorizontal="25dp"
+                android:background="@drawable/coupon_gray_box"
                 android:orientation="vertical"
                 android:padding="20dp">
 
@@ -213,20 +216,24 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginEnd="7dp"
-                        android:layout_weight="1"
+                        android:layout_weight="5"
                         android:background="@drawable/cart_coupon_box"
                         android:paddingHorizontal="10dp"
-                        android:paddingVertical="15dp"
+                        android:paddingVertical="12dp"
                         android:text="쿠폰을 선택해주세요"
                         android:textColor="@color/baseColor"
                         android:textSize="13sp" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="2"
                         android:background="@drawable/dialog_login_basic"
-                        android:padding="15dp"
+                        android:gravity="center"
+                        android:padding="12dp"
                         android:text="선택"
                         android:textColor="@color/loginBlue"
                         android:textSize="15sp"
@@ -234,11 +241,11 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- 주문 금액 -->
             <RelativeLayout
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="25dp"
                 android:layout_marginVertical="15dp">
 
                 <TextView
@@ -263,7 +270,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="25dp"
                 android:layout_marginBottom="15dp">
 
                 <TextView
@@ -294,14 +301,14 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="15dp">
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginVertical="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:text="@string/cart_delivery_price"
+                    android:text="총 결제 금액"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -319,34 +326,31 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"
+                android:layout_height="30dp"
                 android:background="@color/line" />
 
             <!-- 요청사항 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="25dp"
                 android:orientation="horizontal"
-                android:paddingVertical="10dp">
+                android:paddingVertical="15dp">
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="@string/cart_need"
+                    android:gravity="center_vertical|start"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/cart_need_control"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="∨"
-                    android:textColor="@color/loginBlue"
                     android:textSize="15sp"
                     android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/main_address_arrow"/>
 
             </LinearLayout>
 
@@ -354,7 +358,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="25dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -363,7 +367,7 @@
                     android:layout_marginTop="5dp"
                     android:text="가게 사장님에게"
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -372,16 +376,17 @@
                     android:layout_marginEnd="7dp"
                     android:background="@drawable/cart_need_box"
                     android:paddingHorizontal="10dp"
-                    android:paddingVertical="15dp"
+                    android:paddingVertical="17dp"
                     android:text="예) 견과류는 빼주세요"
-                    android:textColor="@color/baseColor"
-                    android:textSize="13sp" />
+                    android:textColor="@color/searchHint"
+                    android:textSize="15sp" />
 
                 <!-- 일회용 수저와 포크 보기 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -408,7 +413,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="7dp"
                             android:text="일회용품 사용을 줄이기 위해, 선택 시에만 제공됩니다."
                             android:textColor="@color/baseColor"
                             android:textSize="12sp" />
@@ -421,7 +426,7 @@
                     android:layout_marginTop="5dp"
                     android:text="배달 기사님에게"
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -446,8 +451,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20sp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginHorizontal="25sp"
+                android:layout_marginVertical="20dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -459,7 +464,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
+                        android:layout_marginBottom="7dp"
                         android:text="결제 수단"
                         android:textColor="@color/black"
                         android:textSize="15sp"
@@ -474,7 +479,12 @@
 
                 </LinearLayout>
 
-                <TextView
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/blue_right_arrow"/>
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -483,7 +493,7 @@
                     android:textColor="@color/loginBlue"
                     android:textSize="17sp"
                     android:textStyle="bold" />
-
+-->
             </LinearLayout>
 
             <View
@@ -494,7 +504,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginVertical="15dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -511,7 +522,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:text="보기"
-                    android:textColor="@color/baseColor"
+                    android:textColor="@color/searchHint"
                     android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -529,14 +540,14 @@
 
     <TextView
         android:id="@+id/cart_ok"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20sp"
-        android:textSize="17sp"
-        android:textColor="@color/white"
+        android:layout_alignParentBottom="true"
+        android:background="@color/loginBlue"
         android:gravity="center"
-        android:textStyle="bold"
+        android:padding="18sp"
         android:text="35,500 결제하기"
-        android:background="@color/loginBlue"/>
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold" />
 </RelativeLayout>

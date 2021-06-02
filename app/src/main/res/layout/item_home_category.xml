@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
-    android:padding="10dp"
+    android:paddingHorizontal="10dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="5dp"
     android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/white_to_gray_ripple">
 
     <ImageView
         android:id="@+id/item_home_category_img"
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:scaleType="centerCrop"
         android:src="@drawable/category_girll"/>
 
     <TextView
+        android:layout_marginTop="7dp"
         android:id="@+id/item_home_category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:text="신규 맛집"
         android:textStyle="bold"
         android:textColor="@color/black"

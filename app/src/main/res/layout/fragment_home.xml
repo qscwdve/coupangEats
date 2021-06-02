@@ -29,7 +29,7 @@
                 android:scaleType="fitEnd"
                 android:adjustViewBounds="true"
                 android:padding="14dp"
-                android:src="@drawable/ic_home_gps"/>
+                android:src="@drawable/ic_delivery_gps"/>
             <TextView
                 android:id="@+id/home_gps_address"
                 android:layout_toEndOf="@+id/home_gps_img"
@@ -37,6 +37,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:maxLines="1"
+                android:maxWidth="200dp"
                 android:layout_gravity="center"
                 android:textSize="17sp"
                 android:ellipsize="end"
@@ -50,7 +52,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/main_address_arrow"
                 android:adjustViewBounds="true"
-                android:padding="15sp"
+                android:padding="10sp"
                 tools:ignore="NestedWeights" />
 
             <ImageView
@@ -58,7 +60,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="10dp"
+                android:padding="12dp"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_nav_click_search"
                 android:contentDescription="@string/image_no" />
@@ -134,9 +136,9 @@
                             tools:ignore="NestedWeights" />
 
                         <LinearLayout
-                            android:layout_margin="5dp"
-                            android:paddingVertical="3dp"
-                            android:paddingHorizontal="7dp"
+                            android:layout_margin="10dp"
+                            android:paddingVertical="5dp"
+                            android:paddingHorizontal="9dp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
                             android:background="@drawable/event_box"
@@ -148,6 +150,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="1"
+                                android:textStyle="bold"
                                 android:textSize="10sp"
                                 android:textColor="@color/white"
                                 tools:ignore="SmallSp" />
@@ -162,27 +165,34 @@
                                 tools:ignore="SmallSp" />
                         </LinearLayout>
 
-
-                        <TextView
-                            android:background="@drawable/event_box"
+                        <LinearLayout
+                            android:layout_margin="10dp"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentEnd="true"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:paddingHorizontal="7dp"
-                            android:paddingVertical="5dp"
-                            android:text="@string/event_total"
-                            android:textColor="@color/white"
-                            android:textSize="10sp"
-                            tools:ignore="SmallSp" />
+                            android:orientation="vertical">
+                            <TextView
+                                android:background="@drawable/event_box"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp"
+                                android:textStyle="bold"
+                                android:text="@string/event_total"
+                                android:textColor="@color/white"
+                                android:textSize="10sp"
+                                tools:ignore="SmallSp" />
+                        </LinearLayout>
+
                     </RelativeLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:paddingVertical="5dp"
                         android:id="@+id/home_category_recyclerview"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:paddingVertical="5dp" />
 
                     <View
                         android:layout_width="wrap_content"
@@ -200,6 +210,7 @@
                         android:layout_height="wrap_content">
 
                         <LinearLayout
+                            android:layout_marginBottom="5dp"
                             android:paddingStart="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -210,7 +221,7 @@
                                 android:layout_weight="10"
                                 android:layout_height="wrap_content"
                                 android:text="@string/discount_super"
-                                android:textSize="20sp"
+                                android:textSize="18sp"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"/>
 
@@ -226,7 +237,7 @@
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:paddingVertical="10dp"
+                            android:paddingTop="10dp"
                             android:id="@+id/home_discount_super_recyclerview"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
@@ -235,7 +246,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="10dp"
+                        android:layout_height="8dp"
                         android:background="@color/line"/>
 
                     <!-- 새로 들어온 맛집 -->
@@ -249,6 +260,7 @@
 
                         <LinearLayout
                             android:paddingStart="15dp"
+                            android:layout_marginBottom="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
@@ -258,7 +270,7 @@
                                 android:layout_weight="10"
                                 android:layout_height="wrap_content"
                                 android:text="@string/new_super"
-                                android:textSize="20sp"
+                                android:textSize="18sp"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"/>
 
@@ -283,7 +295,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="10dp"
+                        android:layout_height="8dp"
                         android:background="@color/line"/>
 
                     <ImageView
@@ -295,12 +307,13 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="10dp"
+                        android:layout_height="8dp"
                         android:background="@color/line"/>
 
                     <!-- 주변 맛집 -->
                     <LinearLayout
-                        android:layout_marginVertical="10dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="vertical"
                         android:id="@+id/home_recommend_super"
                         android:layout_width="match_parent"
@@ -311,7 +324,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="주변 맛집 발견"
-                            android:textSize="20sp"
+                            android:textSize="18sp"
                             android:textColor="@color/black"
                             android:textStyle="bold"/>
 
@@ -330,7 +343,9 @@
 
                                 <!-- 추천순 -->
                                 <LinearLayout
-                                    android:layout_margin="10dp"
+                                    android:layout_marginVertical="10dp"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_marginStart="15dp"
                                     android:layout_gravity="center"
                                     android:id="@+id/home_filter_recommend"
                                     android:background="@drawable/white_to_gray_ripple"
@@ -339,8 +354,8 @@
 
                                     <LinearLayout
                                         android:id="@+id/home_filter_recommend_background"
-                                        android:paddingVertical="5dp"
-                                        android:paddingHorizontal="10dp"
+                                        android:paddingVertical="7dp"
+                                        android:paddingHorizontal="12dp"
                                         android:background="@drawable/super_filter_no_click"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -367,13 +382,14 @@
                                 <LinearLayout
                                     android:id="@+id/home_filter_cheetah"
                                     android:background="@drawable/white_to_gray_ripple"
-                                    android:layout_margin="10dp"
+                                    android:layout_marginVertical="10dp"
+                                    android:layout_marginHorizontal="5dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
                                     <LinearLayout
                                         android:id="@+id/home_filter_cheetah_background"
-                                        android:paddingVertical="5dp"
-                                        android:paddingHorizontal="10dp"
+                                        android:paddingVertical="7dp"
+                                        android:paddingHorizontal="12dp"
                                         android:background="@drawable/super_filter_no_click"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -399,13 +415,14 @@
                                 <LinearLayout
                                     android:id="@+id/home_filter_delivery_price"
                                     android:background="@drawable/white_to_gray_ripple"
-                                    android:layout_margin="10dp"
+                                    android:layout_marginVertical="10dp"
+                                    android:layout_marginHorizontal="5dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
                                     <LinearLayout
                                         android:id="@+id/home_filter_delivery_price_background"
-                                        android:paddingVertical="5dp"
-                                        android:paddingHorizontal="10dp"
+                                        android:paddingVertical="7dp"
+                                        android:paddingHorizontal="12dp"
                                         android:background="@drawable/super_filter_no_click"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -431,13 +448,14 @@
                                 <LinearLayout
                                     android:id="@+id/home_filter_mini_order"
                                     android:background="@drawable/white_to_gray_ripple"
-                                    android:layout_margin="10dp"
+                                    android:layout_marginVertical="10dp"
+                                    android:layout_marginHorizontal="5dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
                                     <LinearLayout
                                         android:id="@+id/home_filter_mini_order_background"
-                                        android:paddingVertical="5dp"
-                                        android:paddingHorizontal="10dp"
+                                        android:paddingVertical="7dp"
+                                        android:paddingHorizontal="12dp"
                                         android:background="@drawable/super_filter_no_click"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -463,13 +481,14 @@
                                 <LinearLayout
                                     android:id="@+id/home_filter_coupon"
                                     android:background="@drawable/white_to_gray_ripple"
-                                    android:layout_margin="10dp"
+                                    android:layout_marginVertical="10dp"
+                                    android:layout_marginHorizontal="5dp"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content">
                                     <LinearLayout
                                         android:id="@+id/home_filter_coupon_background"
-                                        android:paddingVertical="5dp"
-                                        android:paddingHorizontal="10dp"
+                                        android:paddingVertical="7dp"
+                                        android:paddingHorizontal="12dp"
                                         android:background="@drawable/super_filter_no_click"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"

@@ -16,6 +16,7 @@
             android:layout_weight="1">
 
             <LinearLayout
+                android:layout_marginBottom="5dp"
                 android:id="@+id/item_menu_list_recomm_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="메뉴 이름"
-                android:textSize="20sp"
+                android:textSize="19sp"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>
 
@@ -87,12 +88,13 @@
 
 
     </LinearLayout>
-
     <View
+        android:layout_marginHorizontal="15dp"
         android:id="@+id/item_menu_list_line"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="3sp"
         android:background="@color/line"
         tools:ignore="SmallSp" />
+
 </LinearLayout>

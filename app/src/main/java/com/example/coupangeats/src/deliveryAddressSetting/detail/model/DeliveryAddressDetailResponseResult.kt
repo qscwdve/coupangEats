@@ -7,5 +7,7 @@ data class DeliveryAddressDetailResponseResult(
     @SerializedName("roadAddress") val roadAddress: String,
     @SerializedName("detailAddress") val detailAddress: String?,
     @SerializedName("aliasType") val aliasType: String,
-    @SerializedName("alias") val alias: String?
+    @SerializedName("alias") val alias: String?,
+    @SerializedName("latitude") val latitude: String,
+    @SerializedName("longitude") val longitude: String
 )

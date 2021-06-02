@@ -1,5 +1,6 @@
 package com.example.coupangeats.src.deliveryAddressSetting.detail
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -19,7 +20,9 @@ import com.example.coupangeats.src.deliveryAddressSetting.DeliveryAddressSetting
 import com.example.coupangeats.src.deliveryAddressSetting.DeliveryAddressSettingService
 import com.example.coupangeats.src.deliveryAddressSetting.detail.model.*
 import com.example.coupangeats.src.deliveryAddressSetting.model.DeliveryAddressAddRequest
+import com.example.coupangeats.src.map.MapActivity
 import com.example.coupangeats.util.DetailAddressBottomSheetDialog
+import com.example.coupangeats.util.GpsControl
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseFragment
 
@@ -30,6 +33,9 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
     private var version = 1  // 1이면 gps 선택, 2이면 배달지 주소 관리 - 배달지 추가! 3 이면 배달지 수정
     private var addressIdx = -1
     private var mModifyOrDelete = false
+    private var mLat = (-1).toDouble()
+    private var mLon = (-1).toDouble()
+    private val MAP_ACTIVITY = 1234
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -118,6 +124,8 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 categoryCustom(1, mCategory)
                 binding.detailAddressAliasParent.visibility = View.GONE
                 binding.detailAddressAliasEditText.setText("")
+                binding.detailAddressAliasLine.visibility = View.GONE
+                binding.detailAddressAliasTextLine.visibility = View.GONE
             }
         }
         binding.detailAddressCategoryCompany.setOnClickListener {
@@ -125,17 +133,29 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 categoryCustom(2, mCategory)
                 binding.detailAddressAliasParent.visibility = View.GONE
                 binding.detailAddressAliasEditText.setText("")
+                binding.detailAddressAliasLine.visibility = View.GONE
+                binding.detailAddressAliasTextLine.visibility = View.GONE
             }
         }
         binding.detailAddressCategoryGps.setOnClickListener {
             if(mCategory != 3){
                 categoryCustom(3, mCategory)
+                binding.detailAddressAliasTextLine.visibility = View.VISIBLE
                 binding.detailAddressAliasParent.visibility = View.VISIBLE
+                binding.detailAddressAliasLine.visibility = View.VISIBLE
             }
         }
 
         // 지도..
-        binding.detailAddressMap.setOnClickListener {  }
+        binding.detailAddressMap.setOnClickListener {
+            // 배달 경도, 위도 넘겨줘야 한다.
+            val intent = Intent(requireContext(), MapActivity::class.java).apply {
+                this.putExtra("lat", mLat)
+                this.putExtra("lon", mLon)
+                this.putExtra("version", 1)
+            }
+            startActivity(intent)
+        }
 
         // 배달지 주소 삭제
         binding.detailAddressDelete.setOnClickListener {
@@ -158,6 +178,25 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // 배달지 변화 있나 봄
+        val mainAddress = ApplicationClass.sSharedPreferences.getString("mainAddress", "") ?: ""
+        val roadAddress = ApplicationClass.sSharedPreferences.getString("roadAddress", "") ?: ""
+        if(mainAddress != "" && roadAddress != ""){
+
+            binding.detailAddressMainAddress.text = mainAddress
+            binding.detailAddressRoadAddress.text = roadAddress
+            mMainAddress = mainAddress
+            mRoadAddress = roadAddress
+
+            val edit = ApplicationClass.sSharedPreferences.edit()
+            edit.putString("mainAddress", null)
+            edit.putString("roadAddress", null)
+            edit.apply()
+        }
+    }
+
     fun checkHomeOrCompany() {
         // 유저가 집과 회사를 체크했는지 확인 (서버통신)
         if(mCategory == 1) DetailAddressService(this).tryGetHomeOrCompanyChecked(getUserIdx(), "HOME")
@@ -172,9 +211,11 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
             // 배달지 수정
             if(mModifyOrDelete){
                 // modify
+                val address = binding.detailAddressMainAddress.text.toString()
+                val roadAddress = binding.detailAddressRoadAddress.text.toString()
                 val detailAddress = if(binding.detailAddressDetailText.text.toString().isNotEmpty()) binding.detailAddressDetailText.text.toString() else null
                 val alias = if(binding.detailAddressAliasEditText.text.toString() == "") null else binding.detailAddressAliasEditText.text.toString()
-                val deliveryAddressModifyRequest = DeliveryAddressModifyRequest(detailAddress, aliasType, alias)
+                val deliveryAddressModifyRequest = DeliveryAddressModifyRequest(address, roadAddress, detailAddress, aliasType, alias)
                 DetailAddressService(this).tryDeliveryAddressModify(getUserIdx(), addressIdx, deliveryAddressModifyRequest)
             } else {
                 // delete
@@ -274,17 +315,17 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         when(newClick){
             1 -> {
                 binding.detailAddressCategoryHome.setBackgroundResource(R.drawable.detail_address_category_box)
-                binding.detailAddressHomeText.setTextColor(Color.parseColor("#4472C4"))  // blue
+                binding.detailAddressHomeText.setTextColor(Color.parseColor("#00AFFE"))  // blue
                 binding.detailAddressHomeImg.setImageResource(R.drawable.ic_delivery_blue_home)
             }
             2 -> {
                 binding.detailAddressCategoryCompany.setBackgroundResource(R.drawable.detail_address_category_box)
-                binding.detailAddressCompanyText.setTextColor(Color.parseColor("#4472C4"))  // blue
+                binding.detailAddressCompanyText.setTextColor(Color.parseColor("#00AFFE"))  // blue
                 binding.detailAddressCompanyImg.setImageResource(R.drawable.ic_delivery_blue_briefcase)
             }
             3 -> {
                 binding.detailAddressCategoryGps.setBackgroundResource(R.drawable.detail_address_category_box)
-                binding.detailAddressGpsText.setTextColor(Color.parseColor("#4472C4"))  // blue
+                binding.detailAddressGpsText.setTextColor(Color.parseColor("#00AFFE"))  // blue
                 binding.detailAddressGpsImg.setImageResource(R.drawable.ic_delivery_blue_gps)
             }
         }
@@ -322,6 +363,8 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 binding.detailAddressAliasParent.visibility = View.VISIBLE
                 binding.detailAddressAliasEditText.setText(response.result.alias ?: "")
             }
+            mLat = response.result.latitude.toDouble()
+            mLon = response.result.longitude.toDouble()
         }
     }
 

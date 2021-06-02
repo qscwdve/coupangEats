@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
+import com.example.coupangeats.src.detailSuper.ScrollingActivity
 import com.example.coupangeats.src.detailSuper.model.MenuList
 
 class MenuAdapter(val menuList: ArrayList<MenuList>, val activity: DetailSuperActivity) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {

@@ -23,7 +23,7 @@
             android:layout_alignBottom="@+id/item_detail_super_menu_category_highlight"
             android:layout_width="match_parent"
             android:layout_height="2sp"
-            android:background="@color/line"
+            android:background="@color/lightGray"
             android:visibility="visible"
             tools:ignore="SmallSp" />
         <View

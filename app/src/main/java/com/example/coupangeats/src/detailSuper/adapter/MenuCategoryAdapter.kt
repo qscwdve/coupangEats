@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
+import com.example.coupangeats.src.detailSuper.ScrollingActivity
 import com.example.coupangeats.src.detailSuper.model.Menu
 
 class MenuCategoryAdapter(val menuCategoryList: ArrayList<Menu>, val activity: DetailSuperActivity) : RecyclerView.Adapter<MenuCategoryAdapter.MenuCategoryViewHolder>() {

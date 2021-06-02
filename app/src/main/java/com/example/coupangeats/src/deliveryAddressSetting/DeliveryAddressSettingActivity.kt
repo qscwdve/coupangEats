@@ -2,6 +2,7 @@ package com.example.coupangeats.src.deliveryAddressSetting
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,7 +23,10 @@ import com.example.coupangeats.src.deliveryAddressSetting.model.*
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.DeliveryAddressResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListRequest
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListResponse
+import com.example.coupangeats.src.main.home.model.userCheckAddress.UserCheckResponseResult
 import com.example.coupangeats.src.main.search.SearchFragment
+import com.example.coupangeats.src.map.MapActivity
+import com.example.coupangeats.util.GpsControl
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 import java.util.function.LongFunction
@@ -47,6 +51,7 @@ class DeliveryAddressSettingActivity() :
     val DELIVERY_MANAGE = 2
     var version = GPS_SELECT
     var mSelectedAddress = -1
+    private val MAP_ACTIVITY = 1234
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -196,6 +201,28 @@ class DeliveryAddressSettingActivity() :
                 binding.deliveryAddressSettingSearchParent.visibility = View.VISIBLE
                 mSearchTip = false
             }
+        }
+
+        // 현재 위치 지도 부름
+        binding.deliveryAddressSettingNowGps.setOnClickListener {
+            // 지도가 있는 액티비티 부름
+            val location = gpsCheck()
+            val mLat = if(location != null) location.latitude else (-1).toDouble()
+            val mLon = if(location != null) location.longitude else (-1).toDouble()
+            val intent = Intent(this, MapActivity::class.java).apply {
+                // 현재 위치 가져와야 함
+                this.putExtra("lat", mLat)
+                this.putExtra("lon", mLon)
+            }
+            startActivityForResult(intent, MAP_ACTIVITY)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == MAP_ACTIVITY && resultCode == RESULT_OK){
+            // 배달지 주소 추가와 선택 완료 다했으니 종료
+            finish()
         }
     }
 
@@ -445,5 +472,16 @@ class DeliveryAddressSettingActivity() :
             .commitAllowingStateLoss()
         mDetailAddress = true
         mBackOrFinish = false
+    }
+
+    fun gpsCheck() : Location? {
+        var gpsCheck = false
+        if(ApplicationClass.sSharedPreferences.getBoolean("gps", false)){
+            // gps 사용 가능
+            val mGpsControl = GpsControl(this)
+            val location = mGpsControl.getLocation()
+            return location
+        }
+        return null
     }
 }

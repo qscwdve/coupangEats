@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/white_to_gray_ripple"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:paddingVertical="15dp"
-        android:background="@drawable/white_to_gray_ripple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -68,9 +68,8 @@
                     android:layout_marginEnd="20dp"
                     android:layout_weight="1"
                     android:contentDescription="@string/image_no"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_sign_up_checked"
-                    android:visibility="invisible" />
+                    android:src="@drawable/check"
+                    android:visibility="visible" />
 
             </LinearLayout>
         </LinearLayout>

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import java.io.IOException
 import java.util.*
+import kotlin.collections.ArrayList
 
 class GpsControl(val context: Context) : LocationListener {
     private val MIN_DISTANCE_CHANGE_FOR_UPDATES: Long = 10
@@ -99,8 +100,33 @@ class GpsControl(val context: Context) : LocationListener {
         if (addresses == null || addresses.isEmpty()) {
             return null
         }
-
-        return "${addresses[0].locality} ${addresses[0].thoroughfare} ${addresses[0].featureName}"
+        Log.d("address", "${addresses}")
+        val address = addresses[0]
+        return address.getAddressLine(0).toString()
+        //return "${addresses[0]}"
+    }
+    fun getCurrentAddressArray(latitude: Double, longitude: Double) : ArrayList<String>?{
+        //지오코더... GPS를 주소로 변환
+        val geocoder = Geocoder(context, Locale.getDefault())
+        val addresses: List<Address>? = try {
+            geocoder.getFromLocation(
+                latitude,
+                longitude,
+                7
+            )
+        } catch (ioException: IOException) {
+            //네트워크 문제
+            return null
+        } catch (illegalArgumentException: IllegalArgumentException) {
+            return null
+        }
+        if (addresses == null || addresses.isEmpty()) {
+            return null
+        }
+        val answer = ArrayList<String>()
+        answer.add(addresses[0].getAddressLine(0).toString())
+        answer.add(addresses[1].getAddressLine(0).toString())
+        return answer
     }
     // LocationListener 관련 함수들
     override fun onLocationChanged(location: Location) {

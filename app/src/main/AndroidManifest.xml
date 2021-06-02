@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.coupangeats">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -14,13 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".src.map.MapActivity"></activity>
         <activity
-            android:name=".src.ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
+            android:name=".src.detailSuper.ScrollingActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".src.cart.CartActivity" />
         <activity android:name=".src.menuSelect.MenuSelectActivity" />
-        <activity android:name=".src.detailSuper.DetailSuperActivity" />
+        <activity
+            android:name=".src.detailSuper.DetailSuperActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".src.superSearch.SuperSearchActivity" />
         <activity android:name=".src.setting.SettingActivity" />
         <activity android:name=".src.deliveryAddressSetting.DeliveryAddressSettingActivity" />
@@ -38,7 +41,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

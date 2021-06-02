@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:clickable="true"
+    android:focusable="true"
     android:background="@drawable/white_to_gray_ripple"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:orientation="vertical"
@@ -31,7 +33,7 @@
             android:layout_gravity="center"
             android:textSize="12sp"
             android:layout_marginEnd="10dp"
-            android:textColor="@color/blue"/>
+            android:textColor="@color/loginBlue"/>
 
         <TextView
             android:id="@+id/item_search_list_sub_address"

@@ -123,6 +123,9 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
                         binding.menuSelectImgNum.text = (position + 1).toString()
                     }
                 })
+            } else {
+                binding.menuSelectImgViewPager.visibility = View.GONE
+                binding.menuSelectImgBox.visibility = View.GONE
             }
         }
     }

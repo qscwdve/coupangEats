@@ -70,7 +70,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/image_no"
-                android:padding="13dp"
+                android:padding="14dp"
                 android:src="@drawable/ic_nav_click_search" />
 
             <EditText
@@ -82,7 +82,7 @@
                 android:hint="@string/address_info"
                 android:inputType="text"
                 android:padding="10dp"
-                android:textColorHint="@color/baseColor"
+                android:textColorHint="@color/searchHint"
                 android:textSize="17sp" />
 
             <ImageView
@@ -152,6 +152,7 @@
                     android:paddingVertical="15dp">
 
                     <LinearLayout
+                        android:id="@+id/delivery_address_setting_now_gps"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -389,7 +390,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="15dp">
+                    android:padding="20dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -397,6 +398,7 @@
                         android:text="@string/searchTip"
                         android:textColor="@color/black"
                         android:textSize="15sp"
+                        android:layout_marginBottom="10dp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -409,24 +411,25 @@
                             android:layout_height="wrap_content"
                             android:text="@string/searchTopRoad"
                             android:textColor="@color/black"
-                            android:textSize="13sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/searchTopNum"
                             android:textColor="@color/black"
-                            android:textSize="13sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
                     <TextView
+                        android:layout_marginBottom="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="10dp"
                         android:text="@string/searchTopRoadEx"
                         android:textColor="@color/baseColor"
-                        android:textSize="13sp" />
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -438,38 +441,39 @@
                             android:layout_height="wrap_content"
                             android:text="@string/searchTipName"
                             android:textColor="@color/black"
-                            android:textSize="13sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/searchTipNameNum"
                             android:textColor="@color/black"
-                            android:textSize="13sp"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
                     <TextView
+                        android:layout_marginBottom="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="10dp"
                         android:text="@string/searchTipNameEx"
                         android:textColor="@color/baseColor"
-                        android:textSize="13sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/searchTipBuilding"
                         android:textColor="@color/black"
-                        android:textSize="13sp" />
+                        android:textSize="14sp" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="10sp"
                         android:text="@string/searchTipBuildingEx"
                         android:textColor="@color/baseColor"
-                        android:textSize="13sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -484,7 +488,8 @@
             android:id="@+id/delivery_search_error"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            tools:ignore="NestedWeights">
 
             <LinearLayout
                 android:layout_centerInParent="true"

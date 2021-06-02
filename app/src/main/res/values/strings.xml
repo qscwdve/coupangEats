@@ -231,4 +231,5 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="map_delivery">이 위치로 배달하기</string>
 </resources>
