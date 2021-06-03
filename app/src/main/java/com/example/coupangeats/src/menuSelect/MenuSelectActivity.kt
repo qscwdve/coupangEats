@@ -1,5 +1,6 @@
 package com.example.coupangeats.src.menuSelect
 
+import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,10 +8,12 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.databinding.ActivityMenuSelectBinding
+import com.example.coupangeats.src.cart.model.CartMenuInfo
 import com.example.coupangeats.src.detailSuper.adapter.DetailSuperImgViewPagerAdapter
 import com.example.coupangeats.src.menuSelect.adapter.MenuDetailParentAdapter
 import com.example.coupangeats.src.menuSelect.model.MenuDetailResponse
 import com.example.coupangeats.src.menuSelect.model.SelectMenu
+import com.example.coupangeats.util.CartMenuDatabase
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 
@@ -20,11 +23,17 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
     private var mMenuPrice = 0
     private var mSelectedMenu : Array<SelectMenu>? = null
     private var mSelectMenuCheck : Array<Boolean>? = null
+    private lateinit var mDBHelper: CartMenuDatabase
+    private lateinit var mDB: SQLiteDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         menuIdx = intent.getIntExtra("menuIdx", -1)
         mStoreIdx = intent.getIntExtra("storeIdx", -1)
+
+        // 데이터베이스 셋팅
+        mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
+        mDB = mDBHelper.writableDatabase
 
         // 메뉴 받아오는 통신
         MenuSelectService(this).tryGetMenuDetail(mStoreIdx, menuIdx)
@@ -48,37 +57,36 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
         binding.menuSelectComplete.setOnClickListener {
             // 카트에 담는다.
             // 메인 메뉴
-            var content = binding.menuSelectMenuName.text.toString()
+            val mainMenu = binding.menuSelectMenuName.text.toString()
+            var sideMenu = ""
             var totalPrice =  binding.menuSelectNum.text.toString().toInt() * mMenuPrice
+            val num = binding.menuSelectNum.text.toString()
             // 사이드 메뉴
             if(mSelectMenuCheck != null){
                 for(index in mSelectMenuCheck!!.indices){
                     if(mSelectMenuCheck!![index]){
                         // 사이드 메뉴 있음
-                        content += ", " + mSelectedMenu!![index].cotent
+                        sideMenu += mSelectedMenu!![index].cotent + ", "
                         totalPrice += mSelectedMenu!![index].price
                     }
                 }
             }
-            Log.d("MenuSelectSide", "conent : ${content} ")
+            Log.d("MenuSelectSide", "conent : ${sideMenu} ")
             Log.d("MenuSelectSide", "price : ${totalPrice} ")
             // 메뉴 저장
-            saveMenuFinish(content, totalPrice)
+            saveMenuFinish(CartMenuInfo(null, mainMenu, num.toInt(), totalPrice, sideMenu, menuIdx))
             setResult(RESULT_OK)
             finish()
         }
     }
 
     // 메뉴 내용과 가격 저장
-    fun saveMenuFinish(content: String, price: Int){
-        val menuNum = ApplicationClass.sSharedPreferences.getInt("menuNum", 0)
+    fun saveMenuFinish(menu: CartMenuInfo){
+
         val edit = ApplicationClass.sSharedPreferences.edit()
-        val menu1Content = "meun${menuNum + 1}Content"
-        val menu1Price = "menu${menuNum + 1}Price"
-        edit.putString(menu1Content, content)
-        edit.putInt(menu1Price, price)
-        edit.putInt("menuNum", menuNum + 1)
-        edit.apply()
+        edit.putInt("storeIdx", mStoreIdx).apply()
+        mDBHelper.menuInsert(mDB, menu)
+
     }
 
     fun saveMenuInfo(position: Int, selectMenu: SelectMenu){

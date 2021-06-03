@@ -1,15 +1,15 @@
 package com.example.coupangeats.src.signUp
 
 import com.example.coupangeats.src.signUp.model.emailDuplicated.EmailDuplicatedResponse
+import com.example.coupangeats.src.signUp.model.phoneCertification.PhoneCertificationRequest
+import com.example.coupangeats.src.signUp.model.phoneCertification.PhoneCertificationResponse
 import com.example.coupangeats.src.signUp.model.phoneDuplicated.PhoneDuplicatedResponse
-import com.example.coupangeats.src.signUp.model.phoneDuplicated.PhoneDuplicatedResponseResult
 import com.example.coupangeats.src.signUp.model.userSignUp.UserSignUpRequest
 import com.example.coupangeats.src.signUp.model.userSignUp.UserSignUpResponse
 import com.softsquared.template.kotlin.config.ApplicationClass
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.sign
 
 class SignUpService(val view: SignUpActivityView) {
 
@@ -65,4 +65,25 @@ class SignUpService(val view: SignUpActivityView) {
 
             })
     }
+
+    fun tryPostPhoneCertification(request: PhoneCertificationRequest) {
+        val signUpRetrofitInterface = ApplicationClass.sRetrofit.create(SignUpRetrofitInterface::class.java)
+        signUpRetrofitInterface.postPhoneCertification(request)
+            .enqueue(object : Callback<PhoneCertificationResponse>{
+                override fun onResponse(
+                    call: Call<PhoneCertificationResponse>,
+                    response: Response<PhoneCertificationResponse>
+                ) {
+                    view.onPostPhoneCertificationSuccess(response.body() as PhoneCertificationResponse)
+                }
+
+                override fun onFailure(call: Call<PhoneCertificationResponse>, t: Throwable) {
+                    view.onPostPhoneCertificationFailure(t.message ?: "통신 오류")
+                }
+
+            })
+
+    }
+
+
 }

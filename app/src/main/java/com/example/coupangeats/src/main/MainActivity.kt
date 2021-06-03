@@ -3,6 +3,7 @@ package com.example.coupangeats.src.main
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.sqlite.SQLiteDatabase
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +22,7 @@ import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.main.myeats.MyeatsFragment
 import com.example.coupangeats.src.main.order.OrderFragment
 import com.example.coupangeats.src.main.search.SearchFragment
+import com.example.coupangeats.util.CartMenuDatabase
 import com.example.coupangeats.util.LoginBottomSheetDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.softsquared.template.kotlin.config.ApplicationClass
@@ -37,10 +39,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     val DRIVERYADDRESSSETTING = 1234
     lateinit var loginBottomSheetDialog : LoginBottomSheetDialog
 
+    private lateinit var mDBHelper: CartMenuDatabase
+    private lateinit var mDB: SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         gpsCheck()
+        Log.d("jwt", ApplicationClass.sSharedPreferences.getString(ApplicationClass.X_ACCESS_TOKEN, "") ?: "")
+        // 데이터베이스 셋팅
+        mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
+        mDB = mDBHelper.writableDatabase
+
         loginBottomSheetDialog = LoginBottomSheetDialog(this)
         // 처음 화면 HomeFragment로 지정
         supportFragmentManager.beginTransaction()
@@ -279,9 +289,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onDestroy() {
         val edit = ApplicationClass.sSharedPreferences.edit()
-        edit.putInt("userIdx", -1)
         edit.putInt("userMainAddressIdx", -1)
+
         edit.apply()
+        mDBHelper.deleteTotal(mDB)
         super.onDestroy()
     }
 

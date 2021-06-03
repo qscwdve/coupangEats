@@ -1,6 +1,7 @@
 package com.example.coupangeats.src.main.home
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.DialogFilterSuperBinding
 import com.example.coupangeats.databinding.FragmentHomeBinding
+import com.example.coupangeats.src.categorySuper.CategorySuperActivity
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.home.adapter.*
@@ -28,6 +30,12 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
     private var mUserAddress : UserCheckResponseResult? = null
     private var mLat = ""
     private var mLon = ""
+    private var version = 1  // 버전 1이면 그냥 홈 데이터 버전 2면 주변 맛집 필터
+    var filterSelected = Array(5){i -> false}  // 필터를 선택했는지 안했는데
+    private var whiteColor = "#FFFFFF"
+    private var blackColor = "#000000"
+    private lateinit var mHomeInfoRequest : HomeInfoRequest
+    private var mRecommSelect = 1
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -64,12 +72,57 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         }
         // 추천순
         binding.homeFilterRecommend.setOnClickListener {
-            val filterRecommendBottomSheetDialog = FilterRecommendBottomSheetDialog(this, 1)
+            val filterRecommendBottomSheetDialog = FilterRecommendBottomSheetDialog(this, mRecommSelect)
             filterRecommendBottomSheetDialog.show(requireFragmentManager(), "recommend")
+        }
+        // 치타 배달
+        binding.homeFilterCheetah.setOnClickListener {
+            if(!filterSelected[1]){
+                 // 선택
+                binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah_click)
+                binding.homeFilterCheetahText.setTextColor(Color.parseColor(whiteColor))
+                mHomeInfoRequest.cheetah = "Y"
+                filterSelected[1] = true
+            } else {
+                // 취소
+                binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah)
+                binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
+                mHomeInfoRequest.cheetah = null
+                filterSelected[1] = false
+            }
+            // 서버와 통신
+            startFilterServerSend()
         }
         // 할인쿠폰
         binding.homeFilterCoupon.setOnClickListener {
-            binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_click)
+            if(!filterSelected[4]){
+                binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCouponText.setTextColor(Color.parseColor(whiteColor))
+                // 선택
+                mHomeInfoRequest.coupon = "Y"
+                filterSelected[4] = true
+            } else {
+                binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCouponText.setTextColor(Color.parseColor(blackColor))
+                // 선택 취소
+                mHomeInfoRequest.coupon = null
+                filterSelected[4] = false
+            }
+            // 서버와 통신해야 함
+            startFilterServerSend()
+        }
+        // 초기화 누름
+        binding.homeFilterClear.setOnClickListener {
+            // 초기화 시키기
+            mHomeInfoRequest = HomeInfoRequest(mUserAddress!!.latitude, mUserAddress!!.longitude, "recomm", null, null, null, null, 1, 10)
+            for(i in 0..4){
+                filterSelected[i] = false
+            }
+            showLoadingDialog(requireContext())
+            HomeService(this).tryGetHomeData(mHomeInfoRequest)
+            refreshFilter()
         }
         // 할인중인 맛집 보러가기
         binding.homeDiscountSuperLook.setOnClickListener {
@@ -81,6 +134,122 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         }
     }
 
+    // 필터 활용해서 서버한테 보내기
+    fun startFilterServerSend(){
+        showLoadingDialog(requireContext())
+        HomeService(this).tryGetHomeData(mHomeInfoRequest)
+        changeClearFilter()
+    }
+    // 추천순 필터 바꾸는 함수 다이얼로그에서 호출
+    fun changeRecommendFilter(value: String, sendServerString: String, option: Int) {
+        if(value == "추천순"){
+            binding.homeFilterRecommendBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+            binding.homeFilterRecommendText.text = value
+            binding.homeFilterRecommendText.setTextColor(Color.parseColor(blackColor))
+            binding.homeFilterRecommendImg.setImageResource(R.drawable.ic_arrow_down)
+            filterSelected[0] = false
+            mHomeInfoRequest.sort = sendServerString
+        } else {
+            binding.homeFilterRecommendBackground.setBackgroundResource(R.drawable.super_filter_click)
+            binding.homeFilterRecommendText.text = value
+            binding.homeFilterRecommendText.setTextColor(Color.parseColor(whiteColor))
+            binding.homeFilterRecommendImg.setImageResource(R.drawable.ic_arrow_down_white)
+            filterSelected[0] = true
+            mHomeInfoRequest.sort = sendServerString
+        }
+        mHomeInfoRequest.sort = sendServerString
+        startFilterServerSend()
+        mRecommSelect = option
+    }
+    // 배달비 필터 바꾸는 함수 다이얼로그에서 호출
+    fun changeDeliveryFilter(value: Int, valueString: String){
+        if(value != -1){
+            val str = "배달비 ${valueString}원 이하"
+            binding.homeFilterDeliveryPriceBackground.setBackgroundResource(R.drawable.super_filter_click)
+            binding.homeFilterDeliveryPriceText.text = str
+            binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(whiteColor))
+            binding.homeFilterDeliveryPriceImg.setImageResource(R.drawable.ic_arrow_down_white)
+            // 배달비 바꾸기
+            mHomeInfoRequest.deliverymin = value
+            filterSelected[2] = true
+        } else {
+            binding.homeFilterDeliveryPriceBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+            binding.homeFilterDeliveryPriceText.text = "배달비"
+            binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(blackColor))
+            binding.homeFilterDeliveryPriceImg.setImageResource(R.drawable.ic_arrow_down)
+            mHomeInfoRequest.deliverymin = null
+            filterSelected[2] = false
+        }
+
+        startFilterServerSend()
+    }
+    // 최소 주문 바꾸는 함수 다이얼로그에서 호출
+    fun changeOrderMinFilter(value: Int, valueString: String){
+        if(value != -1){
+            val str = "최수주문 ${valueString}원 이하"
+            binding.homeFilterMiniOrderBackground.setBackgroundResource(R.drawable.super_filter_click)
+            binding.homeFilterMiniOrderText.text = str
+            binding.homeFilterMiniOrderText.setTextColor(Color.parseColor(whiteColor))
+            binding.homeFilterMiniOrderImg.setImageResource(R.drawable.ic_arrow_down_white)
+            // 최소주문 바꾸기
+            mHomeInfoRequest.ordermin = value
+            filterSelected[3] = true
+        } else {
+            // 전체
+            binding.homeFilterMiniOrderBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+            binding.homeFilterMiniOrderText.text = "최소주문"
+            binding.homeFilterMiniOrderText.setTextColor(Color.parseColor(blackColor))
+            binding.homeFilterMiniOrderImg.setImageResource(R.drawable.ic_arrow_down)
+            mHomeInfoRequest.ordermin = null
+            filterSelected[3] = false
+        }
+        startFilterServerSend()
+    }
+
+    // 초기화 필터 체크
+    fun changeClearFilter() {
+        var num = 0
+        for(value in filterSelected){
+            if(value) num++
+        }
+        if(num == 0){
+            // 초기화 필터 다운
+            binding.homeFilterClear.visibility = View.GONE
+        } else {
+            // 초기화 필터 오픈
+            binding.homeFilterClear.visibility = View.VISIBLE
+            binding.homeFilterClearNum.text = num.toString()
+        }
+    }
+    // 초기화
+    fun refreshFilter(){
+        // 초기화 필터 다운
+        binding.homeFilterClear.visibility = View.GONE
+        // 최소 주문
+        binding.homeFilterMiniOrderBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+        binding.homeFilterMiniOrderText.text = "최소주문"
+        binding.homeFilterMiniOrderText.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterMiniOrderImg.setImageResource(R.drawable.ic_arrow_down)
+        // 배달비
+        binding.homeFilterDeliveryPriceBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+        binding.homeFilterDeliveryPriceText.text = "배달비"
+        binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterDeliveryPriceImg.setImageResource(R.drawable.ic_arrow_down)
+        // 추천순
+        binding.homeFilterRecommendBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+        binding.homeFilterRecommendText.text = "추천순"
+        binding.homeFilterRecommendText.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterRecommendImg.setImageResource(R.drawable.ic_arrow_down)
+        mRecommSelect = 1
+        // 할인쿠폰
+        binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+        binding.homeFilterCouponText.setTextColor(Color.parseColor(blackColor))
+        // 치타배달
+        binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+        binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah)
+        binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
+
+    }
     override fun onResume() {
         super.onResume()
         showLoadingDialog(requireContext())
@@ -141,6 +310,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
     fun getMainData(){
         // 홈 데이터 얻음
         val re = HomeInfoRequest(mUserAddress!!.latitude, mUserAddress!!.longitude, "recomm", null, null, null, null, 1, 10)
+        mHomeInfoRequest = re
         showLoadingDialog(requireContext())
         HomeService(this).tryGetHomeData(re)
     }
@@ -172,28 +342,43 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
     override fun onGetHomeDataSuccess(response: HomeInfoResponse) {
         dismissLoadingDialog()
         if(response.code == 1000){
-            val events = response.result.events
-            val category = response.result.storeCategories
-            val salse = response.result.onSaleStores
-            val new = response.result.newStores
-            val recommend = response.result.recommendStores
-            setEvent(events)
-            setCategory(category)
-            if (salse != null) {
-                setOnSalse(salse)
-                binding.homeDiscountSuper.visibility = View.VISIBLE
+            if(version == 1){
+                val events = response.result.events
+                val category = response.result.storeCategories
+                val salse = response.result.onSaleStores
+                val new = response.result.newStores
+                val recommend = response.result.recommendStores
+                setEvent(events)
+                setCategory(category)
+                if (salse != null) {
+                    setOnSalse(salse)
+                    binding.homeDiscountSuper.visibility = View.VISIBLE
+                } else {
+                    binding.homeDiscountSuper.visibility = View.GONE
+                }
+                if(new != null){
+                    setNew(new)
+                    binding.homeNewSuper.visibility = View.VISIBLE
+                } else {
+                    binding.homeNewSuper.visibility = View.GONE
+                }
+                if(recommend != null){
+                    setRecommend(recommend)
+                    binding.homeRecommendRecyclerview.visibility = View.VISIBLE
+                } else {
+                    binding.homeRecommendRecyclerview.visibility = View.GONE
+                }
             } else {
-                binding.homeDiscountSuper.visibility = View.GONE
+                // 주변 매장 맛집 필터
+                val recommend = response.result.recommendStores
+                if(recommend != null){
+                    setRecommend(recommend)
+                    binding.homeRecommendRecyclerview.visibility = View.VISIBLE
+                } else {
+                    binding.homeRecommendRecyclerview.visibility = View.GONE
+                }
             }
-            if(new != null){
-                setNew(new)
-                binding.homeNewSuper.visibility = View.VISIBLE
-            } else {
-                binding.homeNewSuper.visibility = View.GONE
-            }
-            if(recommend != null){
-                setRecommend(recommend)
-            }
+
         }
     }
 
@@ -209,6 +394,17 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         }
         startActivity(intent)
     }
+
+    // 카테고리별 가게 조회
+    fun startCategorySuper(option: String) {
+        val intent = Intent(requireContext(), CategorySuperActivity::class.java).apply {
+            this.putExtra("lat", mLat)
+            this.putExtra("lon", mLon)
+            this.putExtra("categoryName", option)
+        }
+        startActivity(intent)
+    }
+
     // 할인중인 맛집 보러가기
     fun startSalseSuper() {
         val intent = Intent(requireContext(), SuperSearchActivity::class.java).apply {
@@ -218,6 +414,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         }
         startActivity(intent)
     }
+
     // 새로 들어왔어요! 보러가기
     fun startNewSuper() {
         val intent = Intent(requireContext(), SuperSearchActivity::class.java).apply {
@@ -227,6 +424,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         }
         startActivity(intent)
     }
+
     // 어댑터 설정하기
     fun setEvent(eventList: ArrayList<Events>){
         binding.homeEventBannerViewpager.adapter = EventAdapter(eventList, this)
@@ -243,7 +441,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
     }
 
     fun setCategory(categoryList: ArrayList<StoreCategories>){
-        binding.homeCategoryRecyclerview.adapter = CategoryAdapter(categoryList)
+        binding.homeCategoryRecyclerview.adapter = CategoryAdapter(categoryList, this)
         binding.homeCategoryRecyclerview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 

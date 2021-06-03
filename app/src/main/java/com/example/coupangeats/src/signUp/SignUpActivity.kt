@@ -15,6 +15,8 @@ import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivitySignupBinding
 import com.example.coupangeats.src.login.LoginActivity
 import com.example.coupangeats.src.signUp.model.emailDuplicated.EmailDuplicatedResponse
+import com.example.coupangeats.src.signUp.model.phoneCertification.PhoneCertificationRequest
+import com.example.coupangeats.src.signUp.model.phoneCertification.PhoneCertificationResponse
 import com.example.coupangeats.src.signUp.model.phoneDuplicated.PhoneDuplicatedResponse
 import com.example.coupangeats.src.signUp.model.userSignUp.UserSignUpRequest
 import com.example.coupangeats.src.signUp.model.userSignUp.UserSignUpResponse
@@ -33,7 +35,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     private val mOkColor = "#4472C4"
     private val mPasswordCheckedTextColor = "#35763F"
     private lateinit var imm: InputMethodManager
-
+    private var mPhoneAuthNumber = "-1"
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -266,7 +268,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                     binding.signUpPhoneError.visibility = View.GONE
                     // 핸드폰 번호 겹치는 거 확인 -> 서버 통신
                     SignUpService(this).tryGetPhoneDuplicated(phone)
-                // mSignUpChecked[3] = true
+                    // mSignUpChecked[3] = true
                 } else {
                     // 검증 실패
                     binding.signUpPhoneDuplicateCertification.visibility = View.GONE
@@ -279,7 +281,34 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                 mNowEditText = 0
             }
         }
+        // 휴대폰 인증
+        binding.signUpPhoneDuplicateCertification.setOnClickListener {
+            binding.signUpPhoneError.visibility = View.GONE
+            binding.signUpPhoneDuplicateCertification.visibility = View.GONE
+            binding.signUpPhoneChecked.visibility = View.INVISIBLE
+            // 휴대폰 인증 체크 서버 통신
+            val phone = binding.signUpPhoneText.text.toString()
+            SignUpService(this).tryPostPhoneCertification(PhoneCertificationRequest(phone))
 
+        }
+        // 휴대폰 인증 확인
+        binding.signUpPhoneCertificationOk.setOnClickListener {
+            val ahtherNumber = binding.signUpPhoneCertificationText.text.toString()
+            if(mPhoneAuthNumber == ahtherNumber){
+                // 인증 성공
+                binding.signUpPhoneCertificationParent.visibility = View.GONE
+                binding.signUpPhoneLine.visibility = View.VISIBLE
+                binding.signUpPhoneLine.setBackgroundColor(Color.parseColor(mOkColor))
+                binding.signUpPhoneChecked.visibility = View.VISIBLE
+                mSignUpChecked[3] = true
+            }
+        }
+        // 재인증
+        binding.signUpPhoneCertificationRe.setOnClickListener {
+            val phone = binding.signUpPhoneText.text.toString()
+            SignUpService(this).tryPostPhoneCertification(PhoneCertificationRequest(phone))
+        }
+        binding.signUpPhoneCertificationRe.setOnClickListener {  }
         // agree 체크
         binding.signUpAgreeAll.setOnClickListener {
             if(mSignUpAgreeAllChecked){
@@ -310,10 +339,9 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
             val phone = binding.signUpPhoneText.text.toString()
             val userSignUpRequest = UserSignUpRequest(email, password, userName, phone)
             Log.d("signup info", "password : $password")
-            showLoadingDialog(this)
-            SignUpService(this).tryPostSignUp(userSignUpRequest)
             if(checkSignUpReady()){
-
+                showLoadingDialog(this)
+                SignUpService(this).tryPostSignUp(userSignUpRequest)
             }
         }
 
@@ -495,6 +523,22 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
     override fun onGetPhoneDuplicatedFailure(message: String) {
         // 핸드폰 번호 중복 여부 판단 실패
         showCustomToast("PhoneDuplicated 통신 오류")
+    }
+
+    override fun onPostPhoneCertificationSuccess(response: PhoneCertificationResponse) {
+        if(response.code == 1000){
+            // 휴대폰 인증 번호 발송 성공
+            binding.signUpPhoneCertificationParent.visibility = View.VISIBLE
+            binding.signUpPhoneDuplicateCertification.visibility = View.GONE
+            binding.signUpPhoneLine.visibility = View.INVISIBLE
+            binding.signUpPhoneChecked.visibility = View.VISIBLE
+            binding.signUpPhoneError.visibility = View.GONE
+            mPhoneAuthNumber = response.result.authNumber
+        }
+    }
+
+    override fun onPostPhoneCertificationFailure(message: String) {
+
     }
 
     fun checkSignUpReady(): Boolean {

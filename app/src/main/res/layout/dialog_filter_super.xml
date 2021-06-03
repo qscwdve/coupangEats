@@ -61,8 +61,8 @@
         android:id="@+id/dialog_filter_img_parent"
         android:layout_marginTop="10dp"
         android:background="@drawable/ic_filter_selected_5"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
         android:orientation="horizontal">
 
         <View

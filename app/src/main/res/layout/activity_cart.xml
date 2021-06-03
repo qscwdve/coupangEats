@@ -167,17 +167,34 @@
                 android:background="@color/line" />
 
             <!-- 할인 쿠폰 -->
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="15dp"
-                android:layout_marginStart="25dp"
-                android:text="@string/cart_discount"
-                android:textColor="@color/black"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                android:layout_marginHorizontal="25dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cart_discount"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
 
-            <!-- 주문 금액 -->
+                <TextView
+                    android:id="@+id/cart_coupon_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="쿠폰 적용 가능"
+                    android:gravity="end"
+                    android:textColor="@color/baseColor"
+                    android:textSize="13sp"/>
+            </LinearLayout>
+
+            <!-- 할인 쿠폰 내용 / 주문 금액 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -201,6 +218,7 @@
                         android:textSize="13sp" />
 
                     <TextView
+                        android:id="@+id/cart_coupon_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="0장  ▶"
@@ -214,6 +232,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/cart_coupon_price"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -227,6 +246,7 @@
                         android:textSize="13sp" />
 
                     <TextView
+                        android:id="@+id/cart_coupon_change"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -348,6 +368,7 @@
                     android:textStyle="bold" />
 
                 <ImageView
+                    android:id="@+id/cart_request_change"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/main_address_arrow"/>
@@ -356,6 +377,8 @@
 
             <!-- 요청사항 내용 -->
             <LinearLayout
+                android:visibility="visible"
+                android:id="@+id/cart_request_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
@@ -367,19 +390,20 @@
                     android:layout_marginTop="5dp"
                     android:text="가게 사장님에게"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/cart_super_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
                     android:layout_marginEnd="7dp"
                     android:background="@drawable/cart_need_box"
                     android:paddingHorizontal="10dp"
-                    android:paddingVertical="17dp"
+                    android:paddingVertical="10dp"
                     android:text="예) 견과류는 빼주세요"
                     android:textColor="@color/searchHint"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
 
                 <!-- 일회용 수저와 포크 보기 -->
                 <LinearLayout
@@ -429,9 +453,11 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/cart_rider_order"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_marginEnd="7dp"
                     android:background="@drawable/cart_need_box"
                     android:paddingHorizontal="10dp"
@@ -473,7 +499,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="쿠페이 중 계좌이체/신용카드로만 결제가능"
+                        android:text="만나서 결제"
                         android:textColor="@color/baseColor"
                         android:textSize="13sp" />
 
@@ -484,16 +510,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:src="@drawable/blue_right_arrow"/>
-                <!--<TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="＞"
-                    android:textColor="@color/loginBlue"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
--->
+
             </LinearLayout>
 
             <View

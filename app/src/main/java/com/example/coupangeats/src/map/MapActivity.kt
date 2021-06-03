@@ -1,17 +1,12 @@
 package com.example.coupangeats.src.map
 
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
-import android.icu.text.CaseMap
-import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
-import androidx.annotation.RequiresApi
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityMapBinding
 import com.example.coupangeats.src.deliveryAddressSetting.model.DeliveryAddressAddRequest
@@ -20,12 +15,11 @@ import com.example.coupangeats.src.deliveryAddressSetting.model.UserCheckedAddre
 import com.example.coupangeats.util.GpsControl
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
-import com.naver.maps.map.overlay.LocationOverlay
 import com.naver.maps.map.overlay.Marker
-import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
+
 
 class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate), OnMapReadyCallback, MapActivityView{
     lateinit var uiSettings : UiSettings
@@ -170,21 +164,10 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
 
         // 현재 위치 마크 표시
         uiSettings = mNaverMap.uiSettings
-        uiSettings.logoGravity = Gravity.BOTTOM and Gravity.END
 
         if(mLat != -1.0 && mLon != -1.0){
             Log.d("mark", "마크 표시 보여야함")
             Log.d("mark", "lat : ${mLat}  , lon : ${mLon}")
-            var locationOverlay = mNaverMap.locationOverlay
-            locationOverlay.isVisible = true
-
-            locationOverlay.subIcon =
-                OverlayImage.fromResource(R.drawable.ic_star)
-            locationOverlay.subIconWidth = 80
-            locationOverlay.subIconHeight = 40
-            locationOverlay.circleRadius = 50
-            locationOverlay.position = LatLng(mLat, mLon)
-            locationOverlay.bearing = 90f
 
             val address : ArrayList<String>? = gpsControl.getCurrentAddressArray(mLat, mLon)
             if(address != null){
@@ -192,7 +175,17 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
                 binding.mapAddress.text = address[0]
             }
         }
-
+        val marker = Marker(LatLng(mLat, mLon))
+        marker.map = mNaverMap
+        //위치 및 각도 조정
+        //위치 및 각도 조정
+        val cameraPosition = CameraPosition(
+            LatLng(mLat, mLon),  // 위치 지정
+            16.0,  // 줌 레벨
+            0.0,  // 기울임 각도
+            0.0 // 방향
+        )
+        mNaverMap.setCameraPosition(cameraPosition)
         mNaverMap.setOnMapClickListener { pointF, latLng ->
             // showCustomToast("위도 : ${latLng.latitude}, 경도 : ${latLng.longitude}")
             // Log.d("click", "클릭 이벤트 naver map")

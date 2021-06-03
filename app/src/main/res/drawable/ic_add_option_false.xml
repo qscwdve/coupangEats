@@ -4,6 +4,6 @@
         <clip-path android:pathData="M0,0h136v140h-136z"/>
         <path android:fillColor="#D9D9D9"
             android:pathData="M1,2h133v136h-133z"
-            android:strokeColor="#AFABAB" android:strokeWidth="2"/>
+            android:strokeColor="#F5F6F8" android:strokeWidth="2"/>
      </group>
 </vector>

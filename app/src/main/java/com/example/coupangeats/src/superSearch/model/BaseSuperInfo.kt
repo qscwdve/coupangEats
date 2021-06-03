@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class BaseSuperInfo(
     @SerializedName("storeIdx") val storeIdx: Int,
-    @SerializedName("imageUrl") val url: ArrayList<String>,
+    @SerializedName("imageUrls") val url: ArrayList<String>,
     @SerializedName("storeName") val storeName: String,
     @SerializedName("totalReview") val totalReview: String?,
     @SerializedName("distance") val distance: String,

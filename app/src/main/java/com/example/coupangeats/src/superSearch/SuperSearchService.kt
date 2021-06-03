@@ -9,7 +9,7 @@ import retrofit2.Response
 
 class SuperSearchService(val view: SuperSearchActivityView) {
 
-    fun tryGetNewSuperSuccess(lat:String, lon:String, sort:String, cheetah:String?, coupon: String?,
+    fun tryGetNewSuper(lat:String, lon:String, sort:String, cheetah:String?, coupon: String?,
                             ordermin: Int?, delivery: Int?, cursor: Int=1, numOfRows: Int=10){
         val superSearchActivityRetrofitInterface = ApplicationClass.sRetrofit.create(SuperSearchActivityRetrofitInterface::class.java)
         superSearchActivityRetrofitInterface.getNewSuper(lat, lon, sort, cheetah, coupon, ordermin, delivery, cursor, numOfRows)

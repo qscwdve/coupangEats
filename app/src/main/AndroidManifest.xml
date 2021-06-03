@@ -15,10 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".src.map.MapActivity"></activity>
+        <activity
+            android:name=".src.categorySuper.CategorySuperActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".src.map.MapActivity" />
         <activity
             android:name=".src.detailSuper.ScrollingActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".src.cart.CartActivity" />
         <activity android:name=".src.menuSelect.MenuSelectActivity" />
         <activity
@@ -41,6 +44,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -1,6 +1,7 @@
 package com.example.coupangeats.src.detailSuper
 
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -18,6 +19,7 @@ import com.example.coupangeats.src.detailSuper.adapter.MenuCategoryAdapter
 import com.example.coupangeats.src.detailSuper.adapter.SuperPhotoReviewAdapter
 import com.example.coupangeats.src.detailSuper.model.*
 import com.example.coupangeats.src.menuSelect.MenuSelectActivity
+import com.example.coupangeats.util.CartMenuDatabase
 import com.google.android.material.appbar.AppBarLayout
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
@@ -29,14 +31,21 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     private var mCouponIdx = -1
     private var textStoreIdx = 1
     private val MENU_SELECT_ACTIVITY = 1234
+    private lateinit var mDBHelper: CartMenuDatabase
+    private lateinit var mDB: SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 데이터베이스 셋팅
+        mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
+        mDB = mDBHelper.writableDatabase
 
         mSuperIdx = intent.getIntExtra("storeIdx", -1)
         if(mSuperIdx != 36) textStoreIdx = 35
         // 매장 조회 시작
         //DetailSuperService(this).tryGetSuperInfo(mSuperIdx)
-        DetailSuperService(this).tryGetSuperInfo(textStoreIdx)  // Test
+        DetailSuperService(this).tryGetSuperInfo(mSuperIdx)  // Test
         // 카트 담긴거 있는지 확인
         cartChange()
 
@@ -45,7 +54,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             // 쿠폰 클릭
             if(mCouponStatus){
                 // 서버 통신 일반 매장 35번으로 고정
-                DetailSuperService(this).tryPostCouponSave(textStoreIdx , CouponSaveRequest(mCouponIdx, getUserIdx()))
+                DetailSuperService(this).tryPostCouponSave(mSuperIdx , CouponSaveRequest(mCouponIdx, getUserIdx()))
                 mCouponStatus = false
                 // 쿠폰 사용으로 바꿈
                 binding.detailSuperCoupon.setBackgroundResource(R.drawable.detail_super_coupon_select_box)
@@ -59,23 +68,38 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             startActivity(Intent(this, CartActivity::class.java))
         }
 
+        // 스크롤링
+        setSupportActionBar(binding.toolbar)
+        supportActionBar!!.hide()
+        binding.appBar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener{
+            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+                if(Math.abs(verticalOffset) > appBarLayout!!.totalScrollRange - 50){
+                    // 아직 액션바 안에 있음
+                    //Log.d("vertical", "아직 액션바 나옴")
+                    binding.toolbarItem.visibility = View.INVISIBLE
+                    binding.toolbar2.setBackgroundColor(Color.parseColor("#444444"))
+                }
+                if(Math.abs(verticalOffset) < appBarLayout!!.totalScrollRange - 50){
+                    // 액션바에서 나옴
+                    //Log.d("vertical", "아직 액션바 안에 있음")
+                    binding.toolbarItem.visibility = View.VISIBLE
+                    binding.toolbar2.setBackgroundColor(Color.parseColor("#00000000"))
+                }
+            }
 
+        })
     }
 
-
+    // 카트 보는거 체인지
     fun cartChange() {
         // 카트 담긴거 있는지 확인
-        val menuNum = ApplicationClass.sSharedPreferences.getInt("menuNum", 0)
-        if(menuNum > 0){
+        val num = mDBHelper.checkMenuNum(mDB)
+        if(num > 0){
             // 카트가 있음
             binding.detailSuperCartParent.visibility = View.VISIBLE
-            binding.detailSuperCartNum.text = menuNum.toString()
+            binding.detailSuperCartNum.text = num.toString()
             // 전체 가격
-            var totalPrice = 0
-            for(i in 1..menuNum){
-                val menuPrice = "menu${i}Price"
-                totalPrice += ApplicationClass.sSharedPreferences.getInt(menuPrice, 0)
-            }
+            val totalPrice = mDBHelper.menuTotalPrice(mDB)
             val totalPricetext = "${totalPrice}원"
             binding.detailSuperCartPrice.text = totalPricetext
         } else {
@@ -83,12 +107,14 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         }
     }
 
-
     fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1) ?: -1
 
     override fun onGetSuperInfoSuccess(response: SuperResponse) {
         if( response.code == 1000 ){
             setSuperInfo(response.result)
+            // 매장 이름 넣기
+            val edit = ApplicationClass.sSharedPreferences.edit()
+            edit.putString("storeName", response.result.storeName).apply()
         }
     }
 
@@ -110,9 +136,14 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         // 일단 매장 번호 35번
         val intent = Intent(this, MenuSelectActivity::class.java).apply{
             this.putExtra("menuIdx", menuIdx)
-            this.putExtra("storeIdx", textStoreIdx)
+            this.putExtra("storeIdx", mSuperIdx)
         }
         startActivityForResult(intent, MENU_SELECT_ACTIVITY)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        cartChange()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -121,7 +152,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             val menuNum = ApplicationClass.sSharedPreferences.getInt("menuNum", 0)
             if(menuNum > 0){
                 // 카트 보기 열어야함
-                //cartChange()
+                cartChange()
             }
         }
     }
@@ -131,8 +162,10 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         setSuperImgViewPager(result.img)
         binding.detailSuperName.text = result.storeName
         // 리뷰수, 별점
-        if(result.rating == null && result.reviewCount == null) binding.detailSuperNameParent.visibility = View.GONE
-        else binding.detailSuperNameParent.visibility = View.VISIBLE
+        if(result.rating == null && result.reviewCount == null) {
+            binding.detailSuperRatingReviewParent.visibility = View.GONE
+        }
+        else binding.detailSuperRatingReviewParent.visibility = View.VISIBLE
 
         if(result.rating == null){
             binding.detailSuperStar.visibility = View.GONE

@@ -61,7 +61,6 @@
                 android:src="@drawable/coupang"/>
 
             <TextView
-                android:fontFamily="@font/malgun"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="15dp"
                 android:layout_width="wrap_content"
@@ -99,7 +98,6 @@
                         android:layout_height="match_parent"
                         android:background="@color/middleGray"/>
                     <EditText
-                        android:fontFamily="@font/malgun"
                         android:paddingVertical="15dp"
                         android:id="@+id/sign_up_email_text"
                         android:inputType="textEmailAddress"
@@ -136,7 +134,6 @@
                     android:background="@color/blue"/>
 
                 <TextView
-                    android:fontFamily="@font/malgun"
                     android:visibility="gone"
                     android:id="@+id/sign_up_email_error"
                     android:layout_width="wrap_content"
@@ -150,7 +147,6 @@
                     tools:ignore="RtlSymmetry" />
 
                 <TextView
-                    android:fontFamily="@font/malgun"
                     android:visibility="gone"
                     android:id="@+id/sign_up_email_duplicate_login"
                     android:layout_alignParentStart="true"
@@ -165,7 +161,6 @@
                     android:textColor="@color/blue"
                     android:layout_below="@+id/sign_up_email_error"/>
                 <TextView
-                    android:fontFamily="@font/malgun"
                     android:visibility="gone"
                     android:id="@+id/sign_up_email_duplicate_password_find"
                     android:layout_marginStart="5dp"
@@ -218,7 +213,6 @@
                         android:orientation="vertical">
 
                         <EditText
-                            android:fontFamily="@font/malgun"
                             android:id="@+id/sign_up_password_text"
                             android:paddingVertical="15dp"
                             android:paddingStart="10dp"
@@ -236,7 +230,6 @@
                             tools:ignore="RtlSymmetry" />
 
                         <TextView
-                            android:fontFamily="@font/malgun"
                             android:visibility="gone"
                             android:paddingStart="10dp"
                             android:layout_width="match_parent"
@@ -291,7 +284,6 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/sign_up_password_error_init"/>
                         <TextView
-                            android:fontFamily="@font/malgun"
                             android:id="@+id/sign_up_password_error1_text"
                             android:layout_gravity="center"
                             android:layout_width="0dp"
@@ -319,7 +311,6 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/sign_up_password_error_init"/>
                         <TextView
-                            android:fontFamily="@font/malgun"
                             android:id="@+id/sign_up_password_error2_text"
                             android:layout_gravity="center"
                             android:layout_width="0dp"
@@ -347,7 +338,6 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/sign_up_password_error_init"/>
                         <TextView
-                            android:fontFamily="@font/malgun"
                             android:id="@+id/sign_up_password_error3_text"
                             android:layout_gravity="center"
                             android:layout_width="0dp"
@@ -382,7 +372,6 @@
                         android:padding="2dp"
                         android:src="@drawable/ic_sign_up_password_checked"/>
                     <TextView
-                        android:fontFamily="@font/malgun"
                         android:id="@+id/sign_up_password_checked_text"
                         android:layout_gravity="center"
                         android:layout_width="0dp"
@@ -424,7 +413,6 @@
                         android:layout_height="match_parent"
                         android:background="@color/middleGray"/>
                     <EditText
-                        android:fontFamily="@font/malgun"
                         android:paddingVertical="15dp"
                         android:id="@+id/sign_up_name_text"
                         android:inputType="textPersonName"
@@ -461,7 +449,6 @@
                     android:background="@color/blue"/>
 
                 <TextView
-                    android:fontFamily="@font/malgun"
                     android:visibility="gone"
                     android:id="@+id/sign_up_name_error"
                     android:layout_width="wrap_content"
@@ -503,7 +490,6 @@
                         android:layout_height="match_parent"
                         android:background="@color/middleGray"/>
                     <EditText
-                        android:fontFamily="@font/malgun"
                         android:paddingVertical="15dp"
                         android:id="@+id/sign_up_phone_text"
                         android:inputType="phone"
@@ -539,8 +525,79 @@
                     android:layout_height="2.5dp"
                     android:background="@color/blue"/>
 
+                <!-- 휴대폰 인증 창 만들기 -->
+                <LinearLayout
+                    android:layout_below="@+id/sign_up_phone_box"
+                    android:id="@+id/sign_up_phone_certification_parent"
+                    android:background="@drawable/login_box"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="1dp"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:padding="10dp"
+                        android:background="@color/backgroundGray"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/sign_up_phone_certification_text"
+                            android:background="@drawable/phone_certification_box"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:paddingHorizontal="7dp"
+                            android:paddingVertical="10dp"
+                            android:inputType="phone"/>
+
+                        <TextView
+                            android:id="@+id/sign_up_phone_certification_re"
+                            android:background="@drawable/phone_certification_btn"
+                            android:layout_marginHorizontal="7dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="재전송"
+                            android:paddingHorizontal="7dp"
+                            android:paddingVertical="10dp"
+                            android:textColor="@color/black"
+                            android:textSize="13sp"
+                            android:layout_gravity="center"
+                            android:gravity="center"/>
+
+                        <TextView
+                            android:id="@+id/sign_up_phone_certification_ok"
+                            android:background="@drawable/phone_certification_btn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="인증"
+                            android:paddingHorizontal="7dp"
+                            android:paddingVertical="10dp"
+                            android:textColor="@color/loginBlue"
+                            android:textSize="13sp"
+                            android:layout_gravity="center"
+                            android:gravity="center"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/phon_certiiation_info"
+                        android:textSize="11sp"
+                        android:textColor="@color/black"
+                        android:layout_marginHorizontal="20sp"/>
+
+                </LinearLayout>
+
                 <TextView
-                    android:fontFamily="@font/malgun"
                     android:visibility="gone"
                     android:id="@+id/sign_up_phone_error"
                     android:layout_width="wrap_content"
@@ -554,7 +611,6 @@
                     tools:ignore="RtlSymmetry" />
 
                 <TextView
-                    android:fontFamily="@font/malgun"
                     android:visibility="gone"
                     android:id="@+id/sign_up_phone_duplicate_certification"
                     android:layout_alignParentStart="true"
@@ -578,7 +634,6 @@
                 tools:ignore="SmallSp" />
 
             <TextView
-                android:fontFamily="@font/malgun"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="15dp"
                 android:layout_width="wrap_content"
@@ -618,7 +673,6 @@
                             tools:ignore="NestedWeights" />
 
                         <TextView
-                            android:fontFamily="@font/malgun"
                             android:id="@+id/sign_up_agree_all_text"
                             android:textColor="@color/black"
                             android:textStyle="bold"
@@ -652,7 +706,6 @@
                     android:contentDescription="@string/image_no" />
 
                 <TextView
-                    android:fontFamily="@font/malgun"
                     android:layout_width="0dp"
                     android:layout_weight="15"
                     android:layout_height="wrap_content"
@@ -691,13 +744,12 @@
                             android:scaleType="fitStart"
                             android:layout_width="0sp"
                             android:layout_weight="1"
-                            android:layout_height="match_parent"
+                            android:layout_height="22dp"
                             android:adjustViewBounds="true"
                             android:src="@drawable/ic_add_option"
                             tools:ignore="NestedWeights" />
 
                         <TextView
-                            android:fontFamily="@font/malgun"
                             android:textColor="@color/lightBlack"
                             android:layout_marginStart="3dp"
                             android:layout_width="0dp"
@@ -731,13 +783,12 @@
                             android:scaleType="fitStart"
                             android:layout_width="0sp"
                             android:layout_weight="1"
-                            android:layout_height="match_parent"
+                            android:layout_height="22dp"
                             android:adjustViewBounds="true"
                             android:src="@drawable/ic_add_option"
                             tools:ignore="NestedWeights" />
 
                         <TextView
-                            android:fontFamily="@font/malgun"
                             android:textColor="@color/lightBlack"
                             android:layout_marginStart="3dp"
                             android:layout_width="0sp"
@@ -774,13 +825,12 @@
                             android:scaleType="fitStart"
                             android:layout_width="0sp"
                             android:layout_weight="1"
-                            android:layout_height="match_parent"
+                            android:layout_height="22dp"
                             android:adjustViewBounds="true"
                             android:src="@drawable/ic_add_option"
                             tools:ignore="NestedWeights" />
 
                         <TextView
-                            android:fontFamily="@font/malgun"
                             android:textColor="@color/lightBlack"
                             android:layout_marginStart="3dp"
                             android:layout_width="0dp"
@@ -818,13 +868,12 @@
                             android:scaleType="fitStart"
                             android:layout_width="0sp"
                             android:layout_weight="1"
-                            android:layout_height="match_parent"
+                            android:layout_height="22dp"
                             android:adjustViewBounds="true"
                             android:src="@drawable/ic_add_option"
                             tools:ignore="NestedWeights" />
 
                         <TextView
-                            android:fontFamily="@font/malgun"
                             android:textColor="@color/lightBlack"
                             android:layout_marginStart="3dp"
                             android:layout_width="0dp"
@@ -862,13 +911,12 @@
                             android:scaleType="fitStart"
                             android:layout_width="0sp"
                             android:layout_weight="1"
-                            android:layout_height="match_parent"
+                            android:layout_height="22dp"
                             android:adjustViewBounds="true"
                             android:src="@drawable/ic_add_option"
                             tools:ignore="NestedWeights" />
 
                         <TextView
-                            android:fontFamily="@font/malgun"
                             android:textColor="@color/lightBlack"
                             android:layout_marginStart="3dp"
                             android:layout_width="0dp"
@@ -901,7 +949,6 @@
                 android:textStyle="bold"/>
 
             <TextView
-                android:fontFamily="@font/malgun"
                 android:paddingVertical="20dp"
                 android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"

@@ -85,7 +85,7 @@
     <string name="lanauge">언어</string>
     <string name="logout">로그아웃</string>
     <string name="appVersion">App ver.1.2.19</string>
-    <string name="logout_info">정말 로그아웃 하시겠습니까?</string>
+    <string name="logout_info">정말로 로그아웃 하시겠습니까?</string>
     <string name="logout_text">로그아웃</string>
     <string name="divery_address_setting">배달지 주소 설정</string>
     <string name="address_info">도로명, 건물명 또는 지번으로 검색</string>
@@ -232,4 +232,7 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="map_delivery">이 위치로 배달하기</string>
+    <string name="filter_clear">초기화</string>
+    <string name="phon_certiiation_info">입력하신 번호로 인증번호가 발송되었습니다.</string>
+    <string name="title_activity_category_super">ScrollingActivity</string>
 </resources>

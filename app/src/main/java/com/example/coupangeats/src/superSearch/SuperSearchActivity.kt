@@ -24,11 +24,10 @@ class SuperSearchActivity : BaseActivity<ActivitySuperSearchBinding>(ActivitySup
         // 호출!!
         binding.superSearchTitle.text = if(version == 1) "할인 중인 맛집" else "새로 들어온 가게!"
         if(version == 1){
-            binding.searchFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_click)
             SuperSearchService(this).tryGetDiscountSuper(lat, lon, "recomm", null,"Y", null, null)
         } else {
             binding.searchFilterRecommendText.text = "신규 매장"
-            SuperSearchService(this).tryGetDiscountSuper(lat, lon, "new", null,null, null, null)
+            SuperSearchService(this).tryGetNewSuper(lat, lon, "new", null,null, null, null)
         }
 
         // 종료

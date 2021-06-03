@@ -9,9 +9,8 @@
         android:id="@+id/item_menu_detail_click"
         android:adjustViewBounds="true"
         android:layout_gravity="center"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:src="@drawable/ic_necessary_option"/>
 
     <TextView
@@ -30,7 +29,7 @@
         android:layout_gravity="center"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="9"
+        android:layout_weight="1"
         android:text="(+3000원)"
         android:textSize="15sp"
         android:textColor="@color/baseColor"/>
