@@ -49,8 +49,8 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
             val text = "입력하신 배달지 위치를 확인해주세요"
             binding.mapInfo.text = text
         }
-        Log.d("position", "mLat : ${mLat}")
-        Log.d("position", "mLon : ${mLon}")
+        //Log.d("position", "mLat : ${mLat}")
+        //Log.d("position", "mLon : ${mLon}")
         // 대평초등학교 기중
         //mLat = 37.29755480607947
         //mLon = 126.9910868976806
@@ -72,7 +72,7 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
                 binding.mapPositionSetting.visibility = View.VISIBLE
                 binding.mapDeliveryBtn.setBackgroundResource(R.drawable.map_address_ing_box)
             } else if(event.action == MotionEvent.ACTION_UP){
-                Log.d("click", "손 놓ㅇㅁ")
+                //Log.d("click", "손 놓ㅇㅁ")
                 setM(binding.gps)
                 flag = true
 
@@ -120,7 +120,7 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
                 view.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
-        Log.d("image", "width : $tvWidth   ,  height : $tvHeight")
+        //Log.d("image", "width : $tvWidth   ,  height : $tvHeight")
     }
 
     override fun onStart() {
@@ -225,7 +225,7 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
 
     override fun onPathUserCheckedAddressFailure(message: String) {
         dismissLoadingDialog()
-        showCustomToast("배달 주소 선택에 실패하였습니다")
+        //showCustomToast("배달 주소 선택에 실패하였습니다")
     }
 
     override fun onPostDeliveryAddressAddSuccess(response: DeliveryAddressResponse) {
@@ -240,7 +240,7 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
 
     override fun onPostDeliveryAddressAddFailure(message: String) {
         dismissLoadingDialog()
-        showCustomToast("배달주소 추가에 실패하였습니다")
+        //showCustomToast("배달주소 추가에 실패하였습니다")
     }
 
     fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)

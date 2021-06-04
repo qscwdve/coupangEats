@@ -44,8 +44,6 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
         // no address recyclerView adapter setting
         binding.homeNoAddressRecyclerview.adapter = BaseAddressAdapter(this)
         binding.homeNoAddressRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-        //val dividerItemDecoration = DividerItemDecoration(binding.homeCategoryRecyclerview.context, LinearLayoutManager(requireContext()).orientation);
-        //binding.homeNoAddressRecyclerview.addItemDecoration(dividerItemDecoration);
 
         // 검색 기능
         binding.homeSearch.setOnClickListener {
@@ -186,7 +184,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
     // 최소 주문 바꾸는 함수 다이얼로그에서 호출
     fun changeOrderMinFilter(value: Int, valueString: String){
         if(value != -1){
-            val str = "최수주문 ${valueString}원 이하"
+            val str = "최소주문 ${valueString}원 이하"
             binding.homeFilterMiniOrderBackground.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterMiniOrderText.text = str
             binding.homeFilterMiniOrderText.setTextColor(Color.parseColor(whiteColor))
@@ -336,7 +334,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
 
     override fun onUserCheckAddressFailure(message: String) {
         dismissLoadingDialog()
-        showCustomToast("유저 선택 주소 실패")
+       // showCustomToast("유저 선택 주소 실패")
     }
 
     override fun onGetHomeDataSuccess(response: HomeInfoResponse) {
@@ -384,7 +382,7 @@ class HomeFragment() : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bi
 
     override fun onGetHomeDataFailure(message: String) {
         dismissLoadingDialog()
-        showCustomToast("홈 데이터 불러오기 실패")
+        //showCustomToast("홈 데이터 불러오기 실패")
     }
     
     // 매장 조회하기

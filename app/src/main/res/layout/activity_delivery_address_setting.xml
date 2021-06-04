@@ -81,6 +81,7 @@
                 android:background="@color/white"
                 android:hint="@string/address_info"
                 android:inputType="text"
+                style="@style/myEditText"
                 android:padding="10dp"
                 android:textColorHint="@color/searchHint"
                 android:textSize="17sp" />

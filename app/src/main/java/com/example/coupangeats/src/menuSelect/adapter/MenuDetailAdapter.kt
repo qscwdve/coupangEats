@@ -24,7 +24,7 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>, val version:Int, val 
 
         fun bind(item: Option, position: Int){
             name.text = item.optionName
-            val extraPrice = "(+${item.extraPrive}원)"
+            val extraPrice = "(+${priceIntToString(item.extraPrive)}원)"
             price.text = extraPrice
             if(menuDetailAdapter.version == 1){
                 // 필수
@@ -91,7 +91,15 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>, val version:Int, val 
                 }
             }
         }
-
+        fun priceIntToString(value: Int) : String {
+            val target = value.toString()
+            val size = target.length
+            return if(size > 3){
+                val last = target.substring(size - 3 until size)
+                val first = target.substring(0..(size - 4))
+                "$first,$last"
+            } else target
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuDetailViewHolder {
@@ -114,7 +122,7 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>, val version:Int, val 
         var totalPrice = 0
         if(nessary != -1){
             // 필수 옵션 1개
-            val extraPrice = if(optionList[nessary].extraPrive != 0) "(+${optionList[nessary].extraPrive}원)" else ""
+            val extraPrice = if(optionList[nessary].extraPrive != 0) "(+${priceIntToString(optionList[nessary].extraPrive)}원)" else ""
             totalPrice = optionList[nessary].extraPrive
             content = optionList[nessary].optionName + extraPrice
         } else {
@@ -122,12 +130,22 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>, val version:Int, val 
             for(index in selectedOption.indices){
                 if(selectedOption[index]){
                     // 선택된 것
-                    val extraPrice = "(+${optionList[index].extraPrive}원)"
+                    val extraPrice = "(+${priceIntToString(optionList[index].extraPrive)}원)"
                     content += ", " + optionList[index].optionName + extraPrice
                     totalPrice += optionList[index].extraPrive
                 }
             }
         }
         activity.saveMenuInfo(mPosition, SelectMenu(content, totalPrice))
+    }
+
+    fun priceIntToString(value: Int) : String {
+        val target = value.toString()
+        val size = target.length
+        return if(size > 3){
+            val last = target.substring(size - 3 until size)
+            val first = target.substring(0..(size - 4))
+            "$first,$last"
+        } else target
     }
 }

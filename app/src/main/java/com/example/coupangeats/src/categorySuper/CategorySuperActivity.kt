@@ -25,6 +25,7 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
         option = intent.getStringExtra("categoryName") ?: ""
         mLat = intent.getStringExtra("lat") ?: ""
         mLon = intent.getStringExtra("lon") ?: ""
+        binding.cartTitle.text = option
         // 카테고리 선택
         CategorySuperService(this).tryGetSuperCategory()
         CategorySuperService(this).tryGetCategorySuper(mLat, mLon,option, "recomm", null, null, null, null)
@@ -61,7 +62,7 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
     fun categoryChange(value: String) {
         // 바뀐걸로 서버 통신 해야 함
         CategorySuperService(this).tryGetCategorySuper(mLat, mLon, value, "recomm", null, null, null, null)
-
+        binding.cartTitle.text = value
     }
 
     fun startSuper(storeIdx: Int){

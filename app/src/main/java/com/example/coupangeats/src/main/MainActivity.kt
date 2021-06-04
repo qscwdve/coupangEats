@@ -58,7 +58,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 .commitAllowingStateLoss()
 
         binding.mainBtmNav.itemIconTintList = null
-
+        val jwt = ApplicationClass.sSharedPreferences.getString(ApplicationClass.X_ACCESS_TOKEN, "null")
+        if (jwt != null) {
+            Log.d("jwt", jwt)
+        }
         // 카트 초기화
         resetCart()
 

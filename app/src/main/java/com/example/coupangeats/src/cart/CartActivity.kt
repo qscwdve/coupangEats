@@ -126,26 +126,26 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
 
             // 주문 금액
             mMenuPrice = mDBHelper.menuTotalPrice(mDB)
-            val menuPrice = "${mMenuPrice}원"
+            val menuPrice = "${priceIntToString(mMenuPrice)}원"
             binding.cartMenuPrice.text = menuPrice
 
             // 배달비
-            val totalPrice = "+" + result.deliveryPrice.toString() + "원"
+            val totalPrice = "+" + priceIntToString(result.deliveryPrice) + "원"
             mDeliveryPrice = result.deliveryPrice
             binding.cartMenuDelveryPrice.text = totalPrice
 
             // 총 결제 금액
             mTotalPrice = mMenuPrice + mDeliveryPrice - mCouponPrice
-            val superTotalPrice = "${mTotalPrice}원"
+            val superTotalPrice = "${priceIntToString(mTotalPrice)}원"
             binding.cartMenuTotalPrice.text = superTotalPrice
-            val total = superTotalPrice + "결제하기"
+            val total = "$superTotalPrice 결제하기"
             binding.cartOk.text = total
         }
     }
 
     override fun onGetCartLookFailure(message: String) {
         dismissLoadingDialog()
-        showCustomToast("카트 보기가 실패하였습니다.")
+        //showCustomToast("카트 보기가 실패하였습니다.")
     }
 
     override fun onPostOrderSuccess(response: OrderResponse) {
@@ -159,7 +159,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
 
     override fun onPostOrderFailure(message: String) {
         dismissLoadingDialog()
-        showCustomToast("결제하기 실패")
+        //showCustomToast("결제하기 실패")
     }
 
     fun couponSetting(coupon: CartCoupon) {
@@ -201,5 +201,14 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     // 가게 요청사항 고르기
     fun changeSuperOrder(value: String){
         binding.cartSuperOrder.text = value
+    }
+    fun priceIntToString(value: Int) : String {
+        val target = value.toString()
+        val size = target.length
+        return if(size > 3){
+            val last = target.substring(size - 3 until size)
+            val first = target.substring(0..(size - 4))
+            "$first,$last"
+        } else target
     }
 }

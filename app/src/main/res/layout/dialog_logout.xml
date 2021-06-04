@@ -15,7 +15,7 @@
         android:textColor="@color/black"/>
 
     <TextView
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:layout_below="@+id/dialog_logout_text"
         android:layout_alignParentEnd="true"
         android:background="@drawable/white_to_gray_ripple"
@@ -26,10 +26,10 @@
         android:layout_gravity="end"
         android:text="@string/logout_text"
         android:textSize="15sp"
-        android:textColor="@color/blue"/>
+        android:textColor="@color/loginBlue"/>
 
     <TextView
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:id="@+id/dialog_logout_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,6 +40,6 @@
         android:layout_marginEnd="15dp"
         android:gravity="center"
         android:text="취소"
-        android:textColor="@color/blue"
+        android:textColor="@color/loginBlue"
         android:textSize="15sp" />
 </RelativeLayout>

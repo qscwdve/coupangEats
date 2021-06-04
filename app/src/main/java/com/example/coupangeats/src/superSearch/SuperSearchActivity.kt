@@ -51,7 +51,7 @@ class SuperSearchActivity : BaseActivity<ActivitySuperSearchBinding>(ActivitySup
     }
 
     override fun onGetDiscountSuperFailure(message: String) {
-        showCustomToast("할인 매장 조회 실패")
+        //showCustomToast("할인 매장 조회 실패")
     }
 
     fun setRecycler(baseSperList : ArrayList<BaseSuperInfo>) {

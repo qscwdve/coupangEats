@@ -23,10 +23,11 @@ class MenuAdapter(val menuList: ArrayList<MenuList>, val activity: DetailSuperAc
         val manyReview = itemView.findViewById<TextView>(R.id.item_menu_list_recomm_review)
         val img = itemView.findViewById<ImageView>(R.id.item_menu_list_img)
         val line = itemView.findViewById<View>(R.id.item_menu_list_line)
+        val parent = itemView.findViewById<LinearLayout>(R.id.item_detail_super_menu_list_parent)
 
         fun bind(item: MenuList, position: Int) {
             name.text = item.menuName
-            val menuPrice : String = "${item.price}원"
+            val menuPrice : String = "${priceIntToString(item.price)}원"
             price.text = menuPrice
             if(item.introduce != null){
                 introduce.visibility = View.VISIBLE
@@ -46,9 +47,19 @@ class MenuAdapter(val menuList: ArrayList<MenuList>, val activity: DetailSuperAc
             // 마지막 라인
             line.visibility = if(position == menuAdapter.menuList.size) View.GONE else View.VISIBLE
             // 메뉴 선택!
-            itemView.setOnClickListener {
+            parent.setOnClickListener {
                 menuAdapter.activity.startMenuSelect(item.menuIdx)
             }
+
+        }
+        fun priceIntToString(value: Int) : String {
+            val target = value.toString()
+            val size = target.length
+            return if(size > 3){
+                val last = target.substring(size - 3 until size)
+                val first = target.substring(0..(size - 4))
+                "$first,$last"
+            } else target
         }
     }
 
@@ -62,4 +73,6 @@ class MenuAdapter(val menuList: ArrayList<MenuList>, val activity: DetailSuperAc
     }
 
     override fun getItemCount(): Int = menuList.size
+
+
 }

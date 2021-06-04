@@ -58,7 +58,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                 mCouponStatus = false
                 // 쿠폰 사용으로 바꿈
                 binding.detailSuperCoupon.setBackgroundResource(R.drawable.detail_super_coupon_select_box)
-                val couponText = "√ ${mCouponPrice}원 쿠폰 받기완료"
+                val couponText = "√ ${priceIntToString(mCouponPrice)}원 쿠폰 받기완료"
                 binding.detailSuperCouponText.text = couponText
                 binding.detailSuperCouponImg.visibility = View.GONE
             }
@@ -67,6 +67,10 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         binding.detailSuperCartParent.setOnClickListener {
             startActivity(Intent(this, CartActivity::class.java))
         }
+
+        // 종료
+        binding.actionBar2Back.setOnClickListener { finish() }
+        binding.superSearchBack.setOnClickListener { finish() }
 
         // 스크롤링
         setSupportActionBar(binding.toolbar)
@@ -77,13 +81,17 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                     // 아직 액션바 안에 있음
                     //Log.d("vertical", "아직 액션바 나옴")
                     binding.toolbarItem.visibility = View.INVISIBLE
-                    binding.toolbar2.setBackgroundColor(Color.parseColor("#444444"))
+                    //binding.toolbar2.setBackgroundColor(Color.parseColor("#444444"))
+                    binding.toolbar2.visibility = View.GONE
+                    binding.actionBar2.visibility = View.VISIBLE
                 }
                 if(Math.abs(verticalOffset) < appBarLayout!!.totalScrollRange - 50){
                     // 액션바에서 나옴
                     //Log.d("vertical", "아직 액션바 안에 있음")
                     binding.toolbarItem.visibility = View.VISIBLE
                     binding.toolbar2.setBackgroundColor(Color.parseColor("#00000000"))
+                    binding.toolbar2.visibility = View.VISIBLE
+                    binding.actionBar2.visibility = View.GONE
                 }
             }
 
@@ -100,7 +108,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             binding.detailSuperCartNum.text = num.toString()
             // 전체 가격
             val totalPrice = mDBHelper.menuTotalPrice(mDB)
-            val totalPricetext = "${totalPrice}원"
+            val totalPricetext = "${priceIntToString(totalPrice)}원"
             binding.detailSuperCartPrice.text = totalPricetext
         } else {
             binding.detailSuperCartParent.visibility = View.GONE
@@ -115,11 +123,12 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             // 매장 이름 넣기
             val edit = ApplicationClass.sSharedPreferences.edit()
             edit.putString("storeName", response.result.storeName).apply()
+            binding.actionBar2BackText.text = response.result.storeName
         }
     }
 
     override fun onGetSuperInfoFailure(message: String) {
-        showCustomToast("매장 조회에 실패하였습니다.")
+        //showCustomToast("매장 조회에 실패하였습니다.")
     }
 
     override fun onPostCouponSaveSuccess(response: CouponSaveResponse) {
@@ -129,7 +138,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     }
 
     override fun onPostCouponSaveFailure(message: String) {
-        showCustomToast("할인 쿠폰 등록에 실패하였습니다.")
+        //showCustomToast("할인 쿠폰 등록에 실패하였습니다.")
     }
 
     fun startMenuSelect(menuIdx: Int) {
@@ -191,13 +200,13 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             if(result.coupon.hasCoupon == "Y"){
                 // 이미 쿠폰을 가져감
                 binding.detailSuperCoupon.setBackgroundResource(R.drawable.detail_super_coupon_select_box)
-                couponText = "√ ${result.coupon.price}원 쿠폰 받기완료"
+                couponText = "√ ${priceIntToString(result.coupon.price)}원 쿠폰 받기완료"
                 binding.detailSuperCouponImg.visibility = View.GONE
                 mCouponStatus = false
             } else {
                 // 쿠폰 살아있음
                 binding.detailSuperCoupon.setBackgroundResource(R.drawable.detail_super_coupon_box)
-                couponText = "${result.coupon.price}원 쿠폰 받기"
+                couponText = "${priceIntToString(result.coupon.price)}원 쿠폰 받기"
                 mCouponStatus = true
                 mCouponPrice = result.coupon.price
                 mCouponIdx = result.coupon.conponIdx
@@ -210,9 +219,9 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         // 시간 , 치타배달, 배달비, 최소주문
         binding.detailSuperTime.text = result.time
         binding.detailSuperCheetah.visibility = if(result.cheetah == "Y") View.VISIBLE else View.GONE
-        val deliveryPrice = if(result.deliveryPrice == 0) "무료 배달" else "${result.deliveryPrice}원"
+        val deliveryPrice = if(result.deliveryPrice == 0) "무료 배달" else "${priceIntToString(result.deliveryPrice)}원"
         binding.detailSuperDeliveryPrice.text = deliveryPrice
-        val orderMinPrice = "${result.minPrice}원"
+        val orderMinPrice = "${priceIntToString(result.minPrice)}원"
         binding.detailSuperDeliveryPrice.text = orderMinPrice
 
         // 포토 리뷰
@@ -270,5 +279,15 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     fun setMenu(menuCategoryList: ArrayList<Menu>) {
         binding.detailSuperMenuRecyclerview.adapter = MenuCategoryAdapter(menuCategoryList, this)
         binding.detailSuperMenuRecyclerview.layoutManager = LinearLayoutManager(this)
+    }
+
+    fun priceIntToString(value: Int) : String {
+        val target = value.toString()
+        val size = target.length
+        return if(size > 3){
+            val last = target.substring(size - 3 until size)
+            val first = target.substring(0..(size - 4))
+            "$first,$last"
+        } else target
     }
 }

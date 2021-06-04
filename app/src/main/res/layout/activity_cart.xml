@@ -400,7 +400,7 @@
                     android:layout_marginEnd="7dp"
                     android:background="@drawable/cart_need_box"
                     android:paddingHorizontal="10dp"
-                    android:paddingVertical="10dp"
+                    android:paddingVertical="15dp"
                     android:text="예) 견과류는 빼주세요"
                     android:textColor="@color/searchHint"
                     android:textSize="13sp" />

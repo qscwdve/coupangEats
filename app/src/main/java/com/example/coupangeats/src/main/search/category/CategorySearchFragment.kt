@@ -32,6 +32,6 @@ class CategorySearchFragment : BaseFragment<FragmentCategorySearchBinding>(Fragm
     }
 
     override fun onGetSuperCategoryFailure(message: String) {
-        showCustomToast("검색 카테고리 가져오기 실패")
+        //showCustomToast("검색 카테고리 가져오기 실패")
     }
 }

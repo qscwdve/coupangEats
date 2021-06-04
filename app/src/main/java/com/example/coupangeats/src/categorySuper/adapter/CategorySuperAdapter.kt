@@ -26,7 +26,7 @@ class CategorySuperAdapter(val categoryList: ArrayList<SuperCategoryResponseResu
 
             if(categorySuperAdapter.categoryCheck == item.name){
                 line.visibility = View.VISIBLE
-                categoryName.setTextColor(Color.parseColor("#AEE0F8"))
+                categoryName.setTextColor(Color.parseColor("#00AFFE"))
             } else {
                 line.visibility = View.INVISIBLE
                 categoryName.setTextColor(Color.parseColor("#000000"))

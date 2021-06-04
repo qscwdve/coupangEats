@@ -35,13 +35,22 @@ class CartMenuInfoAdatper(var menuList: ArrayList<CartMenuInfo>, val activity: C
                 sub.text = item.sub
             }
 
-            val priceText = item.price.toString() + "원"
+            val priceText = priceIntToString(item.price) + "원"
             price.text = priceText
 
             cancel.setOnClickListener {
                 // 메뉴 취소하기를 누르면 메뉴 선택이 취소된다.
                 cartMenuInfoAdatper.deleteMenu(item.id!!)
             }
+        }
+        fun priceIntToString(value: Int) : String {
+            val target = value.toString()
+            val size = target.length
+            return if(size > 3){
+                val last = target.substring(size - 3 until size)
+                val first = target.substring(0..(size - 4))
+                "$first,$last"
+            } else target
         }
     }
 

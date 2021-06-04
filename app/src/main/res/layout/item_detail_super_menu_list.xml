@@ -2,10 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:orientation="vertical"
-    android:layout_height="wrap_content" android:background="@drawable/white_to_gray_ripple">
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:padding="15sp"
+        android:id="@+id/item_detail_super_menu_list_parent"
+        android:background="@drawable/white_to_gray_ripple"
+        android:paddingVertical="15dp"
+        android:paddingHorizontal="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -91,7 +94,6 @@
     <View
         android:layout_marginHorizontal="15dp"
         android:id="@+id/item_menu_list_line"
-        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="3sp"
         android:background="@color/line"

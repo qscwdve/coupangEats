@@ -40,6 +40,7 @@
                 android:background="@drawable/search_editbox">
 
                 <EditText
+                    style="@style/myEditText"
                     android:scrollbars = "vertical"
                     android:maxLines="1"
                     android:id="@+id/search_edit_text"

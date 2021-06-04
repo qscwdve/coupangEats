@@ -27,5 +27,5 @@
         android:layout_gravity="end"
         android:text="@string/ok"
         android:textSize="17sp"
-        android:textColor="@color/blue"/>
+        android:textColor="@color/loginBlue"/>
 </RelativeLayout>

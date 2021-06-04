@@ -98,6 +98,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/middleGray"/>
                     <EditText
+                        style="@style/myEditText"
                         android:paddingVertical="15dp"
                         android:id="@+id/sign_up_email_text"
                         android:inputType="textEmailAddress"
@@ -213,6 +214,7 @@
                         android:orientation="vertical">
 
                         <EditText
+                            style="@style/myEditText"
                             android:id="@+id/sign_up_password_text"
                             android:paddingVertical="15dp"
                             android:paddingStart="10dp"
@@ -413,6 +415,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/middleGray"/>
                     <EditText
+                        style="@style/myEditText"
                         android:paddingVertical="15dp"
                         android:id="@+id/sign_up_name_text"
                         android:inputType="textPersonName"
@@ -490,6 +493,7 @@
                         android:layout_height="match_parent"
                         android:background="@color/middleGray"/>
                     <EditText
+                        style="@style/myEditText"
                         android:paddingVertical="15dp"
                         android:id="@+id/sign_up_phone_text"
                         android:inputType="phone"
@@ -544,6 +548,7 @@
                         android:orientation="horizontal">
 
                         <EditText
+                            style="@style/myEditText"
                             android:id="@+id/sign_up_phone_certification_text"
                             android:background="@drawable/phone_certification_box"
                             android:layout_width="0dp"
@@ -587,13 +592,14 @@
                     </LinearLayout>
 
                     <TextView
-                        android:layout_marginBottom="10dp"
+                        android:background="@color/backgroundGray"
+                        android:paddingBottom="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/phon_certiiation_info"
                         android:textSize="11sp"
                         android:textColor="@color/black"
-                        android:layout_marginHorizontal="20sp"/>
+                        android:paddingHorizontal="20sp"/>
 
                 </LinearLayout>
 

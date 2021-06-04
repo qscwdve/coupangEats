@@ -113,7 +113,7 @@ class DeliveryAddressSettingActivity() :
         })
         // 키보드 상에서 완료 버튼 누름
         binding.deliveryAddressText.setOnEditorActionListener { v, actionId, event ->
-            showCustomToast("엔터키 눌림")
+            //showCustomToast("엔터키 눌림")
             imm.hideSoftInputFromWindow(binding.deliveryAddressText.windowToken, 0)
             val keyword = binding.deliveryAddressText.text.toString()
             // 검색 API 서버 호출
@@ -338,7 +338,7 @@ class DeliveryAddressSettingActivity() :
 
     override fun onGetUserAddressListFailure(message: String) {
         dismissLoadingDialog()
-        showCustomToast("통신 오류로 배달지 주소 목록을 불러올 수 없습니다.")
+        //ustomToast("통신 오류로 배달지 주소 목록을 불러올 수 없습니다.")
     }
 
     override fun onPathUserCheckedAddressSuccess(response: UserCheckedAddressResponse) {
@@ -362,7 +362,7 @@ class DeliveryAddressSettingActivity() :
 
     override fun onPathUserCheckedAddressFailure(message: String) {
         dismissLoadingDialog()
-        showCustomToast("서버에 선택 주소 수정 요청이 실패하였습니다")
+       // showCustomToast("서버에 선택 주소 수정 요청이 실패하였습니다")
         setResult(RESULT_CANCELED)
         finish()
     }
@@ -452,7 +452,7 @@ class DeliveryAddressSettingActivity() :
     override fun onPostDeliveryAddressAddFailure(message: String) {
         // 배달 주소 추가 실패..
         dismissLoadingDialog()
-        showCustomToast("배달 주소 추가 실패")
+       // showCustomToast("배달 주소 추가 실패")
     }
 
     // 배달지 수정하러 가기

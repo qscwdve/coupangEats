@@ -32,6 +32,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
+            android:padding="2dp"
             android:src="@drawable/cancel"
             android:contentDescription="@string/image_no" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -45,7 +46,7 @@
     <LinearLayout
         android:id="@+id/dialog_recommend_recommend"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="10dp"
+        android:paddingVertical="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -78,7 +79,7 @@
     <LinearLayout
         android:id="@+id/dialog_recommend_many_order"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="10dp"
+        android:paddingVertical="15dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -112,7 +113,7 @@
     <LinearLayout
         android:id="@+id/dialog_recommend_distance"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="10dp"
+        android:paddingVertical="15dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -146,7 +147,7 @@
     <LinearLayout
         android:id="@+id/dialog_recommend_high_star"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="10dp"
+        android:paddingVertical="15dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -180,7 +181,7 @@
     <LinearLayout
         android:id="@+id/dialog_recommend_new"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="10dp"
+        android:paddingVertical="15dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

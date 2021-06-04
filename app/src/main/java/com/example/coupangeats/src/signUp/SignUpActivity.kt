@@ -297,7 +297,7 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
             if(mPhoneAuthNumber == ahtherNumber){
                 // 인증 성공
                 binding.signUpPhoneCertificationParent.visibility = View.GONE
-                binding.signUpPhoneLine.visibility = View.VISIBLE
+                binding.signUpPhoneLine.visibility = View.GONE
                 binding.signUpPhoneLine.setBackgroundColor(Color.parseColor(mOkColor))
                 binding.signUpPhoneChecked.visibility = View.VISIBLE
                 mSignUpChecked[3] = true
@@ -339,10 +339,12 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
             val phone = binding.signUpPhoneText.text.toString()
             val userSignUpRequest = UserSignUpRequest(email, password, userName, phone)
             Log.d("signup info", "password : $password")
-            if(checkSignUpReady()){
+            showLoadingDialog(this)
+            SignUpService(this).tryPostSignUp(userSignUpRequest)
+            /*if(checkSignUpReady()){
                 showLoadingDialog(this)
                 SignUpService(this).tryPostSignUp(userSignUpRequest)
-            }
+            }*/
         }
 
         // editText 외부 선택 시 focus clear 밑 키보드 숨기기
@@ -459,23 +461,23 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
         // 회원가입 성공
         dismissLoadingDialog()
         if(response.code == 1000){
-            showCustomToast("회원가입 성공 -> userIdx : ${response.userSignUpResponseResult!!.userIdx}")
+            //showCustomToast("회원가입 성공 -> userIdx : ${response.userSignUpResponseResult!!.userIdx}")
             finish()
         } else {
-            showCustomToast("회원가입 실패")
+           // showCustomToast("회원가입 실패")
         }
     }
 
     override fun onPostSignUpFailure(message: String) {
         // 회원가입 실패
         dismissLoadingDialog()
-        showCustomToast("회원가입 실패 error message : $message")
+       // showCustomToast("회원가입 실패 error message : $message")
     }
 
     override fun onGetEmailDuplicatedSuccess(response: EmailDuplicatedResponse) {
         // 이메일 중복 여부 판단 성공
         if(response.code == 1000){
-            showCustomToast("이메일 중복 여부 판단 성공 ${response.result.isDuplicated}")
+            //tomToast("이메일 중복 여부 판단 성공 ${response.result.isDuplicated}")
             Log.d("network check value", "isDuplicated 값 확인 : ${response.result.isDuplicated}")
             mEmailDuplicatedCheck = response.result.isDuplicated != "Y"
             if(!mEmailDuplicatedCheck){
@@ -494,13 +496,13 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
 
     override fun onGetEmailDuplicatedFailure(message: String) {
         // 이메일 중복 여부 판단 실패
-        showCustomToast("EmailDuplicated 통신 오류")
+        //showCustomToast("EmailDuplicated 통신 오류")
     }
 
     override fun onGetPhoneDuplicatedSuccess(response: PhoneDuplicatedResponse) {
         // 핸드폰 번호 중복 여부 판단 성공
         if(response.code == 1000){
-            showCustomToast("핸드폰 중복 여부 판단 성공")
+            //tomToast("핸드폰 중복 여부 판단 성공")
             Log.d("duplicated", "phone : ${response.result.isDuplicated}")
             if(response.result.isDuplicated == "Y"){
                 // 중복됨
@@ -516,13 +518,13 @@ class SignUpActivity : BaseActivity<ActivitySignupBinding>(ActivitySignupBinding
                 mSignUpChecked[3] = true
             }
         } else {
-            showCustomToast(response.message ?: "핸드폰 중복 여부 판단 실패")
+           // showCustomToast(response.message ?: "핸드폰 중복 여부 판단 실패")
         }
     }
 
     override fun onGetPhoneDuplicatedFailure(message: String) {
         // 핸드폰 번호 중복 여부 판단 실패
-        showCustomToast("PhoneDuplicated 통신 오류")
+      // showCustomToast("PhoneDuplicated 통신 오류")
     }
 
     override fun onPostPhoneCertificationSuccess(response: PhoneCertificationResponse) {

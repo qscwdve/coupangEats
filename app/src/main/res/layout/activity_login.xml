@@ -68,6 +68,7 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    style="@style/myEditText"
                     android:paddingVertical="6dp"
                     android:id="@+id/login_email_text"
                     android:hint="@string/login_email_hint"
@@ -123,6 +124,7 @@
                 tools:ignore="NestedWeights" />
 
             <EditText
+                style="@style/myEditText"
                 android:id="@+id/login_password_text"
                 android:hint="@string/login_password_hint"
                 android:paddingVertical="6dp"

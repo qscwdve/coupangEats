@@ -117,7 +117,7 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
             binding.detailAddressAliasEditText.setText("")
             binding.detailAddressAliaSTextCancel.visibility = View.INVISIBLE
         }
-
+        binding.detailAddressAliasLine.visibility = View.GONE
         // 카테고리 선택 커스텀  mCategory = 1 이면 집 , 2면 회사 3이면 기타
         binding.detailAddressCategoryHome.setOnClickListener {
             if(mCategory != 1){

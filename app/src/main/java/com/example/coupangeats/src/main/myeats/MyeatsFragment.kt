@@ -62,7 +62,7 @@ class MyeatsFragment : BaseFragment<FragmentMyeatsBinding>(FragmentMyeatsBinding
         } else {
             // 로그인 다시 해야한다.
             loginFailure()
-            showCustomToast("로그인 인증이 올바르지 않습니다.")
+            //showCustomToast("로그인 인증이 올바르지 않습니다.")
             (activity as MainActivity).setHomeFragment()
         }
     }

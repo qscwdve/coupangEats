@@ -42,14 +42,14 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
         binding.menuSelectNumPlus.setOnClickListener {
             val num = binding.menuSelectNum.text.toString().toInt() + 1
             binding.menuSelectNum.text = num.toString()
-            val menuPrice = (mMenuPrice * num).toString() + "원"
+            val menuPrice = priceIntToString(mMenuPrice * num) + "원"
             binding.menuSelectMenuPrice.text = menuPrice
         }
         binding.menuSelectNumMinus.setOnClickListener {
             val num = binding.menuSelectNum.text.toString().toInt() - 1
             if(num >= 1){
                 binding.menuSelectNum.text = num.toString()
-                val menuPrice = (mMenuPrice * num).toString() + "원"
+                val menuPrice = priceIntToString(mMenuPrice * num) + "원"
                 binding.menuSelectMenuPrice.text = menuPrice
             }
         }
@@ -105,7 +105,7 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
             } else {
                 binding.menuSelectMenuIntroduce.visibility = View.GONE
             }
-            val price = "${response.result.price}원"
+            val price = "${priceIntToString(response.result.price)}원"
             mMenuPrice = response.result.price
             binding.menuSelectMenuPrice.text = price
             if(response.result.menuOption != null){
@@ -139,6 +139,15 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
     }
 
     override fun onGetMenuDetailFailure(message: String) {
-        showCustomToast("메뉴 불러오기 실패")
+        //showCustomToast("메뉴 불러오기 실패")
+    }
+    fun priceIntToString(value: Int) : String {
+        val target = value.toString()
+        val size = target.length
+        return if(size > 3){
+            val last = target.substring(size - 3 until size)
+            val first = target.substring(0..(size - 4))
+            "$first,$last"
+        } else target
     }
 }
