@@ -74,7 +74,7 @@ class DeliveryAddressSettingActivity() :
             binding.deliveryAddressManageParent.visibility = View.VISIBLE
             binding.deliveryAddressTextParent.visibility = View.GONE
             binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
-            binding.detailAddressTitle.text = "배달주소 관리"
+            binding.detailAddressTitle.text = "배달 주소 관리"
         }
 
         //새 배달주소 추가 - DELIVERY_MANAGE
@@ -135,7 +135,7 @@ class DeliveryAddressSettingActivity() :
             if (!mBackOrFinish) {
                 // 종료
                 Log.d("selected", "종료")
-                if(version != GPS_SELECT && (binding.deliveryAddressManageParent.visibility != View.VISIBLE || binding.deliveryAddressSettingNowGpsFind.visibility != View.VISIBLE)){
+                if(version != GPS_SELECT && (binding.deliveryAddressManageParent.visibility != View.VISIBLE || binding.deliveryAddressSettingNowGpsFind.visibility == View.VISIBLE)){
                     Log.d("selected", "종료안되야함")
                     binding.deliveryAddressManageParent.visibility = View.VISIBLE
                     binding.deliveryAddressTextParent.visibility = View.GONE
@@ -445,8 +445,6 @@ class DeliveryAddressSettingActivity() :
     fun startDeliveryAddressAdd() {
         showLoadingDialog(this)
         DeliveryAddressSettingService(this).tryPatchPathUserCheckedAddress(getUserIdx(), userAddressIdx)
-        binding.deliveryAddressSettingHomeDetail.visibility = View.VISIBLE
-        binding.deliveryAddressBusinessDetail.visibility = View.VISIBLE
     }
 
     override fun onPostDeliveryAddressAddFailure(message: String) {

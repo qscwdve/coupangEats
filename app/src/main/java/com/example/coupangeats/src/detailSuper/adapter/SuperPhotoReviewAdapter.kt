@@ -1,6 +1,5 @@
-package com.example.coupangeats.src.detailSuper.adapter
+package com.example.coupangeats.src.detailSuper.detailSuperFragment.adapter
 
-import android.media.AudioTrack
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
-import com.example.coupangeats.src.detailSuper.model.PhotoReview
+import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.PhotoReview
 
 class SuperPhotoReviewAdapter(val reviewList: ArrayList<PhotoReview>) : RecyclerView.Adapter<SuperPhotoReviewAdapter.SuperPhotoReviewViewHolder>() {
     class SuperPhotoReviewViewHolder(itemView: View, val superPhotoReviewAdapter: SuperPhotoReviewAdapter) : RecyclerView.ViewHolder(itemView){

@@ -1,7 +1,6 @@
 package com.example.coupangeats.src.menuSelect
 
 import android.database.sqlite.SQLiteDatabase
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.databinding.ActivityMenuSelectBinding
 import com.example.coupangeats.src.cart.model.CartMenuInfo
-import com.example.coupangeats.src.detailSuper.adapter.DetailSuperImgViewPagerAdapter
+import com.example.coupangeats.src.detailSuper.detailSuperFragment.adapter.DetailSuperImgViewPagerAdapter
 import com.example.coupangeats.src.menuSelect.adapter.MenuDetailParentAdapter
 import com.example.coupangeats.src.menuSelect.model.MenuDetailResponse
 import com.example.coupangeats.src.menuSelect.model.SelectMenu

@@ -17,16 +17,18 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".src.categorySuper.CategorySuperActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".src.map.MapActivity" />
-        <activity
-            android:name=".src.detailSuper.ScrollingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".src.map.MapActivity" />
         <activity android:name=".src.cart.CartActivity" />
         <activity android:name=".src.menuSelect.MenuSelectActivity" />
         <activity
             android:name=".src.detailSuper.DetailSuperActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/NonStatusBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".src.superSearch.SuperSearchActivity" />
         <activity android:name=".src.setting.SettingActivity" />
         <activity android:name=".src.deliveryAddressSetting.DeliveryAddressSettingActivity" />
@@ -40,14 +42,8 @@
         <activity android:name=".src.favorites.FavoritesActivity" />
         <activity
             android:name=".src.splash.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="fullSensor"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

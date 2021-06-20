@@ -1,9 +1,12 @@
 package com.example.coupangeats.src.splash
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
+import android.util.Log
 import com.example.coupangeats.databinding.ActivitySplashBinding
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.splash.model.AutoLoginResponse
@@ -19,6 +22,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }, 1500)
+
+        Log.d("device", "device id : ${getDeviceId()}")
     }
 
     override fun onGetAutoLoginSuccess(response: AutoLoginResponse) {
@@ -40,5 +45,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
         val edit = ApplicationClass.sSharedPreferences.edit()
         edit.putInt("userIdx", -1)
         edit.apply()
+    }
+
+    // android device id 확인
+    @SuppressLint("HardwareIds")
+    fun getDeviceId(): String {
+        return Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
     }
 }

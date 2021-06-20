@@ -1,4 +1,4 @@
-package com.example.coupangeats.src.detailSuper.model
+package com.example.coupangeats.src.detailSuper.detailSuperFragment.model
 
 import com.google.gson.annotations.SerializedName
 

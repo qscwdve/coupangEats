@@ -3,15 +3,13 @@ package com.example.coupangeats.src.main.home
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
-import com.example.coupangeats.databinding.DialogFilterSuperBinding
 import com.example.coupangeats.databinding.FragmentHomeBinding
 import com.example.coupangeats.src.categorySuper.CategorySuperActivity
-import com.example.coupangeats.src.detailSuper.DetailSuperActivity
+import com.example.coupangeats.src.detailSuper.detailSuperFragment.DetailSuperActivity
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.home.adapter.*
 import com.example.coupangeats.src.main.home.model.HomeInfo.*

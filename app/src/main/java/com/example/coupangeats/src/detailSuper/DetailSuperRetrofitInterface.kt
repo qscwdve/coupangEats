@@ -1,8 +1,8 @@
-package com.example.coupangeats.src.detailSuper
+package com.example.coupangeats.src.detailSuper.detailSuperFragment
 
-import com.example.coupangeats.src.detailSuper.model.CouponSaveRequest
-import com.example.coupangeats.src.detailSuper.model.CouponSaveResponse
-import com.example.coupangeats.src.detailSuper.model.SuperResponse
+import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.CouponSaveRequest
+import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.CouponSaveResponse
+import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.SuperResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET

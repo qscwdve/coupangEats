@@ -8,12 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.DetailSuperActivity
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.Menu
 
-class CategoryNameAdapter(val categoryList: ArrayList<Menu>, val activity: DetailSuperActivity) : RecyclerView.Adapter<CategoryNameAdapter.CategoryViewHolder>() {
+class CategoryNameAdapterTest(val categoryList: ArrayList<String>) : RecyclerView.Adapter<CategoryNameAdapterTest.CategoryViewHolderTest>() {
     var nowSelected = 0;
-    class CategoryViewHolder(itemView: View, val categoryNameAdapter: CategoryNameAdapter) : RecyclerView.ViewHolder(itemView){
+    class CategoryViewHolderTest(itemView: View, val categoryNameAdapter: CategoryNameAdapterTest) : RecyclerView.ViewHolder(itemView){
         val name = itemView.findViewById<TextView>(R.id.item_detail_super_menu_category_name)
         val highlight = itemView.findViewById<View>(R.id.item_detail_super_menu_category_highlight)
 
@@ -36,13 +34,13 @@ class CategoryNameAdapter(val categoryList: ArrayList<Menu>, val activity: Detai
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolderTest {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_detail_super_menu_category, parent, false)
-        return CategoryViewHolder(view,this)
+        return CategoryViewHolderTest(view,this)
     }
 
-    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.bind(categoryList[position].categoryName, position)
+    override fun onBindViewHolder(holderTest: CategoryViewHolderTest, position: Int) {
+        holderTest.bind(categoryList[position], position)
     }
 
     override fun getItemCount(): Int = categoryList.size
