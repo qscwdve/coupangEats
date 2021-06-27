@@ -1,4 +1,4 @@
-package com.example.coupangeats.src.detailSuper.detailSuperFragment
+package com.example.coupangeats.src.detailSuper
 
 import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
@@ -8,25 +8,34 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.Gravity
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityDetailSuperBinding
+import com.example.coupangeats.src.SuperInfo.SuperInfoActivity
 import com.example.coupangeats.src.cart.CartActivity
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.adapter.CategoryNameAdapter
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.adapter.DetailSuperImgViewPagerAdapter
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.adapter.MenuCategoryAdapter
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.adapter.SuperPhotoReviewAdapter
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.*
+import com.example.coupangeats.src.detailSuper.adapter.CategoryNameAdapter
+import com.example.coupangeats.src.detailSuper.adapter.DetailSuperImgViewPagerAdapter
+import com.example.coupangeats.src.detailSuper.adapter.MenuCategoryAdapter
+import com.example.coupangeats.src.detailSuper.adapter.SuperPhotoReviewAdapter
+import com.example.coupangeats.src.detailSuper.model.*
 import com.example.coupangeats.src.menuSelect.MenuSelectActivity
+import com.example.coupangeats.src.review.ReviewActivity
 import com.example.coupangeats.util.CartMenuDatabase
+import com.example.coupangeats.util.StatusBarColorControl
 import com.google.android.material.appbar.AppBarLayout
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 
 class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDetailSuperBinding::inflate)
-    ,DetailSuperActivityView {
+    , DetailSuperActivityView {
+    private var mIsServer = true
     private var mSuperIdx = -1
     private var mCouponStatus = true
     private var mCouponPrice = -1
@@ -34,6 +43,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     private var textStoreIdx = 1
     private val MENU_SELECT_ACTIVITY = 1234
     private var mSuperName = "동대문 엽기떡볶이"
+    private var mCartMenuNum = 0
     private enum class CollapsingToolbarLayoutState {
         EXPANDED, COLLAPSED, INTERNEDIATE
     }
@@ -48,12 +58,25 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
         mDB = mDBHelper.writableDatabase
 
+        binding.toolbarBack.setOnClickListener { finish() }
+
         mSuperIdx = intent!!.getIntExtra("storeIdx", -1)
         if(mSuperIdx != 36) textStoreIdx = 35
         // 매장 조회 시작
         //DetailSuperService(this).tryGetSuperInfo(mSuperIdx)
         DetailSuperService(this).tryGetSuperInfo(mSuperIdx)  // Test
 
+        // 리뷰 보러 가기
+        binding.detailSuperReviewCount.setOnClickListener {
+            startReviewPosition()
+        }
+        // 매장, 원산지 정보보기
+        binding.detailSuperInfo.setOnClickListener {
+            val intent = Intent(this, SuperInfoActivity::class.java).apply {
+                this.putExtra("storeIdx", mSuperIdx)
+            }
+            startActivity(intent)
+        }
         // 쿠폰
         binding.detailSuperCoupon.setOnClickListener {
             // 쿠폰 클릭
@@ -98,12 +121,14 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                 }
                 else if(Math.abs(verticalOffset) < appBarLayout.totalScrollRange){
                     //Log.d("vertical", "아직 액션바 안에 있음")
-                    binding.toolbarSuperName.text = ""
-                    binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_white)
-                    binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
-                    binding.toolbarShare.setImageResource(R.drawable.ic_share_white)
-                    binding.toolbar.setBackgroundColor(Color.parseColor("#00000000"))
-                    mCollapsingToolbarState = CollapsingToolbarLayoutState.INTERNEDIATE
+                    if(mCollapsingToolbarState != CollapsingToolbarLayoutState.INTERNEDIATE){
+                        binding.toolbarSuperName.text = ""
+                        binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_white)
+                        binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
+                        binding.toolbarShare.setImageResource(R.drawable.ic_share_white)
+                        binding.toolbar.setBackgroundColor(Color.parseColor("#00000000"))
+                        mCollapsingToolbarState = CollapsingToolbarLayoutState.INTERNEDIATE
+                    }
                 }
             }
 
@@ -115,6 +140,14 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         }
     }
 
+    // 리뷰 보러가기
+    fun startReviewPosition(reviewIdx : Int = -1){
+        val intent = Intent(this, ReviewActivity::class.java).apply {
+            this.putExtra("storeIdx", mSuperIdx)
+            this.putExtra("reviewIdx", reviewIdx)
+        }
+        startActivity(intent)
+    }
 
     // 카트 보는거 체인지
     fun cartChange() {
@@ -128,6 +161,10 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             val totalPrice = mDBHelper.menuTotalPrice(mDB)
             val totalPricetext = "${priceIntToString(totalPrice)}원"
             binding.detailSuperCartPrice.text = totalPricetext
+            // 알림 오픈
+            if(mCartMenuNum != num && mCartMenuNum != 0){  }
+            mCartMenuNum = num
+
         } else {
             binding.detailSuperCartParent.visibility = View.GONE
         }
@@ -138,7 +175,26 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         cartChange()
     }
 
+    override fun onDestroy() {
+        if(!mIsServer){
+            mDBHelper.deleteTotal(mDB)
+        }
+        super.onDestroy()
+    }
+
     fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1) ?: -1
+
+    fun statusBarHeightControl(){
+        // status bar 높이 차이 해결
+        val vto: ViewTreeObserver = binding.toolbarItem.viewTreeObserver
+        vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                binding.toolbarItem.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                binding.appBar.layoutParams.height = binding.toolbarItem.measuredHeight
+
+            }
+        })
+    }
 
     override fun onGetSuperInfoSuccess(response: SuperResponse) {
         if( response.code == 1000 ){
@@ -148,56 +204,14 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             edit.putString("storeName", response.result.storeName).apply()
             mSuperName = response.result.storeName
         } else {
-            // 미리 설정해둔 기본값 넣기
-            // 포토 리뷰
-            binding.detailSuperPhotoReviewRecyclerview.visibility = View.VISIBLE
-            val photoReviewArray = ArrayList<PhotoReview>()
-            val menuList = ArrayList<Menu>()
-            val imgArray = ArrayList<String>()
-            val menu1 = ArrayList<MenuList>()
-            val menu2 = ArrayList<MenuList>()
-            val menu3 = ArrayList<MenuList>()
-
-            imgArray.add("https://www.google.com/url?sa=i&url=http%3A%2F%2Fitempage3.auction.co.kr%2FDetailView.aspx%3Fitemno%3DB421243618&psig=AOvVaw0sOfmpR-IkXKjnv6g_-gGd&ust=1624268751857000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCPDsnuH2pfECFQAAAAAdAAAAABAE")
-            imgArray.add("https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com%2Fphotos%2Fspicy-rice-cakes-picture-id1152570620%3Fk%3D6%26m%3D1152570620%26s%3D612x612%26w%3D0%26h%3Dcw_3cPUysYYTteUa-EmTaGePtA0OmUNKX5KqEseu91s%3D&imgrefurl=https%3A%2F%2Fwww.istockphoto.com%2Fkr%2F%25EC%259D%25B4%25EB%25AF%25B8%25EC%25A7%2580%2F%25EB%2596%25A1%25EB%25B3%25B6%25EC%259D%25B4&tbnid=9WGQmpoWaoiUZM&vet=12ahUKEwiE2fmT9qXxAhUL4GEKHXsFDE8QMygMegUIARD8AQ..i&docid=FrjgyoG-vPvKNM&w=612&h=408&q=%EB%96%A1%EB%B3%B6%EC%9D%B4&ved=2ahUKEwiE2fmT9qXxAhUL4GEKHXsFDE8QMygMegUIARD8AQ")
-            imgArray.add("https://t1.daumcdn.net/cfile/tistory/22084E4B593DF4D714")
-            imgArray.add("https://www.google.com/url?sa=i&url=https%3A%2F%2Fmagazine.hankyung.com%2Fbusiness%2Farticle%2F201911262453b&psig=AOvVaw00SmD3N-nqsENEPdkm-O6S&ust=1624269228028000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCLDOgsX4pfECFQAAAAAdAAAAABAD") // 소떡소떡
-            imgArray.add("https://www.google.com/url?sa=i&url=https%3A%2F%2Fblog.pulmuone.com%2F5303&psig=AOvVaw1OInRDRT2NA0_UtiZ1-Zxl&ust=1624269335175000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCLDwq_n4pfECFQAAAAAdAAAAABAe") // 계란찜
-
-            photoReviewArray.add(PhotoReview(1, imgArray[0], "맛있어요!", 5.0))
-            photoReviewArray.add(PhotoReview(1, imgArray[1], "간이 조금 싱거워서 아쉬웠지만 비린내는 안나서 좋았어요", 3.0))
-            photoReviewArray.add(PhotoReview(1, imgArray[2], "맛있어요!", 4.0))
-
-            menu1.add(MenuList(1, "매운 떡볶이", imgArray[1], 5000, null, null, "Y"))
-            menu1.add(MenuList(2, "순대", imgArray[0], 2000, null, null, null))
-            menu1.add(MenuList(3, "모둠 튀김", null, 3000, null, "Y", null))
-
-            menu2.add(MenuList(4, "소떡소떡", imgArray[3], 1000, "누구나 맛있게 즐길 수 있는 인기 메뉴", "Y", "Y"))
-            menu2.add(MenuList(5, "계란찜", imgArray[4], 1500, "영양만점 계란찜", null, null))
-            menu2.add(MenuList(6, "왕새우 튀김", null, 3000, null, null, null))
-
-            menu3.add(MenuList(7, "사이다", null, 1500, null, null, null))
-            menu3.add(MenuList(7, "콜라", null, 1500, null, null, null))
-            menu3.add(MenuList(7, "환타", null, 1500, null, null, null))
-
-            menuList.add(Menu("메인 메뉴", null, menu1))
-            menuList.add(Menu("사이드 메뉴", null, menu2))
-            menuList.add(Menu("음료수", null, menu3))
-            menuList.add(Menu("메뉴1", null, menu1))
-            menuList.add(Menu("메뉴2", null, menu2))
-            menuList.add(Menu("메뉴3", null, menu1))
-
-            setPhotoReview(photoReviewArray)
-            setSuperImgViewPager(imgArray)
-            // 메뉴 설정
-            setMenuCategory(menuList)
-            setMenu((menuList))
-
+            // 매장 조회 실패
+            notServerDumyData()
         }
     }
 
     override fun onGetSuperInfoFailure(message: String) {
         //showCustomToast("매장 조회에 실패하였습니다.")
+        notServerDumyData()
     }
 
     override fun onPostCouponSaveSuccess(response: CouponSaveResponse) {
@@ -208,6 +222,54 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
 
     override fun onPostCouponSaveFailure(message: String) {
         //showCustomToast("할인 쿠폰 등록에 실패하였습니다.")
+    }
+
+    fun notServerDumyData() {
+        // 미리 설정해둔 기본값 넣기
+        // 포토 리뷰
+        mIsServer = false
+        binding.detailSuperPhotoReviewRecyclerview.visibility = View.VISIBLE
+        val photoReviewArray = ArrayList<PhotoReview>()
+        val menuList = ArrayList<Menu>()
+        val imgArray = ArrayList<String>()
+        val menu1 = ArrayList<MenuList>()
+        val menu2 = ArrayList<MenuList>()
+        val menu3 = ArrayList<MenuList>()
+
+        imgArray.add("https://dbscthumb-phinf.pstatic.net/2765_000_49/20181011231341812_P8JFIGYEJ.jpg/5524436.jpg?type=m250&wm=N")
+        imgArray.add("https://t1.daumcdn.net/cfile/tistory/22084E4B593DF4D714")
+        imgArray.add("https://dbscthumb-phinf.pstatic.net/2765_000_39/20181007210844284_LW82GFYCC.jpg/247063.jpg?type=m4500_4500_fst&wm=N")
+
+        photoReviewArray.add(PhotoReview(1, imgArray[1], "맛있어요!", 5.0))
+        photoReviewArray.add(PhotoReview(1, imgArray[0], "간이 조금 싱거워서 아쉬웠지만 비린내는 안나서 좋았어요", 3.0))
+        photoReviewArray.add(PhotoReview(1, imgArray[2], "맛있어요!", 4.0))
+
+        menu1.add(MenuList(1, "매운 떡볶이", imgArray[0], 5000, null, null, "Y"))
+        menu1.add(MenuList(2, "순대", imgArray[1], 2000, null, null, null))
+        menu1.add(MenuList(3, "모둠 튀김", null, 3000, null, "Y", null))
+
+        menu2.add(MenuList(4, "소떡소떡", null, 1000, "누구나 맛있게 즐길 수 있는 인기 메뉴", "Y", "Y"))
+        menu2.add(MenuList(5, "계란찜", imgArray[2], 1500, "영양만점 계란찜", null, null))
+        menu2.add(MenuList(6, "왕새우 튀김", null, 3000, null, null, null))
+
+        menu3.add(MenuList(7, "사이다", null, 1500, null, null, null))
+        menu3.add(MenuList(7, "콜라", null, 1500, null, null, null))
+        menu3.add(MenuList(7, "환타", null, 1500, null, null, null))
+
+        menuList.add(Menu("메인 메뉴", null, menu1))
+        menuList.add(Menu("사이드 메뉴", null, menu2))
+        menuList.add(Menu("음료수", null, menu3))
+        menuList.add(Menu("메뉴1", null, menu1))
+        menuList.add(Menu("메뉴2", null, menu2))
+        menuList.add(Menu("메뉴3", null, menu1))
+
+        setPhotoReview(photoReviewArray)
+        setSuperImgViewPager(imgArray)
+        // 메뉴 설정
+        setMenuCategory(menuList)
+        setMenu((menuList))
+
+        statusBarHeightControl()
     }
 
     fun startMenuSelect(menuIdx: Int) {
@@ -301,6 +363,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             setMenu((result.menu))
         }
 
+        statusBarHeightControl()
     }
 
     fun menuFouceItem(position: Int){
@@ -331,7 +394,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     }
 
     fun setPhotoReview(reviewList: ArrayList<PhotoReview>) {
-        binding.detailSuperPhotoReviewRecyclerview.adapter = SuperPhotoReviewAdapter(reviewList)
+        binding.detailSuperPhotoReviewRecyclerview.adapter = SuperPhotoReviewAdapter(reviewList, this)
         binding.detailSuperPhotoReviewRecyclerview.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 

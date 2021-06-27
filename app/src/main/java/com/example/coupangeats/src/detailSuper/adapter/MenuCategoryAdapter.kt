@@ -1,4 +1,4 @@
-package com.example.coupangeats.src.detailSuper.detailSuperFragment.adapter
+package com.example.coupangeats.src.detailSuper.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +8,8 @@ import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.DetailSuperActivity
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.Menu
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
+import com.example.coupangeats.src.detailSuper.model.Menu
 
 class MenuCategoryAdapter(val menuCategoryList: ArrayList<Menu>, val activity: DetailSuperActivity) : RecyclerView.Adapter<MenuCategoryAdapter.MenuCategoryViewHolder>() {
     class MenuCategoryViewHolder(itemView: View, val menuCategoryAdapter: MenuCategoryAdapter): RecyclerView.ViewHolder(itemView) {

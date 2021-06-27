@@ -25,9 +25,13 @@ class CartSuperOrder(val activity: CartActivity): BottomSheetDialogFragment()  {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.EditTextDialogStyle)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.EditTextDialogStyle)
+        binding.dialogEditText.setText(activity.mSuperOrderString)
         // 글자 수 감지
         binding.dialogEditText.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -46,6 +50,7 @@ class CartSuperOrder(val activity: CartActivity): BottomSheetDialogFragment()  {
         // 확인 누르기
         binding.dialogEditTextOk.setOnClickListener {
             activity.changeSuperOrder(binding.dialogEditText.text.toString())
+            dismiss()
         }
     }
 }

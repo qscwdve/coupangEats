@@ -1,13 +1,14 @@
-package com.example.coupangeats.src.detailSuper.detailSuperFragment
+package com.example.coupangeats.src.detailSuper
 
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.CouponSaveRequest
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.CouponSaveResponse
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.SuperResponse
+import com.example.coupangeats.src.detailSuper.model.CouponSaveRequest
+import com.example.coupangeats.src.detailSuper.model.CouponSaveResponse
+import com.example.coupangeats.src.detailSuper.model.SuperResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+
 
 interface DetailSuperRetrofitInterface {
     @GET("/stores/{storesIdx}")

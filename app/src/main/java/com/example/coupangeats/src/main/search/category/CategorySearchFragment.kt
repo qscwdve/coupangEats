@@ -20,7 +20,6 @@ class CategorySearchFragment : BaseFragment<FragmentCategorySearchBinding>(Fragm
         CategorySearchService(this).tryGetSuperCategory()
     }
 
-
     override fun onGetSuperCategorySuccess(response: SuperCategoryResponse) {
         if(response.code == 1000){
             // SearchCategory RecyclerView Setting

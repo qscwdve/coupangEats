@@ -42,6 +42,7 @@ class CartOrderRider(val activity: CartActivity, val version: Int): BottomSheetD
             5 -> binding.dialogOrderRiderOption5Img.visibility = View.VISIBLE
             6 -> binding.dialogOrderRiderOption6Img.visibility = View.VISIBLE
             7 -> binding.dialogOrderRiderOption7Img.visibility = View.VISIBLE
+            else -> binding.dialogOrderRiderOption4Img.visibility = View.VISIBLE
         }
         binding.dialogOrderRiderExit.setOnClickListener {
             dismiss()

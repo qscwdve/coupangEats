@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" android:background="@color/white">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_alignParentTop="true"
@@ -15,55 +16,56 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:orientation="horizontal"
             android:paddingHorizontal="10sp"
-            android:paddingVertical="6sp"
-            android:orientation="horizontal">
+            android:paddingVertical="6sp">
 
             <ImageView
-                android:contentDescription="@string/image_no"
                 android:id="@+id/home_gps_img"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:scaleType="fitEnd"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/image_no"
                 android:padding="14dp"
-                android:src="@drawable/ic_delivery_gps"/>
+                android:scaleType="fitEnd"
+                android:src="@drawable/ic_delivery_gps" />
+
             <TextView
                 android:id="@+id/home_gps_address"
-                android:layout_toEndOf="@+id/home_gps_img"
-                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:maxLines="1"
-                android:maxWidth="200dp"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:textSize="17sp"
+                android:layout_toEndOf="@+id/home_gps_img"
                 android:ellipsize="end"
+                android:gravity="center"
+                android:maxWidth="200dp"
+                android:maxLines="1"
+                android:text="@string/home_address_need"
                 android:textColor="@color/black"
-                android:text="@string/home_address_need"/>
+                android:textSize="17sp" />
 
             <ImageView
-                android:contentDescription="@string/image_no"
-                android:layout_toEndOf="@+id/home_gps_address"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"
+                android:layout_toEndOf="@+id/home_gps_address"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/image_no"
                 android:padding="10sp"
+                android:src="@drawable/main_address_arrow"
                 tools:ignore="NestedWeights" />
 
             <ImageView
                 android:id="@+id/home_search"
-                android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="12dp"
+                android:layout_alignParentEnd="true"
                 android:adjustViewBounds="true"
-                android:src="@drawable/ic_nav_click_search"
-                android:contentDescription="@string/image_no" />
+                android:contentDescription="@string/image_no"
+                android:padding="12dp"
+                android:src="@drawable/ic_nav_click_search" />
         </RelativeLayout>
 
         <View
@@ -116,9 +118,9 @@
             android:orientation="vertical">
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/home_scroll_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
+                android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -201,46 +203,48 @@
                         tools:ignore="SmallSp" />
 
                     <!-- 할인중인 맛집 -->
+
                     <LinearLayout
-                        android:layout_marginVertical="10dp"
-                        android:orientation="vertical"
-                        android:padding="15dp"
                         android:id="@+id/home_discount_super"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:orientation="vertical"
+                        android:padding="15dp">
 
                         <LinearLayout
-                            android:layout_marginBottom="5dp"
-                            android:paddingStart="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
                             android:orientation="horizontal"
+                            android:paddingStart="15dp"
                             tools:ignore="RtlSymmetry">
+
                             <TextView
                                 android:layout_width="0dp"
-                                android:layout_weight="10"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="10"
                                 android:text="@string/discount_super"
-                                android:textSize="18sp"
                                 android:textColor="@color/black"
-                                android:textStyle="bold"/>
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
 
                             <ImageView
                                 android:id="@+id/home_discount_super_look"
-                                android:background="@drawable/white_to_gray_ripple"
-                                android:layout_weight="1"
                                 android:layout_width="0dp"
-                                android:paddingHorizontal="5dp"
                                 android:layout_height="match_parent"
-                                android:src="@drawable/ic_arrow_pointing_to_right"
-                                android:contentDescription="@string/image_no" />
+                                android:layout_weight="1"
+                                android:background="@drawable/white_to_gray_ripple"
+                                android:contentDescription="@string/image_no"
+                                android:paddingHorizontal="5dp"
+                                android:src="@drawable/ic_arrow_pointing_to_right" />
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:paddingTop="10dp"
                             android:id="@+id/home_discount_super_recyclerview"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp" />
 
                     </LinearLayout>
 
@@ -320,6 +324,7 @@
                         android:layout_height="wrap_content">
 
                         <TextView
+                            android:visibility="visible"
                             android:layout_marginStart="15dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -330,6 +335,8 @@
 
                         <!-- 필터 -->
                         <HorizontalScrollView
+                            android:visibility="visible"
+                            android:id="@+id/home_filter_parent"
                             android:layout_marginTop="3dp"
                             android:scrollbars="none"
                             android:layout_width="match_parent"
@@ -581,14 +588,127 @@
         </LinearLayout>
     </LinearLayout>
 
-
-
     <TextView
         android:visibility="gone"
-        android:id="@+id/home_cart_bag"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/home_cart_bag"
+        android:text="배달주소가 변경되었습니다."
+        android:id="@+id/home_notice_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="카트에 담기"
-        android:textSize="20sp"/>
+        android:textSize="15sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:paddingVertical="23dp"
+        android:background="#CC000000"/>
+
+    <!-- 치타배달 배너 -->
+    <LinearLayout
+        android:id="@+id/home_cheetah_banner_parent"
+        android:layout_marginBottom="15dp"
+        android:layout_marginHorizontal="10dp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="20dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/cheeta_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cheetah"/>
+
+        <View
+            android:layout_marginVertical="4dp"
+            android:layout_marginHorizontal="5dp"
+            android:layout_width="1sp"
+            android:layout_height="match_parent"
+            android:background="@color/lightGray"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30분"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/home_cheetah_banner_text"
+            android:layout_marginStart="3dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="내 도착하는 맛집 512개!"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"/>
+        <ImageView
+            android:id="@+id/home_cheetah_banner_cancel"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cancel_gray"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/home_cart_bag"
+        android:layout_width="match_parent"
+        android:background="@color/loginBlue"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            android:padding="17dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="7dp"
+                android:background="@drawable/ic_cart_num_box"
+                android:orientation="horizontal"
+                android:paddingHorizontal="4dp">
+
+                <TextView
+                    android:id="@+id/home_cart_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/loginBlue"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/look_cart"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/home_cart_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="15dp"
+            android:gravity="center"
+            android:text="34500원"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
 </RelativeLayout>

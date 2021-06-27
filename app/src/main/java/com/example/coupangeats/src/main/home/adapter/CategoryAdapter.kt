@@ -1,6 +1,9 @@
 package com.example.coupangeats.src.main.home.adapter
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -16,13 +19,28 @@ class CategoryAdapter(val categoryList: ArrayList<StoreCategories>, val fragment
         val categoryImg = itemView.findViewById<ImageView>(R.id.item_home_category_img)
         val categoryName = itemView.findViewById<TextView>(R.id.item_home_category_name)
 
+        @SuppressLint("ClickableViewAccessibility")
         fun bind(item: StoreCategories){
 
             Glide.with(categoryImg).load(item.url).circleCrop().into(categoryImg)
             categoryName.text = item.categoryName
 
+            itemView.setOnTouchListener { v, event ->
+                if(event.action == MotionEvent.ACTION_UP){
+                    if(categoryAdapter.fragment.mScrollStart){
+                        categoryAdapter.fragment.mScrollStart  = false
+                        categoryAdapter.fragment.mScrollFlag = false
+                    } else {
+                        categoryAdapter.fragment.mScrollFlag = false
+                    }
+                } else if(event.action == MotionEvent.ACTION_DOWN){
+                    // 누름
+                    categoryAdapter.fragment.mScrollFlag = true
+                    categoryAdapter.fragment.mScrollValue = -1
+                }
+                false
+            }
             itemView.setOnClickListener {
-                // 카테고리로 넘어감
                 categoryAdapter.fragment.startCategorySuper(item.categoryName)
             }
        }

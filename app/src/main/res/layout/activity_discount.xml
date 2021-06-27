@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".src.discount.DiscountActivity">
+
+    <LinearLayout
+        android:background="@color/white"
+        android:id="@+id/discount_toolbar"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:orientation="horizontal"
+        android:layout_marginStart="15dp"
+        android:paddingBottom="5dp">
+
+        <ImageView
+            android:id="@+id/discount_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circle_ripple_white_to_gray"
+            android:contentDescription="@string/image_no"
+            android:padding="18sp"
+            android:src="@drawable/ic_left_arrow_black"
+            android:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:text="@string/discountStr"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="20dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/discount_toolbar"
+        android:layout_above="@+id/discount_apply">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="쿠폰 등록"
+            android:textSize="15sp"
+            android:layout_marginTop="10dp"
+            android:paddingVertical="15dp"
+            android:textColor="@color/couponRegister"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_marginEnd="10dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <EditText
+                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:paddingVertical="10dp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:id="@+id/discount_coupon_num_text"
+                    android:ellipsize="end"
+                    android:background="@color/white"
+                    android:textColorHint="@color/couponNum"
+                    android:hint="@string/couponNumHint"/>
+
+                <View
+                    android:layout_below="@+id/discount_coupon_num_text"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/baseColor"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/discount_coupon_apply"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/round_gray_box"
+                android:text="등록"
+                android:textColor="@color/couponRegister"
+                android:gravity="center"
+                android:paddingHorizontal="30dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/discount_coupon_num_error"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="잘못된 번호 입니다."
+            android:layout_marginTop="15sp"
+            android:textColor="@color/ErrorRed"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="35dp"
+            android:id="@+id/discount_info_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/discount_apply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/loginBlue"
+        android:layout_alignParentBottom="true"
+        android:text="적용하기"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:paddingVertical="10dp"/>
+
+</RelativeLayout>

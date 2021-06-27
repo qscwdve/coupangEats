@@ -4,6 +4,7 @@ import com.example.coupangeats.src.deliveryAddressSetting.model.UserCheckedAddre
 import com.example.coupangeats.src.login.model.UserLoginRequest
 import com.example.coupangeats.src.login.model.UserLoginResponse
 import com.example.coupangeats.src.main.home.model.HomeInfo.HomeInfoResponse
+import com.example.coupangeats.src.main.home.model.cheetahCount.CheetahCountResponse
 import com.example.coupangeats.src.main.home.model.userCheckAddress.UserCheckResponse
 import retrofit2.Call
 import retrofit2.http.*
@@ -18,4 +19,7 @@ interface HomeRetrofitInterface {
                     @Query("coupon") coupon: String?, @Query("ordermin") ordermin: Int?,
                     @Query("deliverymin") deliverymin: Int?, @Query("cursor") cursor: Int = 1,
                     @Query("numOfRows") numOfRows: Int = 10) : Call<HomeInfoResponse>
+
+    @GET("/stores/cheetah/count")
+    fun getCheetahCount(@Query("lat") lat: String, @Query("lon") lon: String) : Call<CheetahCountResponse>
 }

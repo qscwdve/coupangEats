@@ -1,5 +1,6 @@
 package com.example.coupangeats.src.cart
 
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
@@ -9,6 +10,7 @@ import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityCartBinding
 import com.example.coupangeats.src.cart.adapter.CartMenuInfoAdatper
 import com.example.coupangeats.src.cart.model.*
+import com.example.coupangeats.src.discount.DiscountActivity
 import com.example.coupangeats.util.CartMenuDatabase
 import com.example.coupangeats.util.CartOrderRider
 import com.example.coupangeats.util.CartSuperOrder
@@ -24,15 +26,19 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     var mCouponIdx = -1
     var mRiderOrder = -1
     var mCheckSpoon = "N"
+    var mSuperOrderString = ""
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
-
+    private val DISCOUNT_ACTIVITY_NUM = 1234
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // 데이터베이스 셋팅
         mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
         mDB = mDBHelper.writableDatabase
+
+        binding.cartFill.visibility = View.VISIBLE
+        binding.cartEmpty.visibility = View.GONE
 
         // 서버에서 카트보기 불러오기
         showLoadingDialog(this)
@@ -42,6 +48,10 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         // 매장 이름
         binding.cartStoreName.text = ApplicationClass.sSharedPreferences.getString("storeName", "매장 없음")
         binding.cartBack.setOnClickListener { finish() }
+
+        // 할인쿠폰 보러가기
+        binding.cartCouponChange.setOnClickListener { lookCouponList() }
+        binding.cartCouponPrice.setOnClickListener { lookCouponList() }
 
         // 배달 요청사항
         binding.cartRiderOrder.setOnClickListener {
@@ -60,6 +70,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         }
         // 가게 요청사항
         binding.cartSuperOrder.setOnClickListener {
+            mSuperOrderString = binding.cartSuperOrder.text.toString()
             val cartSuperOrder = CartSuperOrder(this)
             cartSuperOrder.show(supportFragmentManager, "superOrder")
         }
@@ -92,6 +103,21 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             CartService(this).tryPostOrder(request)
         }
     }
+
+    fun lookCouponList() {
+        val intent = Intent(this, DiscountActivity::class.java).apply {
+            this.putExtra("storeIdx", getStoreIdx())
+            this.putExtra("selectCouponIdx", mCouponIdx)
+        }
+        startActivityForResult(intent, DISCOUNT_ACTIVITY_NUM)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == DISCOUNT_ACTIVITY_NUM){
+
+        }
+    }
     fun getOrderMenu() : ArrayList<OrderMenu> {
         val array = ArrayList<OrderMenu>()
         val orderMenuList = mDBHelper.menuSelect(mDB)
@@ -112,6 +138,21 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         // 메뉴 어댑터 설정
         binding.cartMenuRecyclerView.adapter = CartMenuInfoAdatper(menuList, this)
         binding.cartMenuRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    // 각 메뉴 개수 재설정
+    fun changeOrderPrice() {
+        // 주문 금액
+        mMenuPrice = mDBHelper.menuTotalPrice(mDB)
+        val menuPrice = "${priceIntToString(mMenuPrice)}원"
+        binding.cartMenuPrice.text = menuPrice
+
+        // 총 결제 금액
+        mTotalPrice = mMenuPrice + mDeliveryPrice - mCouponPrice
+        val superTotalPrice = "${priceIntToString(mTotalPrice)}원"
+        binding.cartMenuTotalPrice.text = superTotalPrice
+        val total = "$superTotalPrice 결제하기"
+        binding.cartOk.text = total
     }
 
     override fun onGetCartLookSuccess(response: CartMenuLookResponse) {
@@ -210,5 +251,9 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             val first = target.substring(0..(size - 4))
             "$first,$last"
         } else target
+    }
+    fun cartEmpty(){
+        binding.cartFill.visibility = View.GONE
+        binding.cartEmpty.visibility = View.VISIBLE
     }
 }

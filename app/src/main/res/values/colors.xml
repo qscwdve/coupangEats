@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#fcfcfc</color>
-    <color name="colorPrimaryDark">#889dfe</color>
-    <color name="colorAccent">#889dfe</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#000000</color>
 
+    <!-- 할인쿠폰 글자 색상 -->
+    <color name="couponRegister">#5E5E5E</color>
+    <color name="couponNum">#8F9AA8</color>
     <!-- 기본 -->
+    <color name="transportBlack">#5F000000</color>
+    <color name="transportLoginBlue">#5F00AFFE</color>
+    <color name="transportBaseColor">#5F949DA6</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="lightBlack">#202020</color>
@@ -26,9 +32,11 @@
     
     <!-- 회원가입 -->
     <color name="middleGray">#CCCCCC</color>
+    <color name="middleGrayTransport">#5FCCCCCC</color>
     <color name="blue">#4472C4</color>
     <color name="backgroundGray">#FAFAFA</color>
     <color name="ErrorRed">#C4263A</color>
     <color name="passwordChecked">#35763F</color>
     <color name="agreeSend">#0E6CCA</color>
+    <color name="mainCheetaLine">#EF651B</color>
 </resources>

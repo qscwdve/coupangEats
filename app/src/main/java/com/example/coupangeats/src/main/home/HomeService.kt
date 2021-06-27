@@ -5,6 +5,7 @@ import com.example.coupangeats.src.login.model.UserLoginRequest
 import com.example.coupangeats.src.login.model.UserLoginResponse
 import com.example.coupangeats.src.main.home.model.HomeInfo.HomeInfoRequest
 import com.example.coupangeats.src.main.home.model.HomeInfo.HomeInfoResponse
+import com.example.coupangeats.src.main.home.model.cheetahCount.CheetahCountResponse
 import com.example.coupangeats.src.main.home.model.userCheckAddress.UserCheckResponse
 import com.softsquared.template.kotlin.config.ApplicationClass
 import retrofit2.Call
@@ -42,6 +43,24 @@ class HomeService(val view: HomeFragmentView) {
 
                 override fun onFailure(call: Call<HomeInfoResponse>, t: Throwable) {
                     view.onGetHomeDataFailure(t.message ?: "통신 오류")
+                }
+
+            })
+    }
+
+    fun tryGetCheetahCount(lat: String, lon: String){
+        val homeRetrofitInterface = ApplicationClass.sRetrofit.create(HomeRetrofitInterface::class.java)
+        homeRetrofitInterface.getCheetahCount(lat, lon)
+            .enqueue(object : Callback<CheetahCountResponse>{
+                override fun onResponse(
+                    call: Call<CheetahCountResponse>,
+                    response: Response<CheetahCountResponse>
+                ) {
+                    view.onGetCheetahCountSuccess(response.body() as CheetahCountResponse)
+                }
+
+                override fun onFailure(call: Call<CheetahCountResponse>, t: Throwable) {
+                    view.onGetCheetahCountFailure(t.message ?: "통신 오류")
                 }
 
             })

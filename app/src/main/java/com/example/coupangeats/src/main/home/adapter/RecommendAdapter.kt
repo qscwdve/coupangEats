@@ -1,6 +1,9 @@
 package com.example.coupangeats.src.main.home.adapter
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -30,7 +33,9 @@ class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragme
         val couponParent = itemView.findViewById<LinearLayout>(R.id.item_recommend_coupon_parent)
         val coupon = itemView.findViewById<TextView>(R.id.item_recommend_coupon)
 
+        @SuppressLint("ClickableViewAccessibility")
         fun bind(item: RecommendStores) {
+            itemView.tag = adapterPosition
             val image = item.url
             if(image.size > 0){
                 Glide.with(mainimg).load(item.url[0]).centerCrop().into(mainimg)
@@ -72,6 +77,21 @@ class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragme
                 coupon.text = item.coupon
             } else {
                 couponParent.visibility = View.GONE
+            }
+            itemView.setOnTouchListener { v, event ->
+                if(event.action == MotionEvent.ACTION_UP){
+                    if(recommendAdapter.fragment.mScrollStart){
+                        recommendAdapter.fragment.mScrollStart  = false
+                        recommendAdapter.fragment.mScrollFlag = false
+                    } else {
+                        recommendAdapter.fragment.mScrollFlag = false
+                    }
+                } else if(event.action == MotionEvent.ACTION_DOWN){
+                    // 누름
+                    recommendAdapter.fragment.mScrollFlag = true
+                    recommendAdapter.fragment.mScrollValue = -1
+                }
+                false
             }
             itemView.setOnClickListener {
                 // 매장 선택

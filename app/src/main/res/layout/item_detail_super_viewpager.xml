@@ -2,13 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:id="@+id/item_detail_super_viewpager_img"
         android:src="@drawable/category_asian"
         android:layout_width="match_parent"
-        android:scaleType="centerCrop"
-        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:foreground="@drawable/image_overlay"
         app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

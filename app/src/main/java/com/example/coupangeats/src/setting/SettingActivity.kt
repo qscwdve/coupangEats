@@ -1,5 +1,6 @@
 package com.example.coupangeats.src.setting
 
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -9,13 +10,22 @@ import androidx.appcompat.app.AlertDialog
 import com.example.coupangeats.databinding.ActivitySettingBinding
 import com.example.coupangeats.databinding.DialogLoginCheckBinding
 import com.example.coupangeats.databinding.DialogLogoutBinding
+import com.example.coupangeats.util.CartMenuDatabase
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 import kotlin.math.log
 
 class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBinding::inflate) {
+
+    private lateinit var mDBHelper: CartMenuDatabase
+    private lateinit var mDB: SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 데이터베이스 셋팅
+        mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
+        mDB = mDBHelper.writableDatabase
 
         binding.settingBackImg.setOnClickListener {
             finish()
@@ -49,6 +59,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
             // 로그아웃
             loginFailure()
             alertDialog.dismiss()
+            mDBHelper.deleteTotal(mDB)
             finish()
         }
         logoutBinding.dialogLogoutNo.setOnClickListener {

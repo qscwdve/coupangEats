@@ -1,8 +1,8 @@
-package com.example.coupangeats.src.detailSuper.detailSuperFragment
+package com.example.coupangeats.src.detailSuper
 
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.CouponSaveRequest
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.CouponSaveResponse
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.SuperResponse
+import com.example.coupangeats.src.detailSuper.model.CouponSaveRequest
+import com.example.coupangeats.src.detailSuper.model.CouponSaveResponse
+import com.example.coupangeats.src.detailSuper.model.SuperResponse
 import com.softsquared.template.kotlin.config.ApplicationClass
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,7 +14,7 @@ class DetailSuperService(val view: DetailSuperActivityView) {
         val detailSuperRetrofitInterface = ApplicationClass.sRetrofit.create(
             DetailSuperRetrofitInterface::class.java)
         detailSuperRetrofitInterface.getSuperInfo(storesIdx)
-            .enqueue(object : Callback<SuperResponse>{
+            .enqueue(object : Callback<SuperResponse> {
                 override fun onResponse(
                     call: Call<SuperResponse>,
                     response: Response<SuperResponse>

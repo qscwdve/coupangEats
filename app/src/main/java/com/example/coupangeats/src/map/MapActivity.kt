@@ -35,6 +35,7 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
     private var version = 0   // 0 이면 선택 1이면 수정
     private lateinit var gpsControl : GpsControl
     private val PERMISSION_REQUEST_CODE = 100
+
     @SuppressLint("ClickableViewAccessibility", "Recycle")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

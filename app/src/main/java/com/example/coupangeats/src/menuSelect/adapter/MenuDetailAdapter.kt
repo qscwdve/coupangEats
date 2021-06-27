@@ -135,6 +135,10 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>, val version:Int, val 
                     totalPrice += optionList[index].extraPrive
                 }
             }
+            if(content[content.length - 1] == ','){
+                content = content.substring(2 until (content.length - 1))
+            }
+            else content = content.substring(2 until content.length)
         }
         activity.saveMenuInfo(mPosition, SelectMenu(content, totalPrice))
     }

@@ -95,7 +95,7 @@
         android:layout_marginHorizontal="15dp"
         android:id="@+id/item_menu_list_line"
         android:layout_width="match_parent"
-        android:layout_height="3sp"
+        android:layout_height="1.5sp"
         android:background="@color/line"
         tools:ignore="SmallSp" />
 

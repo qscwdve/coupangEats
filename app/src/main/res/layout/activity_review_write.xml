@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".src.reviewWrite.ReviewWriteActivity"
+    tools:ignore="RtlSymmetry">
+
+    <LinearLayout
+        android:id="@+id/review_write_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginStart="15dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp">
+
+        <ImageView
+            android:id="@+id/review_write_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circle_ripple_white_to_gray"
+            android:contentDescription="@string/image_no"
+            android:padding="18sp"
+            android:src="@drawable/cancel"
+            android:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:text="만족도 평가 및 리뷰"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:background="@color/white"
+        android:paddingEnd="20dp"
+        android:layout_below="@+id/review_write_toolbar"
+        android:layout_above="@+id/review_write_apply"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <!-- 음식 평가 -->
+            <LinearLayout
+                android:paddingStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="RtlSymmetry">
+
+                <ImageView
+                    android:layout_marginEnd="10dp"
+                    android:id="@+id/review_write_super"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_review_super" />
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:text="음식 평가"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginStart="73dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="천화쿵푸마라탕 수원점"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"/>
+                <!-- 별표 -->
+                <LinearLayout
+                    android:layout_marginBottom="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- 별표 -->
+                    <LinearLayout
+                        android:gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_marginEnd="7dp"
+                            android:id="@+id/review_write_star1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_review_star_big_no"/>
+                        <ImageView
+                            android:layout_marginEnd="7dp"
+                            android:id="@+id/review_write_star2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_review_star_big_no"/>
+                        <ImageView
+                            android:layout_marginEnd="7dp"
+                            android:id="@+id/review_write_star3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_review_star_big_no"/>
+                        <ImageView
+                            android:layout_marginEnd="7dp"
+                            android:id="@+id/review_write_star4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_review_star_big_no"/>
+                        <ImageView
+                            android:id="@+id/review_write_star5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_review_star_big_no"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/item_review_date"
+                        android:gravity="end"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="오늘"
+                        android:textColor="@color/baseColor"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 어떤점이 별로였나요?-->
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_marginBottom="15dp"
+                android:layout_marginStart="73dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reviewWriteBadMent"
+                    android:textSize="12sp"
+                    android:textColor="@color/baseColor"/>
+
+                <!-- 별점 불만사항 -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/review_write_rating_late_food"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="7dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/login_box"
+                        android:layout_height="wrap_content">
+                        <!--  detail_address_category_box -->
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lateFood"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/review_write_rating_order_miss"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/review_write_rating_late_food"
+                        android:layout_width="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="7dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/login_box"
+                        android:layout_height="wrap_content">
+                        <!--  detail_address_category_box -->
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/orderMiss"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/review_write_rating_menu_miss"
+                        android:layout_below="@+id/review_write_rating_late_food"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="7dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/login_box"
+                        android:layout_height="wrap_content">
+                        <!--  detail_address_category_box -->
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/MenuMissOrder"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/review_write_rating_pack_loss"
+                        android:layout_toEndOf="@+id/review_write_rating_menu_miss"
+                        android:layout_below="@+id/review_write_rating_late_food"
+                        android:layout_width="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="7dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@drawable/login_box"
+                        android:layout_height="wrap_content">
+                        <!--  detail_address_category_box -->
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/packLoss"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/review_write_rating_super_request_not"
+                        android:layout_below="@+id/review_write_rating_menu_miss"
+                        android:layout_alignParentStart="true"
+                        android:layout_width="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="7dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/login_box"
+                        android:layout_height="wrap_content">
+                        <!--  detail_address_category_box -->
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/superRequestNot"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/review_write_rating_etc"
+                        android:layout_toEndOf="@+id/review_write_rating_super_request_not"
+                        android:layout_below="@+id/review_write_rating_pack_loss"
+                        android:layout_width="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="7dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/login_box"
+                        android:layout_height="wrap_content">
+                        <!--  detail_address_category_box -->
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/etc"
+                            android:textSize="12sp"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+
+            <!-- 리뷰 작성 -->
+            <LinearLayout
+                android:visibility="gone"
+                android:orientation="vertical"
+                android:layout_marginStart="73dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:hint="@string/reviewHint"
+                    android:background="@drawable/ratangle_line_gray_box"
+                    android:textSize="13sp"
+                    android:textColorHint="@color/baseColor"
+                    android:padding="15dp"
+                    android:gravity="top"
+                    android:textColor="@color/black"
+                    android:autofillHints="@string/no" />
+
+                <!-- 사진 추가 -->
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_marginEnd="10dp"
+                            android:padding="10dp"
+                            android:background="@drawable/ripple_ratangle_rounded_line_gray_box"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_carmera"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="사진 추가"
+                                android:textColor="@color/black"
+                                android:textSize="13sp"/>
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+
+            </LinearLayout>
+
+            <!-- 메뉴 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginStart="73dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <!-- 배달 평가 -->
+            <LinearLayout
+                android:paddingStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="RtlSymmetry">
+
+                <ImageView
+                    android:layout_marginEnd="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_review_rider" />
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="7dp"
+                    android:text="@string/reviewRider"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- 배달 파트너 -->
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="73dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/reviewRiderPatner"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_marginEnd="8dp"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="15dp"
+                    android:background="@drawable/review_like_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_review_like"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="15dp"
+                    android:background="@drawable/review_like_box"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_review_dislike"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 배달 불만사항 -->
+            <RelativeLayout
+                android:visibility="visible"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="73dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/item_review_write_small_amount"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="7dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_box"
+                    android:layout_height="wrap_content">
+                    <!--  detail_address_category_box -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/late"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/item_review_write_very_salt"
+                    android:layout_alignParentTop="true"
+                    android:layout_toEndOf="@+id/item_review_write_small_amount"
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="7dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_box"
+                    android:layout_height="wrap_content">
+                    <!--  detail_address_category_box -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/messy"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/item_review_write_cold"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/item_review_write_small_amount"
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="7dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_box"
+                    android:layout_height="wrap_content">
+                    <!--  detail_address_category_box -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/foodTemperature"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_below="@+id/item_review_write_small_amount"
+                    android:layout_toEndOf="@+id/item_review_write_cold"
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="7dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_box"
+                    android:layout_height="wrap_content">
+                    <!--  detail_address_category_box -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/deliveryRequestNot"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/item_review_write_cold"
+                    android:id="@+id/review_write_delivery_unkind"
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="7dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_box"
+                    android:layout_height="wrap_content">
+                    <!--  detail_address_category_box -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/unkind"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_toEndOf="@+id/review_write_delivery_unkind"
+                    android:layout_below="@+id/item_review_write_cold"
+                    android:id="@+id/review_write_delivery_different_menu"
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="7dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_box"
+                    android:layout_height="wrap_content">
+                    <!--  detail_address_category_box -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/differentMenu"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/review_write_delivery_unkind"
+                    android:id="@+id/review_write_delivery_not_food"
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="7dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_box"
+                    android:layout_height="wrap_content">
+                    <!--  detail_address_category_box -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/notFood"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/review_write_delivery_long"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/review_write_delivery_not_food"
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="7dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/login_box"
+                    android:layout_height="wrap_content">
+                    <!--  detail_address_category_box -->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/longDelivery"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+                <!-- 길안내 -->
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/review_write_delivery_road"
+                    android:layout_below="@+id/review_write_delivery_long"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:background="@drawable/white_to_gray_ripple"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_speech"/>
+
+                        <TextView
+                            android:layout_marginStart="7dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="길안내"
+                            android:textSize="12sp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textColor="@color/baseColor"
+                            android:textStyle="bold"/>
+
+                        <View
+                            android:layout_marginVertical="2dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:layout_width="1.5dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/baseColor"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="내용"
+                            android:textSize="12sp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textColor="@color/baseColor"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_marginStart="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="수정"
+                        android:textSize="13sp"
+                        android:layout_gravity="top"
+                        android:gravity="center"
+                        android:textColor="@color/loginBlue"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+                <!-- 기타 의견 -->
+                <LinearLayout
+                    android:layout_below="@+id/review_write_delivery_road"
+                    android:layout_marginBottom="25dp"
+                    android:visibility="visible"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:background="@drawable/white_to_gray_ripple"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_speech"/>
+
+                        <TextView
+                            android:layout_marginStart="7dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="기타의견"
+                            android:textSize="12sp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textColor="@color/loginBlue"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_marginStart="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="수정"
+                        android:textSize="13sp"
+                        android:layout_gravity="top"
+                        android:gravity="center"
+                        android:textColor="@color/loginBlue"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:id="@+id/review_write_apply"
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="등록하기"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@color/loginBlue"
+        android:textSize="15sp"/>
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package com.example.coupangeats.src.detailSuper.detailSuperFragment.adapter
+package com.example.coupangeats.src.detailSuper.adapter
 
 import android.view.LayoutInflater
 import android.view.View

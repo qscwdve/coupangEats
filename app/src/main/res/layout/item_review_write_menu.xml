@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="20dp"
+    android:orientation="vertical" android:background="@color/white"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_marginEnd="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_review_write_menu_name"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="메뉴 이름"
+                android:textSize="15sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/item_review_write_side_menu_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="소, 2다계(청양고추정도 매워요), 숙주1 추가, 팽이버섯1 추가, 문어볼1 추가, 녹두납작당면1 추가"
+                android:textSize="13sp"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_review_write_like"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="15dp"
+            android:background="@drawable/review_like_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/item_review_write_like_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_review_like"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_review_write_dislike"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="15dp"
+            android:background="@drawable/review_like_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/item_review_write_dislike_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_review_like"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- 메뉴 불만사항 -->
+    <RelativeLayout
+        android:visibility="visible"
+        android:id="@+id/item_review_write_menu_opinion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <LinearLayout
+            android:id="@+id/item_review_write_small_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/login_box"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="7dp">
+            <!--  detail_address_category_box -->
+
+            <TextView
+                android:id="@+id/item_review_write_small_amount_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/smallAmount"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_review_write_very_salt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@+id/item_review_write_small_amount"
+            android:background="@drawable/login_box"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="7dp">
+            <!--  detail_address_category_box -->
+
+            <TextView
+                android:id="@+id/item_review_write_very_salt_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/verySalt"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_review_write_very_fresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/item_review_write_very_salt"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/login_box"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="7dp">
+            <!--  detail_address_category_box -->
+
+            <TextView
+                android:id="@+id/item_review_write_very_fresh_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="너무 싱거움"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_review_write_cold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_review_write_small_amount"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/login_box"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="7dp">
+            <!--  detail_address_category_box -->
+
+            <TextView
+                android:id="@+id/item_review_write_cold_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cold"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_review_write_expensive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_review_write_small_amount"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@+id/item_review_write_cold"
+            android:background="@drawable/login_box"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="7dp">
+            <!--  detail_address_category_box -->
+
+            <TextView
+                android:id="@+id/item_review_write_expensive_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/expansive"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- 기타 의견 -->
+        <LinearLayout
+            android:layout_below="@+id/item_review_write_cold"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/item_review_write_etc"
+                android:background="@drawable/white_to_gray_ripple"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_speech"/>
+
+                <TextView
+                    android:id="@+id/item_review_write_etc_text"
+                    android:layout_marginStart="7dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="기타의견"
+                    android:textSize="12sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/loginBlue"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/item_review_write_stc_change"
+                android:layout_marginStart="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="수정"
+                android:textSize="13sp"
+                android:layout_gravity="top"
+                android:gravity="center"
+                android:textColor="@color/loginBlue"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

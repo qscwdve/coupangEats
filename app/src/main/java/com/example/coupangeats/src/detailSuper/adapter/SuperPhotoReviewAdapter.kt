@@ -1,4 +1,4 @@
-package com.example.coupangeats.src.detailSuper.detailSuperFragment.adapter
+package com.example.coupangeats.src.detailSuper.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +10,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.PhotoReview
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
+import com.example.coupangeats.src.detailSuper.model.PhotoReview
 
-class SuperPhotoReviewAdapter(val reviewList: ArrayList<PhotoReview>) : RecyclerView.Adapter<SuperPhotoReviewAdapter.SuperPhotoReviewViewHolder>() {
+class SuperPhotoReviewAdapter(val reviewList: ArrayList<PhotoReview>, val detailSuperActivity: DetailSuperActivity) : RecyclerView.Adapter<SuperPhotoReviewAdapter.SuperPhotoReviewViewHolder>() {
     class SuperPhotoReviewViewHolder(itemView: View, val superPhotoReviewAdapter: SuperPhotoReviewAdapter) : RecyclerView.ViewHolder(itemView){
         val img = itemView.findViewById<ImageView>(R.id.item_super_photo_review_img)
         val content = itemView.findViewById<TextView>(R.id.item_super_photo_review_content)
@@ -37,7 +38,11 @@ class SuperPhotoReviewAdapter(val reviewList: ArrayList<PhotoReview>) : Recycler
             }
             itemView.setOnClickListener {
                 // 포토 리뷰 선택!!
+                if(item != null){
+                    superPhotoReviewAdapter.detailSuperActivity.startReviewPosition(item.reviewIdx)
+                }
             }
+            thelook.setOnClickListener { superPhotoReviewAdapter.detailSuperActivity.startReviewPosition() }
         }
 
         fun setStar(num: Int) {

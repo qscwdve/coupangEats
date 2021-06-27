@@ -1,7 +1,8 @@
-package com.example.coupangeats.src.detailSuper.detailSuperFragment
+package com.example.coupangeats.src.detailSuper
 
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.CouponSaveResponse
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.SuperResponse
+import com.example.coupangeats.src.detailSuper.model.CouponSaveResponse
+import com.example.coupangeats.src.detailSuper.model.SuperResponse
+
 
 interface DetailSuperActivityView {
     fun onGetSuperInfoSuccess(response: SuperResponse)

@@ -8,7 +8,7 @@ import com.example.coupangeats.databinding.ActivityCategorySuperBinding
 import com.example.coupangeats.src.categorySuper.adapter.CategorySuperAdapter
 import com.example.coupangeats.src.categorySuper.adapter.RecommendCategoryAdapter
 import com.example.coupangeats.src.categorySuper.model.CategorySuperResponse
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.DetailSuperActivity
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.main.search.category.model.SuperCategoryResponse
 import com.softsquared.template.kotlin.config.BaseActivity
 

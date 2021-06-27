@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="1dp"
+    android:background="@drawable/rounded_ratangle_box"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_margin="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 매장 정보 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/item_past_order_store_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="천화쿵푸마라탕 수원역점"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/item_past_order_date"
+                    android:layout_marginTop="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2021-06-21 14:07"
+                    android:textSize="13sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/item_past_order_status"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="배달완료"
+                    android:textSize="14sp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"/>
+
+                <!-- 별표 -->
+                <LinearLayout
+                    android:id="@+id/item_past_order_star_parent"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_marginEnd="3dp"
+                        android:id="@+id/item_past_order_star1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star"/>
+                    <ImageView
+                        android:layout_marginEnd="3dp"
+                        android:id="@+id/item_past_order_star2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star"/>
+                    <ImageView
+                        android:layout_marginEnd="3dp"
+                        android:id="@+id/item_past_order_star3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star"/>
+                    <ImageView
+                        android:layout_marginEnd="3dp"
+                        android:id="@+id/item_past_order_star4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star"/>
+                    <ImageView
+                        android:id="@+id/item_past_order_star5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star_no"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/item_past_order_img"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/category_buger"/>
+        </LinearLayout>
+
+        <!-- 메뉴 정보 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/item_past_order_menu_recycler_view"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <!-- 합계 -->
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total"
+                android:textSize="17sp"
+                android:maxLines="1"
+                android:layout_marginEnd="5dp"
+                android:ellipsize="end"
+                android:textColor="@color/black"/>
+            <TextView
+                android:id="@+id/item_past_order_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="14,000"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/black"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="원"
+                android:textSize="17sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_past_order_reorder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/box_round_blue_ripple"
+            android:text="@string/reOrder"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:paddingVertical="15dp"/>
+
+        <TextView
+            android:id="@+id/item_past_order_review"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dialog_login_basic"
+            android:text="@string/reviewWriter"
+            android:textColor="@color/loginBlue"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:paddingVertical="15dp"/>
+
+        <TextView
+            android:id="@+id/item_past_order_review_limit"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="리뷰 작성 기간이 10일 남았습니다."
+            android:textColor="@color/baseColor"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_past_order_receipt"
+        android:layout_marginHorizontal="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/receiptLook"
+        android:textSize="13sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:paddingVertical="12sp"
+        android:background="@drawable/rounded_ratangle_bottom_box"/>
+
+</LinearLayout>

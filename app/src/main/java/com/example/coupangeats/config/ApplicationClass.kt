@@ -31,7 +31,7 @@ class ApplicationClass : Application() {
         val X_ACCESS_TOKEN = "X-ACCESS-TOKEN"
 
         // 도로명 주소 API Key 값
-        val SEARCH_API_KEY = "devU01TX0FVVEgyMDIxMDUyNDIyMjMwMzExMTE5OTA="
+        val SEARCH_API_KEY = "devU01TX0FVVEgyMDIxMDYyNTE1MzM1MzExMTMyNTk="
 
         // Retrofit 인스턴스, 앱 실행시 한번만 생성하여 사용합니다.
         lateinit var sRetrofit: Retrofit

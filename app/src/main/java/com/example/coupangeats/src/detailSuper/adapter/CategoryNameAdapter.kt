@@ -1,4 +1,4 @@
-package com.example.coupangeats.src.detailSuper.detailSuperFragment.adapter
+package com.example.coupangeats.src.detailSuper.adapter
 
 import android.os.Handler
 import android.os.Looper
@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.DetailSuperActivity
-import com.example.coupangeats.src.detailSuper.detailSuperFragment.model.Menu
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
+import com.example.coupangeats.src.detailSuper.model.Menu
 
 class CategoryNameAdapter(val categoryList: ArrayList<Menu>, val activity: DetailSuperActivity) : RecyclerView.Adapter<CategoryNameAdapter.CategoryViewHolder>() {
     var nowSelected = 0;

@@ -14,21 +14,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:replace="android:label">
+        <activity android:name=".src.SuperInfo.SuperInfoActivity"></activity>
+        <activity
+            android:name=".src.deliveryStatus.DeliveryStatusActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".src.reviewWrite.ReviewWriteActivity" />
+        <activity
+            android:name=".src.review.ReviewActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity android:name=".src.discount.DiscountActivity" />
         <activity
             android:name=".src.categorySuper.CategorySuperActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".src.map.MapActivity" />
-        <activity android:name=".src.cart.CartActivity" />
-        <activity android:name=".src.menuSelect.MenuSelectActivity" />
         <activity
             android:name=".src.detailSuper.DetailSuperActivity"
-            android:theme="@style/NonStatusBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".src.map.MapActivity" />
+        <activity android:name=".src.cart.CartActivity" />
+        <activity
+            android:name=".src.menuSelect.MenuSelectActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".src.superSearch.SuperSearchActivity" />
         <activity android:name=".src.setting.SettingActivity" />
         <activity android:name=".src.deliveryAddressSetting.DeliveryAddressSettingActivity" />
@@ -43,7 +52,13 @@
         <activity
             android:name=".src.splash.SplashActivity"
             android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

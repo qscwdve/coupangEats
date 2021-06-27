@@ -66,7 +66,7 @@ class CartMenuDatabase(
         val query = "SELECT * FROM $mTableName;"
         val c = db.rawQuery(query,null)
         while(c.moveToNext()) {
-            totalPrice += c.getInt(c.getColumnIndex(mPrice))
+            totalPrice += c.getInt(c.getColumnIndex(mPrice)) * c.getInt(c.getColumnIndex(mNum))
         }
         c.close()
 
@@ -94,5 +94,11 @@ class CartMenuDatabase(
     // 메뉴 삭제
     fun deleteId(db: SQLiteDatabase, id:Int) {
         db.execSQL("DELETE FROM $mTableName WHERE $mID=$id")
+    }
+
+    // 메뉴 수정
+    fun menuIdModify(db: SQLiteDatabase, id: Int, num: Int) {
+        val sql = "UPDATE $mTableName SET $mNum=$num WHERE $mID=$id"
+        db.execSQL(sql)
     }
 }

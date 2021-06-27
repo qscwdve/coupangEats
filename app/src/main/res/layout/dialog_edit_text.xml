@@ -30,6 +30,7 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/dialog_edit_text_num_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="/50"
@@ -44,6 +45,7 @@
             android:text="확인"
             android:layout_gravity="center"
             android:gravity="end"
+            android:textStyle="bold"
             android:textColor="@color/loginBlue"
             android:textSize="15sp" />
     </LinearLayout>

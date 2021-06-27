@@ -40,7 +40,38 @@
             android:textStyle="bold" />
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_below="@+id/cart_action_bar"
+        android:layout_above="@+id/cart_ok"
+        android:id="@+id/cart_empty"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/cart_empty"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="장바구니가 비었습니다."
+                android:textSize="15sp"
+                android:textColor="@color/baseColor"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/cart_fill"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/cart_ok"

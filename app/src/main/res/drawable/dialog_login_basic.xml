@@ -9,7 +9,7 @@
                 android:width="1dp"
                 android:color="@color/loginBlue" />
             <corners android:radius="5dp" />
-            <solid android:color="#00FFFFFF" />
+            <solid android:color="#FFFFFF" />
         </shape>
     </item>
 </ripple>

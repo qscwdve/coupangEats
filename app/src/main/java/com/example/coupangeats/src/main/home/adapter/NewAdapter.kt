@@ -1,6 +1,8 @@
 package com.example.coupangeats.src.main.home.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -26,6 +28,7 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
         val newParent = itemView.findViewById<LinearLayout>(R.id.item_new_super_parent)
         val thelook = itemView.findViewById<LinearLayout>(R.id.item_new_super_end_parent)
 
+        @SuppressLint("ClickableViewAccessibility")
         fun bind(item: NewStores?, position: Int) {
             if(item == null){
                 newParent.visibility = View.GONE
@@ -61,7 +64,22 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
                     newAdapter.fragment.startSuper(item.storeIdx)
                 }
             }
-
+            itemView.setOnTouchListener { v, event ->
+                if(event.action == MotionEvent.ACTION_UP){
+                    if(newAdapter.fragment.mScrollStart){
+                        newAdapter.fragment.scrollFinish()
+                        newAdapter.fragment.mScrollStart  = false
+                        newAdapter.fragment.mScrollFlag = false
+                    } else {
+                        newAdapter.fragment.mScrollFlag = false
+                    }
+                } else if(event.action == MotionEvent.ACTION_DOWN){
+                    // 누름
+                    newAdapter.fragment.mScrollFlag = true
+                    newAdapter.fragment.mScrollValue = -1
+                }
+                false
+            }
         }
     }
 

@@ -1,7 +1,10 @@
 package com.example.coupangeats.src.main.home.adapter
 
+import android.annotation.SuppressLint
 import android.media.Image
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -26,6 +29,7 @@ class SalseAdapter(val saleList: ArrayList<OnSaleStores>, val fragment: HomeFrag
         val slaseParent = itemView.findViewById<LinearLayout>(R.id.item_salse_parent)
         val thelook = itemView.findViewById<LinearLayout>(R.id.item_salse_end_parent)
 
+        @SuppressLint("ClickableViewAccessibility")
         fun bind(item: OnSaleStores?, position: Int) {
             if(item == null){
                 thelook.visibility = View.VISIBLE
@@ -56,6 +60,22 @@ class SalseAdapter(val saleList: ArrayList<OnSaleStores>, val fragment: HomeFrag
                     // 가게 선택함
                     salseAdapter.fragment.startSuper(item.storeIdx)
                 }
+            }
+            itemView.setOnTouchListener { v, event ->
+                if(event.action == MotionEvent.ACTION_UP){
+                    if(salseAdapter.fragment.mScrollStart){
+                        salseAdapter.fragment.scrollFinish()
+                        salseAdapter.fragment.mScrollStart  = false
+                        salseAdapter.fragment.mScrollFlag = false
+                    } else {
+                        salseAdapter.fragment.mScrollFlag = false
+                    }
+                } else if(event.action == MotionEvent.ACTION_DOWN){
+                    // 누름
+                    salseAdapter.fragment.mScrollFlag = true
+                    salseAdapter.fragment.mScrollValue = -1
+                }
+                false
             }
         }
     }

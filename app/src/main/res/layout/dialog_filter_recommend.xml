@@ -50,24 +50,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
+                app:layout_constraintEnd_toStartOf="@+id/dialog_filter_recommend_recommend"
                 android:id="@+id/dialog_recommend_recommend_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/main_address_arrow"/>
             <TextView
+                android:id="@+id/dialog_filter_recommend_recommend"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="추천순"
                 android:textSize="17sp"
                 android:textColor="@color/black"/>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
     <View
@@ -84,24 +90,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
+                app:layout_constraintEnd_toStartOf="@+id/dialog_filter_recommend_many"
                 android:id="@+id/dialog_recommend_many_order_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/main_address_arrow"/>
             <TextView
+                android:id="@+id/dialog_filter_recommend_many"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="주문 많은순"
                 android:textSize="17sp"
                 android:textColor="@color/black"/>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
     <View
@@ -118,24 +130,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
+                app:layout_constraintEnd_toStartOf="@+id/dialog_filter_recommend_distance"
                 android:id="@+id/dialog_recommend_distance_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/main_address_arrow"/>
             <TextView
+                android:id="@+id/dialog_filter_recommend_distance"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="가까운순"
                 android:textSize="17sp"
                 android:textColor="@color/black"/>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
     <View
@@ -152,24 +170,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center">
             <ImageView
+                app:layout_constraintEnd_toStartOf="@+id/dialog_filter_recommend_rating_asc"
                 android:id="@+id/dialog_recommend_high_star_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/main_address_arrow"/>
             <TextView
+                android:id="@+id/dialog_filter_recommend_rating_asc"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="별점높은순"
                 android:textSize="17sp"
                 android:textColor="@color/black"/>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
     <View
@@ -186,24 +210,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center">
             <ImageView
+                app:layout_constraintEnd_toStartOf="@+id/dialog_filter_recommend_new"
                 android:id="@+id/dialog_recommend_new_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/main_address_arrow"/>
             <TextView
+                android:id="@+id/dialog_filter_recommend_new"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="신규매장순"
                 android:textSize="17sp"
                 android:textColor="@color/black"/>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
