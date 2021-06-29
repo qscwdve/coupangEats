@@ -41,7 +41,7 @@ class ReceiptPrepareDialog(val menuData: prepareOrder) : DialogFragment()  {
 
         val orderPrice = "${menuData.orderPrice}원"
         val deliveryPrice = "+${menuData.deliveryPrice}원"
-        val discountPrice = "-${menuData.discountPrice}원"
+        val discountPrice = if(menuData.discountPrice.toInt() == 0) "${menuData.discountPrice}원" else "-${menuData.discountPrice}원"
         val totalPrice = "${menuData.totalPrice}원"
         binding.dialogReceiptOrderPrice.text = orderPrice
         binding.dialogReceiptDeliveryPrice.text = deliveryPrice

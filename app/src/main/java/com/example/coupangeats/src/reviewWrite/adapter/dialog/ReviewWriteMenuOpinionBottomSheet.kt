@@ -6,11 +6,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
+import com.example.coupangeats.R
 import com.example.coupangeats.databinding.DialogEditTextBinding
 import com.example.coupangeats.src.reviewWrite.adapter.ReviewWriteMenuAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class ReviewWriteMenuOpinionBottomSheet(val reviewWriteMenuAdapter: ReviewWriteMenuAdapter, val position: Int ) : BottomSheetDialogFragment() {
+class ReviewWriteMenuOpinionBottomSheet(val reviewWriteMenuAdapter: ReviewWriteMenuAdapter, val opinion: String, val position: Int ) : BottomSheetDialogFragment() {
     private lateinit var binding : DialogEditTextBinding
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,9 +23,15 @@ class ReviewWriteMenuOpinionBottomSheet(val reviewWriteMenuAdapter: ReviewWriteM
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.EditTextDialogStyle)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.dialogEditTextOk.text = "저장"
+        binding.dialogEditText.setText(opinion)
 
         // 메뉴에서 기타의견일 경우
         binding.dialogEditText.hint = "기타의견"

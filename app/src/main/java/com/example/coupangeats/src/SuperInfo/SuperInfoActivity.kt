@@ -22,6 +22,7 @@ class SuperInfoActivity : BaseActivity<ActivitySuperInfoBinding>(ActivitySuperIn
     lateinit var mNaverMap : NaverMap
     private lateinit var mapView: MapView
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -30,6 +31,11 @@ class SuperInfoActivity : BaseActivity<ActivitySuperInfoBinding>(ActivitySuperIn
         mapView.getMapAsync(this)
 
         mStoreIdx = intent.getIntExtra("storeIdx", -1)
+
+        binding.superInfoMap.setOnTouchListener { v, event ->
+            binding.superInfoMapParent.requestDisallowInterceptTouchEvent(true)
+            false
+        }
 
         binding.superInfoBack.setOnClickListener { finish()}
     }

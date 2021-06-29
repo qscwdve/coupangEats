@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.coupangeats.R
 import com.example.coupangeats.src.main.order.adapter.OrderMenuAdapter
 import com.example.coupangeats.src.main.order.model.pastOrder
@@ -51,6 +52,13 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
                 starParent.visibility = View.GONE
             }
 
+            if(order.imageUrl != null){
+                Glide.with(img).load(order.imageUrl).into(img)
+                img.visibility = View.VISIBLE
+            } else {
+                img.visibility = View.GONE
+            }
+
             menuRecycler.adapter = PastOrderMenuAdapter(order.orderMenus)
             menuRecycler.layoutManager = LinearLayoutManager(itemView.context)
 
@@ -76,7 +84,7 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
 
                     review.setOnClickListener {
                         // 리뷰쓰러 가기
-
+                        fragment.startReviewWrite(order.orderIdx, -1)
                     }
                 } else {
                     // 리뷰 작성 기간 지남
@@ -87,12 +95,13 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
                 // 리뷰 작성한 것이 있음
                 review.visibility = View.VISIBLE
                 reviewLimit.visibility = View.GONE
+                review.setText("작성한 리뷰 보러 가기")
                 review.setBackgroundResource(R.drawable.review_look_box)
                 review.setTextColor(Color.parseColor("#000000"))
 
                 review.setOnClickListener {
                     // 리뷰 작성한 것 보러 가기
-
+                    fragment.startReviewWrite(-1, order.reviewIdx)
                 }
             }
 

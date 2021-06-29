@@ -1,6 +1,7 @@
 package com.example.coupangeats.src.main.order.past
 
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,11 +18,13 @@ import com.example.coupangeats.src.main.order.model.pastOrder
 import com.example.coupangeats.src.main.order.model.prepareOrder
 import com.example.coupangeats.src.main.order.past.adapter.PastOrderAdapter
 import com.example.coupangeats.src.main.order.past.model.OrderPastInfoResponse
+import com.example.coupangeats.src.reviewWrite.ReviewWriteActivity
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseFragment
 
 class OrderPastFragment : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPastBinding::bind, R.layout.fragment_order_past), OrderPastFragmentView {
     private var mIsSearch = false
+    private var mOrderIdx = -1
     private lateinit var imm: InputMethodManager
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,6 +45,7 @@ class OrderPastFragment : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPa
 
         binding.orderPastEditTextParent.setOnClickListener {
             binding.orderPastSearchText.requestFocus()
+            imm.showSoftInput(binding.orderPastSearchText, 0);
             if(!mIsSearch){
                 mIsSearch = true
                 binding.orderPastTransportMenu.visibility = View.VISIBLE
@@ -79,6 +83,14 @@ class OrderPastFragment : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPa
     fun lookReceipt(order: pastOrder) {
         val receiptDialog = ReceiptPastDialog(order)
         receiptDialog.show(requireFragmentManager(), "receipt")
+    }
+
+    fun startReviewWrite(orderIdx: Int, reviewIdx: Int){
+        val intent = Intent(requireContext(), ReviewWriteActivity::class.java).apply {
+            this.putExtra("orderIdx", orderIdx)
+            this.putExtra("reviewIdx", reviewIdx)
+        }
+        startActivity(intent)
     }
 
     override fun onGetOrderPastInfoSuccess(response: OrderPastInfoResponse) {

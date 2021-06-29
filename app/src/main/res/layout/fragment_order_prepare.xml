@@ -30,7 +30,7 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_margin="20dp"
+        android:layout_marginHorizontal="20dp"
         android:id="@+id/order_prepare_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

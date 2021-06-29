@@ -49,10 +49,12 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 showLoadingDialog(requireContext())
                 DetailAddressService(this).tryDeliveryAddressDetailLook(getUserIdx(), addressIdx)
             }
-        } else {
+        } else{
             binding.detailAddressDelete.visibility = View.GONE
-            binding.detailAddressAliasTextLine.visibility = View.GONE
         }
+
+        binding.detailAddressAliasTextLine.visibility = View.GONE
+
         mMainAddress = arguments?.getString("mainAddress").toString()
         mRoadAddress = arguments?.getString("roadAddress").toString()
         val category = arguments?.getInt("category", -1)

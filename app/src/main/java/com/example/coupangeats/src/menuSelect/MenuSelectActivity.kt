@@ -84,8 +84,8 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
                     Log.d("MenuSelectSide", "내용있 있는지 : ${mSelectedMenu!![index]}")
                 }
             }
-            if(sideMenu[sideMenu.length - 1] == ','){
-                sideMenu = sideMenu.substring(0 until (sideMenu.length - 1))
+            if(sideMenu.length >= 2 && sideMenu[sideMenu.length - 2] == ','){
+                sideMenu = sideMenu.substring(0 until (sideMenu.length - 2))
             }
             Log.d("MenuSelectSide", "conent : ${sideMenu} ")
             Log.d("MenuSelectSide", "price : ${totalPrice} ")

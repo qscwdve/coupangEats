@@ -2,23 +2,32 @@ package com.example.coupangeats.src.review
 
 import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
+import android.content.Intent
+import android.graphics.Color
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import com.emilsjolander.components.StickyScrollViewItems.StickyScrollView
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityReviewBinding
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.review.adapter.ReviewAdapter
 import com.example.coupangeats.src.review.dialog.ReviewFilterBottomSheetDialog
 import com.example.coupangeats.src.review.model.Review
+import com.example.coupangeats.src.review.model.ReviewDeleteResponse
 import com.example.coupangeats.src.review.model.ReviewInfoResponse
+import com.example.coupangeats.src.reviewWrite.ReviewWriteActivity
+import com.google.android.material.appbar.AppBarLayout
+import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
+import jp.wasabeef.recyclerview.animators.FadeInAnimator
+import jp.wasabeef.recyclerview.animators.FadeInDownAnimator
 import java.lang.Math.abs
 
 class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding::inflate), ReviewActivityView {
@@ -27,7 +36,13 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
     var mPhotoReview = false
     var mSort = "new"
     var mSortNum = 1
+    var mDeleteItem = -1
     var mType : String? = null
+    private enum class CollapsingToolbarLayoutState {
+        EXPANDED, COLLAPSED, INTERNEDIATE
+    }
+    private var mCollapsingToolbarState : CollapsingToolbarLayoutState? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -60,8 +75,31 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
         val stateListAnimator = StateListAnimator()
         stateListAnimator.addState(intArrayOf(), ObjectAnimator.ofFloat(binding.appBar, "elevation", 0F))
         binding.appBar.stateListAnimator = stateListAnimator
+        binding.appBar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener{
+            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
+                if(verticalOffset == 0){
+                    if(mCollapsingToolbarState != CollapsingToolbarLayoutState.EXPANDED){
+                        binding.reviewFilterParent.elevation = 0F
+                        mCollapsingToolbarState = CollapsingToolbarLayoutState.EXPANDED
+                    }
+                }
+                else if(kotlin.math.abs(verticalOffset) >= appBarLayout!!.totalScrollRange){
+                    // 액션바 스크롤 맨 위로 올림
+                    binding.reviewFilterParent.elevation = 10F
+                    mCollapsingToolbarState = CollapsingToolbarLayoutState.COLLAPSED
+                }
+                else if(kotlin.math.abs(verticalOffset) < appBarLayout.totalScrollRange){
+                    //Log.d("vertical", "아직 액션바 안에 있음")
+                    if(mCollapsingToolbarState != CollapsingToolbarLayoutState.INTERNEDIATE){
+                        binding.reviewFilterParent.elevation = 0F
+                        mCollapsingToolbarState = CollapsingToolbarLayoutState.INTERNEDIATE
+                    }
+                }
+            }
 
-        //binding.reviewParent.setShadowHeight(10)
+        })
+
+
     }
 
     fun setStar(num: Double) {
@@ -94,6 +132,7 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
 
     override fun onGetReviewInfoSuccess(response: ReviewInfoResponse) {
         if(response.code == 1000){
+            binding.toolbarSuperName.text = response.result.title
             binding.reviewRating.text = response.result.totalRating.toString()  // 별점 점수
             binding.reviewNum.text = response.result.reviewCount   // 리뷰 수
             setStar(response.result.totalRating)  // 별점
@@ -153,6 +192,39 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
 
         binding.reviewRecyclerview.adapter = ReviewAdapter(reviewList, this)
         binding.reviewRecyclerview.layoutManager = LinearLayoutManager(this)
+        binding.reviewRecyclerview.itemAnimator = FadeInDownAnimator(OvershootInterpolator(2F))
+        //binding.FragmentMemoRecyclerView.itemAnimator = SlideInUpAnimator(OvershootInterpolator(2f))
+        //binding.FragmentMemoRecyclerView.itemAnimator = SlideInDownAnimator(OvershootInterpolator(2F))
+        //binding.FragmentMemoRecyclerView.itemAnimator = FadeInAnimator(OvershootInterpolator(2F))
+
+    }
+
+    fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
+
+    fun reviewDelete(reviewIdx: Int, position: Int) {
+        ReviewService(this).tryPatchReviewDelete(getUserIdx(), reviewIdx)
+        mDeleteItem = position
+    }
+
+    fun reviewModify(reviewIdx: Int){
+        val intent = Intent(this, ReviewWriteActivity::class.java).apply {
+            this.putExtra("reviewIdx", reviewIdx)
+            this.putExtra("orderIdx", -1)
+        }
+        startActivity(intent)
+    }
+
+    override fun onPatchReviewDeleteSuccess(response: ReviewDeleteResponse) {
+        if(response.code == 1000){
+            // 리뷰 삭제 완료
+            if(mDeleteItem != -1){
+                ( binding.reviewRecyclerview.adapter as ReviewAdapter ).deleteItem(mDeleteItem)
+            }
+            mDeleteItem = -1
+        }
+    }
+
+    override fun onPatchReviewDeleteFailure(message: String) {
 
     }
 }

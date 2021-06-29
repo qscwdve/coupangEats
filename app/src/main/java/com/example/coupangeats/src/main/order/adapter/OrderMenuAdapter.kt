@@ -19,7 +19,7 @@ class OrderMenuAdapter(val orderMenuList: ArrayList<orderMenu>) : RecyclerView.A
         fun bind(menu: orderMenu) {
             num.text = menu.count.toString()
             name.text = menu.menuName
-            if(menu.menuDetail == null && menu.menuDetail != ""){
+            if(menu.menuDetail == null || menu.menuDetail == ""){
                 side.visibility = View.GONE
             } else {
                 side.visibility = View.VISIBLE

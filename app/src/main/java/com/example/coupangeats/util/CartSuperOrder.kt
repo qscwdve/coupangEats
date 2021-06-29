@@ -31,6 +31,7 @@ class CartSuperOrder(val activity: CartActivity): BottomSheetDialogFragment()  {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if(activity.mSuperOrderString == "예) 견과류는 빼주세요") activity.mSuperOrderString = ""
         binding.dialogEditText.setText(activity.mSuperOrderString)
         // 글자 수 감지
         binding.dialogEditText.addTextChangedListener(object : TextWatcher{

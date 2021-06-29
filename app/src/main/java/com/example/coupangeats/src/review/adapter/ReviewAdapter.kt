@@ -71,9 +71,11 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
 
                 modify.setOnClickListener {
                     // 리뷰 수정
+                    reviewActivity.reviewModify(review.reviewIdx)
                 }
                 cancel.setOnClickListener {
                     // 리뷰 삭제
+                    reviewActivity.reviewDelete(review.reviewIdx, adapterPosition)
                 }
             } else {
                 report.visibility = View.VISIBLE
@@ -211,4 +213,9 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
     }
 
     override fun getItemCount(): Int = reviewList.size
+
+    fun deleteItem(position: Int){
+        reviewList.removeAt(position)
+        notifyItemRemoved(position)
+    }
 }

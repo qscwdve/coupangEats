@@ -84,6 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TextView
+                    android:id="@+id/review_write_store_name"
                     android:layout_marginBottom="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,6 +150,7 @@
 
             <!-- 어떤점이 별로였나요?-->
             <LinearLayout
+                android:id="@+id/review_write_rating_bad_parent"
                 android:visibility="gone"
                 android:layout_marginBottom="15dp"
                 android:layout_marginStart="73dp"
@@ -186,7 +188,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/lateFood"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="@color/black"/>
 
                     </LinearLayout>
@@ -207,7 +209,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/orderMiss"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="@color/black"/>
 
                     </LinearLayout>
@@ -228,7 +230,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/MenuMissOrder"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="@color/black"/>
 
                     </LinearLayout>
@@ -249,7 +251,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/packLoss"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="@color/black"/>
 
                     </LinearLayout>
@@ -269,7 +271,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/superRequestNot"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="@color/black"/>
 
                     </LinearLayout>
@@ -289,8 +291,60 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/etc"
-                            android:textSize="12sp"
+                            android:textSize="15sp"
                             android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+                    <!-- 기타 의견 -->
+                    <LinearLayout
+                        android:id="@+id/review_write_rating_etc_parent"
+                        android:layout_below="@+id/review_write_rating_etc"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:id="@+id/review_write_rating_etc_text_parent"
+                            android:background="@drawable/white_to_gray_ripple"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_speech"/>
+
+                            <TextView
+                                android:id="@+id/review_write_rating_etc_text"
+                                android:layout_marginStart="7dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="기타의견"
+                                android:textSize="12sp"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:textColor="@color/loginBlue"
+                                android:textStyle="bold"/>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/review_write_rating_etc_modify"
+                            android:layout_marginStart="10dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="수정"
+                            android:textSize="13sp"
+                            android:layout_gravity="top"
+                            android:gravity="end"
+                            android:textColor="@color/loginBlue"
+                            android:textStyle="bold"/>
 
                     </LinearLayout>
                 </RelativeLayout>
@@ -298,6 +352,7 @@
 
             <!-- 리뷰 작성 -->
             <LinearLayout
+                android:id="@+id/review_write_content_parent"
                 android:visibility="gone"
                 android:orientation="vertical"
                 android:layout_marginStart="73dp"
@@ -305,6 +360,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
+                    android:id="@+id/review_write_content_text"
                     android:layout_marginBottom="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
@@ -327,6 +383,7 @@
                         android:layout_height="wrap_content">
 
                         <LinearLayout
+                            android:id="@+id/review_write_photo_add"
                             android:layout_marginEnd="10dp"
                             android:padding="10dp"
                             android:background="@drawable/ripple_ratangle_rounded_line_gray_box"
@@ -349,6 +406,7 @@
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/review_write_photo_recycler_view"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"/>
 
@@ -359,6 +417,7 @@
 
             <!-- 메뉴 -->
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/review_write_menu_recycler_view"
                 android:layout_marginStart="73dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -373,6 +432,7 @@
                 tools:ignore="RtlSymmetry">
 
                 <ImageView
+                    android:id="@+id/review_write_rider"
                     android:layout_marginEnd="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -392,6 +452,7 @@
 
             <!-- 배달 파트너 -->
             <LinearLayout
+                android:layout_marginBottom="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="73dp"
                 android:orientation="horizontal"
@@ -408,6 +469,7 @@
                     android:textSize="15sp" />
 
                 <LinearLayout
+                    android:id="@+id/review_write_delivery_like"
                     android:layout_marginEnd="8dp"
                     android:paddingVertical="10dp"
                     android:paddingHorizontal="15dp"
@@ -415,17 +477,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <ImageView
+                        android:id="@+id/review_write_delivery_like_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_review_like"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/review_write_delivery_dislike"
                     android:paddingVertical="10dp"
                     android:paddingHorizontal="15dp"
                     android:background="@drawable/review_like_box"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <ImageView
+                        android:id="@+id/review_write_delivery_dislike_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_review_dislike"/>
@@ -434,14 +499,15 @@
 
             <!-- 배달 불만사항 -->
             <RelativeLayout
-                android:visibility="visible"
-                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:id="@+id/review_write_delivery_bad_parent"
+                android:visibility="gone"
                 android:layout_marginStart="73dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/item_review_write_small_amount"
+                    android:id="@+id/review_write_late"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentStart="true"
                     android:layout_width="wrap_content"
@@ -457,15 +523,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/late"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/item_review_write_very_salt"
+                    android:id="@+id/review_write_messy"
                     android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/item_review_write_small_amount"
+                    android:layout_toEndOf="@+id/review_write_late"
                     android:layout_width="wrap_content"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="7dp"
@@ -479,15 +545,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/messy"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/item_review_write_cold"
+                    android:id="@+id/review_write_food_cold"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/item_review_write_small_amount"
+                    android:layout_below="@+id/review_write_late"
                     android:layout_width="wrap_content"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="7dp"
@@ -501,14 +567,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/foodTemperature"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_below="@+id/item_review_write_small_amount"
-                    android:layout_toEndOf="@+id/item_review_write_cold"
+                    android:id="@+id/review_write_delivery_request_not"
+                    android:layout_below="@+id/review_write_late"
+                    android:layout_toEndOf="@+id/review_write_food_cold"
                     android:layout_width="wrap_content"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="7dp"
@@ -522,14 +589,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/deliveryRequestNot"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/item_review_write_cold"
+                    android:layout_below="@+id/review_write_food_cold"
                     android:id="@+id/review_write_delivery_unkind"
                     android:layout_width="wrap_content"
                     android:paddingHorizontal="10dp"
@@ -544,14 +611,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/unkind"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_toEndOf="@+id/review_write_delivery_unkind"
-                    android:layout_below="@+id/item_review_write_cold"
+                    android:layout_below="@+id/review_write_food_cold"
                     android:id="@+id/review_write_delivery_different_menu"
                     android:layout_width="wrap_content"
                     android:paddingHorizontal="10dp"
@@ -566,7 +633,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/differentMenu"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                 </LinearLayout>
@@ -588,7 +655,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/notFood"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                 </LinearLayout>
@@ -610,96 +677,36 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/longDelivery"
-                        android:textSize="12sp"
+                        android:textSize="15sp"
                         android:textColor="@color/black"/>
 
                 </LinearLayout>
 
-                <!-- 길안내 -->
-                <LinearLayout
-                    android:visibility="gone"
-                    android:id="@+id/review_write_delivery_road"
-                    android:layout_below="@+id/review_write_delivery_long"
-                    android:layout_marginTop="15dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:background="@drawable/white_to_gray_ripple"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_speech"/>
-
-                        <TextView
-                            android:layout_marginStart="7dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="길안내"
-                            android:textSize="12sp"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:textColor="@color/baseColor"
-                            android:textStyle="bold"/>
-
-                        <View
-                            android:layout_marginVertical="2dp"
-                            android:layout_marginHorizontal="3dp"
-                            android:layout_width="1.5dp"
-                            android:layout_height="match_parent"
-                            android:background="@color/baseColor"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="내용"
-                            android:textSize="12sp"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:textColor="@color/baseColor"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_marginStart="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="수정"
-                        android:textSize="13sp"
-                        android:layout_gravity="top"
-                        android:gravity="center"
-                        android:textColor="@color/loginBlue"
-                        android:textStyle="bold"/>
-
-                </LinearLayout>
                 <!-- 기타 의견 -->
                 <LinearLayout
-                    android:layout_below="@+id/review_write_delivery_road"
-                    android:layout_marginBottom="25dp"
+                    android:id="@+id/review_write_delivery_etc_parent"
+                    android:layout_below="@+id/review_write_delivery_long"
                     android:visibility="visible"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="7dp"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <LinearLayout
+                        android:id="@+id/review_write_delivery_etc_text_parent"
                         android:background="@drawable/white_to_gray_ripple"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_speech"/>
 
                         <TextView
+                            android:id="@+id/review_write_delivery_etc_text"
                             android:layout_marginStart="7dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -713,13 +720,16 @@
                     </LinearLayout>
 
                     <TextView
+                        android:visibility="gone"
+                        android:id="@+id/review_write_delivery_etc_modify"
                         android:layout_marginStart="10dp"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:text="수정"
                         android:textSize="13sp"
                         android:layout_gravity="top"
-                        android:gravity="center"
+                        android:gravity="end"
                         android:textColor="@color/loginBlue"
                         android:textStyle="bold"/>
 

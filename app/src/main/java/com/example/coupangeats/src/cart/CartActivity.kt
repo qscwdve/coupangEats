@@ -10,6 +10,7 @@ import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityCartBinding
 import com.example.coupangeats.src.cart.adapter.CartMenuInfoAdatper
 import com.example.coupangeats.src.cart.model.*
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.discount.DiscountActivity
 import com.example.coupangeats.util.CartMenuDatabase
 import com.example.coupangeats.util.CartOrderRider
@@ -48,6 +49,14 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         // 매장 이름
         binding.cartStoreName.text = ApplicationClass.sSharedPreferences.getString("storeName", "매장 없음")
         binding.cartBack.setOnClickListener { finish() }
+
+        // 메뉴 추가
+        binding.cartMenuAdd.setOnClickListener {
+            val intent = Intent(this, DetailSuperActivity::class.java).apply {
+                this.putExtra("storeIdx", getStoreIdx())
+            }
+            startActivity(intent)
+        }
 
         // 할인쿠폰 보러가기
         binding.cartCouponChange.setOnClickListener { lookCouponList() }

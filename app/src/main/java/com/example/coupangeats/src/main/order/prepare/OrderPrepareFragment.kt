@@ -22,7 +22,7 @@ class OrderPrepareFragment : BaseFragment<FragmentOrderPrepareBinding>(FragmentO
         super.onViewCreated(view, savedInstanceState)
 
         binding.orderPreparePastLook.setOnClickListener {
-            (requireParentFragment() as OrderFragment).changeTab()
+            //(requireParentFragment() as OrderFragment).changeTab()
         }
 
     }

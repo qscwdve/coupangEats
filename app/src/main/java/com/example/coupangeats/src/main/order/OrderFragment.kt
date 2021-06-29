@@ -19,8 +19,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(FragmentOrderBinding::b
         }.attach()
     }
 
-    fun changeTab(){
+    /*fun changeTab(){
         val tab = binding.orderTabLayout.getTabAt(0)
         tab!!.select()
-    }
+    }*/
 }

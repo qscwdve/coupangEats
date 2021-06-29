@@ -135,7 +135,7 @@ class DeliveryAddressSettingActivity() :
             if (!mBackOrFinish) {
                 // 종료
                 Log.d("selected", "종료")
-                if(version != GPS_SELECT && (binding.deliveryAddressManageParent.visibility != View.VISIBLE || binding.deliveryAddressSettingNowGpsFind.visibility == View.VISIBLE)){
+                if(binding.detailAddressTitle.text == "배달지 상세 정보" || (version != GPS_SELECT && (binding.deliveryAddressManageParent.visibility != View.VISIBLE || binding.deliveryAddressSettingNowGpsFind.visibility == View.VISIBLE))){
                     Log.d("selected", "종료안되야함")
                     binding.deliveryAddressManageParent.visibility = View.VISIBLE
                     binding.deliveryAddressTextParent.visibility = View.GONE
@@ -367,7 +367,7 @@ class DeliveryAddressSettingActivity() :
         finish()
     }
 
-    fun backClick(addressIdx: Int) {
+    fun backClick(addressIdx: Int?) {
         binding.deliveryAddressManageParent.visibility = View.VISIBLE
         binding.deliveryAddressTextParent.visibility = View.GONE
         binding.deliveryAddressDetailParent.visibility = View.GONE
