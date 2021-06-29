@@ -279,7 +279,7 @@ class ReviewWriteActivity :
             )
             Log.d("리뷰 작성", "reviewCreateReqeust: $reviewCreateRequest")
             // 리뷰 작성
-            //ReviewWriteService(this).tryPostReviewWriteCreate(reviewCreateRequest)
+            ReviewWriteService(this).tryPostReviewWriteCreate(reviewCreateRequest)
         }
     }
 
@@ -289,7 +289,7 @@ class ReviewWriteActivity :
 
     fun getDeliveryReview(): DeliveryReview {
         val deliveryLiked: String? =
-            if (mIsDeliveryBad == null) null else if (mIsDeliveryBad == true) "GOOD" else "BAD"
+            if (mIsDeliveryBad == null) null else if (mIsDeliveryBad == true) "BAD" else "GOOD"
         return DeliveryReview(deliveryLiked, getDeliveryBadReason(), mDeliveryEtcString)
     }
 
@@ -491,7 +491,7 @@ class ReviewWriteActivity :
                     var menuLiked: Boolean? = null
                     if (value.menuLiked != null) {
                         val like: String = value.menuLiked
-                        menuLiked = (like == "GOOD")
+                        menuLiked = (like != "GOOD")
                     }
                     menuList.add(
                         ReviewWriteMenu(
@@ -509,7 +509,7 @@ class ReviewWriteActivity :
                 var deliveryLiked: Boolean? = null
                 if (result.deliveryReview.deliveryLiked != null) {
                     val like = result.deliveryReview.deliveryLiked
-                    deliveryLiked = (like == "GOOD")
+                    deliveryLiked = (like != "GOOD")
                 }
                 changeDeliveryLike(deliveryLiked)
                 if (result.deliveryReview.deliveryComment != null) changeDeliveryEtc(result.deliveryReview.deliveryComment)
@@ -526,7 +526,7 @@ class ReviewWriteActivity :
 
     fun setDeliveryOpinion(badReason: String) {
         val viewList = arrayOf(
-            binding.reviewWriteLate, binding.reviewWriteMessy, binding.reviewWriteFoodCold,
+            binding.reviewWriteLate, binding.reviewWriteMessy, binding.reviewWriteFoodCold, binding.reviewWriteDeliveryRequestNot,
             binding.reviewWriteDeliveryUnkind, binding.reviewWriteDeliveryDifferentMenu,
             binding.reviewWriteDeliveryNotFood, binding.reviewWriteDeliveryLong
         )
