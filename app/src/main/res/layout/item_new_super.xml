@@ -1,79 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="135dp" android:background="@drawable/white_to_gray_ripple"
-    android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="10dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="135dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/white_to_gray_ripple"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp">
 
     <LinearLayout
-        android:visibility="visible"
         android:id="@+id/item_new_super_parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
+
         <ImageView
             android:id="@+id/item_new_super_img"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
             android:layout_width="115dp"
-            android:adjustViewBounds="true"
             android:layout_height="120dp"
-            android:src="@drawable/category_girll"
-            android:contentDescription="@string/image_no" />
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/image_no"
+            android:scaleType="centerCrop"
+            android:src="@drawable/category_girll" />
 
         <TextView
             android:id="@+id/item_new_super_name"
-            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:text="베스킨 라벤스 수원역점"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
-            android:textSize="15sp"
+            android:maxLines="1"
+            android:text="베스킨 라벤스 수원역점"
             android:textColor="@color/black"
-            android:maxLines="1"/>
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_marginVertical="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/item_new_super_star"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginEnd="5dp"
                 android:adjustViewBounds="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_star"/>
+                android:src="@drawable/ic_super_home_star" />
 
             <TextView
                 android:id="@+id/item_new_super_review"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5.0(42)"
-                android:textSize="12sp"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textColor="@color/black"/>
+                android:text="5.0(42)"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/item_new_super_dot"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="3dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="3dp"
                 android:text="@string/dot"
                 android:textColor="@color/black"
-                android:textSize="15sp"/>
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/item_new_super_distance"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="0.8km"
                 android:textColor="@color/black"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
         </LinearLayout>
 
         <TextView
@@ -82,36 +85,40 @@
             android:layout_height="wrap_content"
             android:text="배달비 3,000원"
             android:textColor="@color/black"
-            android:textSize="13sp"/>
+            android:textSize="13sp" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:visibility="gone"
+    <RelativeLayout
         android:id="@+id/item_new_super_end_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="148dp"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <ImageView
-            android:scaleType="center"
+        <LinearLayout
+            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_look_plus"
-            android:contentDescription="@string/image_no" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/image_no"
+                android:scaleType="center"
+                android:src="@drawable/home_the_look" />
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="top"
-            android:gravity="top|center_horizontal"
-            android:textColor="@color/black"
-            android:textSize="15sp"
-            android:text="더보기"/>
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|center_horizontal"
+                android:text="더보기"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
 </LinearLayout>

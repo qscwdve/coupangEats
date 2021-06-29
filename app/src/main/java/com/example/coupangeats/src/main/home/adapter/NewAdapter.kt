@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -25,7 +26,7 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
         val dot = itemView.findViewById<TextView>(R.id.item_new_super_dot)
         val distance = itemView.findViewById<TextView>(R.id.item_new_super_distance)
         val delivery = itemView.findViewById<TextView>(R.id.item_new_super_delivery)
-        val newParent = itemView.findViewById<LinearLayout>(R.id.item_new_super_parent)
+        val newParent = itemView.findViewById<RelativeLayout>(R.id.item_new_super_parent)
         val thelook = itemView.findViewById<LinearLayout>(R.id.item_new_super_end_parent)
 
         @SuppressLint("ClickableViewAccessibility")

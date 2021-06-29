@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -27,7 +28,7 @@ class SalseAdapter(val saleList: ArrayList<OnSaleStores>, val fragment: HomeFrag
         val distance = itemView.findViewById<TextView>(R.id.item_salse_super_distance)
         val discount = itemView.findViewById<TextView>(R.id.item_salse_super_discount)
         val slaseParent = itemView.findViewById<LinearLayout>(R.id.item_salse_parent)
-        val thelook = itemView.findViewById<LinearLayout>(R.id.item_salse_end_parent)
+        val thelook = itemView.findViewById<RelativeLayout>(R.id.item_salse_end_parent)
 
         @SuppressLint("ClickableViewAccessibility")
         fun bind(item: OnSaleStores?, position: Int) {

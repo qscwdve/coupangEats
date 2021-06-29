@@ -264,5 +264,6 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     fun cartEmpty(){
         binding.cartFill.visibility = View.GONE
         binding.cartEmpty.visibility = View.VISIBLE
+        binding.cartOk.visibility = View.GONE
     }
 }

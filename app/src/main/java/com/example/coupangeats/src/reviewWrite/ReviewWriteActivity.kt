@@ -491,7 +491,7 @@ class ReviewWriteActivity :
                     var menuLiked: Boolean? = null
                     if (value.menuLiked != null) {
                         val like: String = value.menuLiked
-                        menuLiked = (like != "GOOD")
+                        menuLiked = (like == "GOOD")
                     }
                     menuList.add(
                         ReviewWriteMenu(

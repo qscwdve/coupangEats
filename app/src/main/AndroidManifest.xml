@@ -17,15 +17,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:label">
-        <activity android:name=".src.testActivity"></activity>
+        <activity android:name=".src.myReview.MyReviewActivity"></activity>
+        <activity android:name=".src.testActivity" />
         <activity android:name=".src.SuperInfo.SuperInfoActivity" />
         <activity
             android:name=".src.deliveryStatus.DeliveryStatusActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".src.reviewWrite.ReviewWriteActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".src.reviewWrite.ReviewWriteActivity" />
         <activity
             android:name=".src.review.ReviewActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".src.discount.DiscountActivity" />
         <activity
             android:name=".src.categorySuper.CategorySuperActivity"

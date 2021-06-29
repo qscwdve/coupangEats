@@ -210,8 +210,8 @@ class HomeFragment() :
         }
         // 치타배달 내리기
         binding.homeCheetahBannerCancel.setOnClickListener {
-            scrollStart()
-            binding.homeCheetahBannerParent.visibility = View.GONE
+            //scrollStart()
+            //binding.homeCheetahBannerParent.visibility = View.GONE
         }
 
     }

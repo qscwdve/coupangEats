@@ -12,24 +12,28 @@ import com.example.coupangeats.src.menuSelect.MenuSelectActivity
 import com.example.coupangeats.src.menuSelect.model.MenuOption
 
 class MenuDetailParentAdapter(val menuOptionList: ArrayList<MenuOption>, val activity: MenuSelectActivity) : RecyclerView.Adapter<MenuDetailParentAdapter.MenuDetailParentViewHolder>() {
-    class MenuDetailParentViewHolder(itemView: View, val activity: MenuSelectActivity) : RecyclerView.ViewHolder(itemView) {
+    data class necessaryCheckData(var necessary: Boolean = false, var check: Boolean = false)
+    val necessaryCheckList = Array(menuOptionList.size){i -> necessaryCheckData()}
+    class MenuDetailParentViewHolder(itemView: View, val activity: MenuSelectActivity, val adapter: MenuDetailParentAdapter) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById<TextView>(R.id.item_menu_detail_parent_name)
-        val nessary = itemView.findViewById<TextView>(R.id.item_menu_detail_parent_nessary)
+        val necessary = itemView.findViewById<TextView>(R.id.item_menu_detail_parent_nessary)
         val recyclerView =
             itemView.findViewById<RecyclerView>(R.id.item_menu_detail_parent_recyclerView)
 
         fun bind(item: MenuOption, position: Int) {
             name.text = item.optionCategoryName
             if(item.requiredChoiceFlag == "Y"){
-                nessary.visibility = View.VISIBLE
+                adapter.necessaryCheckList[position].necessary = true
+                necessary.visibility = View.VISIBLE
                 if(item.option != null){
-                    recyclerView.adapter = MenuDetailAdapter(item.option, 1, 1, position, activity)
+                    recyclerView.adapter = MenuDetailAdapter(item.option, 1, 1, position, activity, adapter)
                     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
                 }
             } else {
-                nessary.visibility = View.GONE
+                adapter.necessaryCheckList[position].necessary = false
+                necessary.visibility = View.GONE
                 if(item.option != null){
-                    recyclerView.adapter = MenuDetailAdapter(item.option, 2, item.numberOfChoices, position, activity)
+                    recyclerView.adapter = MenuDetailAdapter(item.option, 2, item.numberOfChoices, position, activity, adapter)
                     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
                 }
             }
@@ -39,7 +43,7 @@ class MenuDetailParentAdapter(val menuOptionList: ArrayList<MenuOption>, val act
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuDetailParentViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_menu_detail_parent, parent, false)
-        return MenuDetailParentViewHolder(view, activity)
+        return MenuDetailParentViewHolder(view, activity, this)
     }
 
     override fun onBindViewHolder(holder: MenuDetailParentViewHolder, position: Int) {
@@ -47,4 +51,14 @@ class MenuDetailParentAdapter(val menuOptionList: ArrayList<MenuOption>, val act
     }
 
     override fun getItemCount(): Int = menuOptionList.size
+
+    fun checkNecessary() : Boolean{
+        for(index in necessaryCheckList.indices){
+            if(necessaryCheckList[index].necessary && (!necessaryCheckList[index].check)){
+                return false
+            }
+        }
+
+        return true
+    }
 }

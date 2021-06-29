@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ class PrepareOrderAdapter(val prepareOrderList: ArrayList<prepareOrder>, val fra
         val totalPrice = itemView.findViewById<TextView>(R.id.item_prepare_price)
         val receipt = itemView.findViewById<TextView>(R.id.item_prepare_receipt)
         val statusLook = itemView.findViewById<TextView>(R.id.item_prepare_look_status)
+        val superParent = itemView.findViewById<LinearLayout>(R.id.item_prepare_order_super_parent)
 
         fun bind(order: prepareOrder) {
             storeName.text = order.storeName
@@ -44,6 +46,10 @@ class PrepareOrderAdapter(val prepareOrderList: ArrayList<prepareOrder>, val fra
             statusLook.setOnClickListener {
                 // 배달 현황 보기
                 fragment.startDeliveryStatus()
+            }
+            superParent.setOnClickListener {
+                // 가게 보러 가기
+                fragment.startDetailSuper(order.storeIdx)
             }
         }
     }

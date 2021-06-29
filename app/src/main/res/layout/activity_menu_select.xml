@@ -214,19 +214,25 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/menu_select_num_minus"
+                    android:background="@drawable/white_to_gray_ripple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_circle">
-
-                    <TextView
+                    android:orientation="vertical">
+                    <RelativeLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:text="-"
-                        android:textColor="@color/baseColor" />
-                </RelativeLayout>
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_circle">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:text="-"
+                            android:textColor="@color/baseColor" />
+                    </RelativeLayout>
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/menu_select_num"
@@ -239,19 +245,27 @@
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/menu_select_num_plus"
+                    android:background="@drawable/white_to_gray_ripple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_circle">
+                    android:orientation="vertical">
 
-                    <TextView
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="+"
-                        android:textColor="@color/baseColor" />
-                </RelativeLayout>
+                        android:background="@drawable/ic_circle">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="+"
+                            android:textColor="@color/baseColor" />
+                    </RelativeLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView

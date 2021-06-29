@@ -40,6 +40,7 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
         val review = itemView.findViewById<TextView>(R.id.item_past_order_review)
         val reviewLimit = itemView.findViewById<TextView>(R.id.item_past_order_review_limit)
         val receipt = itemView.findViewById<TextView>(R.id.item_past_order_receipt)
+        val superParent = itemView.findViewById<LinearLayout>(R.id.item_past_order_super_parent)
 
         fun bind(order: pastOrder) {
             storeName.text = order.storeName
@@ -63,6 +64,11 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
             menuRecycler.layoutManager = LinearLayoutManager(itemView.context)
 
             totalPrice.text = order.totalPrice
+
+            // 가게 보러 가기
+            superParent.setOnClickListener{
+                fragment.startDetailSuper(order.storeIdx)
+            }
 
             // 영수증 보러가기
             receipt.setOnClickListener {

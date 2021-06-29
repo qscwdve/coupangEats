@@ -21,7 +21,7 @@
                 android:layout_gravity="center_vertical"
                 android:id="@+id/item_review_write_menu_name"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="메뉴 이름"
                 android:gravity="center_vertical"
                 android:textSize="15sp"
@@ -29,6 +29,7 @@
                 tools:ignore="NestedWeights" />
 
             <TextView
+                android:visibility="gone"
                 android:layout_marginTop="3dp"
                 android:id="@+id/item_review_write_side_menu_name"
                 android:layout_width="wrap_content"

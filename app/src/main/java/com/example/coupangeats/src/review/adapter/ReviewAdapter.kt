@@ -65,7 +65,8 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
             // 사용자가 쓴 리뷰일 경우
             if(review.isWriter == "Y"){
                 report.visibility = View.GONE
-                reWrite.visibility = View.VISIBLE
+                cancel.visibility = View.VISIBLE
+                reWrite.visibility = if(review.isModifiable == null) View.GONE else View.VISIBLE
                 reviewParent.setBackgroundColor(Color.parseColor("#F5F6F8"))
                 evaluation.visibility = View.GONE
 
@@ -79,6 +80,7 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
                 }
             } else {
                 report.visibility = View.VISIBLE
+                cancel.visibility = View.GONE
                 reWrite.visibility = View.GONE
                 evaluation.visibility = View.VISIBLE
 

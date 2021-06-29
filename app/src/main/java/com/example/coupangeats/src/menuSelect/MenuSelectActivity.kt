@@ -15,6 +15,7 @@ import com.example.coupangeats.databinding.ActivityMenuSelectBinding
 import com.example.coupangeats.src.cart.model.CartMenuInfo
 import com.example.coupangeats.src.detailSuper.adapter.DetailSuperImgViewPagerAdapter
 import com.example.coupangeats.src.menuSelect.adapter.MenuDetailParentAdapter
+import com.example.coupangeats.src.menuSelect.adapter.necessaryCheckData
 import com.example.coupangeats.src.menuSelect.model.MenuDetailResponse
 import com.example.coupangeats.src.menuSelect.model.MenuOption
 import com.example.coupangeats.src.menuSelect.model.Option
@@ -36,6 +37,7 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
     private var mCollapsingToolbarState : CollapsingToolbarLayoutState? = null
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -68,31 +70,35 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
         binding.menuSelectComplete.setOnClickListener {
             // 카트에 담는다.
             // 메인 메뉴
-            val mainMenu = binding.menuSelectMenuName.text.toString()
-            var sideMenu = ""
-            var totalPrice = mMenuPrice
-            val num = binding.menuSelectNum.text.toString()
-            // 사이드 메뉴
-            if(mSelectMenuCheck != null){
-                for(index in mSelectMenuCheck!!.indices){
-                    if(mSelectMenuCheck!![index]){
-                        // 사이드 메뉴 있음
-                        sideMenu += mSelectedMenu!![index].cotent + ", "
-                        totalPrice += mSelectedMenu!![index].price
+            if((binding.menuSelectRecyclerView.adapter as MenuDetailParentAdapter).checkNecessary()){
+                val mainMenu = binding.menuSelectMenuName.text.toString()
+                var sideMenu = ""
+                var totalPrice = mMenuPrice
+                val num = binding.menuSelectNum.text.toString()
+                // 사이드 메뉴
+                if(mSelectMenuCheck != null){
+                    for(index in mSelectMenuCheck!!.indices){
+                        if(mSelectMenuCheck!![index]){
+                            // 사이드 메뉴 있음
+                            sideMenu += mSelectedMenu!![index].cotent + ", "
+                            totalPrice += mSelectedMenu!![index].price
+                        }
+                        Log.d("MenuSelectSide", "있는지 없는지 : ${index}")
+                        Log.d("MenuSelectSide", "내용있 있는지 : ${mSelectedMenu!![index]}")
                     }
-                    Log.d("MenuSelectSide", "있는지 없는지 : ${index}")
-                    Log.d("MenuSelectSide", "내용있 있는지 : ${mSelectedMenu!![index]}")
                 }
+                if(sideMenu.length >= 2 && sideMenu[sideMenu.length - 2] == ','){
+                    sideMenu = sideMenu.substring(0 until (sideMenu.length - 2))
+                }
+                Log.d("MenuSelectSide", "conent : ${sideMenu} ")
+                Log.d("MenuSelectSide", "price : ${totalPrice} ")
+                // 메뉴 저장
+                saveMenuFinish(CartMenuInfo(null, mainMenu, num.toInt(), totalPrice, sideMenu, menuIdx))
+                setResult(RESULT_OK)
+                finish()
+            } else {
+                showCustomToast("필수선택을 체크해주세요")
             }
-            if(sideMenu.length >= 2 && sideMenu[sideMenu.length - 2] == ','){
-                sideMenu = sideMenu.substring(0 until (sideMenu.length - 2))
-            }
-            Log.d("MenuSelectSide", "conent : ${sideMenu} ")
-            Log.d("MenuSelectSide", "price : ${totalPrice} ")
-            // 메뉴 저장
-            saveMenuFinish(CartMenuInfo(null, mainMenu, num.toInt(), totalPrice, sideMenu, menuIdx))
-            setResult(RESULT_OK)
-            finish()
         }
 
         // 툴바 제어

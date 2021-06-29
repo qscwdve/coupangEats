@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentOrderPastBinding
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.main.order.dialog.ReceiptPastDialog
 import com.example.coupangeats.src.main.order.dialog.ReceiptPrepareDialog
 import com.example.coupangeats.src.main.order.model.pastOrder
@@ -83,6 +84,13 @@ class OrderPastFragment : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPa
     fun lookReceipt(order: pastOrder) {
         val receiptDialog = ReceiptPastDialog(order)
         receiptDialog.show(requireFragmentManager(), "receipt")
+    }
+
+    fun startDetailSuper(storeIdx: Int){
+        val intent = Intent(requireContext(), DetailSuperActivity::class.java).apply {
+            this.putExtra("storeIdx", storeIdx)
+        }
+        startActivity(intent)
     }
 
     fun startReviewWrite(orderIdx: Int, reviewIdx: Int){

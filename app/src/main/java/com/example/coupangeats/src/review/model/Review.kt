@@ -12,5 +12,6 @@ data class Review(
     @SerializedName("contents") val text: String,
     @SerializedName("orderMenus") val orderMenus: String,
     @SerializedName("likeCount") var likeCount: Int,
-    @SerializedName("isLiked") var isLiked: String?
+    @SerializedName("isLiked") var isLiked: String?,
+    @SerializedName("isModifiable") val isModifiable: String? = null
 )

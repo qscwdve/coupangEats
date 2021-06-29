@@ -37,7 +37,7 @@ class ReviewWriteMenuAdapter(val menuList: ArrayList<ReviewWriteMenu>, val activ
 
         fun bind(item: ReviewWriteMenu, position: Int){
             menuName.text = item.menuName   // 메뉴 이름
-            if(item.menuSideName == null){
+            if(item.menuSideName == null || item.menuSideName == ""){
                 sideName.visibility = View.GONE
             } else{
                 sideName.text = item.menuSideName  // 메뉴 사이드 이름

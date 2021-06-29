@@ -46,7 +46,7 @@
                 android:adjustViewBounds="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_star"/>
+                android:src="@drawable/ic_super_home_star"/>
 
             <TextView
                 android:id="@+id/item_salse_super_review"
@@ -108,32 +108,37 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/item_salse_end_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
+        android:layout_height="148dp"
         android:orientation="vertical"
         android:visibility="gone">
 
-        <ImageView
+        <LinearLayout
+            android:layout_centerInParent="true"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:contentDescription="@string/image_no"
-            android:scaleType="center"
-            android:src="@drawable/ic_look_plus" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/image_no"
+                android:scaleType="center"
+                android:src="@drawable/home_the_look" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="top"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:gravity="top|center_horizontal"
-            android:text="더보기"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|center_horizontal"
+                android:text="더보기"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
 </LinearLayout>

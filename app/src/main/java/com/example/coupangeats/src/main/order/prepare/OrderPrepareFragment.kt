@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentOrderPrepareBinding
 import com.example.coupangeats.src.deliveryStatus.DeliveryStatusActivity
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.main.order.OrderFragment
 import com.example.coupangeats.src.main.order.dialog.ReceiptPrepareDialog
 import com.example.coupangeats.src.main.order.model.prepareOrder
@@ -33,6 +34,13 @@ class OrderPrepareFragment : BaseFragment<FragmentOrderPrepareBinding>(FragmentO
     }
 
     fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
+
+    fun startDetailSuper(storeIdx: Int){
+        val intent = Intent(requireContext(), DetailSuperActivity::class.java).apply {
+            this.putExtra("storeIdx", storeIdx)
+        }
+        startActivity(intent)
+    }
 
     override fun onGetOrderPrepareInfoSuccess(response: OrderPrepareInfoResponse) {
         if(response.code == 1000 && response.result != null){

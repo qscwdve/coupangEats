@@ -12,10 +12,15 @@ import com.example.coupangeats.src.menuSelect.MenuSelectActivity
 import com.example.coupangeats.src.menuSelect.model.Option
 import com.example.coupangeats.src.menuSelect.model.SelectMenu
 
-class MenuDetailAdapter(val optionList: ArrayList<Option>, val version:Int, val numberOfChoices: Int, val mPosition: Int, val activity: MenuSelectActivity) : RecyclerView.Adapter<MenuDetailAdapter.MenuDetailViewHolder>() {
+class MenuDetailAdapter(val optionList: ArrayList<Option>,
+                        val version:Int,
+                        val numberOfChoices: Int,
+                        val mPosition: Int,
+                        val activity: MenuSelectActivity,
+                        val parentAdapter: MenuDetailParentAdapter) : RecyclerView.Adapter<MenuDetailAdapter.MenuDetailViewHolder>() {
     // 버전이 1이면 필수 , 2이면 추가선택
     var count = 0;
-    var nessary = -1
+    var necessary = -1
     var selectedOption = Array(optionList.size){i -> false}   // 추가한 것들 저장
     class MenuDetailViewHolder(itemView: View, val menuDetailAdapter: MenuDetailAdapter) : RecyclerView.ViewHolder(itemView){
         val name = itemView.findViewById<TextView>(R.id.item_menu_detail_name)
@@ -28,7 +33,7 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>, val version:Int, val 
             price.text = extraPrice
             if(menuDetailAdapter.version == 1){
                 // 필수
-                if(menuDetailAdapter.nessary == position)
+                if(menuDetailAdapter.necessary == position)
                     click.setImageResource(R.drawable.ic_necessary_option_click)
                  else
                      click.setImageResource(R.drawable.ic_necessary_option)
@@ -38,13 +43,14 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>, val version:Int, val 
                     if(menuDetailAdapter.count == 0){
                         menuDetailAdapter.count = 1
                         click.setImageResource(R.drawable.ic_necessary_option_click)
-                        menuDetailAdapter.nessary = position
+                        menuDetailAdapter.necessary = position
                     } else {
                         // 필수면 1개인데 이미 선택된 상태이므로 다른 것을 선택하고 되돌려야 한다.
-                        menuDetailAdapter.nessary = position
+                        menuDetailAdapter.necessary = position
                         menuDetailAdapter.refresh()
                     }
                     menuDetailAdapter.sendActivityData()
+                    menuDetailAdapter.changeNecessaryCheck()   // 필수선택을 했는지 확인하는 로직
                 }
             } else {
                 // 추가 선택
@@ -117,14 +123,18 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>, val version:Int, val 
         notifyDataSetChanged()
     }
 
+    fun changeNecessaryCheck(){
+        parentAdapter.necessaryCheckList[mPosition].check = true
+    }
+
     fun sendActivityData(){
         var content = ""
         var totalPrice = 0
-        if(nessary != -1){
+        if(necessary != -1){
             // 필수 옵션 1개
-            val extraPrice = if(optionList[nessary].extraPrive != 0) "(+${priceIntToString(optionList[nessary].extraPrive)}원)" else ""
-            totalPrice = optionList[nessary].extraPrive
-            content = optionList[nessary].optionName + extraPrice
+            val extraPrice = if(optionList[necessary].extraPrive != 0) "(+${priceIntToString(optionList[necessary].extraPrive)}원)" else ""
+            totalPrice = optionList[necessary].extraPrive
+            content = optionList[necessary].optionName + extraPrice
         } else {
             // 선택 옵션 여러개
             for(index in selectedOption.indices){
