@@ -23,6 +23,10 @@ class EventAdapter(val eventList: ArrayList<Events>, val fragment: HomeFragment)
         fun bind(item: Events, totalNum: Int) {
             Glide.with(fragment.requireContext()).load(item.url).into(eventImg)
 
+            itemView.setOnClickListener {
+                fragment.startEventItem(item.eventIdx)
+            }
+
             itemView.setOnTouchListener { v, event ->
                 if(event.action == MotionEvent.ACTION_UP){
                     if(fragment.mScrollStart){

@@ -25,6 +25,7 @@ import com.example.coupangeats.src.cart.CartActivity
 import com.example.coupangeats.src.categorySuper.CategorySuperActivity
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.event.EventActivity
+import com.example.coupangeats.src.eventItem.EventItemActivity
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.home.adapter.*
 import com.example.coupangeats.src.main.home.model.HomeInfo.*
@@ -79,7 +80,7 @@ class HomeFragment() :
 
         // 이벤트 전체 보러가기
         binding.homeEventLook.setOnClickListener {
-            startActivity(Intent(this, EventActivity::class.java))
+            startActivity( Intent(requireContext(), EventActivity::class.java))
         }
 
         // 주소지 클릭
@@ -664,6 +665,14 @@ class HomeFragment() :
             this.putExtra("lat", mLat)
             this.putExtra("lon", mLon)
             this.putExtra("version", 2)
+        }
+        startActivity(intent)
+    }
+
+    // 이벤트 상세 보기
+    fun startEventItem(eventIdx: Int){
+        val intent = Intent(requireContext(), EventItemActivity::class.java).apply {
+            this.putExtra("eventIdx", -1)
         }
         startActivity(intent)
     }

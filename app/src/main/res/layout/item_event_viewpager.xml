@@ -9,7 +9,7 @@
         android:id="@+id/item_event_img"
         android:src="@drawable/category_asian"
         android:layout_width="match_parent"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:layout_height="150dp"
         app:layout_constraintTop_toTopOf="parent"/>
 
