@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="7dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/item_event_detail_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/category_buger"
+            android:scaleType="fitXY"/>
+
+        <TextView
+            android:id="@+id/item_event_detail_endDate"
+            android:layout_alignEnd="@+id/item_event_detail_img"
+            android:layout_alignBottom="@id/item_event_detail_img"
+            android:background="@drawable/event_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:textStyle="bold"
+            android:text="@string/event_total"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            tools:ignore="SmallSp" />
+
+    </RelativeLayout>
+</LinearLayout>

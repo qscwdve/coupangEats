@@ -17,8 +17,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:label">
-        <activity android:name=".src.myReview.MyReviewActivity"></activity>
-        <activity android:name=".src.testActivity" />
+        <activity android:name=".src.event.EventActivity"></activity>
+        <activity android:name=".src.myReview.MyReviewActivity" />
         <activity android:name=".src.SuperInfo.SuperInfoActivity" />
         <activity
             android:name=".src.deliveryStatus.DeliveryStatusActivity"
@@ -49,7 +49,7 @@
         <activity
             android:name=".src.main.MainActivity"
             android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".src.favorites.FavoritesActivity" />
+        <activity android:name=".src.favorites.FavoritesActivity"></activity>
         <activity
             android:name=".src.splash.SplashActivity"
             android:screenOrientation="fullSensor"

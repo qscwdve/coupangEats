@@ -24,6 +24,7 @@ import com.example.coupangeats.databinding.FragmentHomeBinding
 import com.example.coupangeats.src.cart.CartActivity
 import com.example.coupangeats.src.categorySuper.CategorySuperActivity
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
+import com.example.coupangeats.src.event.EventActivity
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.home.adapter.*
 import com.example.coupangeats.src.main.home.model.HomeInfo.*
@@ -74,6 +75,11 @@ class HomeFragment() :
         // 검색 기능
         binding.homeSearch.setOnClickListener {
             (activity as MainActivity).setSearchAdvencedFragment()
+        }
+
+        // 이벤트 전체 보러가기
+        binding.homeEventLook.setOnClickListener {
+            startActivity(Intent(this, EventActivity::class.java))
         }
 
         // 주소지 클릭
@@ -558,6 +564,12 @@ class HomeFragment() :
         setRecommend(recommend)
         binding.homeRecommendRecyclerview.visibility = View.VISIBLE
 
+        val eventList = ArrayList<Events>()
+        eventList.add(Events(1, "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fznvkdzero.JPG?alt=media&token=9b8d4dc2-7d1a-492e-b114-c41ed1f12d53"))
+        eventList.add(Events(2,"https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fenfpwnfm.JPG?alt=media&token=1d513824-440b-4260-ac1e-5832660988e4"))
+        eventList.add(Events(3, "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fdsaaddsa.JPG?alt=media&token=9a2769bb-285e-47d8-974e-00c5dcd0f726"))
+
+        setEvent(eventList)
     }
 
     override fun onGetHomeDataSuccess(response: HomeInfoResponse) {

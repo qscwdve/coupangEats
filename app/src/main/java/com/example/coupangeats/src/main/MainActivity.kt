@@ -32,6 +32,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private var mfragmentIndex = 1
     private val GPS_ENABLE_REQUEST_CODE = 2001
     private val PERMISSIONS_REQUEST_CODE = 100
+    private val FAVORITES_REQUEST_CODE = 1234
     var REQUIRED_PERMISSIONS = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
@@ -84,7 +85,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     }
                     R.id.menu_main_btm_nav_favorites -> {
                         mfragmentIndex = 3
-                        startActivity(Intent(this, FavoritesActivity::class.java))
+                        startActivityForResult(Intent(this, FavoritesActivity::class.java), FAVORITES_REQUEST_CODE)
                         return@OnNavigationItemSelectedListener true
                     }
                     R.id.menu_main_btm_nav_order -> {
@@ -162,6 +163,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         if (requestCode == DRIVERYADDRESSSETTING && resultCode == RESULT_OK) {
             val home = supportFragmentManager.findFragmentByTag("homeFragment") as HomeFragment
             home.changeGpsInfo()
+        }
+        else if(requestCode == FAVORITES_REQUEST_CODE && resultCode == RESULT_OK){
+            var version : Int? = null
+            if(data != null){
+                version = data.getIntExtra("version", -1)
+            }
+            if(version != null && version == 1){
+                // 홈으로 바로 클릭
+                setHomeFragment()
+            }
         }
 
     }

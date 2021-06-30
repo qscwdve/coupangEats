@@ -283,4 +283,5 @@
     <string name="report">신고</string>
     <string name="reviewWriter">리뷰쓰기</string>
     <string name="reOrder">재주문하기</string>
+    <string name="eventTitle">진행중인 이벤트</string>
 </resources>
