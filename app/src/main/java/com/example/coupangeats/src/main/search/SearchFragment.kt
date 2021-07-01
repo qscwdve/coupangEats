@@ -1,6 +1,7 @@
 package com.example.coupangeats.src.main.search
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,10 +11,12 @@ import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentSearchBinding
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.search.category.CategorySearchFragment
+import com.example.coupangeats.src.searchDetail.SearchDetailActivity
+import com.example.coupangeats.util.main
 import com.softsquared.template.kotlin.config.BaseFragment
 
 class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search) {
-    private lateinit var mCategoryAdapter: SearchCategoryRecycclerAdapter
+
     private var mSearchAble = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +53,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
             if(mSearchAble){
                 // 서버한테 검색 요청
                 showCustomToast("검색 가능 상태")
+                startSearch(binding.searchEditText.text.toString())
             }
         }
         // 뒤로가기 버튼
@@ -94,7 +98,19 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         })
-
     }
 
+    fun startSearch(keyword: String){
+        val intent = Intent(requireContext(), SearchDetailActivity::class.java).apply {
+            this.putExtra("lat", mainActivity.mLat)
+            this.putExtra("lon", mainActivity.mLon)
+            this.putExtra("keyword", keyword)
+        }
+        startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.searchEditText.setText("")
+    }
 }

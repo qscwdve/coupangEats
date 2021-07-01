@@ -15,4 +15,8 @@ interface DiscountActivityRetrofitInterface {
 
     @POST("/coupons")
     fun postApplyCoupon(@Body params: ApplyCouponRequest) : Call<ApplyCouponResponse>
+
+    // my-eats 할인쿠폰 등록
+    @GET("/users/{userIdx}/coupons")
+    fun getMyEatsDiscount(@Path("userIdx") userIdx: Int) : Call<CouponInfoResponse>
 }

@@ -27,7 +27,9 @@ class FavoritesSuperAdapter(var superList: ArrayList<FavoritesSuperInfo>, val ac
         val totalReviewParent = itemView.findViewById<LinearLayout>(R.id.item_favorites_super_review_parent)
         val totalReviewText = itemView.findViewById<TextView>(R.id.item_favorites_super_review_text)
         val distance = itemView.findViewById<TextView>(R.id.item_favorites_super_distance)
+        val dot1 = itemView.findViewById<TextView>(R.id.item_favorites_super_distance_dot)
         val time = itemView.findViewById<TextView>(R.id.item_favorites_super_time)
+        val dot2 = itemView.findViewById<TextView>(R.id.item_favorites_super_time_dot)
         val deliveryPrice = itemView.findViewById<TextView>(R.id.item_favorites_super_delivery_price)
         val deliveryPriceFree = itemView.findViewById<TextView>(R.id.item_favorites_super_delivery_price_free)
         val discountParent = itemView.findViewById<LinearLayout>(R.id.item_favorites_super_discount_parent)
@@ -47,7 +49,7 @@ class FavoritesSuperAdapter(var superList: ArrayList<FavoritesSuperInfo>, val ac
                 cheetah.visibility = View.GONE
                 cheetahDown.visibility = View.GONE
             } else {
-                val maxLength = if(adapter.version == 1) 10 else 7
+                val maxLength = if(adapter.version == 1) 12 else 8
 
                 if(item.storeName.length >=  maxLength){
                     cheetah.visibility = View.GONE
@@ -64,18 +66,32 @@ class FavoritesSuperAdapter(var superList: ArrayList<FavoritesSuperInfo>, val ac
                 totalReviewText.text = item.totalReview
             }
             distance.text = item.distance
-            time.text = item.deliveryTime
-            if(item.deliveryPrice == "무료배달"){
-                deliveryPriceFree.visibility = View.VISIBLE
+
+            if(item.deliveryTime == null){
+                dot1.visibility = View.GONE
+                dot2.visibility = View.GONE
                 deliveryPrice.visibility = View.GONE
-
-            } else {
                 deliveryPriceFree.visibility = View.GONE
-                deliveryPrice.visibility = View.VISIBLE
-
-                val deliveryPriceText = "배달비 ${item.deliveryPrice}"
-                deliveryPrice.text = deliveryPriceText
+                time.visibility = View.GONE
             }
+            else {
+                time.visibility = View.VISIBLE
+                dot1.visibility = View.VISIBLE
+                dot2.visibility = View.VISIBLE
+                time.text = item.deliveryTime
+                if(item.deliveryPrice == "무료배달"){
+                    deliveryPriceFree.visibility = View.VISIBLE
+                    deliveryPrice.visibility = View.GONE
+
+                } else {
+                    deliveryPriceFree.visibility = View.GONE
+                    deliveryPrice.visibility = View.VISIBLE
+
+                    val deliveryPriceText = "배달비 ${item.deliveryPrice}"
+                    deliveryPrice.text = deliveryPriceText
+                }
+            }
+
             if(adapter.version == 1){
                 // 그냥 가게
                 select.visibility = View.GONE
@@ -85,8 +101,12 @@ class FavoritesSuperAdapter(var superList: ArrayList<FavoritesSuperInfo>, val ac
             }
 
             // 할인금액 추가 필요
-            discountParent.visibility = View.VISIBLE
-
+            if(item.coupon == null){
+                discountParent.visibility = View.GONE
+            } else {
+                discountParent.visibility = View.VISIBLE
+                discountText.text = item.coupon
+            }
             parent.setOnClickListener {
                 if(adapter.version == 1){
                     // 그냥 가게로 이동
@@ -107,11 +127,11 @@ class FavoritesSuperAdapter(var superList: ArrayList<FavoritesSuperInfo>, val ac
             if(adapter.selectCheckList[position]){
                 adapter.selectCheckList[position] = false
                 select.setImageResource(R.drawable.ic_necessary_option)
-                select.setBackgroundResource(R.drawable.circle_ripple_white_to_gray)
+                select.setBackgroundResource(R.drawable.circle_ripple_white_loginblue)
             } else {
                 adapter.selectCheckList[position] = true
                 select.setImageResource(R.drawable.ic_necessary_option_click)
-                select.setBackgroundResource(R.drawable.circle_ripple_white_loginblue)
+                select.setBackgroundResource(R.drawable.circle_ripple_white_to_gray)
             }
             adapter.checkSelectNum()
         }

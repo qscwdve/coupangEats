@@ -1,8 +1,6 @@
 package com.example.coupangeats.src.detailSuper
 
-import com.example.coupangeats.src.detailSuper.model.CouponSaveRequest
-import com.example.coupangeats.src.detailSuper.model.CouponSaveResponse
-import com.example.coupangeats.src.detailSuper.model.SuperResponse
+import com.example.coupangeats.src.detailSuper.model.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -16,4 +14,7 @@ interface DetailSuperRetrofitInterface {
 
     @POST("/stores/{storeIdx}/coupons")
     fun postCouponSave(@Path("storeIdx") storesIdx: Int, @Body params: CouponSaveRequest) : Call<CouponSaveResponse>
+
+    @POST("/bookmarks")
+    fun postBookMarkAdd(@Body params: BookMarkAddRequest) : Call<BookMarkAddResponse>
 }

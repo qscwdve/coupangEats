@@ -14,6 +14,8 @@ class EventItemActivity : BaseActivity<ActivityEventItemBinding>(ActivityEventIt
         val eventIdx = intent.getIntExtra("eventIdx", -1)
 
         if(eventIdx != -1) EventItemService(this).tryGetEventItem(eventIdx)
+
+        binding.eventBack.setOnClickListener { finish() }
     }
 
     override fun onGetEventItemSuccess(response: EventItemResponse) {

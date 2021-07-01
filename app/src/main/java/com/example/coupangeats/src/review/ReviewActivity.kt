@@ -19,13 +19,12 @@ import com.example.coupangeats.databinding.ActivityReviewBinding
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.review.adapter.ReviewAdapter
 import com.example.coupangeats.src.review.dialog.ReviewFilterBottomSheetDialog
-import com.example.coupangeats.src.review.model.Review
-import com.example.coupangeats.src.review.model.ReviewDeleteResponse
-import com.example.coupangeats.src.review.model.ReviewInfoResponse
+import com.example.coupangeats.src.review.model.*
 import com.example.coupangeats.src.reviewWrite.ReviewWriteActivity
 import com.google.android.material.appbar.AppBarLayout
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
+import com.softsquared.template.kotlin.config.BaseResponse
 import jp.wasabeef.recyclerview.animators.FadeInAnimator
 import jp.wasabeef.recyclerview.animators.FadeInDownAnimator
 import java.lang.Math.abs
@@ -225,6 +224,46 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
     }
 
     override fun onPatchReviewDeleteFailure(message: String) {
+
+    }
+
+    // 리뷰 도움 돼요 안돼요 관련
+
+    fun startReviewHelpLike(reviewIdx: Int) {
+        val request = ReviewHelpRequest(getUserIdx(), reviewIdx)
+        ReviewService(this).tryPostReviewHelpLike(request)
+    }
+
+    fun startReviewHelpUnlike(reviewIdx: Int){
+        val request = ReviewHelpRequest(getUserIdx(), reviewIdx)
+        ReviewService(this).tryPostReviewHelpUnlike(request)
+    }
+
+    fun startReviewHelpDelete(reviewIdx: Int){
+        ReviewService(this).tryPatchReviewHelpDelete(getUserIdx(), reviewIdx)
+    }
+
+    override fun onPostReviewHelpLikeSuccess(response: ReviewHelpResponse) {
+        if(response.code == 1000){ }
+    }
+
+    override fun onPostReviewHelpLikeFailure(message: String) {
+
+    }
+
+    override fun onPostReviewHelpUnlikeSuccess(response: ReviewHelpResponse) {
+        if(response.code == 1000){ }
+    }
+
+    override fun onPostReviewHelpUnlikeFailure(message: String) {
+
+    }
+
+    override fun onPatchReviewHelpDeleteSuccess(response: BaseResponse) {
+        if(response.code == 1000){ }
+    }
+
+    override fun onPatchReviewHelpDeleteFailure(message: String) {
 
     }
 }

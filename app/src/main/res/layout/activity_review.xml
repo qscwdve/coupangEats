@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 
             <!-- 매장 정보 -->

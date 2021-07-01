@@ -107,7 +107,7 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
 
                 review.setOnClickListener {
                     // 리뷰 작성한 것 보러 가기
-                    fragment.startReviewWrite(-1, order.reviewIdx)
+                    fragment.startMyReview(order.orderIdx, order.reviewIdx)
                 }
             }
 

@@ -33,6 +33,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private val GPS_ENABLE_REQUEST_CODE = 2001
     private val PERMISSIONS_REQUEST_CODE = 100
     private val FAVORITES_REQUEST_CODE = 1234
+    var mLat = ""
+    var mLon = ""
     var REQUIRED_PERMISSIONS = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
@@ -64,7 +66,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             Log.d("jwt", jwt)
         }
         // 카트 초기화
-        resetCart()
+        // resetCart()
 
         binding.mainBtmNav.setOnNavigationItemSelectedListener(
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
@@ -176,6 +178,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
 
     }
+
+    // 경도와 위도 바꾸기
+    fun changeAddress(lat: String, lon: String){
+        mLat = lat
+        mLon = lon
+    }
+
     // 로그인 여부 확인
     fun loginCheck() : Boolean {
         return ApplicationClass.sSharedPreferences.getInt("userIdx", -1) != -1

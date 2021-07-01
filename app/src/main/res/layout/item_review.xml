@@ -118,7 +118,6 @@
 
     </RelativeLayout>
 
-
     <TextView
         android:layout_marginTop="10dp"
         android:id="@+id/item_review_text"
@@ -179,7 +178,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:gravity="end"
-            android:id="@+id/item_review_rewrite"
+            android:id="@+id/item_reviews_rewrite_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout

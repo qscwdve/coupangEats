@@ -284,4 +284,6 @@
     <string name="reviewWriter">리뷰쓰기</string>
     <string name="reOrder">재주문하기</string>
     <string name="eventTitle">진행중인 이벤트</string>
+    <string name="orderMenu">주문 메뉴</string>
+    <string name="myReviewTitle">내가 작성한 리뷰</string>
 </resources>

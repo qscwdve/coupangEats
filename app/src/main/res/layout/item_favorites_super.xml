@@ -13,6 +13,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:background="@drawable/white_to_gray_ripple"
             android:id="@+id/item_favorites_super_parent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

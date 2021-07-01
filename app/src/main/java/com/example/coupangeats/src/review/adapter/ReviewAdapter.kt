@@ -14,7 +14,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.src.review.ReviewActivity
 import com.example.coupangeats.src.review.model.Review
-import org.w3c.dom.Text
 
 class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: ReviewActivity) :
     RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
@@ -42,7 +41,7 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
         val dislikeImg = itemView.findViewById<ImageView>(R.id.item_review_dislike_img)
         val dislikeText = itemView.findViewById<TextView>(R.id.item_review_dislike_text)
         val reviewParent = itemView.findViewById<LinearLayout>(R.id.item_review_parent)
-        val reWrite = itemView.findViewById<LinearLayout>(R.id.item_review_rewrite)
+        val reWrite = itemView.findViewById<LinearLayout>(R.id.item_reviews_rewrite_parent)
         val report = itemView.findViewById<TextView>(R.id.item_review_report)
         val modify = itemView.findViewById<LinearLayout>(R.id.item_review_modify)
         val cancel = itemView.findViewById<LinearLayout>(R.id.item_review_cancel)
@@ -66,7 +65,8 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
             if(review.isWriter == "Y"){
                 report.visibility = View.GONE
                 cancel.visibility = View.VISIBLE
-                reWrite.visibility = if(review.isModifiable == null) View.GONE else View.VISIBLE
+                reWrite.visibility = View.VISIBLE
+                modify.visibility = if(review.isModifiable == null) View.GONE else View.VISIBLE
                 reviewParent.setBackgroundColor(Color.parseColor("#F5F6F8"))
                 evaluation.visibility = View.GONE
 
@@ -91,36 +91,36 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
             setReviewCountSetting(review.likeCount)
             // 리뷰에 도움이 되요 안되요 박스
             when(review.isLiked){
-                "YES" -> changeLike(review.likeCount)
-                "NO" -> changeDislike(review.likeCount)
-                else -> changeNull(review.likeCount)
+                "YES" -> changeLike(review.likeCount, review.reviewIdx, 1)
+                "NO" -> changeDislike(review.likeCount, review.reviewIdx, 1)
+                else -> changeNull(review.likeCount, review.reviewIdx, 1)
             }
             likeParent.setOnClickListener {
                 if(review.isLiked == "YES"){
                     // Yes -> NULL
                     review.likeCount--
-                    changeNull(review.likeCount)
+                    changeNull(review.likeCount, review.reviewIdx)
                     review.isLiked = null
                 } else {
                     // NO -> YES , null -> YES
                     review.likeCount++
-                    changeLike(review.likeCount)
+                    changeLike(review.likeCount, review.reviewIdx)
                     review.isLiked = "YES"
                 }
             }
             dislikeParent.setOnClickListener {
                 if(review.isLiked == "NO"){
                     // NO -> null
-                    changeNull(review.likeCount)
+                    changeNull(review.likeCount, review.reviewIdx)
                     review.isLiked = null
                 } else if(review.isLiked == "YES"){
                     // YES -> NO
                     review.likeCount--
-                    changeDislike(review.likeCount)
+                    changeDislike(review.likeCount, review.reviewIdx)
                     review.isLiked = "NO"
                 } else {
                     // null -> NO
-                    changeDislike(review.likeCount)
+                    changeDislike(review.likeCount, review.reviewIdx)
                     review.isLiked = "NO"
                 }
             }
@@ -140,7 +140,7 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
                 reviewCountText.text = "명에게 도움이 되었어요!"
             }
         }
-        fun changeLike(num: Int){
+        fun changeLike(num: Int, reviewIdx: Int, version: Int? = null){
             setReviewCountSetting(num)
             likeParent.setBackgroundResource(R.drawable.dialog_login_basic)
             likeImg.setImageResource(R.drawable.ic_like_blue)
@@ -148,8 +148,10 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
             dislikeParent.setBackgroundResource(R.drawable.delivery_gps_box)
             dislikeImg.setImageResource(R.drawable.ic_dislike)
             dislikeText.setTextColor(Color.parseColor("#949DA6"))  // baseColors
+            // 서버 통신
+            if(version == null) reviewActivity.startReviewHelpLike(reviewIdx)
         }
-        fun changeDislike(num: Int){
+        fun changeDislike(num: Int, reviewIdx: Int, version: Int? = null){
             setReviewCountSetting(num)
             likeParent.setBackgroundResource(R.drawable.delivery_gps_box)
             likeImg.setImageResource(R.drawable.ic_like)
@@ -157,9 +159,10 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
             dislikeParent.setBackgroundResource(R.drawable.dialog_login_basic)
             dislikeImg.setImageResource(R.drawable.ic_dislike_blue)
             dislikeText.setTextColor(Color.parseColor("#00AFFE"))
-
+            // 서버 통신
+            if(version == null) reviewActivity.startReviewHelpUnlike(reviewIdx)
         }
-        fun changeNull(num: Int){
+        fun changeNull(num: Int, reviewIdx: Int, version: Int? = null){
             setReviewCountSetting(num)
             likeParent.setBackgroundResource(R.drawable.delivery_gps_box)
             likeImg.setImageResource(R.drawable.ic_like)
@@ -167,7 +170,8 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
             dislikeParent.setBackgroundResource(R.drawable.delivery_gps_box)
             dislikeImg.setImageResource(R.drawable.ic_dislike)
             dislikeText.setTextColor(Color.parseColor("#949DA6"))  // baseColors
-
+            // 서버 통신
+            if(version == null) reviewActivity.startReviewHelpDelete(reviewIdx)
         }
 
         fun setStar(num: Int) {

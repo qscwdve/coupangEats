@@ -44,6 +44,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     private val MENU_SELECT_ACTIVITY = 1234
     private var mSuperName = "동대문 엽기떡볶이"
     private var mCartMenuNum = 0
+    private var mFavorites = 0
     private enum class CollapsingToolbarLayoutState {
         EXPANDED, COLLAPSED, INTERNEDIATE
     }
@@ -92,6 +93,21 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             }
         }
 
+        // 즐겨찾기 추가
+        binding.toolbarHeart.setOnClickListener {
+            if(mFavorites == 0){
+                // 즐겨찾기에 추가함
+                if(mCollapsingToolbarState == CollapsingToolbarLayoutState.COLLAPSED){
+                    // red
+                    binding.toolbarHeart.setImageResource(R.drawable.ic_heart_red_fill)
+                } else {
+                    binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white_fill)
+                }
+                mFavorites = 1
+                DetailSuperService(this).tryPostBookMarkAdd(BookMarkAddRequest(getUserIdx(), mSuperIdx))
+            }
+        }
+
         // 메뉴 스크롤링
         // 스크롤링
         setSupportActionBar(binding.toolbar)
@@ -105,7 +121,10 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                         binding.toolbar.setBackgroundColor(Color.parseColor("#00000000"))
                         binding.toolbarSuperName.text = ""
                         binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_white)
-                        binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
+                        if(mFavorites == 0)
+                            binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
+                        else
+                            binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white_fill)
                         binding.toolbarShare.setImageResource(R.drawable.ic_share_white)
                         mCollapsingToolbarState = CollapsingToolbarLayoutState.EXPANDED
                     }
@@ -115,7 +134,10 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                     binding.toolbar.setBackgroundColor(Color.parseColor("#FFFFFF"))
                     binding.toolbarSuperName.text = mSuperName
                     binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_black)
-                    binding.toolbarHeart.setImageResource(R.drawable.ic_heart_red)
+                    if(mFavorites == 0)
+                        binding.toolbarHeart.setImageResource(R.drawable.ic_heart_red)
+                    else
+                        binding.toolbarHeart.setImageResource(R.drawable.ic_heart_red_fill)
                     binding.toolbarShare.setImageResource(R.drawable.ic_share_black)
                     mCollapsingToolbarState = CollapsingToolbarLayoutState.COLLAPSED
                 }
@@ -124,7 +146,10 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                     if(mCollapsingToolbarState != CollapsingToolbarLayoutState.INTERNEDIATE){
                         binding.toolbarSuperName.text = ""
                         binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_white)
-                        binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
+                        if(mFavorites == 0)
+                            binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
+                        else
+                            binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white_fill)
                         binding.toolbarShare.setImageResource(R.drawable.ic_share_white)
                         binding.toolbar.setBackgroundColor(Color.parseColor("#00000000"))
                         mCollapsingToolbarState = CollapsingToolbarLayoutState.INTERNEDIATE
@@ -199,6 +224,8 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     override fun onGetSuperInfoSuccess(response: SuperResponse) {
         if( response.code == 1000 ){
             setSuperInfo(response.result)
+            if(response.result.isBookmarked == "Y") mFavorites = 1
+            binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white_fill)
             // 매장 이름 넣기
             val edit = ApplicationClass.sSharedPreferences.edit()
             edit.putString("storeName", response.result.storeName).apply()
@@ -222,6 +249,14 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
 
     override fun onPostCouponSaveFailure(message: String) {
         //showCustomToast("할인 쿠폰 등록에 실패하였습니다.")
+    }
+
+    override fun onPostBookMarkAddSuccess(response: BookMarkAddResponse) {
+
+    }
+
+    override fun onPostBookMarkAddFailure(message: String) {
+
     }
 
     fun notServerDumyData() {

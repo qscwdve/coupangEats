@@ -55,7 +55,7 @@ class HomeFragment() :
     var filterSelected = Array(5) { i -> false }  // 필터를 선택했는지 안했는데
     private var whiteColor = "#FFFFFF"
     private var blackColor = "#000000"
-    private lateinit var mHomeInfoRequest: HomeInfoRequest
+    private var mHomeInfoRequest: HomeInfoRequest = HomeInfoRequest()
     private var mRecommSelect = 1
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
@@ -505,6 +505,7 @@ class HomeFragment() :
             10
         )
         mHomeInfoRequest = re
+        (activity as MainActivity).changeAddress(mUserAddress!!.latitude, mUserAddress!!.longitude)
         HomeService(this).tryGetHomeData(re)
     }
 
@@ -672,7 +673,7 @@ class HomeFragment() :
     // 이벤트 상세 보기
     fun startEventItem(eventIdx: Int){
         val intent = Intent(requireContext(), EventItemActivity::class.java).apply {
-            this.putExtra("eventIdx", -1)
+            this.putExtra("eventIdx", eventIdx)
         }
         startActivity(intent)
     }

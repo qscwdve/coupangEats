@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
 import com.example.coupangeats.src.discount.model.SuperCoupon
 
-class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectUserCouponIdx: Int) : RecyclerView.Adapter<CouponInfoAdapter.CouponInfoViewHolder>() {
+class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectUserCouponIdx: Int, val version: Int) : RecyclerView.Adapter<CouponInfoAdapter.CouponInfoViewHolder>() {
     class CouponInfoViewHolder(itemView: View, val adapter: CouponInfoAdapter) : RecyclerView.ViewHolder(itemView){
         val name = itemView.findViewById<TextView>(R.id.item_coupon_name)
         val price = itemView.findViewById<TextView>(R.id.item_coupon_price)
@@ -26,8 +26,14 @@ class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectU
             minPrice.text = item.minOrderPrice
             expiration.text = item.expirationDate
 
-            if(item.isAvailable == "N"){
+            if(item.isAvailable == "N" && adapter.version == -1){
                 parent.setBackgroundResource(R.drawable.round_gray_box_transport)
+                name.setTextColor(Color.parseColor("#5F000000"))
+                price.setTextColor(Color.parseColor("#5F00AFFE"))
+                minPrice.setTextColor(Color.parseColor("#5F949DA6"))
+                expiration.setTextColor(Color.parseColor("#5F949DA6"))
+            } else if(item.isAvailable == "expiry" || item.isAvailable == "used") {
+                parent.setBackgroundResource(R.drawable.round_gray_fill_box_transport)
                 name.setTextColor(Color.parseColor("#5F000000"))
                 price.setTextColor(Color.parseColor("#5F00AFFE"))
                 minPrice.setTextColor(Color.parseColor("#5F949DA6"))
@@ -40,28 +46,31 @@ class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectU
                 expiration.setTextColor(Color.parseColor("#949DA6"))
             }
 
-            if(item.userCouponIdx == adapter.selectUserCouponIdx){
-                // 유저가 선택한 쿠폰일 경우
-                parent.setBackgroundResource(R.drawable.round_blue_coupon)
-                check.visibility = View.VISIBLE
-            } else {
-                check.visibility = View.GONE
-            }
-            itemView.setOnClickListener {
-                // 유저가 쿠폰을 선택했을 경우
-                if(item.isAvailable == "Y"){
-                    if(item.userCouponIdx == adapter.selectUserCouponIdx){
-                        // 이미 선택한 쿠폰일 경우
-                        adapter.selectUserCouponIdx = -1
-                        parent.setBackgroundResource(R.drawable.round_gray_box)
-                        check.visibility = View.GONE
-                    } else {
-                        // 새로운 쿠폰을 선택했을 경우
-                        adapter.selectUserCouponIdx = item.userCouponIdx
-                        adapter.notifyDataSetChanged()
+            if(adapter.version == -1){
+                if(item.userCouponIdx == adapter.selectUserCouponIdx){
+                    // 유저가 선택한 쿠폰일 경우
+                    parent.setBackgroundResource(R.drawable.round_blue_coupon)
+                    check.visibility = View.VISIBLE
+                } else {
+                    check.visibility = View.GONE
+                }
+                itemView.setOnClickListener {
+                    // 유저가 쿠폰을 선택했을 경우
+                    if(item.isAvailable == "Y"){
+                        if(item.userCouponIdx == adapter.selectUserCouponIdx){
+                            // 이미 선택한 쿠폰일 경우
+                            adapter.selectUserCouponIdx = -1
+                            parent.setBackgroundResource(R.drawable.round_gray_box)
+                            check.visibility = View.GONE
+                        } else {
+                            // 새로운 쿠폰을 선택했을 경우
+                            adapter.selectUserCouponIdx = item.userCouponIdx
+                            adapter.notifyDataSetChanged()
+                        }
                     }
                 }
             }
+
         }
     }
 

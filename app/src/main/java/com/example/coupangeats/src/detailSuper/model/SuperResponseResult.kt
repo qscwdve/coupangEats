@@ -7,6 +7,7 @@ data class SuperResponseResult(
     @SerializedName("imageUrls") val img: ArrayList<String>,
     @SerializedName("rating") val rating: String?,
     @SerializedName("reviewCount") val reviewCount: String?,
+    @SerializedName("isBookmarked") val isBookmarked: String,
     @SerializedName("coupon") val coupon: Coupon?,
     @SerializedName("deliveryTime") val time: String,
     @SerializedName("deliveryPrice") val deliveryPrice: Int,

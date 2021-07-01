@@ -20,6 +20,7 @@ import com.softsquared.template.kotlin.config.BaseActivity
 class DiscountActivity : BaseActivity<ActivityDiscountBinding>(ActivityDiscountBinding::inflate), DiscountActivityView {
     var mStoreIdx : Int = -1
     var mCouponSelect : Int = -1
+    var mVersion: Int = -1
     var mDiscountApplyCheck = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +28,13 @@ class DiscountActivity : BaseActivity<ActivityDiscountBinding>(ActivityDiscountB
 
         mStoreIdx = intent.getIntExtra("storeIdx", -1)
         mCouponSelect = intent.getIntExtra("selectCouponIdx", -1)
-        DiscountService(this).tryGetCouponInfo(mStoreIdx, getUserIdx())
+        mVersion = intent.getIntExtra("version", -1)
+
+        if(mVersion == -1){
+            DiscountService(this).tryGetCouponInfo(mStoreIdx, getUserIdx())
+        } else {
+            DiscountService(this).tryGetMyEatsDiscount(getUserIdx())
+        }
 
         binding.discountBack.setOnClickListener{ finish() }
 
@@ -63,7 +70,7 @@ class DiscountActivity : BaseActivity<ActivityDiscountBinding>(ActivityDiscountB
     override fun onGetCouponInfoSuccess(response: CouponInfoResponse) {
         if(response.code == 1000){
             if(response.result != null){
-                binding.discountInfoRecyclerView.adapter = CouponInfoAdapter(response.result, mCouponSelect)
+                binding.discountInfoRecyclerView.adapter = CouponInfoAdapter(response.result, mCouponSelect, mVersion)
                 binding.discountInfoRecyclerView.layoutManager = LinearLayoutManager(this)
             }
         } else {
@@ -93,13 +100,26 @@ class DiscountActivity : BaseActivity<ActivityDiscountBinding>(ActivityDiscountB
         binding.discountCouponNumError.visibility = View.VISIBLE
     }
 
+    override fun onGetMyEatsDiscountSuccess(response: CouponInfoResponse) {
+        if(response.code == 1000){
+            if(response.result != null){
+                binding.discountInfoRecyclerView.adapter = CouponInfoAdapter(response.result, mCouponSelect, mVersion)
+                binding.discountInfoRecyclerView.layoutManager = LinearLayoutManager(this)
+            }
+        } else dummyDate()
+    }
+
+    override fun onGetMyEatsDiscountFailure(message: String) {
+        dummyDate()
+    }
+
     fun dummyDate() {
         val couponInfoList = ArrayList<SuperCoupon>()
         couponInfoList.add(SuperCoupon(-1, "해당가게 적용 가능 쿠폰", "3,000원 할인", "13,000이상 주문 시", "12/30 까지", "Y"))
         couponInfoList.add(SuperCoupon(-2, "쿠팡이츠 치킨마루", "5,000원 할인", "13,000이상 주문 시", "12/30 까지", "Y"))
         couponInfoList.add(SuperCoupon(-3, "쿠팡이츠 마피아떡볶이", "2,000원 할인", "13,000이상 주문 시", "12/30 까지", "N"))
         couponInfoList.add(SuperCoupon(-4, "쿠팡이츠 마피아떡볶이포장", "3,000원 할인", "13,000이상 주문 시", "12/30 까지", "N"))
-        binding.discountInfoRecyclerView.adapter = CouponInfoAdapter(couponInfoList, -1)
+        binding.discountInfoRecyclerView.adapter = CouponInfoAdapter(couponInfoList, -1, mVersion)
         binding.discountInfoRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 }

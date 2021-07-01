@@ -43,4 +43,22 @@ class DiscountService(val view: DiscountActivityView) {
                 }
             })
     }
+
+    fun tryGetMyEatsDiscount(userIdx: Int){
+        val discountActivityRetrofitInterface = ApplicationClass.sRetrofit.create(DiscountActivityRetrofitInterface::class.java)
+        discountActivityRetrofitInterface.getMyEatsDiscount(userIdx)
+            .enqueue(object : Callback<CouponInfoResponse>{
+                override fun onResponse(
+                    call: Call<CouponInfoResponse>,
+                    response: Response<CouponInfoResponse>
+                ) {
+                    view.onGetMyEatsDiscountSuccess(response.body() as CouponInfoResponse)
+                }
+
+                override fun onFailure(call: Call<CouponInfoResponse>, t: Throwable) {
+                    view.onGetMyEatsDiscountFailure(t.message ?: "통신 오류")
+                }
+
+            })
+    }
 }

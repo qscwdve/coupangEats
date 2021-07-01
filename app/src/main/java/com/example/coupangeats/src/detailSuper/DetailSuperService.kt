@@ -1,8 +1,6 @@
 package com.example.coupangeats.src.detailSuper
 
-import com.example.coupangeats.src.detailSuper.model.CouponSaveRequest
-import com.example.coupangeats.src.detailSuper.model.CouponSaveResponse
-import com.example.coupangeats.src.detailSuper.model.SuperResponse
+import com.example.coupangeats.src.detailSuper.model.*
 import com.softsquared.template.kotlin.config.ApplicationClass
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,6 +41,25 @@ class DetailSuperService(val view: DetailSuperActivityView) {
 
                 override fun onFailure(call: Call<CouponSaveResponse>, t: Throwable) {
                     view.onPostCouponSaveFailure(t.message ?: "통신 오류")
+                }
+
+            })
+    }
+
+    fun tryPostBookMarkAdd(request: BookMarkAddRequest){
+        val detailSuperRetrofitInterface = ApplicationClass.sRetrofit.create(
+            DetailSuperRetrofitInterface::class.java)
+        detailSuperRetrofitInterface.postBookMarkAdd(request)
+            .enqueue(object : Callback<BookMarkAddResponse>{
+                override fun onResponse(
+                    call: Call<BookMarkAddResponse>,
+                    response: Response<BookMarkAddResponse>
+                ) {
+                    view.onPostBookMarkAddSuccess(response.body() as BookMarkAddResponse)
+                }
+
+                override fun onFailure(call: Call<BookMarkAddResponse>, t: Throwable) {
+                    view.onPostBookMarkAddFailure(t.message ?: "통신 오류")
                 }
 
             })

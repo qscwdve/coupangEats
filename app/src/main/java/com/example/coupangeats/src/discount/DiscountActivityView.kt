@@ -9,4 +9,7 @@ interface DiscountActivityView {
 
     fun onPostApplyCouponSuccess(response: ApplyCouponResponse)
     fun onPostApplyCouponFailure(message: String)
+
+    fun onGetMyEatsDiscountSuccess(response: CouponInfoResponse)
+    fun onGetMyEatsDiscountFailure(message: String)
 }

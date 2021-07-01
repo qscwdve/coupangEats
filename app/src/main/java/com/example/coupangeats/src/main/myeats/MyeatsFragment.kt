@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentMyeatsBinding
+import com.example.coupangeats.src.discount.DiscountActivity
+import com.example.coupangeats.src.event.EventActivity
+import com.example.coupangeats.src.favorites.FavoritesActivity
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.myeats.model.UserInfoResponse
 import com.example.coupangeats.src.setting.SettingActivity
@@ -27,9 +30,23 @@ class MyeatsFragment : BaseFragment<FragmentMyeatsBinding>(FragmentMyeatsBinding
             (activity as MainActivity).startDeliveryAddressSettingActivityResult(2)
         }
         binding.myeatsAgree.setOnClickListener {  }
-        binding.myeatsDiscount.setOnClickListener {  }
-        binding.myeatsEvent.setOnClickListener {  }
-        binding.myeatsFavorites.setOnClickListener {  }
+        binding.myeatsDiscount.setOnClickListener {
+            // 할인쿠폰 보기
+            val intent = Intent(requireContext(), DiscountActivity::class.java).apply {
+                this.putExtra("version", 1)
+            }
+            startActivity(intent)
+        }
+        binding.myeatsEvent.setOnClickListener {
+            // 진행중인 이벤트 보기
+            val intent = Intent(requireContext(), EventActivity::class.java).apply {
+                this.putExtra("version", 1)
+            }
+            startActivity(intent)
+        }
+        binding.myeatsFavorites.setOnClickListener {
+            startActivity(Intent(requireContext(), FavoritesActivity::class.java))
+        }
         binding.myeatsNotice.setOnClickListener {  }
         binding.myeatsPatner.setOnClickListener {  }
         binding.myeatsPay.setOnClickListener {  }

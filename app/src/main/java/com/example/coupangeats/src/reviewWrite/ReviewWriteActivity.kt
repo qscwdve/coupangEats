@@ -526,12 +526,17 @@ class ReviewWriteActivity :
 
     fun setDeliveryOpinion(badReason: String) {
         val viewList = arrayOf(
-            binding.reviewWriteLate, binding.reviewWriteMessy, binding.reviewWriteFoodCold, binding.reviewWriteDeliveryRequestNot,
-            binding.reviewWriteDeliveryUnkind, binding.reviewWriteDeliveryDifferentMenu,
-            binding.reviewWriteDeliveryNotFood, binding.reviewWriteDeliveryLong
+            binding.reviewWriteLate,
+            binding.reviewWriteMessy,
+            binding.reviewWriteFoodCold,
+            binding.reviewWriteDeliveryRequestNot,
+            binding.reviewWriteDeliveryUnkind,
+            binding.reviewWriteDeliveryDifferentMenu,
+            binding.reviewWriteDeliveryNotFood,
+            binding.reviewWriteDeliveryLong
         )
 
-        var token = badReason.split(',')
+        val token = badReason.split(',')
         for (index in token.indices) {
             val str = token[index]
             for (deliveryIndex in mDeliberyBadString.indices) {
@@ -565,7 +570,7 @@ class ReviewWriteActivity :
             binding.reviewWriteRatingMenuMiss, binding.reviewWriteRatingPackLoss,
             binding.reviewWriteRatingSuperRequestNot, binding.reviewWriteRatingEtc
         )
-        var token = badReason.split(',')
+        val token = badReason.split(',')
         for (index in token.indices) {
             val str = token[index]
             var flag = false

@@ -1,12 +1,12 @@
 package com.example.coupangeats.src.review
 
 import com.example.coupangeats.src.review.model.ReviewDeleteResponse
+import com.example.coupangeats.src.review.model.ReviewHelpRequest
+import com.example.coupangeats.src.review.model.ReviewHelpResponse
 import com.example.coupangeats.src.review.model.ReviewInfoResponse
+import com.softsquared.template.kotlin.config.BaseResponse
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.PATCH
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface ReviewActivityRetrofitInterface {
     @GET("/stores/{storeIdx}/reviews")
@@ -16,4 +16,16 @@ interface ReviewActivityRetrofitInterface {
     @PATCH("/users/{userIdx}/reviews/{reviewIdx}/status")
     fun patchReviewDelete(@Path("userIdx") userIdx: Int, @Path("reviewIdx") reviewIdx: Int)
             : Call<ReviewDeleteResponse>
+
+    // 리뷰 도움 관련
+    @POST("like")
+    fun postReviewHelpLike(@Body params: ReviewHelpRequest) : Call<ReviewHelpResponse>
+
+    @POST("unlike")
+    fun postReviewHelpUnlike(@Body params: ReviewHelpRequest) : Call<ReviewHelpResponse>
+
+    @PATCH("/users/{userIdx}/reviews/{reviewIdx}/like/status")
+    fun patchReviewHelpDelete(@Path("userIdx") userIdx: Int,
+                              @Path("reviewIdx") reviewIdx: Int) : Call<BaseResponse>
+
 }

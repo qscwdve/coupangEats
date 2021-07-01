@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/image_no"
-            android:src="@drawable/check" />
+            android:src="@drawable/ic_check_blue" />
 
     </LinearLayout>
 

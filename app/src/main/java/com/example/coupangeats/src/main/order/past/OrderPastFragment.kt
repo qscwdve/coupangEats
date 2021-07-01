@@ -19,6 +19,7 @@ import com.example.coupangeats.src.main.order.model.pastOrder
 import com.example.coupangeats.src.main.order.model.prepareOrder
 import com.example.coupangeats.src.main.order.past.adapter.PastOrderAdapter
 import com.example.coupangeats.src.main.order.past.model.OrderPastInfoResponse
+import com.example.coupangeats.src.myReview.MyReviewActivity
 import com.example.coupangeats.src.reviewWrite.ReviewWriteActivity
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseFragment
@@ -33,7 +34,7 @@ class OrderPastFragment : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPa
         imm = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
 
         // 요청하기
-        OrderPastService(this).tryGetOrderPastInfo(getUserIdx())
+        // OrderPastService(this).tryGetOrderPastInfo(getUserIdx())
         binding.orderPastSearchText.requestFocus()
 
         binding.orderPastSearchText.setOnClickListener{
@@ -41,6 +42,7 @@ class OrderPastFragment : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPa
                 mIsSearch = true
                 binding.orderPastTransportMenu.visibility = View.VISIBLE
                 binding.orderPastSearchText.hint = "매뉴/매장명 입력"
+                imm.showSoftInput(binding.orderPastEditTextParent, 0);
             }
         }
 
@@ -51,6 +53,7 @@ class OrderPastFragment : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPa
                 mIsSearch = true
                 binding.orderPastTransportMenu.visibility = View.VISIBLE
                 binding.orderPastSearchText.hint = "매뉴/매장명 입력"
+                imm.showSoftInput(binding.orderPastEditTextParent, 0);
             }
         }
 
@@ -79,6 +82,12 @@ class OrderPastFragment : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPa
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        // 요청하기
+        OrderPastService(this).tryGetOrderPastInfo(getUserIdx())
+    }
+
     fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
 
     fun lookReceipt(order: pastOrder) {
@@ -95,6 +104,14 @@ class OrderPastFragment : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPa
 
     fun startReviewWrite(orderIdx: Int, reviewIdx: Int){
         val intent = Intent(requireContext(), ReviewWriteActivity::class.java).apply {
+            this.putExtra("orderIdx", orderIdx)
+            this.putExtra("reviewIdx", reviewIdx)
+        }
+        startActivity(intent)
+    }
+
+    fun startMyReview(orderIdx: Int, reviewIdx: Int){
+        val intent = Intent(requireContext(), MyReviewActivity::class.java).apply {
             this.putExtra("orderIdx", orderIdx)
             this.putExtra("reviewIdx", reviewIdx)
         }

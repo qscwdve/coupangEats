@@ -1,5 +1,6 @@
 package com.example.coupangeats.src.detailSuper
 
+import com.example.coupangeats.src.detailSuper.model.BookMarkAddResponse
 import com.example.coupangeats.src.detailSuper.model.CouponSaveResponse
 import com.example.coupangeats.src.detailSuper.model.SuperResponse
 
@@ -10,4 +11,7 @@ interface DetailSuperActivityView {
 
     fun onPostCouponSaveSuccess(response: CouponSaveResponse)
     fun onPostCouponSaveFailure(message: String)
+
+    fun onPostBookMarkAddSuccess(response: BookMarkAddResponse)
+    fun onPostBookMarkAddFailure(message: String)
 }

@@ -138,6 +138,8 @@ class FilterSuperBottomSheetDialog(val fragment: HomeFragment, val version: Int)
 
 
     fun clickValue1() {
+        if(version == 1)
+            binding.dialogFilterSelectSub.visibility = View.INVISIBLE
         val text = if(version == 1){
             mValue1
         } else {
@@ -155,6 +157,8 @@ class FilterSuperBottomSheetDialog(val fragment: HomeFragment, val version: Int)
     }
 
     fun clickValue2() {
+        if(version == 1)
+            binding.dialogFilterSelectSub.visibility = View.INVISIBLE
         val text = "${mValue2}원 이하"
         binding.dialogFilterSelect.text = text
         binding.dialogFilterValue1.setTextColor(Color.parseColor(black))
@@ -168,6 +172,8 @@ class FilterSuperBottomSheetDialog(val fragment: HomeFragment, val version: Int)
     }
 
     fun clickValue3() {
+        if(version == 1)
+            binding.dialogFilterSelectSub.visibility = View.INVISIBLE
         val text = "${mValue3}원 이하"
         binding.dialogFilterSelect.text = text
         binding.dialogFilterValue1.setTextColor(Color.parseColor(black))
@@ -181,6 +187,8 @@ class FilterSuperBottomSheetDialog(val fragment: HomeFragment, val version: Int)
     }
 
     fun clickValue4() {
+        if(version == 1)
+            binding.dialogFilterSelectSub.visibility = View.INVISIBLE
         val text = "${mValue4}원 이하"
         binding.dialogFilterSelect.text = text
         binding.dialogFilterValue1.setTextColor(Color.parseColor(black))
