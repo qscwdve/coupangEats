@@ -365,6 +365,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/search_detail_keyword_parent"
             android:orientation="vertical"
             android:background="@color/white"

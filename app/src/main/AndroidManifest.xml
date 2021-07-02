@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:label">
-        <activity android:name=".src.searchDetail.SearchDetailActivity"></activity>
+        <activity android:name=".src.findId.FindIdActivity"></activity>
+        <activity android:name=".src.searchDetail.SearchDetailActivity" />
         <activity android:name=".src.eventItem.EventItemActivity" />
         <activity android:name=".src.event.EventActivity" />
         <activity android:name=".src.myReview.MyReviewActivity" />

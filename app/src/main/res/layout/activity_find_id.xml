@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/line" android:orientation="vertical"
+    tools:context=".src.findId.FindIdActivity">
+
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:paddingHorizontal="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/toolbar_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_marginHorizontal="5dp"
+            android:src="@drawable/ic_cancel" />
+
+        <TextView
+            android:layout_marginStart="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/coupang"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/find_id_content_parent"
+            android:padding="20dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/Findid"/>
+
+            <RelativeLayout
+                android:id="@+id/find_id_user_info_parent"
+                android:visibility="visible"
+                android:layout_marginTop="15dp"
+                android:padding="15dp"
+                android:background="@drawable/round_gray_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_marginBottom="7dp"
+                    android:id="@+id/find_id_user_img"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"/>
+                <TextView
+                    android:id="@+id/find_id_user_name_info"
+                    android:layout_below="@+id/find_id_user_img"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/baseColor"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:text="김윤희 회원님의 계정 이메일은"/>
+                <LinearLayout
+                    android:id="@+id/find_id_email_info"
+                    android:layout_below="@+id/find_id_user_name_info"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginBottom="7dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/find_id_email_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/loginBlue"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:text="ff******@naver.com"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/baseColor"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:text="@string/end"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_below="@+id/find_id_email_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/find_id_login"
+                        android:layout_marginEnd="7dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:padding="13dp"
+                        android:background="@color/loginBlue"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:text="@string/login"/>
+                    <TextView
+                        android:id="@+id/find_id_password_find"
+                        android:layout_marginTop="7dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:padding="13dp"
+                        android:background="@color/loginBlue"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:text="@string/findPassword"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/find_id_phone_auth_parent"
+                android:visibility="visible"
+                android:layout_marginTop="15dp"
+                android:padding="15dp"
+                android:background="@drawable/round_gray_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:text="@string/myCheck"/>
+                <TextView
+                    android:layout_marginVertical="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/baseColor"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:text="@string/authoriationCheck"/>
+
+                <TextView
+                    android:layout_marginTop="7dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="13dp"
+                    android:background="@color/loginBlue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:text="@string/phoneMethod"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/find_id_member_phone_auth_parent"
+                android:visibility="visible"
+                android:layout_marginTop="10dp"
+                android:padding="15dp"
+                android:background="@drawable/round_gray_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:text="@string/findIdMemberInfo"/>
+                <TextView
+                    android:layout_marginVertical="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/baseColor"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:text="@string/findIdMember"/>
+
+                <RelativeLayout
+                    android:background="@drawable/login_box"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:paddingVertical="15dp"
+                        android:id="@+id/find_id_name"
+                        android:inputType="textEmailAddress"
+                        android:paddingStart="10dp"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:background="@color/white"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:hint="@string/name"
+                        android:textColorHint="@color/baseColor"
+                        tools:ignore="RtlSymmetry" />
+                    <View
+                        android:visibility="gone"
+                        android:id="@+id/find_id_name_line"
+                        android:layout_alignBottom="@+id/find_id_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="2sp"
+                        android:background="@color/blue"
+                        tools:ignore="SmallSp" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:background="@drawable/login_box"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_marginTop="7dp"
+                        android:paddingVertical="15dp"
+                        android:id="@+id/find_id_phone"
+                        android:inputType="phone"
+                        android:paddingStart="10dp"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/login_box"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:hint="@string/phoneNm"
+                        android:textColorHint="@color/baseColor"
+                        tools:ignore="RtlSymmetry" />
+                    <View
+                        android:visibility="gone"
+                        android:id="@+id/find_id_phone_line"
+                        android:layout_alignBottom="@+id/find_id_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="2sp"
+                        android:background="@color/blue"
+                        tools:ignore="SmallSp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/find_id_error"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginVertical="7dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/ErrorRed"
+                    android:textSize="15sp"
+                    android:text="이름을 입력해주세요"/>
+
+                <TextView
+                    android:id="@+id/find_id_auth_number_request"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="13dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="인증번호 전송"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/loginBlue"
+                    android:background="@drawable/find_id_num_box"/>
+                <RelativeLayout
+                    android:id="@+id/find_auth_num_text_parent"
+                    android:visibility="gone"
+                    android:background="@drawable/login_box"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/find_auth_num_text"
+                        android:layout_marginTop="20dp"
+                        android:paddingVertical="15dp"
+                        android:inputType="phone"
+                        android:paddingStart="10dp"
+                        android:layout_gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/login_box"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:hint="@string/findIdNumInput"
+                        android:textColorHint="@color/baseColor"
+                        tools:ignore="RtlSymmetry" />
+                    <View
+                        android:visibility="gone"
+                        android:id="@+id/find_id_auth_num_line"
+                        android:layout_alignBottom="@+id/find_auth_num_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="2sp"
+                        android:background="@color/blue"
+                        tools:ignore="SmallSp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/find_id_auth_num_error"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginVertical="7dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/loginBlue"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:text="@string/findIdNoum"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/find_id_auth_num_ok"
+                    android:layout_marginTop="7dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="13dp"
+                    android:background="@color/loginBlue"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:text="@string/checked"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>

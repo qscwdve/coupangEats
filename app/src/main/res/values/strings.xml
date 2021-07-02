@@ -29,6 +29,8 @@
     <string name="login_password_hint">비밀번호 입력</string>
     <string name="login_ok">로그인</string>
     <string name="login_id_find">아이디 찾기</string>
+    <string name="findIdMemberInfo">회원정보에 등록된 휴대폰 번호</string>
+    <string name="findIdMember">회원정보에 등록된 휴대폰 번호가 생각나지 않으시면 위의 본인 확인을 통해 아이디(이메일)를 찾아주세요.</string>
     <string name="login_password_find">비밀번호 찾기</string>
     <string name="sign_up_info">회원정보를 입력해주세요</string>
     <string name="sign_up_email_hint">아이디(이메일)</string>
@@ -286,4 +288,17 @@
     <string name="eventTitle">진행중인 이벤트</string>
     <string name="orderMenu">주문 메뉴</string>
     <string name="myReviewTitle">내가 작성한 리뷰</string>
+    <string name="coupang">쿠팡!</string>
+    <string name="Findid">아이디(이메일)찾기</string>
+    <string name="myCheck">본인 확인</string>
+    <string name="authoriationCheck">인증수단을 선택해주세요</string>
+    <string name="phoneMethod">휴대폰 인증</string>
+    <string name="name">이름</string>
+    <string name="phoneNm">휴대폰 번호</string>
+    <string name="findIdNumInput">인증번호 입력</string>
+    <string name="findIdNoum">인증번호를 받지 못하셨나요?</string>
+    <string name="checked">확인</string>
+    <string name="end">입니다.</string>
+    <string name="login">로그인</string>
+    <string name="findPassword">비밀번호 찾기</string>
 </resources>
