@@ -219,10 +219,6 @@ class ReviewWriteActivity :
             startActivityForResult(intent, GET_GALLERY_IMAGE)
         }
 
-        // 기타의견 시작
-        binding.reviewWriteRatingEtcTextParent.setOnClickListener { startEtcDialog(1) }
-        binding.reviewWriteRatingEtcModify.setOnClickListener { startEtcDialog(1) }
-
         binding.reviewWriteDeliveryEtcModify.setOnClickListener { startEtcDialog(2) }
         binding.reviewWriteDeliveryEtcTextParent.setOnClickListener { startEtcDialog(2) }
 
@@ -243,6 +239,14 @@ class ReviewWriteActivity :
             // 사진 추가 리스트에 추가해야함
             mFireBaseControl.addFireBaseImg(data.data!!)
         }
+    }
+
+    fun gonePhotoAdd(){
+        binding.reviewWritePhotoAdd.visibility = View.GONE
+    }
+
+    fun visiblePhotoAdd(){
+        binding.reviewWritePhotoAdd.visibility = View.VISIBLE
     }
 
     fun setMenuAdapter(menu: ArrayList<orderMenus>) {
@@ -361,18 +365,12 @@ class ReviewWriteActivity :
             // true -> false
             mRatingBadCheck[position] = false
             view.setBackgroundResource(R.drawable.login_box)
-            if (position == 5) {
-                // 기타의견 나와야함
-                binding.reviewWriteRatingEtcParent.visibility = View.GONE
-            }
+
         } else {
             // false -> true
             mRatingBadCheck[position] = true
             view.setBackgroundResource(R.drawable.detail_address_category_box)
-            if (position == 5) {
-                // 기타의견 나와야함
-                binding.reviewWriteRatingEtcParent.visibility = View.VISIBLE
-            }
+
         }
     }
 
@@ -391,19 +389,6 @@ class ReviewWriteActivity :
         reviewWriteOpinionBottomSheet.show(supportFragmentManager, "etcOpinion")
     }
 
-    fun changeRatingEtc(content: String) {
-        if (content != "") {
-            binding.reviewWriteRatingEtcText.setTextColor(Color.parseColor("#949DA6"))  // 회색
-            binding.reviewWriteRatingEtcText.text = content
-            binding.reviewWriteRatingEtcModify.visibility = View.VISIBLE
-            mRatingEtcString = content
-        } else {
-            binding.reviewWriteRatingEtcText.setTextColor(Color.parseColor("#00AFFE"))  // 파란색
-            binding.reviewWriteRatingEtcText.text = "기타의견"
-            binding.reviewWriteRatingEtcModify.visibility = View.GONE
-            mRatingEtcString = null
-        }
-    }
 
     fun changeDeliveryEtc(content: String) {
         if (content != "") {
@@ -584,7 +569,6 @@ class ReviewWriteActivity :
             if (!flag) {
                 // 기타의견
                 changeRatingBadCheck(5, viewList[5])
-                changeRatingEtc(str)
             }
         }
     }

@@ -36,6 +36,9 @@ class FindIdActivity : BaseActivity<ActivityFindIdBinding>(ActivityFindIdBinding
                 binding.findIdNameLine.visibility = View.VISIBLE
             } else {
                 binding.findIdNameLine.visibility = View.GONE
+                if(binding.findIdName.text.toString().isNotEmpty()){
+                    binding.findIdNameError.visibility = View.GONE
+                }
             }
         }
         binding.findIdPhone.setOnFocusChangeListener { v, hasFocus ->
@@ -45,6 +48,9 @@ class FindIdActivity : BaseActivity<ActivityFindIdBinding>(ActivityFindIdBinding
                 binding.findIdPhoneLine.visibility = View.VISIBLE
             } else {
                 binding.findIdPhoneLine.visibility = View.GONE
+                if(binding.findIdPhone.text.toString().isNotEmpty()){
+                    binding.findIdPhoneError.visibility = View.GONE
+                }
             }
         }
         binding.findAuthNumText.setOnFocusChangeListener { v, hasFocus ->
@@ -83,15 +89,16 @@ class FindIdActivity : BaseActivity<ActivityFindIdBinding>(ActivityFindIdBinding
         binding.findIdAuthNumberRequest.setOnClickListener {
             if(binding.findIdName.text.toString().isEmpty()){
                 // 이름 에러 메시지 띄움
-                binding.findIdError.visibility = View.VISIBLE
-                binding.findIdError.text = "이름을 입력해주세요"
+                binding.findIdNameError.visibility = View.VISIBLE
+                binding.findIdNameError.text = "이름을 입력해주세요"
             } else if(binding.findIdPhone.text.toString().isEmpty()){
                 // 휴대폰 번호 에러 메시지 띄움
-                binding.findIdError.visibility = View.VISIBLE
-                binding.findIdError.text = "전화번호를 입력해주세요"
+                binding.findIdPhoneError.visibility = View.VISIBLE
+                binding.findIdPhoneError.text = "전화번호를 입력해주세요"
             } else {
                 // 서버로 요청 가능
-                binding.findIdError.visibility = View.GONE
+                binding.findIdNameError.visibility = View.GONE
+                binding.findIdPhoneError.visibility = View.GONE
                 userName = binding.findIdName.text.toString()
                 userPhone = binding.findIdPhone.text.toString()
                 FindIdService(this).tryPostFindIdAuthNumber(FindIdRequest(userName, userPhone))

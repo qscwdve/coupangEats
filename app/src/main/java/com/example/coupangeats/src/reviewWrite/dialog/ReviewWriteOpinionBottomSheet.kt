@@ -56,7 +56,7 @@ class ReviewWriteOpinionBottomSheet(val version: Int, val opinion: String, val a
         })
         binding.dialogEditTextOk.setOnClickListener {
             if(version == 1){
-                activity.changeRatingEtc(binding.dialogEditText.text.toString())
+
             } else if(version == 2){
                 activity.changeDeliveryEtc(binding.dialogEditText.text.toString())
             }

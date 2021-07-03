@@ -56,12 +56,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
+                android:layout_marginEnd="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/dialog_filter_recommend_recommend"
                 android:id="@+id/dialog_recommend_recommend_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_filter_recommend_recommend"
                 app:layout_constraintTop_toTopOf="parent"
@@ -96,12 +97,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
+                android:layout_marginEnd="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/dialog_filter_recommend_many"
                 android:id="@+id/dialog_recommend_many_order_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_filter_recommend_many"
                 app:layout_constraintTop_toTopOf="parent"
@@ -136,12 +138,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
+                android:layout_marginEnd="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/dialog_filter_recommend_distance"
                 android:id="@+id/dialog_recommend_distance_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_filter_recommend_distance"
                 app:layout_constraintTop_toTopOf="parent"
@@ -176,12 +179,13 @@
             android:orientation="horizontal"
             android:layout_gravity="center">
             <ImageView
+                android:layout_marginEnd="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/dialog_filter_recommend_rating_asc"
                 android:id="@+id/dialog_recommend_high_star_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_filter_recommend_rating_asc"
                 app:layout_constraintTop_toTopOf="parent"
@@ -216,12 +220,13 @@
             android:orientation="horizontal"
             android:layout_gravity="center">
             <ImageView
+                android:layout_marginEnd="10dp"
                 app:layout_constraintEnd_toStartOf="@+id/dialog_filter_recommend_new"
                 android:id="@+id/dialog_recommend_new_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_filter_recommend_new"
                 app:layout_constraintTop_toTopOf="parent"

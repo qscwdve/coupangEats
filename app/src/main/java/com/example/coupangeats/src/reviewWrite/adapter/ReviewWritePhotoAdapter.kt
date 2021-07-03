@@ -38,11 +38,18 @@ class ReviewWritePhotoAdapter(var imgList: ArrayList<String>, val activity: Revi
 
     fun deletePhoto(position: Int) {
         imgList.removeAt(position)
-        notifyDataSetChanged()
+        notifyItemRemoved(position)
+        // notifyDataSetChanged()
+        if(imgList.size <= 5){
+            activity.visiblePhotoAdd()
+        }
     }
 
     fun addPhoto(photoData: String) {
         imgList.add(photoData)
+        if(imgList.size > 5){
+            activity.gonePhotoAdd()
+        }
         notifyDataSetChanged()
     }
 

@@ -589,18 +589,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <TextView
-        android:visibility="gone"
-        android:layout_above="@+id/home_cart_bag"
-        android:text="배달주소가 변경되었습니다."
-        android:id="@+id/home_notice_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:paddingVertical="23dp"
-        android:background="#CC000000"/>
+
 
     <!-- 치타배달 배너 -->
     <LinearLayout
@@ -615,9 +604,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cheetah"/>
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_cheetah"/>
 
         <View
             android:layout_marginVertical="4dp"
@@ -651,6 +640,18 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_cancel_gray"/>
     </LinearLayout>
+    <TextView
+        android:visibility="gone"
+        android:layout_above="@+id/home_cart_bag"
+        android:text="배달주소가 변경되었습니다."
+        android:id="@+id/home_notice_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:paddingVertical="23dp"
+        android:background="#CC000000"/>
     <RelativeLayout
         android:layout_alignParentBottom="true"
         android:id="@+id/home_cart_bag"

@@ -1,7 +1,6 @@
 package com.example.coupangeats.src.main.home.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -51,7 +50,7 @@ class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragme
             name.text = item.storeName
             when(item.markIcon){
                 "신규" -> markIcon.setImageResource(R.drawable.new_super)
-                "치타배달" -> markIcon.setImageResource(R.drawable.cheetah)
+                "치타배달" -> markIcon.setImageResource(R.drawable.ic_cheetah)
                 else -> markIcon.visibility = View.GONE
             }
             time.text = item.deliveryTime

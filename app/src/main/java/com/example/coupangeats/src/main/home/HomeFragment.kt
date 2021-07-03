@@ -32,6 +32,7 @@ import com.example.coupangeats.src.main.home.model.HomeInfo.*
 import com.example.coupangeats.src.main.home.model.cheetahCount.CheetahCountResponse
 import com.example.coupangeats.src.main.home.model.userCheckAddress.UserCheckResponse
 import com.example.coupangeats.src.main.home.model.userCheckAddress.UserCheckResponseResult
+import com.example.coupangeats.src.searchDetail.SearchDetailActivity
 import com.example.coupangeats.src.superSearch.SuperSearchActivity
 import com.example.coupangeats.util.CartMenuDatabase
 import com.example.coupangeats.util.FilterRecommendBottomSheetDialog
@@ -92,6 +93,16 @@ class HomeFragment() :
                 (activity as MainActivity).startDeliveryAddressSettingActivityResult()
             }
         }
+
+        // 검색
+        binding.homeSearch.setOnClickListener {
+            val intent = Intent(requireContext(), SearchDetailActivity::class.java).apply {
+                this.putExtra("lat", mLat)
+                this.putExtra("lon", mLon)
+            }
+            startActivity(intent)
+        }
+
         // 배달비
         binding.homeFilterDeliveryPrice.setOnClickListener {
             val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 1)
@@ -647,6 +658,7 @@ class HomeFragment() :
             this.putExtra("lon", mLon)
             this.putExtra("categoryName", option)
         }
+        Log.d("위도", "lat: $mLat 경도: $mLon")
         startActivity(intent)
     }
 

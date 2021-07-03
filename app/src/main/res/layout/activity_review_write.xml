@@ -296,57 +296,6 @@
 
                     </LinearLayout>
 
-                    <!-- 기타 의견 -->
-                    <LinearLayout
-                        android:id="@+id/review_write_rating_etc_parent"
-                        android:layout_below="@+id/review_write_rating_etc"
-                        android:layout_marginBottom="10dp"
-                        android:visibility="gone"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <LinearLayout
-                            android:id="@+id/review_write_rating_etc_text_parent"
-                            android:background="@drawable/white_to_gray_ripple"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_speech"/>
-
-                            <TextView
-                                android:id="@+id/review_write_rating_etc_text"
-                                android:layout_marginStart="7dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="기타의견"
-                                android:textSize="12sp"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:textColor="@color/loginBlue"
-                                android:textStyle="bold"/>
-
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/review_write_rating_etc_modify"
-                            android:layout_marginStart="10dp"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="수정"
-                            android:textSize="13sp"
-                            android:layout_gravity="top"
-                            android:gravity="end"
-                            android:textColor="@color/loginBlue"
-                            android:textStyle="bold"/>
-
-                    </LinearLayout>
                 </RelativeLayout>
             </LinearLayout>
 

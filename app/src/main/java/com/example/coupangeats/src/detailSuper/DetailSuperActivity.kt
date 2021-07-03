@@ -25,6 +25,7 @@ import com.example.coupangeats.src.detailSuper.adapter.DetailSuperImgViewPagerAd
 import com.example.coupangeats.src.detailSuper.adapter.MenuCategoryAdapter
 import com.example.coupangeats.src.detailSuper.adapter.SuperPhotoReviewAdapter
 import com.example.coupangeats.src.detailSuper.model.*
+import com.example.coupangeats.src.favorites.model.FavoritesSuperDeleteRequest
 import com.example.coupangeats.src.menuSelect.MenuSelectActivity
 import com.example.coupangeats.src.review.ReviewActivity
 import com.example.coupangeats.util.CartMenuDatabase
@@ -32,6 +33,7 @@ import com.example.coupangeats.util.StatusBarColorControl
 import com.google.android.material.appbar.AppBarLayout
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
+import com.softsquared.template.kotlin.config.BaseResponse
 
 class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDetailSuperBinding::inflate)
     , DetailSuperActivityView {
@@ -105,6 +107,18 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                 }
                 mFavorites = 1
                 DetailSuperService(this).tryPostBookMarkAdd(BookMarkAddRequest(getUserIdx(), mSuperIdx))
+            } else {
+                // 즐겨찾기 빼기
+                if(mCollapsingToolbarState == CollapsingToolbarLayoutState.COLLAPSED){
+                    // red
+                    binding.toolbarHeart.setImageResource(R.drawable.ic_heart_red)
+                } else {
+                    binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
+                }
+                mFavorites = 0
+                val storeList = ArrayList<Int>()
+                storeList.add(mSuperIdx)
+                DetailSuperService(this).tryPostFavoritesSuperDelete(getUserIdx(), FavoritesSuperDeleteRequest(storeList))
             }
         }
 
@@ -224,8 +238,12 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     override fun onGetSuperInfoSuccess(response: SuperResponse) {
         if( response.code == 1000 ){
             setSuperInfo(response.result)
-            if(response.result.isBookmarked == "Y") mFavorites = 1
-            binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white_fill)
+            if(response.result.isBookmarked == "Y"){
+                mFavorites = 1
+                binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white_fill)
+            } else {
+                binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
+            }
             // 매장 이름 넣기
             val edit = ApplicationClass.sSharedPreferences.edit()
             edit.putString("storeName", response.result.storeName).apply()
@@ -252,10 +270,22 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     }
 
     override fun onPostBookMarkAddSuccess(response: BookMarkAddResponse) {
+        if(response.code == 1000){
 
+        }
     }
 
     override fun onPostBookMarkAddFailure(message: String) {
+
+    }
+
+    override fun onPostFavoritesSuperDeleteSuccess(response: BaseResponse) {
+        if(response.code == 1000){
+
+        }
+    }
+
+    override fun onPostFavoritesSuperDeleteFailure(message: String) {
 
     }
 

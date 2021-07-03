@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
 import com.example.coupangeats.src.categorySuper.CategorySuperActivity
-import com.example.coupangeats.src.main.home.HomeFragment
-import com.example.coupangeats.src.main.home.adapter.RecommendAdapter
 import com.example.coupangeats.src.main.home.model.HomeInfo.RecommendStores
 
 class RecommendCategoryAdapter(val recommendList: ArrayList<RecommendStores>, val activity: CategorySuperActivity) : RecyclerView.Adapter<RecommendCategoryAdapter.RecommendCategoryViewHolder>(){
@@ -48,7 +46,7 @@ class RecommendCategoryAdapter(val recommendList: ArrayList<RecommendStores>, va
             name.text = item.storeName
             when(item.markIcon){
                 "신규" -> markIcon.setImageResource(R.drawable.new_super)
-                "치타배달" -> markIcon.setImageResource(R.drawable.cheetah)
+                "치타배달" -> markIcon.setImageResource(R.drawable.ic_cheetah)
                 else -> markIcon.visibility = View.GONE
             }
             time.text = item.deliveryTime

@@ -49,9 +49,10 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:paddingTop="5dp"
+                android:paddingTop="10dp"
                 android:background="@color/white"
                 android:paddingHorizontal="20dp"
+                android:paddingBottom="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -79,7 +80,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="7dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -179,7 +180,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:id="@+id/my_review_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

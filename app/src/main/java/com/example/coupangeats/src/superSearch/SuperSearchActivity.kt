@@ -1,5 +1,6 @@
 package com.example.coupangeats.src.superSearch
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +10,7 @@ import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivitySuperSearchBinding
 import com.example.coupangeats.src.main.home.HomeService
 import com.example.coupangeats.src.main.home.model.HomeInfo.HomeInfoRequest
+import com.example.coupangeats.src.searchDetail.SearchDetailActivity
 import com.example.coupangeats.src.superSearch.adapter.BaseInfoAdapter
 import com.example.coupangeats.src.superSearch.model.BaseSuperInfo
 import com.example.coupangeats.src.superSearch.model.DiscountSuperResponse
@@ -42,12 +44,21 @@ class SuperSearchActivity :
         binding.superSearchTitle.text = if (version == 1) "할인 중인 맛집" else "새로 들어온 가게!"
         mRecommSelect = if(version == 1) 1 else 5
         if (version == 1) {
+            binding.homeFilterCoupon.visibility = View.GONE
             mFilterRequest = FilterRequest(lat, lon, "recomm", null, "Y", null, null, 25, 1)
         } else {
             mFilterRequest = FilterRequest(lat, lon, "new", null, null, null, null, 25, 1)
             binding.homeFilterRecommendText.text = "신규매장순"
         }
         startFilterSuper()
+
+        binding.superSearchBack.setOnClickListener {
+            val intent = Intent(this, SearchDetailActivity::class.java).apply {
+                this.putExtra("lat", lat)
+                this.putExtra("lon", lon)
+            }
+            startActivity(intent)
+        }
 
         // 치타 배달
         binding.homeFilterCheetah.setOnClickListener {

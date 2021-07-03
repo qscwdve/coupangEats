@@ -10,6 +10,6 @@ interface FavoritesRetrofitInterface {
     @GET("/users/{userIdx}/bookmarks")
     fun getFavoritesInfoSort(@Path("userIdx") userIdx: Int, @Query("sort") sort: String) : Call<FavoritesInfoResponse>
 
-    @POST("/users/{userIdx}/bookmarks/status")
+    @PATCH("/users/{userIdx}/bookmarks/status")
     fun postFavoritesSuperDelete(@Path("userIdx") userIdx: Int, @Body params: FavoritesSuperDeleteRequest) : Call<BaseResponse>
 }

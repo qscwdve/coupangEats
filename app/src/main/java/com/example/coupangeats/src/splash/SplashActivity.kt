@@ -23,7 +23,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
             finish()
         }, 1500)
 
-        Log.d("device", "device id : ${getDeviceId()}")
     }
 
     override fun onGetAutoLoginSuccess(response: AutoLoginResponse) {

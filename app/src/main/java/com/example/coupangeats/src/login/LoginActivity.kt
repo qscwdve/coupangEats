@@ -21,6 +21,7 @@ import androidx.transition.TransitionManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityLoginBinding
 import com.example.coupangeats.databinding.DialogLoginCheckBinding
+import com.example.coupangeats.src.findId.FindIdActivity
 import com.example.coupangeats.src.login.model.UserLoginRequest
 import com.example.coupangeats.src.login.model.UserLoginResponse
 import com.example.coupangeats.src.signUp.SignUpActivity
@@ -122,6 +123,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         // 회원가입 하러 가기
         binding.loginToSignUp.setOnClickListener {
             startActivity(Intent(this, SignUpActivity::class.java))
+        }
+
+        // 아이디 찾기
+        binding.loginFindId.setOnClickListener {
+            startActivity(Intent(this, FindIdActivity::class.java))
         }
     }
 

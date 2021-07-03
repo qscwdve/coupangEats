@@ -55,11 +55,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
+                android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option1_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_order_rider_option1_text"
                 android:layout_width="wrap_content"
@@ -90,11 +91,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
+                android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option2_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_order_rider_option2_text"
                 android:layout_width="wrap_content"
@@ -125,11 +127,12 @@
             android:orientation="horizontal"
             android:layout_gravity="center">
             <ImageView
+                android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option3_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_order_rider_option3_text"
                 android:layout_width="wrap_content"
@@ -160,11 +163,12 @@
             android:orientation="horizontal"
             android:layout_gravity="center">
             <ImageView
+                android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option4_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_order_rider_option4_text"
                 android:layout_width="wrap_content"
@@ -195,11 +199,12 @@
             android:orientation="horizontal"
             android:layout_gravity="center">
             <ImageView
+                android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option5_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_order_rider_option5_text"
                 android:layout_width="wrap_content"
@@ -230,11 +235,12 @@
             android:orientation="horizontal"
             android:layout_gravity="center">
             <ImageView
+                android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option6_img"
                 android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_order_rider_option6_text"
                 android:layout_width="wrap_content"
@@ -265,11 +271,12 @@
             android:orientation="horizontal"
             android:layout_gravity="center">
             <ImageView
+                android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option7_img"
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/main_address_arrow"/>
+                android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_order_rider_option7_text"
                 android:layout_width="wrap_content"

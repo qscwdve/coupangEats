@@ -46,11 +46,12 @@
                         tools:ignore="NestedWeights">
 
                         <ImageView
+                            android:layout_marginEnd="20dp"
                             android:id="@+id/toolbar_back"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginStart="5dp"
                             android:src="@drawable/ic_left_arrow_black" />
 
                         <LinearLayout
@@ -98,7 +99,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:padding="12sp"
+                        android:padding="15sp"
                         android:src="@drawable/ic_nav_click_search"/>
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>

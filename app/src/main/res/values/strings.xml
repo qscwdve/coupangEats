@@ -301,4 +301,6 @@
     <string name="end">입니다.</string>
     <string name="login">로그인</string>
     <string name="findPassword">비밀번호 찾기</string>
+    <string name="phoneInput">전화번호를 입력해주세요</string>
+    <string name="nameInput">이름을 입력해주세요</string>
 </resources>

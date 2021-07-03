@@ -1,11 +1,10 @@
 package com.example.coupangeats.src.detailSuper
 
 import com.example.coupangeats.src.detailSuper.model.*
+import com.example.coupangeats.src.favorites.model.FavoritesSuperDeleteRequest
+import com.softsquared.template.kotlin.config.BaseResponse
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 interface DetailSuperRetrofitInterface {
@@ -17,4 +16,8 @@ interface DetailSuperRetrofitInterface {
 
     @POST("/bookmarks")
     fun postBookMarkAdd(@Body params: BookMarkAddRequest) : Call<BookMarkAddResponse>
+
+    @PATCH("/users/{userIdx}/bookmarks/status")
+    fun postFavoritesSuperDelete(@Path("userIdx") userIdx: Int, @Body params: FavoritesSuperDeleteRequest) : Call<BaseResponse>
+
 }

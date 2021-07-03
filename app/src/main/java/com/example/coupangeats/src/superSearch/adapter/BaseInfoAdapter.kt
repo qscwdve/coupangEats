@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
-import com.example.coupangeats.src.main.home.model.HomeInfo.RecommendStores
 import com.example.coupangeats.src.superSearch.model.BaseSuperInfo
 
 class BaseInfoAdapter(val baseInfoList: ArrayList<BaseSuperInfo>) :
@@ -48,7 +47,7 @@ class BaseInfoAdapter(val baseInfoList: ArrayList<BaseSuperInfo>) :
             name.text = item.storeName
             when (item.markIcon) {
                 "신규" -> markIcon.setImageResource(R.drawable.new_super)
-                "치타배달" -> markIcon.setImageResource(R.drawable.cheetah)
+                "치타배달" -> markIcon.setImageResource(R.drawable.ic_cheetah)
                 else -> markIcon.visibility = View.GONE
             }
             time.text = item.deliveryTime

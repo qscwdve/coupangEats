@@ -1,11 +1,14 @@
 package com.example.coupangeats.src.searchDetail
 
+import android.animation.ObjectAnimator
+import android.animation.StateListAnimator
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +35,7 @@ class SearchDetailActivity :
     private var whiteColor = "#FFFFFF"
     private var blackColor = "#000000"
     private var mRecommSelect = 1
+    private var mUse = false
     var filterSelected = Array(5) { i -> false }  // 필터를 선택했는지 안했는데
     private lateinit var inputMethodManager : InputMethodManager
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,15 +48,30 @@ class SearchDetailActivity :
         mLon = intent.getStringExtra("lon") ?: ""
         keyword = intent.getStringExtra("keyword") ?: ""
 
+        mSearchDetailRequest.lat = mLat
+        mSearchDetailRequest.lon = mLon
+
+        if(keyword == ""){
+            binding.searchDetailKeywordParent.visibility = View.VISIBLE
+        }
+
         binding.searchDetailSuperRecyclerview.adapter =
             SuperStoreAdapter(ArrayList<RecommendStores>(), this)
         binding.searchDetailSuperRecyclerview.layoutManager = LinearLayoutManager(this)
+
+        // 툴바 설정
+        setSupportActionBar(binding.toolbar)
+        val stateListAnimator = StateListAnimator()
+        stateListAnimator.addState(intArrayOf(), ObjectAnimator.ofFloat(binding.appBar, "elevation", 0F))
+        binding.appBar.stateListAnimator = stateListAnimator
+
 
         // 이미 키워드 값이 있으면 이걸로 함
         if (keyword != "" && mLat != "" && mLon != "") {
             mSearchDetailRequest.lat = mLat
             mSearchDetailRequest.lon = mLon
             mSearchDetailRequest.keyword = keyword
+            binding.searchDetailEditText.setText(keyword)
             startSearch()
         }
 
@@ -60,12 +79,13 @@ class SearchDetailActivity :
             if (hasFocus) {
                 binding.searchDetailKeywordParent.visibility = View.VISIBLE
                 mIsSearch = true
+                Log.d("keyword", "포커스 상태")
             }
         }
 
         // 뒤로가기 눌렀을 경우
         binding.toolbarBack.setOnClickListener {
-            if (mIsSearch) {
+            if (mIsSearch && mUse) {
                 changeSuperStatus()
             } else {
                 finish()
@@ -182,7 +202,7 @@ class SearchDetailActivity :
             for (i in 0..4) {
                 filterSelected[i] = false
             }
-            SearchDetailService(this)
+            SearchDetailService(this).tryGetSearchSuper(mSearchDetailRequest)
             refreshFilter()
         }
     }
@@ -325,8 +345,12 @@ class SearchDetailActivity :
     override fun onGetSearchSuperSuccess(response: SearchDetailResponse) {
         if (response.code == 1000) {
             if (response.result.searchStores != null) {
+                binding.searchDetailSuperRecyclerview.visibility = View.VISIBLE
                 changeSuperList(response.result.searchStores)
                 if(mIsSearch) changeSuperStatus()
+                mUse = true
+            } else {
+                binding.searchDetailSuperRecyclerview.visibility = View.GONE
             }
         }
     }

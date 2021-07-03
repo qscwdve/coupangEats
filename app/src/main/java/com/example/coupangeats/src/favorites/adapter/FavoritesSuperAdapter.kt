@@ -45,7 +45,7 @@ class FavoritesSuperAdapter(var superList: ArrayList<FavoritesSuperInfo>, val ac
                 Glide.with(img).load(item.imgUrl).into(img)
             }
             superName.text = item.storeName  // 슈퍼 이름
-            if(item.cheetah == null){
+            if(item.cheetah == null || item.cheetah == "N"){
                 cheetah.visibility = View.GONE
                 cheetahDown.visibility = View.GONE
             } else {
@@ -87,8 +87,7 @@ class FavoritesSuperAdapter(var superList: ArrayList<FavoritesSuperInfo>, val ac
                     deliveryPriceFree.visibility = View.GONE
                     deliveryPrice.visibility = View.VISIBLE
 
-                    val deliveryPriceText = "배달비 ${item.deliveryPrice}"
-                    deliveryPrice.text = deliveryPriceText
+                    deliveryPrice.text = item.deliveryPrice
                 }
             }
 
@@ -150,6 +149,10 @@ class FavoritesSuperAdapter(var superList: ArrayList<FavoritesSuperInfo>, val ac
 
     fun changeVersion(v: Int){
         version = v
+        if(version == 1){
+            selectCheckList = Array(superList.size){i -> false}  // 가게 삭제 선택 리스트
+            activity.changeSelectLook(false, 0)
+        }
         notifyDataSetChanged()
     }
 
