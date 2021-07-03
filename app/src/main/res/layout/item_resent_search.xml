@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:paddingHorizontal="20dp"
     android:paddingVertical="7dp"
-    android:background="@color/white"
+    android:background="@drawable/white_to_gray_ripple"
     android:layout_height="wrap_content">
 
     <ImageView
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/item_resent_search_clock"
         android:text="닭발"
-        android:textSize="13sp"
+        android:textSize="15sp"
         android:textColor="@color/baseColor"/>
 
 

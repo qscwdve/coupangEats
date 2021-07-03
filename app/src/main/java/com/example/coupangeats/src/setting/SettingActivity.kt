@@ -5,12 +5,14 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import com.example.coupangeats.databinding.ActivitySettingBinding
 import com.example.coupangeats.databinding.DialogLoginCheckBinding
 import com.example.coupangeats.databinding.DialogLogoutBinding
 import com.example.coupangeats.util.CartMenuDatabase
+import com.kakao.sdk.user.UserApiClient
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 import kotlin.math.log
@@ -33,6 +35,25 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
         binding.settingLogout.setOnClickListener {
             // 로그아웃
             showDialogLogoutCheck()
+        }
+        binding.settingSignOut.setOnClickListener {
+            // 카카오 탈퇴
+            if(isKaKao()){
+                // 연결 끊기
+                UserApiClient.instance.unlink { error ->
+                    if (error != null) {
+                        Log.e("Login", "연결 끊기 실패", error)
+                    } else {
+                        Log.i("Login", "연결 끊기 성공. SDK에서 토큰 삭제 됨")
+                        val edit = ApplicationClass.sSharedPreferences.edit()
+                        edit.putString(ApplicationClass.X_ACCESS_TOKEN, null)
+                        edit.putInt("userIdx", -1)
+                        edit.putBoolean("kakao", false)
+                        edit.apply()
+                    }
+                }
+            }
+
         }
     }
 
@@ -68,9 +89,31 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
         }
     }
     fun loginFailure(){
-        val edit = ApplicationClass.sSharedPreferences.edit()
-        edit.putString(ApplicationClass.X_ACCESS_TOKEN, null)
-        edit.putInt("userIdx", -1)
-        edit.apply()
+        if(isKaKao()){
+            // 로그아웃
+            UserApiClient.instance.logout { error ->
+                if (error != null) {
+                    Log.d("Login", "로그아웃 실패. SDK에서 토큰 삭제됨", error)
+                    showCustomToast("카카오 로그아웃에 실패였습니다. sdk에서 토큰은 삭제됨")
+                }
+                else {
+                    Log.d("Login", "로그아웃 성공. SDK에서 토큰 삭제됨")
+                    val edit = ApplicationClass.sSharedPreferences.edit()
+                    edit.putString(ApplicationClass.X_ACCESS_TOKEN, null)
+                    edit.putInt("userIdx", -1)
+                    edit.putBoolean("kakao", false)
+                    edit.apply()
+                }
+            }
+        } else {
+            val edit = ApplicationClass.sSharedPreferences.edit()
+            edit.putString(ApplicationClass.X_ACCESS_TOKEN, null)
+            edit.putInt("userIdx", -1)
+            edit.apply()
+        }
+    }
+
+    fun isKaKao() : Boolean{
+        return ApplicationClass.sSharedPreferences.getBoolean("kakao", false)
     }
 }

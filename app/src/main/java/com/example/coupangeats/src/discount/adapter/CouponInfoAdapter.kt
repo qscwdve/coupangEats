@@ -45,7 +45,7 @@ class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectU
             } else {
                 // myeats
                 check.visibility = View.GONE
-                if(item.isAvailable == "expiry" || item.isAvailable == "used"){
+                if(item.isAvailable == "N"){
                     parent.setBackgroundResource(R.drawable.round_gray_fill_box_transport)
                     name.setTextColor(Color.parseColor("#5F000000"))
                     price.setTextColor(Color.parseColor("#5F00AFFE"))

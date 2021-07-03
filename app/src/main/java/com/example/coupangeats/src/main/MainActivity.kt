@@ -11,6 +11,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.bumptech.glide.annotation.GlideModule
 import com.bumptech.glide.module.AppGlideModule
 import com.example.coupangeats.R
@@ -18,6 +19,8 @@ import com.example.coupangeats.databinding.ActivityMainBinding
 import com.example.coupangeats.databinding.DialogGpsActiveCheckBinding
 import com.example.coupangeats.src.deliveryAddressSetting.DeliveryAddressSettingActivity
 import com.example.coupangeats.src.favorites.FavoritesActivity
+import com.example.coupangeats.src.main.KaKao.KaKaoLoginRequest
+import com.example.coupangeats.src.main.KaKao.KaKaoLoginResponse
 import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.main.myeats.MyeatsFragment
 import com.example.coupangeats.src.main.order.OrderFragment
@@ -25,10 +28,12 @@ import com.example.coupangeats.src.main.search.SearchFragment
 import com.example.coupangeats.util.CartMenuDatabase
 import com.example.coupangeats.util.LoginBottomSheetDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.user.UserApiClient
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 
-class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
+class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate), MainActivityView {
     private var mfragmentIndex = 1
     private val GPS_ENABLE_REQUEST_CODE = 2001
     private val PERMISSIONS_REQUEST_CODE = 100
@@ -44,7 +49,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
-
+    // 로그인 공통 callback 구성
+    val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        if (error != null) {
+            Log.d("Login", "로그인 실패", error)
+        }
+        else if (token != null) {
+            Log.d("Login", "로그인 성공 ${token.accessToken}")
+            MainService(this).tryPostKaKaoLogin(KaKaoLoginRequest(token.accessToken))
+            // updateKakaoLogin()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -319,4 +334,49 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onDestroy()
     }
 
+    // 카카오 로그인
+    private fun updateKakaoLogin() {
+        UserApiClient.instance.me { user, error ->
+            if(user == null){
+                // 로그인 실패
+            } else {
+                val account = user.kakaoAccount
+                account!!.email
+
+            }
+        }
+    }
+
+    fun startKaKaoLogin(){
+        // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
+        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+            UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
+        } else {
+            UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
+        }
+    }
+
+    override fun onPostKaKaoLoginSuccess(response: KaKaoLoginResponse) {
+        if(response.code == 1000){
+            setLoginUserIdxAndJwt(response.result.userIdx, response.result.jwt)
+            val home = supportFragmentManager.findFragmentByTag("homeFragment") as HomeFragment
+            home.startUserAddressCheckAndGetMainDate()
+
+        } else {
+            showCustomToast("카카오 로그인에 실패하였습니다.")
+        }
+    }
+
+    override fun onPostKaKaoLoginFailure(message: String) {
+        showCustomToast("카카오 로그인에 실패하였습니다.")
+    }
+
+    fun setLoginUserIdxAndJwt(userIdx: Int, jwt: String){
+        val shared = ApplicationClass.sSharedPreferences
+        val edit = shared.edit()
+
+        edit.putInt("userIdx", userIdx).apply()
+        edit.putString(ApplicationClass.X_ACCESS_TOKEN, jwt)
+        edit.putBoolean("kakao", true).apply()
+    }
 }

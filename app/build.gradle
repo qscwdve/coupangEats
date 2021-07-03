@@ -87,6 +87,9 @@ dependencies {
     // recycler-animator
     implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
 
+    // 카카오
+    implementation "com.kakao.sdk:v2-user:2.5.2" // 카카오 로그인
+
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'com.github.ksoichiro:android-observablescrollview:1.5.2'
     testImplementation 'junit:junit:4.+'

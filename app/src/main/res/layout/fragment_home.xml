@@ -64,7 +64,7 @@
                 android:layout_alignParentEnd="true"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/image_no"
-                android:padding="12dp"
+                android:padding="13dp"
                 android:src="@drawable/ic_nav_click_search" />
         </RelativeLayout>
 

@@ -33,6 +33,7 @@
                 android:contentDescription="@string/image_no" />
 
             <LinearLayout
+                android:paddingVertical="5dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -77,7 +78,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:padding="12sp"
+            android:padding="10sp"
             android:src="@drawable/ic_nav_click_search"/>
     </LinearLayout>
 
@@ -91,46 +92,87 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <LinearLayout
-            android:background="@color/white"
+        <ScrollView
+            android:visibility="gone"
             android:id="@+id/search_keyword_parent"
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_marginVertical="15dp"
-                android:layout_marginHorizontal="20dp"
+                android:background="@color/white"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
-                    android:text="@string/resentSearch"/>
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="17sp"
+                        android:text="@string/popularSearch"/>
 
 
-                <TextView
-                    android:id="@+id/search_total_delete"
-                    android:layout_width="wrap_content"
-                    android:gravity="end|center_vertical"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:gravity="end|center_vertical"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/baseColor"
+                        android:textSize="13sp"
+                        android:text="20:20 업데이트"/>
+
+                </LinearLayout>
+
+                <include layout="@layout/item_popular_search"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp"
+                    android:background="@color/line"/>
+
+                <LinearLayout
+                    android:layout_marginVertical="15dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/baseColor"
-                    android:textSize="13sp"
-                    android:text="@string/totaldelete"/>
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:text="@string/resentSearch"/>
+
+
+                    <TextView
+                        android:id="@+id/search_total_delete"
+                        android:layout_width="wrap_content"
+                        android:gravity="end|center_vertical"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/baseColor"
+                        android:textSize="13sp"
+                        android:text="@string/totaldelete"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/search_resent_search_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/search_resent_search_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+        </ScrollView>
 
     </RelativeLayout>
 </LinearLayout>

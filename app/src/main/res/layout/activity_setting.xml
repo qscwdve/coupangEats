@@ -149,4 +149,11 @@
         android:layout_marginStart="20dp"
         android:textColor="@color/baseColor"
         android:text="@string/appVersion"/>
+
+    <TextView
+        android:id="@+id/setting_sign_out"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginTop="6dp"/>
+
 </LinearLayout>

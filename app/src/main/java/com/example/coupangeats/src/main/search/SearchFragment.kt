@@ -37,14 +37,14 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
         binding.searchResentSearchRecyclerview.adapter = ResentSearchNaviAdapter(mDBHelper.getResentDate(mDB), this)
         binding.searchResentSearchRecyclerview.layoutManager = LinearLayoutManager(requireContext())
 
+        mainActivity.supportFragmentManager.beginTransaction()
+            .replace(R.id.search_fragment, CategorySearchFragment())
+            .commitAllowingStateLoss()
+
         if(version == 1){
-            mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.search_fragment, CategorySearchFragment())
-                    .commitAllowingStateLoss()
+            binding.searchKeywordParent.visibility = View.GONE
         } else {
-            mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.search_fragment, AdvencedSearchFragment())
-                    .commitAllowingStateLoss()
+            binding.searchKeywordParent.visibility = View.VISIBLE
             binding.searchBackImg.visibility = View.VISIBLE
             mainActivity.setBottomNavigationBarGone()
             binding.searchSearchImg.setImageResource(R.drawable.ic_nav_search)
@@ -55,6 +55,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
             if(hasFocus){
                 binding.searchKeywordParent.visibility = View.VISIBLE
                 binding.searchBackImg.visibility = View.VISIBLE
+                binding.searchFragment.visibility = View.GONE
                 mainActivity.setBottomNavigationBarGone()
                 binding.searchSearchImg.setImageResource(R.drawable.ic_nav_search)
             }
@@ -72,6 +73,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
         binding.searchBackImg.setOnClickListener {
             if(version == 1){
                 binding.searchKeywordParent.visibility = View.GONE
+                binding.searchFragment.visibility = View.VISIBLE
                 binding.searchBackImg.visibility = View.GONE
                 mainActivity.setBottomNavigationBarVisible()
                 binding.searchEditText.clearFocus()

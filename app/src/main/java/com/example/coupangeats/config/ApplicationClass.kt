@@ -3,6 +3,7 @@ package com.softsquared.template.kotlin.config
 import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
+import com.kakao.sdk.common.KakaoSdk
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -33,6 +34,8 @@ class ApplicationClass : Application() {
         // 도로명 주소 API Key 값
         val SEARCH_API_KEY = "devU01TX0FVVEgyMDIxMDYyNTE1MzM1MzExMTMyNTk="
 
+        val KAKAO_NATIVE_KEY = "acf919d14f1072fd5b7524916b93db20"
+
         // Retrofit 인스턴스, 앱 실행시 한번만 생성하여 사용합니다.
         lateinit var sRetrofit: Retrofit
         lateinit var searchRetrofit: Retrofit
@@ -46,6 +49,8 @@ class ApplicationClass : Application() {
         // 레트로핏 인스턴스 생성
         initRetrofitInstance()
         initSearchRetrofitInstance()
+
+        KakaoSdk.init(this, ApplicationClass.KAKAO_NATIVE_KEY)
     }
 
     // 레트로핏 인스턴스를 생성하고, 레트로핏에 각종 설정값들을 지정해줍니다.

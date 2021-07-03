@@ -91,6 +91,7 @@ class SearchDetailActivity :
             mSearchDetailRequest.lon = mLon
             mSearchDetailRequest.keyword = keyword
             binding.searchDetailEditText.setText(keyword)
+            binding.searchEditDelete.visibility = View.VISIBLE
             startSearch()
         }
 
@@ -104,6 +105,7 @@ class SearchDetailActivity :
         binding.searchDetailEditText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 binding.searchDetailKeywordParent.visibility = View.VISIBLE
+                binding.searchDetailSuperParent.visibility = View.GONE
                 mIsSearch = true
                 Log.d("keyword", "포커스 상태")
             }
@@ -127,6 +129,7 @@ class SearchDetailActivity :
                 mSearchDetailRequest.keyword = keyword
                 // 최근 검색어에 넣기
                 mDBHelper.addKeyword(mDB, keyword)
+                Log.d("resentSearch", "keyword 넣음")
                 (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(mDBHelper.getResentDate(mDB))
                 startSearch()
             }
@@ -252,8 +255,9 @@ class SearchDetailActivity :
 
     fun changeSuperStatus() {
         binding.searchDetailKeywordParent.visibility = View.GONE
+        binding.searchDetailSuperParent.visibility = View.VISIBLE
         binding.searchDetailEditText.setText(keyword)
-        mIsSearch = false
+        mIsSearch = true
         inputMethodManager.hideSoftInputFromWindow(binding.searchDetailEditText.windowToken, 0);
     }
 
@@ -388,11 +392,15 @@ class SearchDetailActivity :
     override fun onGetSearchSuperSuccess(response: SearchDetailResponse) {
         if (response.code == 1000) {
             if (response.result.searchStores != null) {
+                binding.searchDetailKeywordParent.visibility = View.GONE
+                binding.searchDetailSuperParent.visibility = View.VISIBLE
                 binding.searchDetailSuperRecyclerview.visibility = View.VISIBLE
                 changeSuperList(response.result.searchStores)
                 if(mIsSearch) changeSuperStatus()
                 mUse = true
             } else {
+                binding.searchDetailKeywordParent.visibility = View.GONE
+                binding.searchDetailSuperParent.visibility = View.VISIBLE
                 binding.searchDetailSuperRecyclerview.visibility = View.GONE
             }
         }
