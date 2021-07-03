@@ -267,7 +267,7 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         val homeOrCompany = if(mCategory == 1) "집" else "회사"
         val categoryChangeBinding = DialogCategoryChangeBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(requireContext())
-        categoryChangeBinding.dialogCategoryText.text =
+        categoryChangeBinding.dialogCategoryChangeText.text =
             if(mCategory == 1) "기존 등록된 '집'주소를 대체하시겠습니까?"
             else "기존 등록된 '회사'주소를 대체하시겠습니까?"
 
@@ -287,10 +287,10 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
 
         alertDialog.show()
 
-        categoryChangeBinding.dialogCategoryNo.setOnClickListener {
+        categoryChangeBinding.dialogCategoryChangeNo.setOnClickListener {
             alertDialog.dismiss()
         }
-        categoryChangeBinding.dialogCategoryReplace.setOnClickListener {
+        categoryChangeBinding.dialogCategoryChangeReplace.setOnClickListener {
             alertDialog.dismiss()
             // 서버통신 가능 하지만 집으로 카테고리를 추가한 다음 , checked도 변환한 다음 HomeFragment로 돌아갈 수 있음...
             val category = if(mCategory == 1) "HOME" else "COMPANY"

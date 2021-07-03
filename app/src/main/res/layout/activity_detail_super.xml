@@ -216,9 +216,10 @@
                            android:textStyle="bold" />
 
                        <ImageView
+                           android:adjustViewBounds="true"
                            android:id="@+id/detail_super_cheetah"
-                           android:layout_width="wrap_content"
-                           android:layout_height="match_parent"
+                           android:layout_width="83dp"
+                           android:layout_height="17dp"
                            android:layout_gravity="center"
                            android:src="@drawable/ic_cheetah" />
 
@@ -235,6 +236,7 @@
                        android:textColor="@color/loginBlue"
                        android:textSize="13sp"
                        android:textStyle="bold" />
+
                </RelativeLayout>
 
 
@@ -267,8 +269,7 @@
                             android:layout_height="wrap_content"
                             android:text="무료배달"
                             android:textColor="@color/black"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:layout_width="wrap_content"

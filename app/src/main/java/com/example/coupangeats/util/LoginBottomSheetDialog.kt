@@ -32,6 +32,7 @@ class LoginBottomSheetDialog(val mainActivity: MainActivity) : BottomSheetDialog
         binding.dialogLoginSocial.setOnClickListener {
             // 쿠팡 앱으로 로그인
             mainActivity.startKaKaoLogin()
+            dismiss()
         }
     }
 

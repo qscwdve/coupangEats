@@ -44,7 +44,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
-    val DRIVERYADDRESSSETTING = 1234
+    val DRIVERYADDRESSSETTING = 1111
     lateinit var loginBottomSheetDialog : LoginBottomSheetDialog
 
     private lateinit var mDBHelper: CartMenuDatabase

@@ -4,18 +4,18 @@ import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
-import android.graphics.Path
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityMenuSelectBinding
+import com.example.coupangeats.databinding.DialogCartChangeBinding
 import com.example.coupangeats.src.cart.model.CartMenuInfo
 import com.example.coupangeats.src.detailSuper.adapter.DetailSuperImgViewPagerAdapter
 import com.example.coupangeats.src.menuSelect.adapter.MenuDetailParentAdapter
-import com.example.coupangeats.src.menuSelect.adapter.necessaryCheckData
 import com.example.coupangeats.src.menuSelect.model.MenuDetailResponse
 import com.example.coupangeats.src.menuSelect.model.MenuOption
 import com.example.coupangeats.src.menuSelect.model.Option
@@ -60,7 +60,7 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
         }
         binding.menuSelectNumMinus.setOnClickListener {
             val num = binding.menuSelectNum.text.toString().toInt() - 1
-            if(num >= 1){
+            if (num >= 1) {
                 binding.menuSelectNum.text = num.toString()
                 val menuPrice = priceIntToString(mMenuPrice * num) + "원"
                 binding.menuSelectMenuPrice.text = menuPrice
@@ -69,65 +69,131 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
         // 카트에 담기!!
         binding.menuSelectComplete.setOnClickListener {
             // 카트에 담는다.
-            // 메인 메뉴
-            if((binding.menuSelectRecyclerView.adapter as MenuDetailParentAdapter).checkNecessary()){
-                val mainMenu = binding.menuSelectMenuName.text.toString()
-                var sideMenu = ""
-                var totalPrice = mMenuPrice
-                val num = binding.menuSelectNum.text.toString()
-                // 사이드 메뉴
-                if(mSelectMenuCheck != null){
-                    for(index in mSelectMenuCheck!!.indices){
-                        if(mSelectMenuCheck!![index]){
-                            // 사이드 메뉴 있음
-                            sideMenu += mSelectedMenu!![index].cotent + ", "
-                            totalPrice += mSelectedMenu!![index].price
-                        }
-                        Log.d("MenuSelectSide", "있는지 없는지 : ${index}")
-                        Log.d("MenuSelectSide", "내용있 있는지 : ${mSelectedMenu!![index]}")
-                    }
+            var flag = true
+            // 카트의 가게와 같은지 확인
+            val cartMenuNum = mDBHelper.checkMenuNum(mDB)
+            if (cartMenuNum > 0) {
+                if (getStoreIdx() == mStoreIdx) {
+                    // 카트에 담을 수 있음
+                } else {
+                    // 가게가 다름
+                    flag = false
                 }
-                if(sideMenu.length >= 2 && sideMenu[sideMenu.length - 2] == ','){
-                    sideMenu = sideMenu.substring(0 until (sideMenu.length - 2))
-                }
-                Log.d("MenuSelectSide", "conent : ${sideMenu} ")
-                Log.d("MenuSelectSide", "price : ${totalPrice} ")
-                // 메뉴 저장
-                saveMenuFinish(CartMenuInfo(null, mainMenu, num.toInt(), totalPrice, sideMenu, menuIdx))
-                setResult(RESULT_OK)
-                finish()
             } else {
-                showCustomToast("필수선택을 체크해주세요")
+                // 카트에 담기 가능
             }
+            // 메인 메뉴
+            val adapter: MenuDetailParentAdapter? =
+                (binding.menuSelectRecyclerView.adapter as MenuDetailParentAdapter?)
+            if (adapter == null) {
+                val mainMenu = binding.menuSelectMenuName.text.toString()
+                val totalPrice = mMenuPrice
+                val num = binding.menuSelectNum.text.toString()
+                // 메뉴 저장
+                if (flag) {
+                    saveMenuFinish(
+                        CartMenuInfo(
+                            null,
+                            mainMenu,
+                            num.toInt(),
+                            totalPrice,
+                            null,
+                            menuIdx
+                        )
+                    )
+                } else {
+                    startChangeCartDialog(CartMenuInfo(
+                        null,
+                        mainMenu,
+                        num.toInt(),
+                        totalPrice,
+                        null,
+                        menuIdx
+                    ))
+                }
+            } else {
+                if ((binding.menuSelectRecyclerView.adapter as MenuDetailParentAdapter).checkNecessary()) {
+                    val mainMenu = binding.menuSelectMenuName.text.toString()
+                    var sideMenu = ""
+                    var totalPrice = mMenuPrice
+                    val num = binding.menuSelectNum.text.toString()
+                    // 사이드 메뉴
+                    if (mSelectMenuCheck != null) {
+                        for (index in mSelectMenuCheck!!.indices) {
+                            if (mSelectMenuCheck!![index]) {
+                                // 사이드 메뉴 있음
+                                sideMenu += mSelectedMenu!![index].cotent + ", "
+                                totalPrice += mSelectedMenu!![index].price
+                            }
+                            Log.d("MenuSelectSide", "있는지 없는지 : ${index}")
+                            Log.d("MenuSelectSide", "내용있 있는지 : ${mSelectedMenu!![index]}")
+                        }
+                    }
+                    if (sideMenu.length >= 2 && sideMenu[sideMenu.length - 2] == ',') {
+                        sideMenu = sideMenu.substring(0 until (sideMenu.length - 2))
+                    }
+                    Log.d("MenuSelectSide", "conent : ${sideMenu} ")
+                    Log.d("MenuSelectSide", "price : ${totalPrice} ")
+                    // 메뉴 저장
+                    if (flag) {
+                        saveMenuFinish(
+                            CartMenuInfo(
+                                null,
+                                mainMenu,
+                                num.toInt(),
+                                totalPrice,
+                                sideMenu,
+                                menuIdx
+                            )
+                        )
+                    } else {
+                        startChangeCartDialog(CartMenuInfo(
+                            null,
+                            mainMenu,
+                            num.toInt(),
+                            totalPrice,
+                            sideMenu,
+                            menuIdx
+                        ))
+                    }
+                } else {
+                    showCustomToast("필수선택을 체크해주세요")
+                }
+            }
+
         }
+
+        // 뒤로가기
+        binding.toolbarBack.setOnClickListener { finish() }
 
         // 툴바 제어
         setSupportActionBar(binding.menuSelectToolbar)
         val stateListAnimator = StateListAnimator()
-        stateListAnimator.addState(intArrayOf(), ObjectAnimator.ofFloat(binding.menuSelectAppBar, "elevation", 0F))
+        stateListAnimator.addState(
+            intArrayOf(),
+            ObjectAnimator.ofFloat(binding.menuSelectAppBar, "elevation", 0F)
+        )
         binding.menuSelectAppBar.stateListAnimator = stateListAnimator
-        binding.menuSelectAppBar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener{
+        binding.menuSelectAppBar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
             override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-                if(verticalOffset == 0){
-                    if(mCollapsingToolbarState != CollapsingToolbarLayoutState.EXPANDED){
+                if (verticalOffset == 0) {
+                    if (mCollapsingToolbarState != CollapsingToolbarLayoutState.EXPANDED) {
                         binding.menuSelectToolbar.setBackgroundColor(Color.parseColor("#00000000"))
                         binding.toolbarSuperName.text = ""
                         binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_white)
                         binding.toolbarShare.setImageResource(R.drawable.ic_share_white)
                         mCollapsingToolbarState = CollapsingToolbarLayoutState.EXPANDED
                     }
-                }
-                else if(Math.abs(verticalOffset) >= appBarLayout!!.totalScrollRange){
+                } else if (Math.abs(verticalOffset) >= appBarLayout!!.totalScrollRange) {
                     // 액션바 스크롤 맨 위로 올림
                     binding.menuSelectToolbar.setBackgroundColor(Color.parseColor("#FFFFFF"))
                     binding.toolbarSuperName.text = "면을 품은 활금찜닭 한마리"
                     binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_black)
                     binding.toolbarShare.setImageResource(R.drawable.ic_share_black)
                     mCollapsingToolbarState = CollapsingToolbarLayoutState.COLLAPSED
-                }
-                else if(Math.abs(verticalOffset) < appBarLayout.totalScrollRange){
+                } else if (Math.abs(verticalOffset) < appBarLayout.totalScrollRange) {
                     //Log.d("vertical", "아직 액션바 안에 있음")
-                    if(mCollapsingToolbarState != CollapsingToolbarLayoutState.INTERNEDIATE){
+                    if (mCollapsingToolbarState != CollapsingToolbarLayoutState.INTERNEDIATE) {
                         binding.toolbarSuperName.text = ""
                         binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_white)
                         binding.toolbarShare.setImageResource(R.drawable.ic_share_white)
@@ -141,13 +207,37 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
 
     }
 
+    // 장바구니 대처 다이어로그
+    fun startChangeCartDialog(menu: CartMenuInfo){
+        val cartChangeBinding = DialogCartChangeBinding.inflate(layoutInflater)
+        val builder = AlertDialog.Builder(this)
+        builder.setView(cartChangeBinding.root)
+        builder.setCancelable(false)
+
+        val alertDialog = builder.create()
+
+        alertDialog.show()
+
+        cartChangeBinding.dialogCartChangeNo.setOnClickListener {
+            alertDialog.dismiss()
+        }
+        cartChangeBinding.dialogCartChangeReplace.setOnClickListener {
+            alertDialog.dismiss()
+            mDBHelper.deleteTotal(mDB)
+            saveMenuFinish(menu)
+        }
+    }
+
+    fun getStoreIdx(): Int = ApplicationClass.sSharedPreferences.getInt("storeIdx", -1)
+
     // 메뉴 내용과 가격 저장
     fun saveMenuFinish(menu: CartMenuInfo){
 
         val edit = ApplicationClass.sSharedPreferences.edit()
         edit.putInt("storeIdx", mStoreIdx).apply()
         mDBHelper.menuInsert(mDB, menu)
-
+        setResult(RESULT_OK)
+        finish()
     }
 
     fun saveMenuInfo(position: Int, selectMenu: SelectMenu){

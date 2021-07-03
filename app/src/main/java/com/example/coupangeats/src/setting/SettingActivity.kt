@@ -81,7 +81,6 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
             loginFailure()
             alertDialog.dismiss()
             mDBHelper.deleteTotal(mDB)
-            finish()
         }
         logoutBinding.dialogLogoutNo.setOnClickListener {
             // 로그아웃 취소
@@ -103,6 +102,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
                     edit.putInt("userIdx", -1)
                     edit.putBoolean("kakao", false)
                     edit.apply()
+                    finish()
                 }
             }
         } else {
@@ -110,6 +110,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(ActivitySettingBind
             edit.putString(ApplicationClass.X_ACCESS_TOKEN, null)
             edit.putInt("userIdx", -1)
             edit.apply()
+            finish()
         }
     }
 

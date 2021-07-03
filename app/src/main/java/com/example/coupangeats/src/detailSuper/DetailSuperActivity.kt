@@ -89,9 +89,9 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                 mCouponStatus = false
                 // 쿠폰 사용으로 바꿈
                 binding.detailSuperCoupon.setBackgroundResource(R.drawable.detail_super_coupon_select_box)
-                val couponText = "√ ${priceIntToString(mCouponPrice)}원 쿠폰 받기완료"
+                val couponText = "${priceIntToString(mCouponPrice)}원 쿠폰 받기완료"
                 binding.detailSuperCouponText.text = couponText
-                binding.detailSuperCouponImg.visibility = View.GONE
+                binding.detailSuperCouponImg.setImageResource(R.drawable.ic_check_gray)
             }
         }
 
@@ -349,11 +349,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == MENU_SELECT_ACTIVITY && resultCode == RESULT_OK){
-            val menuNum = ApplicationClass.sSharedPreferences.getInt("menuNum", 0)
-            if(menuNum > 0){
-                // 카트 보기 열어야함
-                cartChange()
-            }
+            cartChange()
         }
     }
 

@@ -12,9 +12,11 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:background="@drawable/circle_ripple_white_to_gray"
             android:layout_centerVertical="true"
             android:id="@+id/dialog_receipt_back"
             android:layout_marginStart="10dp"
+            android:padding="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_cancel"/>

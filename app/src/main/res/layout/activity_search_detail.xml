@@ -100,7 +100,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:padding="15sp"
+                        android:padding="13sp"
                         android:src="@drawable/ic_nav_click_search"/>
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>

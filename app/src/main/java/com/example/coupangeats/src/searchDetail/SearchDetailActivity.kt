@@ -38,6 +38,7 @@ class SearchDetailActivity :
     private var mSearchDetailRequest = SearchDetailRequest()
     var keyword = ""
     private var mIsSearch = false
+    private var mIsFinish = true
     var mLat = ""
     var mLon = ""
     private var whiteColor = "#FFFFFF"
@@ -107,13 +108,14 @@ class SearchDetailActivity :
                 binding.searchDetailKeywordParent.visibility = View.VISIBLE
                 binding.searchDetailSuperParent.visibility = View.GONE
                 mIsSearch = true
+                mIsFinish = false
                 Log.d("keyword", "포커스 상태")
             }
         }
 
         // 뒤로가기 눌렀을 경우
         binding.toolbarBack.setOnClickListener {
-            if (mIsSearch && mUse) {
+            if (!mIsFinish && mUse) {
                 changeSuperStatus()
             } else {
                 finish()
@@ -258,6 +260,7 @@ class SearchDetailActivity :
         binding.searchDetailSuperParent.visibility = View.VISIBLE
         binding.searchDetailEditText.setText(keyword)
         mIsSearch = true
+        mIsFinish = true
         inputMethodManager.hideSoftInputFromWindow(binding.searchDetailEditText.windowToken, 0);
     }
 
