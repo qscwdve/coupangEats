@@ -20,7 +20,7 @@ import com.softsquared.template.kotlin.config.BaseActivity
 class DiscountActivity : BaseActivity<ActivityDiscountBinding>(ActivityDiscountBinding::inflate), DiscountActivityView {
     var mStoreIdx : Int = -1
     var mCouponSelect : Int = -1
-    var mVersion: Int = -1
+    var mVersion: Int = -1  // -1 이면 해당 쿠폰 조회 아니면 myeats
     var mDiscountApplyCheck = false
 
     override fun onCreate(savedInstanceState: Bundle?) {

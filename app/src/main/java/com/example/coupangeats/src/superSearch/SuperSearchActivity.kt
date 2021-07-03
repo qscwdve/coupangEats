@@ -53,6 +53,11 @@ class SuperSearchActivity :
         startFilterSuper()
 
         binding.superSearchBack.setOnClickListener {
+            finish()
+        }
+
+        // 디테일한 검색으로 가기
+        binding.superSearchDetailSearch.setOnClickListener {
             val intent = Intent(this, SearchDetailActivity::class.java).apply {
                 this.putExtra("lat", lat)
                 this.putExtra("lon", lon)

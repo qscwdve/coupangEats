@@ -643,8 +643,8 @@
     <TextView
         android:visibility="gone"
         android:layout_above="@+id/home_cart_bag"
-        android:text="배달주소가 변경되었습니다."
-        android:id="@+id/home_notice_text"
+        android:text="@string/addressChange"
+        android:id="@+id/home_notice_text_cart_above"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
@@ -713,4 +713,16 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
+    <TextView
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:text="@string/addressChange"
+        android:id="@+id/home_notice_text_parent_above"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:paddingVertical="23dp"
+        android:background="#CC000000"/>
 </RelativeLayout>

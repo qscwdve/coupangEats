@@ -164,7 +164,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == DRIVERYADDRESSSETTING && resultCode == RESULT_OK) {
             val home = supportFragmentManager.findFragmentByTag("homeFragment") as HomeFragment
-            home.changeGpsInfo()
+            home.startUserAddressCheckAndGetMainDate()
         }
         else if(requestCode == FAVORITES_REQUEST_CODE && resultCode == RESULT_OK){
             var version : Int? = null

@@ -5,9 +5,8 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentCategorySearchBinding
-import com.example.coupangeats.src.main.search.SearchCategoryRecycclerAdapter
+import com.example.coupangeats.src.main.search.adapter.SearchCategoryRecycclerAdapter
 import com.example.coupangeats.src.main.search.category.model.SuperCategoryResponse
-import com.example.coupangeats.src.main.search.category.model.SuperCategoryResponseResult
 import com.softsquared.template.kotlin.config.BaseFragment
 
 class CategorySearchFragment : BaseFragment<FragmentCategorySearchBinding>(FragmentCategorySearchBinding::bind, R.layout.fragment_category_search),

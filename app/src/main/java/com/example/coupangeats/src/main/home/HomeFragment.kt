@@ -70,6 +70,9 @@ class HomeFragment() :
         mDBHelper = CartMenuDatabase(requireContext(), "Menu.db", null, 1)
         mDB = mDBHelper.writableDatabase
 
+        // 서버 데이터 검색 시작
+        HomeService(this).tryGetUserCheckAddress(getUserIdx())
+
         // no address recyclerView adapter setting
         binding.homeNoAddressRecyclerview.adapter = BaseAddressAdapter(this)
         binding.homeNoAddressRecyclerview.layoutManager = LinearLayoutManager(requireContext())
@@ -297,15 +300,19 @@ class HomeFragment() :
     }
 
     private fun toggle() {
+        val view =
+            if(binding.homeCartBag.visibility == View.GONE) binding.homeNoticeTextParentAbove
+            else binding.homeNoticeTextCartAbove
+
         val transition: Transition = Slide(Gravity.BOTTOM)
         transition.duration = 600
-        transition.addTarget(binding.homeNoticeText)
+        transition.addTarget(view)
         TransitionManager.beginDelayedTransition(binding.root, transition)
-        binding.homeNoticeText.visibility = View.VISIBLE
+        view.visibility = View.VISIBLE
 
         Handler(Looper.getMainLooper()).postDelayed({
             TransitionManager.beginDelayedTransition(binding.root, transition)
-            binding.homeNoticeText.visibility = View.GONE
+            view.visibility = View.GONE
         }, 1500)
     }
 
@@ -432,6 +439,9 @@ class HomeFragment() :
     override fun onResume() {
         super.onResume()
         cartChange()
+    }
+
+    fun startUserAddressCheckAndGetMainDate(){
         HomeService(this).tryGetUserCheckAddress(getUserIdx())
     }
 

@@ -1,4 +1,4 @@
-package com.example.coupangeats.src.main.search
+package com.example.coupangeats.src.main.search.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

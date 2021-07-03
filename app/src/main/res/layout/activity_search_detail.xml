@@ -366,22 +366,44 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
+            android:background="@color/white"
             android:id="@+id/search_detail_keyword_parent"
             android:orientation="vertical"
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:layout_gravity="center"
-                android:gravity="center"
+            <LinearLayout
+                android:layout_marginVertical="15dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textStyle="bold"
-                android:textSize="25sp"
-                android:text="최근 검색어 구현 필요"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:text="@string/resentSearch"/>
+
+
+                <TextView
+                    android:id="@+id/search_detail_total_delete"
+                    android:layout_width="wrap_content"
+                    android:gravity="end|center_vertical"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/baseColor"
+                    android:textSize="13sp"
+                    android:text="@string/totaldelete"/>
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_detail_resent_search_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
 
     </RelativeLayout>

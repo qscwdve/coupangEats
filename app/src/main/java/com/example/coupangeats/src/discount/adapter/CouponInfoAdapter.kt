@@ -26,24 +26,38 @@ class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectU
             minPrice.text = item.minOrderPrice
             expiration.text = item.expirationDate
 
-            if(item.isAvailable == "N" && adapter.version == -1){
-                parent.setBackgroundResource(R.drawable.round_gray_box_transport)
-                name.setTextColor(Color.parseColor("#5F000000"))
-                price.setTextColor(Color.parseColor("#5F00AFFE"))
-                minPrice.setTextColor(Color.parseColor("#5F949DA6"))
-                expiration.setTextColor(Color.parseColor("#5F949DA6"))
-            } else if(item.isAvailable == "expiry" || item.isAvailable == "used") {
-                parent.setBackgroundResource(R.drawable.round_gray_fill_box_transport)
-                name.setTextColor(Color.parseColor("#5F000000"))
-                price.setTextColor(Color.parseColor("#5F00AFFE"))
-                minPrice.setTextColor(Color.parseColor("#5F949DA6"))
-                expiration.setTextColor(Color.parseColor("#5F949DA6"))
+            // version = -1 : 해당쿠폰 조회 , 나머지 : myeats
+            if(adapter.version == -1){
+                // 해당 쿠폰 조회
+                if(item.isAvailable == "N"){
+                    parent.setBackgroundResource(R.drawable.round_gray_box_transport)
+                    name.setTextColor(Color.parseColor("#5F000000"))
+                    price.setTextColor(Color.parseColor("#5F00AFFE"))
+                    minPrice.setTextColor(Color.parseColor("#5F949DA6"))
+                    expiration.setTextColor(Color.parseColor("#5F949DA6"))
+                } else {
+                    parent.setBackgroundResource(R.drawable.round_gray_box)
+                    name.setTextColor(Color.parseColor("#000000"))
+                    price.setTextColor(Color.parseColor("#00AFFE"))
+                    minPrice.setTextColor(Color.parseColor("#949DA6"))
+                    expiration.setTextColor(Color.parseColor("#949DA6"))
+                }
             } else {
-                parent.setBackgroundResource(R.drawable.round_gray_box)
-                name.setTextColor(Color.parseColor("#000000"))
-                price.setTextColor(Color.parseColor("#00AFFE"))
-                minPrice.setTextColor(Color.parseColor("#949DA6"))
-                expiration.setTextColor(Color.parseColor("#949DA6"))
+                // myeats
+                check.visibility = View.GONE
+                if(item.isAvailable == "expiry" || item.isAvailable == "used"){
+                    parent.setBackgroundResource(R.drawable.round_gray_fill_box_transport)
+                    name.setTextColor(Color.parseColor("#5F000000"))
+                    price.setTextColor(Color.parseColor("#5F00AFFE"))
+                    minPrice.setTextColor(Color.parseColor("#5F949DA6"))
+                    expiration.setTextColor(Color.parseColor("#5F949DA6"))
+                } else {
+                    parent.setBackgroundResource(R.drawable.round_gray_box)
+                    name.setTextColor(Color.parseColor("#000000"))
+                    price.setTextColor(Color.parseColor("#00AFFE"))
+                    minPrice.setTextColor(Color.parseColor("#949DA6"))
+                    expiration.setTextColor(Color.parseColor("#949DA6"))
+                }
             }
 
             if(adapter.version == -1){

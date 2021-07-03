@@ -4,25 +4,33 @@ import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
 import android.content.Context
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivitySearchDetailBinding
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.main.home.model.HomeInfo.RecommendStores
+import com.example.coupangeats.src.searchDetail.adapter.ResentSearchAdapter
 import com.example.coupangeats.src.searchDetail.adapter.SuperStoreAdapter
 import com.example.coupangeats.src.searchDetail.dialog.FilterRecommendSearchDetailDialog
 import com.example.coupangeats.src.searchDetail.dialog.FilterSearchDetailDialog
+import com.example.coupangeats.src.searchDetail.model.ResentSearchDate
 import com.example.coupangeats.src.searchDetail.model.SearchDetailRequest
 import com.example.coupangeats.src.searchDetail.model.SearchDetailResponse
+import com.example.coupangeats.util.CartMenuDatabase
+import com.example.coupangeats.util.ResentSearchDatabase
 import com.softsquared.template.kotlin.config.BaseActivity
 
+@RequiresApi(Build.VERSION_CODES.O)
 class SearchDetailActivity :
     BaseActivity<ActivitySearchDetailBinding>(ActivitySearchDetailBinding::inflate),
     SearchDetailActivityView {
@@ -38,11 +46,22 @@ class SearchDetailActivity :
     private var mUse = false
     var filterSelected = Array(5) { i -> false }  // 필터를 선택했는지 안했는데
     private lateinit var inputMethodManager : InputMethodManager
+    private lateinit var mDBHelper: ResentSearchDatabase
+    private lateinit var mDB: SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         inputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        // 데이타베이스 셋팅
+        mDBHelper = ResentSearchDatabase(this, "Search.db", null, 1)
+        mDB = mDBHelper.writableDatabase
+
+        // 최근 검색어 셋팅
+        binding.searchDetailResentSearchRecyclerview.adapter = ResentSearchAdapter(mDBHelper.getResentDate(mDB), this)
+        binding.searchDetailResentSearchRecyclerview.layoutManager = LinearLayoutManager(this)
 
         mLat = intent.getStringExtra("lat") ?: ""
         mLon = intent.getStringExtra("lon") ?: ""
@@ -75,6 +94,13 @@ class SearchDetailActivity :
             startSearch()
         }
 
+        // 최근 검색어 전체 삭제
+        binding.searchDetailTotalDelete.setOnClickListener {
+            mDBHelper.deleteTotal(mDB)
+            val list = ArrayList<ResentSearchDate>()
+            (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(list)
+        }
+
         binding.searchDetailEditText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 binding.searchDetailKeywordParent.visibility = View.VISIBLE
@@ -96,9 +122,12 @@ class SearchDetailActivity :
         binding.searchSearchImg.setOnClickListener {
             if (mSearchAble) {
                 // 서버한테 검색 요청
-                showCustomToast("검색 가능 상태")
+                // showCustomToast("검색 가능 상태")
                 keyword = binding.searchDetailEditText.text.toString()
                 mSearchDetailRequest.keyword = keyword
+                // 최근 검색어에 넣기
+                mDBHelper.addKeyword(mDB, keyword)
+                (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(mDBHelper.getResentDate(mDB))
                 startSearch()
             }
         }
@@ -205,6 +234,20 @@ class SearchDetailActivity :
             SearchDetailService(this).tryGetSearchSuper(mSearchDetailRequest)
             refreshFilter()
         }
+    }
+
+    // 촤근 검색어로 검색
+    fun startResentSearch(key: String, id: Int){
+        keyword = key
+        mSearchDetailRequest.keyword = key
+        binding.searchDetailEditText.setText(key)
+        mDBHelper.modifyDate(mDB, id)
+        (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(mDBHelper.getResentDate(mDB))
+        startSearch()
+    }
+
+    fun deleteResentSearchItem(id: Int){
+        mDBHelper.deleteToId(mDB, id)
     }
 
     fun changeSuperStatus() {
