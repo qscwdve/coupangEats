@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -59,6 +61,17 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
                 mainActivity.setBottomNavigationBarGone()
                 binding.searchSearchImg.setImageResource(R.drawable.ic_nav_search)
             }
+        }
+
+        binding.searchEditText.setOnKeyListener { v, keyCode, event ->
+            if((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+                // 엔터키가 눌림
+                showCustomToast("엔터키 눌림")
+                if (mSearchAble) {
+                    startSearch(binding.searchEditText.text.toString())
+                }
+                true
+            } else false
         }
 
         // 검색 눌렀을 때

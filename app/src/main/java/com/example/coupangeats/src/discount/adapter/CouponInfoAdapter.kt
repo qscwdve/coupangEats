@@ -9,10 +9,14 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
+import com.example.coupangeats.src.discount.DiscountActivity
 import com.example.coupangeats.src.discount.model.SuperCoupon
 
-class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectUserCouponIdx: Int, val version: Int) : RecyclerView.Adapter<CouponInfoAdapter.CouponInfoViewHolder>() {
-    class CouponInfoViewHolder(itemView: View, val adapter: CouponInfoAdapter) : RecyclerView.ViewHolder(itemView){
+class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectUserCouponIdx: Int, val version: Int, val discountActivity: DiscountActivity) : RecyclerView.Adapter<CouponInfoAdapter.CouponInfoViewHolder>() {
+    var couponPriceString = ""
+
+    class CouponInfoViewHolder(itemView: View, val adapter: CouponInfoAdapter) :
+        RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById<TextView>(R.id.item_coupon_name)
         val price = itemView.findViewById<TextView>(R.id.item_coupon_price)
         val check = itemView.findViewById<ImageView>(R.id.item_coupon_select_check)
@@ -27,9 +31,9 @@ class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectU
             expiration.text = item.expirationDate
 
             // version = -1 : 해당쿠폰 조회 , 나머지 : myeats
-            if(adapter.version == -1){
+            if (adapter.version == -1) {
                 // 해당 쿠폰 조회
-                if(item.isAvailable == "N"){
+                if (item.isAvailable == "N") {
                     parent.setBackgroundResource(R.drawable.round_gray_box_transport)
                     name.setTextColor(Color.parseColor("#5F000000"))
                     price.setTextColor(Color.parseColor("#5F00AFFE"))
@@ -45,7 +49,7 @@ class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectU
             } else {
                 // myeats
                 check.visibility = View.GONE
-                if(item.isAvailable == "N"){
+                if (item.isAvailable == "N") {
                     parent.setBackgroundResource(R.drawable.round_gray_fill_box_transport)
                     name.setTextColor(Color.parseColor("#5F000000"))
                     price.setTextColor(Color.parseColor("#5F00AFFE"))
@@ -60,27 +64,34 @@ class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectU
                 }
             }
 
-            if(adapter.version == -1){
-                if(item.userCouponIdx == adapter.selectUserCouponIdx){
+            if (adapter.version == -1) {
+                if (item.userCouponIdx == adapter.selectUserCouponIdx) {
                     // 유저가 선택한 쿠폰일 경우
                     parent.setBackgroundResource(R.drawable.round_blue_coupon)
                     check.visibility = View.VISIBLE
+                    adapter.couponPriceString = item.discountPrice
+                    adapter.discountActivity.changeCouponIdx(item.userCouponIdx)
                 } else {
                     check.visibility = View.GONE
                 }
                 itemView.setOnClickListener {
                     // 유저가 쿠폰을 선택했을 경우
-                    if(item.isAvailable == "Y"){
-                        if(item.userCouponIdx == adapter.selectUserCouponIdx){
+                    if (item.isAvailable == "Y") {
+                        if (item.userCouponIdx == adapter.selectUserCouponIdx) {
                             // 이미 선택한 쿠폰일 경우
                             adapter.selectUserCouponIdx = -1
                             parent.setBackgroundResource(R.drawable.round_gray_box)
                             check.visibility = View.GONE
+                            adapter.discountActivity.changeApplyText("쿠폰적용 안함")
+                            adapter.discountActivity.changeCouponIdx(-1)
                         } else {
                             // 새로운 쿠폰을 선택했을 경우
                             adapter.selectUserCouponIdx = item.userCouponIdx
                             adapter.notifyDataSetChanged()
+                            adapter.discountActivity.changeApplyText("적용하기")
+                            adapter.discountActivity.changeCouponIdx(item.userCouponIdx)
                         }
+                        adapter.couponPriceString = item.discountPrice
                     }
                 }
             }
@@ -98,4 +109,12 @@ class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectU
     }
 
     override fun getItemCount(): Int = superCouponList.size
+
+    fun isCouponCheck(): Boolean {
+        return selectUserCouponIdx != -1
+    }
+
+    fun getCouponPrice(): String {
+        return couponPriceString
+    }
 }

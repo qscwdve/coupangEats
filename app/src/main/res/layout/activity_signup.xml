@@ -98,7 +98,6 @@
                         android:layout_height="match_parent"
                         android:background="@color/middleGray"/>
                     <EditText
-                        style="@style/myEditText"
                         android:paddingVertical="15dp"
                         android:id="@+id/sign_up_email_text"
                         android:inputType="textEmailAddress"
@@ -214,7 +213,6 @@
                         android:orientation="vertical">
 
                         <EditText
-                            style="@style/myEditText"
                             android:id="@+id/sign_up_password_text"
                             android:paddingVertical="15dp"
                             android:paddingStart="10dp"
@@ -415,7 +413,6 @@
                         android:layout_height="match_parent"
                         android:background="@color/middleGray"/>
                     <EditText
-                        style="@style/myEditText"
                         android:paddingVertical="15dp"
                         android:id="@+id/sign_up_name_text"
                         android:inputType="textPersonName"
@@ -493,7 +490,6 @@
                         android:layout_height="match_parent"
                         android:background="@color/middleGray"/>
                     <EditText
-                        style="@style/myEditText"
                         android:paddingVertical="15dp"
                         android:id="@+id/sign_up_phone_text"
                         android:inputType="phone"

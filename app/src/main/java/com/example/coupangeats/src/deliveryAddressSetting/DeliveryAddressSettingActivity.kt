@@ -221,8 +221,12 @@ class DeliveryAddressSettingActivity() :
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == MAP_ACTIVITY && resultCode == RESULT_OK){
-            // 배달지 주소 추가와 선택 완료 다했으니 종료
-            finish()
+            // 배달지 주소 추가
+            if(data != null){
+                val mainAddress = data.getStringExtra("mainAddress") ?: ""
+                val roadAddress = data.getStringExtra("roadAddress") ?: ""
+                changeDetailAddress(SearchAddress(mainAddress, roadAddress))
+            }
         }
     }
 

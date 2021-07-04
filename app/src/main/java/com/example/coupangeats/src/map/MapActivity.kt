@@ -1,6 +1,7 @@
 package com.example.coupangeats.src.map
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -34,6 +35,8 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
     private var flag = false
     private var version = 0   // 0 이면 선택 1이면 수정
     private lateinit var gpsControl : GpsControl
+    private var nowLat = ""
+    private var nowLon = ""
     private val PERMISSION_REQUEST_CODE = 100
 
     @SuppressLint("ClickableViewAccessibility", "Recycle")
@@ -97,10 +100,19 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
                 // 선택 -> 배달 추가 후 선택하 다음 종료
                 val address = binding.mapMainAddress.text.toString()
                 val roadAddress = binding.mapAddress.text.toString()
-                val request = DeliveryAddressAddRequest(address, roadAddress, null, "ETC", null, getUserIdx())
+                /*val request = DeliveryAddressAddRequest(address, roadAddress, null, "ETC", null, getUserIdx())
                 // 배달 -> 추가
                 showLoadingDialog(this)
                 MapService(this).tryPostDeliveryAddressAdd(request)
+                */
+                val intent = Intent().apply {
+                    this.putExtra("mainAddress",  address)
+                    this.putExtra("roadAddress", roadAddress)
+                    this.putExtra("lat", nowLat)
+                    this.putExtra("lon", nowLon)
+                }
+                setResult(RESULT_OK, intent)
+                finish()
             } else {
                 // 수정
                 val edit = ApplicationClass.sSharedPreferences.edit()
@@ -200,6 +212,8 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
     }
 
     fun resultPosition(lat: Double, lon: Double){
+        nowLat = lat.toString()
+        nowLon = lon.toString()
         binding.gps.setImageResource(R.drawable.ic_map_person)
         binding.mapAddress.visibility = View.VISIBLE
         binding.mapMainAddress.visibility = View.VISIBLE

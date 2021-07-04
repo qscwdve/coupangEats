@@ -4,6 +4,7 @@ import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
@@ -28,6 +29,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     var mRiderOrder = -1
     var mCheckSpoon = "N"
     var mSuperOrderString = ""
+    var mCouponCount = 0
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
     private val DISCOUNT_ACTIVITY_NUM = 1234
@@ -101,7 +103,8 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             val deliveryPrice = mDeliveryPrice
             val discountPrice = mCouponPrice
             val totalPrice = mTotalPrice
-            val storeOrder = binding.cartSuperOrder.text.toString()
+            var storeOrder = binding.cartSuperOrder.text.toString()
+            storeOrder = if(storeOrder == "예) 견과류는 빼주세요") "" else storeOrder
             val checkEchoProduct = mCheckSpoon
             val deliveryRequests = binding.cartRiderOrder.text.toString()
             val payType = "만나서 현금결제"
@@ -124,9 +127,54 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == DISCOUNT_ACTIVITY_NUM){
-
+            if(data != null){
+                if(data.getBooleanExtra("exist", false)){
+                    var price = data.getStringExtra("coupon") ?: ""
+                    Log.d("coupon", "price: $price")
+                    if(price == "" || price == "0"){
+                        changeCouponNo()
+                    } else {
+                        mCouponIdx = data.getIntExtra("couponIdx", -1)
+                        Log.d("coupon", "couponIdx : $mCouponIdx")
+                        binding.cartCouponStatusImg.visibility = View.VISIBLE
+                        binding.cartCouponStatus.visibility = View.VISIBLE
+                        binding.cartCouponStatus.text = "쿠폰 적용"
+                        binding.cartCouponStatus.setTextColor(Color.parseColor("D67D42"))
+                        binding.cartCouponStatusImg.setImageResource(R.drawable.ic_coupon_check)
+                        price = "-${price}"
+                        binding.cartCouponPrice.text = price
+                        mCouponPrice = price.toInt()
+                        changeCouponPrice()
+                    }
+                } else {
+                    changeCouponNo()
+                }
+            } else {
+                changeCouponNo()
+            }
         }
     }
+
+    fun changeCouponNo(){
+        if(mCouponCount == 0){
+            // 쿠폰 적용 가능한 것이 없음
+            binding.cartCouponStatusImg.visibility = View.GONE
+            binding.cartCouponStatus.visibility = View.GONE
+        } else {
+            // 쿠폰 적용 가능한 것이 있음
+            binding.cartCouponStatusImg.visibility = View.VISIBLE
+            binding.cartCouponStatus.visibility = View.VISIBLE
+            binding.cartCouponStatus.text = "쿠폰 적용가능"
+            binding.cartCouponStatusImg.setImageResource(R.drawable.ic_coupon)
+            binding.cartCouponStatus.setTextColor(Color.parseColor("#949DA6"))
+        }
+        binding.cartMenuDiscountParent.visibility = View.GONE
+        binding.cartCouponPrice.text = "쿠폰을 선택해주세요"
+        mCouponPrice = 0
+        mCouponIdx = -1
+        changeCouponPrice()
+    }
+
     fun getOrderMenu() : ArrayList<OrderMenu> {
         val array = ArrayList<OrderMenu>()
         val orderMenuList = mDBHelper.menuSelect(mDB)
@@ -156,6 +204,15 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         val menuPrice = "${priceIntToString(mMenuPrice)}원"
         binding.cartMenuPrice.text = menuPrice
 
+        // 총 결제 금액
+        mTotalPrice = mMenuPrice + mDeliveryPrice - mCouponPrice
+        val superTotalPrice = "${priceIntToString(mTotalPrice)}원"
+        binding.cartMenuTotalPrice.text = superTotalPrice
+        val total = "$superTotalPrice 결제하기"
+        binding.cartOk.text = total
+    }
+
+    fun changeCouponPrice(){
         // 총 결제 금액
         mTotalPrice = mMenuPrice + mDeliveryPrice - mCouponPrice
         val superTotalPrice = "${priceIntToString(mTotalPrice)}원"
@@ -215,13 +272,19 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     fun couponSetting(coupon: CartCoupon) {
         if(coupon.redeemStatus == null){
             binding.cartCouponStatus.visibility = View.GONE
+            binding.cartCouponStatusImg.visibility = View.GONE
+            binding.cartMenuDiscountParent.visibility = View.GONE
         } else {
             if(coupon.redeemStatus == "쿠폰 적용" || coupon.redeemStatus == "쿠폰 자동적용"){
                 binding.cartCouponStatus.visibility = View.VISIBLE
+                binding.cartCouponStatusImg.visibility = View.VISIBLE
                 binding.cartCouponStatus.text = if(coupon.redeemStatus == "쿠폰 적용") "쿠폰 적용" else "쿠폰 자동 적용"
-                binding.cartCouponStatus.setTextColor(Color.parseColor("#C4263A")) // 빨강
+                binding.cartCouponStatusImg.setImageResource(R.drawable.ic_coupon_check)
+                binding.cartCouponStatus.setTextColor(Color.parseColor("#D67D42")) // 빨강
                 // 쿠폰 가격 설정
-                val couponPrice = "-${coupon.price}"
+                val couponPrice = "-${priceIntToString(coupon.price)}원"
+                binding.cartMenuDiscountParent.visibility = View.VISIBLE
+                binding.cartMenuDiscountPrice.text = couponPrice
                 binding.cartCouponPrice.text = couponPrice
                 binding.cartCouponPrice.setTextColor(Color.parseColor("#000000")) // 검은색
                 binding.cartCouponChange.text = "변경"
@@ -231,13 +294,17 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             } else {
                 // 쿠폰적용 가능한 쿠폰이 있는 상태
                 binding.cartCouponStatus.visibility = View.VISIBLE
+                binding.cartCouponStatusImg.visibility = View.VISIBLE
+                binding.cartMenuDiscountParent.visibility = View.GONE
                 binding.cartCouponStatus.text = "쿠폰 적용 가능"
+                binding.cartCouponStatusImg.setImageResource(R.drawable.ic_coupon)
                 binding.cartCouponStatus.setTextColor(Color.parseColor("#949DA6")) // 회색
                 mCouponStatus = false
             }
         }
         // 쿠폰 개수
         val couponNum = "${coupon.couponCount}장  ▶"
+        mCouponCount = coupon.couponCount
         binding.cartCouponNum.text = couponNum
     }
 

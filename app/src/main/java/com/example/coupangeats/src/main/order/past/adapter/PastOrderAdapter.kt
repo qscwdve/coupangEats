@@ -2,6 +2,10 @@ package com.example.coupangeats.src.main.order.past.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,9 +23,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderPastFragment) : RecyclerView.Adapter<PastOrderAdapter.PastOrderViewHolder>() {
+class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderPastFragment, val keyword: String? = null) : RecyclerView.Adapter<PastOrderAdapter.PastOrderViewHolder>() {
+    data class StringIndex(var start: Int, var end: Int)
     @SuppressLint("SimpleDateFormat")
-    class PastOrderViewHolder(itemView: View, val fragment: OrderPastFragment) : RecyclerView.ViewHolder(itemView){
+    class PastOrderViewHolder(itemView: View, val fragment: OrderPastFragment, val adapter: PastOrderAdapter) : RecyclerView.ViewHolder(itemView){
         var mFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm")
         var today =  Calendar.getInstance()
         val storeName = itemView.findViewById<TextView>(R.id.item_past_order_store_name)
@@ -43,7 +48,8 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
         val superParent = itemView.findViewById<LinearLayout>(R.id.item_past_order_super_parent)
 
         fun bind(order: pastOrder) {
-            storeName.text = order.storeName
+            storeName.text = setTextBackgroundColor(order.storeName)
+            //setTextBackgroundColor(storeName.text as Spannable, order.storeName)
             date.text = order.orderDate
             status.text = order.status
             if(order.reviewRating != null){
@@ -60,7 +66,7 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
                 img.visibility = View.GONE
             }
 
-            menuRecycler.adapter = PastOrderMenuAdapter(order.orderMenus)
+            menuRecycler.adapter = PastOrderMenuAdapter(order.orderMenus, adapter.keyword)
             menuRecycler.layoutManager = LinearLayoutManager(itemView.context)
 
             totalPrice.text = order.totalPrice
@@ -101,7 +107,7 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
                 // 리뷰 작성한 것이 있음
                 review.visibility = View.VISIBLE
                 reviewLimit.visibility = View.GONE
-                review.setText("작성한 리뷰 보러 가기")
+                review.text = "작성한 리뷰 보러 가기"
                 review.setBackgroundResource(R.drawable.review_look_box)
                 review.setTextColor(Color.parseColor("#000000"))
 
@@ -115,6 +121,33 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
                 // 재주문 하러가기
 
             }
+        }
+
+        fun setTextBackgroundColor(item: String): SpannableStringBuilder{
+            val key = adapter.keyword
+            val ssb = SpannableStringBuilder(item)
+            val mapping = ArrayList<StringIndex>()
+            if(key != null){
+                var str = item
+                while(str.length >= key.length){
+                    if(item.contains(key)){
+                        // 문자열이 포함되는 것이 있음
+                        val index = item.indexOf(key)
+                        val finish = index + key.length
+                        mapping.add(StringIndex(index, finish))
+                        if(str.length <= finish + 1) break
+                        str = str.substring(finish + 1)
+                    } else {
+                        break
+                    }
+                }
+                if(mapping.isNotEmpty()){
+                    for(index in mapping.indices){
+                        ssb.setSpan(BackgroundColorSpan(Color.parseColor("#F5FDA0")), mapping[index].start, mapping[index].end, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
+                    }
+                }
+            }
+            return ssb
         }
 
         fun setStar(num: Int) {
@@ -133,7 +166,7 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PastOrderViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_past_order, parent, false)
-        return PastOrderViewHolder(view, fragment)
+        return PastOrderViewHolder(view, fragment, this)
     }
 
     override fun onBindViewHolder(holder: PastOrderViewHolder, position: Int) {

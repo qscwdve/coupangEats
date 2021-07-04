@@ -109,7 +109,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                         if (loginCheck()) {
                             mfragmentIndex = 4
                             supportFragmentManager.beginTransaction()
-                                .replace(R.id.main_frm, OrderFragment())
+                                .replace(R.id.main_frm, OrderFragment(this))
                                 .commitAllowingStateLoss()
                             return@OnNavigationItemSelectedListener true
                         } else {

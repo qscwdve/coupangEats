@@ -1,5 +1,6 @@
 package com.example.coupangeats.src.discount
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -29,6 +30,8 @@ class DiscountActivity : BaseActivity<ActivityDiscountBinding>(ActivityDiscountB
         mStoreIdx = intent.getIntExtra("storeIdx", -1)
         mCouponSelect = intent.getIntExtra("selectCouponIdx", -1)
         mVersion = intent.getIntExtra("version", -1)
+
+        if(mCouponSelect == -1 && mVersion == -1) binding.discountApply.text = "쿠폰적용 안함"
 
         if(mVersion == -1){
             DiscountService(this).tryGetCouponInfo(mStoreIdx, getUserIdx())
@@ -63,6 +66,31 @@ class DiscountActivity : BaseActivity<ActivityDiscountBinding>(ActivityDiscountB
                 binding.discountCouponNumError.visibility = View.VISIBLE
             }
         }
+        // 쿠폰 등록
+        binding.discountApply.setOnClickListener {
+            val intent = Intent()
+            if(mDiscountApplyCheck){
+                if((binding.discountInfoRecyclerView.adapter as CouponInfoAdapter).isCouponCheck()){
+                    val price = (binding.discountInfoRecyclerView.adapter as CouponInfoAdapter).getCouponPrice()
+                    intent.putExtra("exist", true)
+                    intent.putExtra("coupon", price)
+                    intent.putExtra("couponIdx", mCouponSelect)
+                } else{
+                    intent.getBooleanExtra("exist", false)
+                }
+            }
+            setResult(RESULT_OK, intent)
+            finish()
+        }
+    }
+
+    fun changeCouponIdx(id: Int){
+        if(id != -1) binding.discountApply.visibility = View.VISIBLE
+        mCouponSelect = id
+    }
+
+    fun changeApplyText(text: String){
+        binding.discountApply.text = text
     }
 
     fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
@@ -70,7 +98,7 @@ class DiscountActivity : BaseActivity<ActivityDiscountBinding>(ActivityDiscountB
     override fun onGetCouponInfoSuccess(response: CouponInfoResponse) {
         if(response.code == 1000){
             if(response.result != null){
-                binding.discountInfoRecyclerView.adapter = CouponInfoAdapter(response.result, mCouponSelect, mVersion)
+                binding.discountInfoRecyclerView.adapter = CouponInfoAdapter(response.result, mCouponSelect, mVersion, this)
                 binding.discountInfoRecyclerView.layoutManager = LinearLayoutManager(this)
             }
         } else {
@@ -103,7 +131,7 @@ class DiscountActivity : BaseActivity<ActivityDiscountBinding>(ActivityDiscountB
     override fun onGetMyEatsDiscountSuccess(response: CouponInfoResponse) {
         if(response.code == 1000){
             if(response.result != null){
-                binding.discountInfoRecyclerView.adapter = CouponInfoAdapter(response.result, mCouponSelect, mVersion)
+                binding.discountInfoRecyclerView.adapter = CouponInfoAdapter(response.result, mCouponSelect, mVersion, this)
                 binding.discountInfoRecyclerView.layoutManager = LinearLayoutManager(this)
             }
         } else dummyDate()
@@ -119,7 +147,7 @@ class DiscountActivity : BaseActivity<ActivityDiscountBinding>(ActivityDiscountB
         couponInfoList.add(SuperCoupon(-2, "쿠팡이츠 치킨마루", "5,000원 할인", "13,000이상 주문 시", "12/30 까지", "Y"))
         couponInfoList.add(SuperCoupon(-3, "쿠팡이츠 마피아떡볶이", "2,000원 할인", "13,000이상 주문 시", "12/30 까지", "N"))
         couponInfoList.add(SuperCoupon(-4, "쿠팡이츠 마피아떡볶이포장", "3,000원 할인", "13,000이상 주문 시", "12/30 까지", "N"))
-        binding.discountInfoRecyclerView.adapter = CouponInfoAdapter(couponInfoList, -1, mVersion)
+        binding.discountInfoRecyclerView.adapter = CouponInfoAdapter(couponInfoList, -1, mVersion, this)
         binding.discountInfoRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 }

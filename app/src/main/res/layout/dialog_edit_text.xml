@@ -46,7 +46,7 @@
             android:layout_gravity="center"
             android:gravity="end"
             android:textStyle="bold"
-            android:textColor="@color/loginBlue"
+            android:textColor="@color/blue"
             android:textSize="15sp" />
     </LinearLayout>
 

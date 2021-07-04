@@ -16,12 +16,12 @@
 
         <!-- 매장 정보 -->
         <LinearLayout
+            android:id="@+id/item_prepare_order_super_parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/item_prepare_order_super_parent"
                 android:orientation="vertical"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -65,7 +65,7 @@
                 android:id="@+id/item_prepare_img"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:src="@drawable/category_buger"/>
         </LinearLayout>
 

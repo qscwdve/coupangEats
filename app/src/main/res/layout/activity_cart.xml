@@ -216,6 +216,13 @@
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
+                <ImageView
+                    android:id="@+id/cart_coupon_status_img"
+                    android:layout_marginEnd="5dp"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_coupon"/>
                 <TextView
                     android:id="@+id/cart_coupon_status"
                     android:layout_width="wrap_content"
@@ -251,12 +258,25 @@
                         android:textSize="13sp" />
 
                     <TextView
+                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:id="@+id/cart_coupon_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0장  ▶"
+                        android:text="0장"
                         android:textColor="@color/loginBlue"
-                        android:textSize="13sp" />
+                        android:textSize="10sp" />
+                    <TextView
+                        android:layout_marginStart="3dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="▶"
+                        android:textColor="@color/loginBlue"
+                        android:textSize="10sp"
+                        tools:ignore="SmallSp" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -275,6 +295,7 @@
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="12dp"
                         android:text="쿠폰을 선택해주세요"
+                        android:textStyle="bold"
                         android:textColor="@color/baseColor"
                         android:textSize="13sp" />
 
@@ -341,6 +362,34 @@
                     android:layout_alignParentEnd="true"
                     android:text="50,500원"
                     android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <!-- 할인 쿠폰 -->
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/cart_menu_discount_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginBottom="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="할인쿠폰"
+                    android:textColor="@color/cartCouponRed"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/cart_menu_discount_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="50,500원"
+                    android:textColor="@color/cartCouponRed"
                     android:textSize="15sp" />
 
             </RelativeLayout>

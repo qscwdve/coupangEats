@@ -41,6 +41,7 @@ class ResentSearchDatabase(
     }
 
     fun addKeyword(db: SQLiteDatabase, keyword: String){
+
         val cv = ContentValues()
         cv.put(mKeyword, keyword)
         cv.put(mDate, getTime())
@@ -49,6 +50,7 @@ class ResentSearchDatabase(
         } else Log.d("database", "insert success")
         cv.clear()
     }
+
 
     fun deleteTotal(db: SQLiteDatabase){
         db.execSQL("DELETE FROM $mTableName")

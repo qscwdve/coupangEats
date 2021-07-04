@@ -164,7 +164,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginEnd="7dp"
-                            android:src="@drawable/ic_download" />
+                            android:src="@drawable/ic_check_gray" />
 
                         <TextView
                             android:id="@+id/detail_super_coupon_text"
@@ -407,7 +407,7 @@
         android:layout_gravity="bottom"
         android:id="@+id/detail_super_cart_parent"
         android:layout_alignParentBottom="true"
-        android:background="@color/loginBlue"
+        android:background="@drawable/blue_to_dark_blue_ripple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout

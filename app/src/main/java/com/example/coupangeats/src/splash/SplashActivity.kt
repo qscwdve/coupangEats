@@ -12,6 +12,7 @@ import android.util.Log
 import com.example.coupangeats.databinding.ActivitySplashBinding
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.splash.model.AutoLoginResponse
+import com.kakao.sdk.common.util.Utility
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 import java.security.MessageDigest
@@ -28,7 +29,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(ActivitySplashBinding
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }, 1500)
-
+        var keyHash = Utility.getKeyHash(this)
+        Log.d("keyHash", "key : $keyHash")
     }
 
     override fun onGetAutoLoginSuccess(response: AutoLoginResponse) {

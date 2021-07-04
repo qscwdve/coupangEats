@@ -141,12 +141,13 @@ class ReviewWriteMenuAdapter(val menuList: ArrayList<ReviewWriteMenu>, val activ
     override fun getItemCount(): Int  = menuList.size
 
     fun opinionEtcChange(position: Int, content: String) {
-        menuList[position].menuEtc = content
-        notifyItemChanged(position)
+        if(content != ""){
+            menuList[position].menuEtc = content
+            notifyItemChanged(position)
+        }
     }
 
     // 데이터 가져가게 함
-
     fun getMenuReviewData() : ArrayList<menuReview> {
          val menuReviewList = ArrayList<menuReview>()
 

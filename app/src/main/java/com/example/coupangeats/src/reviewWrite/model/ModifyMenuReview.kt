@@ -7,6 +7,6 @@ data class ModifyMenuReview(
     @SerializedName("menuName") val menuName: String,
     @SerializedName("menuDetail") val menuDetail: String?,
     @SerializedName("menuLiked") val menuLiked: String?,
-    @SerializedName("badReason") val badReason: String?,
+    @SerializedName("menuBadReason") val badReason: String?,
     @SerializedName("menuComment") val menuComment: String?
 )

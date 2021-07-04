@@ -124,13 +124,13 @@
         android:id="@+id/discount_apply"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/loginBlue"
+        android:background="@drawable/blue_to_dark_blue_ripple"
         android:layout_alignParentBottom="true"
         android:text="적용하기"
         android:gravity="center"
         android:textColor="@color/white"
         android:textStyle="bold"
-        android:textSize="20sp"
-        android:paddingVertical="10dp"/>
+        android:textSize="15sp"
+        android:paddingVertical="15dp"/>
 
 </RelativeLayout>

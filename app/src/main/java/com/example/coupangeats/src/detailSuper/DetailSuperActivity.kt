@@ -90,6 +90,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                 // 쿠폰 사용으로 바꿈
                 binding.detailSuperCoupon.setBackgroundResource(R.drawable.detail_super_coupon_select_box)
                 val couponText = "${priceIntToString(mCouponPrice)}원 쿠폰 받기완료"
+                binding.detailSuperCouponText.setTextColor(Color.parseColor("#949DA6"))
                 binding.detailSuperCouponText.text = couponText
                 binding.detailSuperCouponImg.setImageResource(R.drawable.ic_check_gray)
             }
@@ -387,13 +388,17 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             if(result.coupon.hasCoupon == "Y"){
                 // 이미 쿠폰을 가져감
                 binding.detailSuperCoupon.setBackgroundResource(R.drawable.detail_super_coupon_select_box)
-                couponText = "√ ${priceIntToString(result.coupon.price)}원 쿠폰 받기완료"
-                binding.detailSuperCouponImg.visibility = View.GONE
+                couponText = "${priceIntToString(result.coupon.price)}원 쿠폰 받기완료"
+                binding.detailSuperCouponText.setTextColor(Color.parseColor("#949DA6"))
+                binding.detailSuperCouponImg.visibility = View.VISIBLE
+                binding.detailSuperCouponImg.setImageResource(R.drawable.ic_check_gray)
                 mCouponStatus = false
             } else {
                 // 쿠폰 살아있음
                 binding.detailSuperCoupon.setBackgroundResource(R.drawable.detail_super_coupon_box)
                 couponText = "${priceIntToString(result.coupon.price)}원 쿠폰 받기"
+                binding.detailSuperCouponText.setTextColor(Color.parseColor("#00AFFE"))
+                binding.detailSuperCouponImg.setImageResource(R.drawable.ic_download)
                 mCouponStatus = true
                 mCouponPrice = result.coupon.price
                 mCouponIdx = result.coupon.conponIdx

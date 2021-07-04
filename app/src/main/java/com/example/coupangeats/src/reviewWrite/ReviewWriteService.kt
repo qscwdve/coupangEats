@@ -1,10 +1,9 @@
 package com.example.coupangeats.src.reviewWrite
 
-import com.example.coupangeats.src.reviewWrite.model.ReviewWriteCreateRequest
-import com.example.coupangeats.src.reviewWrite.model.ReviewWriteCreateResponse
-import com.example.coupangeats.src.reviewWrite.model.ReviewWriteInfoResponse
-import com.example.coupangeats.src.reviewWrite.model.ReviewWriteModifyResponse
+import android.os.UserManager
+import com.example.coupangeats.src.reviewWrite.model.*
 import com.softsquared.template.kotlin.config.ApplicationClass
+import com.softsquared.template.kotlin.config.BaseResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -60,6 +59,24 @@ class ReviewWriteService(val view: ReviewWriteActivityView) {
 
                 override fun onFailure(call: Call<ReviewWriteModifyResponse>, t: Throwable) {
                     view.onGetReviewWriteModifyFailure(t.message ?: "통신 오류")
+                }
+
+            })
+    }
+
+    fun tryGetReviewWriteModifyApply(userIdx: Int, reviewIdx: Int, request: ReviewWriteModifyApplyRequest){
+        val reviewWriteRetrofitInterface = ApplicationClass.sRetrofit.create(ReviewWriteRetrofitInterface::class.java)
+        reviewWriteRetrofitInterface.patchReviewWriteModifyApply(userIdx, reviewIdx, request)
+            .enqueue(object : Callback<BaseResponse>{
+                override fun onResponse(
+                    call: Call<BaseResponse>,
+                    response: Response<BaseResponse>
+                ) {
+                    view.onGetReviewWriteModifyApplySuccess(response.body() as BaseResponse)
+                }
+
+                override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
+                    view.onGetReviewWriteModifyApplyFailure(t.message ?: "통신 오류")
                 }
 
             })

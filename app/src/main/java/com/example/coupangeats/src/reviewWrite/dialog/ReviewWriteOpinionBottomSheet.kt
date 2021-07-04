@@ -1,11 +1,13 @@
 package com.example.coupangeats.src.reviewWrite.dialog
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.DialogEditTextBinding
@@ -14,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class ReviewWriteOpinionBottomSheet(val version: Int, val opinion: String, val activity: ReviewWriteActivity) : BottomSheetDialogFragment() {
     private lateinit var binding : DialogEditTextBinding
+    private lateinit var inputMethodManager : InputMethodManager
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,6 +28,8 @@ class ReviewWriteOpinionBottomSheet(val version: Int, val opinion: String, val a
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.EditTextDialogStyle)
+        inputMethodManager =
+            activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,6 +65,7 @@ class ReviewWriteOpinionBottomSheet(val version: Int, val opinion: String, val a
             } else if(version == 2){
                 activity.changeDeliveryEtc(binding.dialogEditText.text.toString())
             }
+            inputMethodManager.hideSoftInputFromWindow(binding.dialogEditText.windowToken, 0);
             dismiss()
         }
     }

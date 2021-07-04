@@ -18,9 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:replace="android:label">
+        android:debuggable="false"
+        tools:replace="android:label"
+        tools:ignore="HardcodedDebugMode">
         <activity android:name=".src.findId.FindIdActivity"></activity>
-        <activity android:name=".src.searchDetail.SearchDetailActivity" />
+        <activity android:name=".src.searchDetail.SearchDetailActivity"
+            android:theme="@style/AppTheme"/>
         <activity android:name=".src.eventItem.EventItemActivity" />
         <activity android:name=".src.event.EventActivity" />
         <activity android:name=".src.myReview.MyReviewActivity" />

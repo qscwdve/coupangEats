@@ -7,6 +7,7 @@
     <!-- 할인쿠폰 글자 색상 -->
     <color name="couponRegister">#5E5E5E</color>
     <color name="couponNum">#8F9AA8</color>
+    <color name="cartCouponRed">#D67D42</color>
     <!-- 기본 -->
     <color name="transportBlack">#5F000000</color>
     <color name="transportLoginBlue">#5F00AFFE</color>
@@ -29,7 +30,7 @@
     <color name="couponGray">#DFE2E7</color>
     <!-- 다이얼로그 로그인 -->
     <color name="loginBlue">#00AFFE</color>
-    
+    <color name="loginBlueDark">#00608C</color>
     <!-- 회원가입 -->
     <color name="middleGray">#CCCCCC</color>
     <color name="middleGrayTransport">#5FCCCCCC</color>

@@ -30,9 +30,12 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/white"
                 android:elevation="0dp"
+                android:paddingEnd="10dp"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                tools:ignore="RtlSymmetry">
                 <LinearLayout
+                    android:paddingTop="7dp"
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
                     android:orientation="horizontal"
@@ -48,14 +51,15 @@
                         <ImageView
                             android:layout_marginEnd="20dp"
                             android:id="@+id/toolbar_back"
+                            android:padding="7dp"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:background="@drawable/circle_ripple_white_to_gray"
                             android:layout_marginStart="5dp"
                             android:src="@drawable/ic_left_arrow_black" />
 
                         <LinearLayout
-                            android:paddingVertical="5dp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -63,13 +67,15 @@
                             android:background="@drawable/search_editbox">
 
                             <EditText
-                                style="@style/myEditText"
-                                android:scrollbars = "vertical"
                                 android:maxLines="1"
                                 android:id="@+id/search_detail_edit_text"
                                 android:hint="@string/search_edit_hint"
                                 android:layout_width="0dp"
                                 android:layout_weight="7"
+                                android:textSelectHandle="@color/loginBlue"
+                                android:textSelectHandleRight="@color/loginBlue"
+                                android:textSelectHandleLeft="@color/loginBlue"
+                                android:textCursorDrawable="@drawable/cursor_setting"
                                 android:inputType="text"
                                 android:layout_height="match_parent"
                                 android:textSize="20sp"
@@ -96,11 +102,12 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:background="@drawable/circle_ripple_white_to_gray"
                         android:id="@+id/search_search_img"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:padding="13sp"
+                        android:padding="11sp"
                         android:src="@drawable/ic_nav_click_search"/>
                 </LinearLayout>
             </androidx.appcompat.widget.Toolbar>
@@ -375,40 +382,6 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_marginVertical="15dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="17sp"
-                        android:text="@string/popularSearch"/>
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:gravity="end|center_vertical"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/baseColor"
-                        android:textSize="13sp"
-                        android:text="20:20 업데이트"/>
-
-                </LinearLayout>
-
-                <include layout="@layout/item_popular_search"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="7dp"
-                    android:background="@color/line"/>
 
                 <LinearLayout
                     android:layout_marginVertical="15dp"

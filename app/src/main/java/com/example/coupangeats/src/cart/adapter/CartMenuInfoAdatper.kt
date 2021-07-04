@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
+import com.example.coupangeats.databinding.DialogCartChangeBinding
 import com.example.coupangeats.databinding.DialogLogoutBinding
 import com.example.coupangeats.databinding.DialogMenuNumBinding
 import com.example.coupangeats.src.cart.CartActivity
@@ -51,8 +52,7 @@ class CartMenuInfoAdatper(var menuList: ArrayList<CartMenuInfo>, val activity: C
 
             cancel.setOnClickListener {
                 // 메뉴 취소하기를 누르면 메뉴 선택이 취소된다.
-                cartMenuInfoAdatper.deleteMenu(item.id!!)
-
+                showDialogMenuDelete(item.id!!)
             }
 
             numParent.setOnClickListener {
@@ -71,6 +71,34 @@ class CartMenuInfoAdatper(var menuList: ArrayList<CartMenuInfo>, val activity: C
                 val first = target.substring(0..(size - 4))
                 "$first,$last"
             } else target
+        }
+
+        private fun showDialogMenuDelete(id: Int){
+            val cartChangeBinding = DialogCartChangeBinding.inflate(cartMenuInfoAdatper.activity.layoutInflater)
+            val builder = AlertDialog.Builder(cartMenuInfoAdatper.activity)
+            builder.setView(cartChangeBinding.root)
+            builder.setCancelable(true)
+
+            cartChangeBinding.dialogCartChangeTitle.text = "메뉴를 삭제하시겠습니까?"
+            cartChangeBinding.dialogCartChangeReplace.text = "예"
+            cartChangeBinding.dialogCartChangeNo.text = "아니요"
+            val alertDialog = builder.create()
+            val window = alertDialog.window
+            if(window != null){
+                val params = window.attributes
+                params.width = WindowManager.LayoutParams.MATCH_PARENT
+                params.height = WindowManager.LayoutParams.WRAP_CONTENT
+                alertDialog.window!!.attributes = params
+                alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            }
+            alertDialog.show()
+
+            cartChangeBinding.dialogCartChangeReplace.setOnClickListener {
+                // 삭제
+                alertDialog.dismiss()
+                cartMenuInfoAdatper.deleteMenu(id)
+            }
+            cartChangeBinding.dialogCartChangeNo.setOnClickListener { alertDialog.dismiss() }
         }
 
         private fun showDialogMenuNum(position: Int) {

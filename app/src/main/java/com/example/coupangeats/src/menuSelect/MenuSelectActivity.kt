@@ -4,15 +4,18 @@ import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityMenuSelectBinding
 import com.example.coupangeats.databinding.DialogCartChangeBinding
+import com.example.coupangeats.databinding.DialogCartReplaceBinding
 import com.example.coupangeats.src.cart.model.CartMenuInfo
 import com.example.coupangeats.src.detailSuper.adapter.DetailSuperImgViewPagerAdapter
 import com.example.coupangeats.src.menuSelect.adapter.MenuDetailParentAdapter
@@ -209,13 +212,20 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
 
     // 장바구니 대처 다이어로그
     fun startChangeCartDialog(menu: CartMenuInfo){
-        val cartChangeBinding = DialogCartChangeBinding.inflate(layoutInflater)
+        val cartChangeBinding = DialogCartReplaceBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(this)
         builder.setView(cartChangeBinding.root)
         builder.setCancelable(false)
 
         val alertDialog = builder.create()
-
+        val window = alertDialog.window
+        if(window != null){
+            val params = window.attributes
+            params.width = WindowManager.LayoutParams.MATCH_PARENT
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT
+            alertDialog.window!!.attributes = params
+            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
         alertDialog.show()
 
         cartChangeBinding.dialogCartChangeNo.setOnClickListener {

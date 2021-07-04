@@ -26,8 +26,8 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
         val dot = itemView.findViewById<TextView>(R.id.item_new_super_dot)
         val distance = itemView.findViewById<TextView>(R.id.item_new_super_distance)
         val delivery = itemView.findViewById<TextView>(R.id.item_new_super_delivery)
-        val newParent = itemView.findViewById<RelativeLayout>(R.id.item_new_super_parent)
-        val thelook = itemView.findViewById<LinearLayout>(R.id.item_new_super_end_parent)
+        val newParent = itemView.findViewById<LinearLayout>(R.id.item_new_super_parent)
+        val thelook = itemView.findViewById<RelativeLayout>(R.id.item_new_super_end_parent)
 
         @SuppressLint("ClickableViewAccessibility")
         fun bind(item: NewStores?, position: Int) {

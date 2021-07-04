@@ -9,7 +9,7 @@ data class ReviewWriteCreateRequest(
     @SerializedName("badReason") val badReason: String?,
     @SerializedName("contents") val contents: String,
     @SerializedName("imageUrls") val imageUrls: ArrayList<String>?,
-    @SerializedName("menuReview") val menuReview: ArrayList<menuReview>?,
+    @SerializedName("menuReviews") val menuReview: ArrayList<menuReview>?,
     @SerializedName("deliveryReview") val deliveryReview: DeliveryReview?,
     @SerializedName("userIdx") val userIdx: Int
 )

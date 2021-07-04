@@ -24,10 +24,6 @@ class MyReviewActivity : BaseActivity<ActivityMyReviewBinding>(ActivityMyReviewB
         mOrderIdx = intent.getIntExtra("orderIdx", -1)
         mReviewIdx = intent.getIntExtra("reviewIdx", -1)
 
-        // 내가 작성한 리뷰 불러오기
-        //MyReviewService(this).tryGetMyReviewInfo(getUserIdx(), mReviewIdx)
-        MyReviewService(this).tryGetMyReviewInfo(getUserIdx(), 328)
-
         // 뒤로가기
         binding.myReviewBack.setOnClickListener { finish() }
 
@@ -52,6 +48,12 @@ class MyReviewActivity : BaseActivity<ActivityMyReviewBinding>(ActivityMyReviewB
             }
             startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 내가 작성한 리뷰 불러오기
+        MyReviewService(this).tryGetMyReviewInfo(getUserIdx(), mReviewIdx)
     }
 
     fun getUserIdx(): Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)

@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
@@ -19,6 +20,7 @@ import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivitySearchDetailBinding
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.main.home.model.HomeInfo.RecommendStores
+import com.example.coupangeats.src.main.order.past.OrderPastService
 import com.example.coupangeats.src.searchDetail.adapter.ResentSearchAdapter
 import com.example.coupangeats.src.searchDetail.adapter.SuperStoreAdapter
 import com.example.coupangeats.src.searchDetail.dialog.FilterRecommendSearchDetailDialog
@@ -103,6 +105,30 @@ class SearchDetailActivity :
             (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(list)
         }
 
+        // 엔터키 누름
+        binding.searchDetailEditText.setOnKeyListener { v, keyCode, event ->
+            if((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+                // 엔터키가 눌림
+                //showCustomToast("엔터키 눌림")
+                if (mSearchAble) {
+                    // 서버한테 검색 요청
+                    // showCustomToast("검색 가능 상태")
+                    keyword = binding.searchDetailEditText.text.toString()
+                    mSearchDetailRequest.keyword = keyword
+                    // 최근 검색어에 넣기
+                    mDBHelper.addKeyword(mDB, keyword)
+                    Log.d("resentSearch", "keyword 넣음")
+                    inputMethodManager.hideSoftInputFromWindow(binding.searchDetailEditText.windowToken, 0)
+                    binding.searchEditDelete.visibility = View.GONE
+                    binding.searchDetailEditText.clearFocus()
+                    (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(mDBHelper.getResentDate(mDB))
+                    startSearch()
+                }
+                true
+            } else false
+
+        }
+
         binding.searchDetailEditText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 binding.searchDetailKeywordParent.visibility = View.VISIBLE
@@ -110,6 +136,9 @@ class SearchDetailActivity :
                 mIsSearch = true
                 mIsFinish = false
                 Log.d("keyword", "포커스 상태")
+                if(binding.searchDetailEditText.text.toString().isNotEmpty()){
+                    binding.searchEditDelete.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -132,6 +161,8 @@ class SearchDetailActivity :
                 // 최근 검색어에 넣기
                 mDBHelper.addKeyword(mDB, keyword)
                 Log.d("resentSearch", "keyword 넣음")
+                binding.searchEditDelete.visibility = View.GONE
+                binding.searchDetailEditText.clearFocus()
                 (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(mDBHelper.getResentDate(mDB))
                 startSearch()
             }
@@ -261,6 +292,8 @@ class SearchDetailActivity :
         binding.searchDetailEditText.setText(keyword)
         mIsSearch = true
         mIsFinish = true
+        binding.searchDetailEditText.clearFocus()
+        binding.searchEditDelete.visibility = View.GONE
         inputMethodManager.hideSoftInputFromWindow(binding.searchDetailEditText.windowToken, 0);
     }
 

@@ -17,6 +17,7 @@ import com.example.coupangeats.src.reviewWrite.model.*
 import com.example.coupangeats.src.reviewWrite.util.FirebaseControl
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
+import com.softsquared.template.kotlin.config.BaseResponse
 
 class ReviewWriteActivity :
     BaseActivity<ActivityReviewWriteBinding>(ActivityReviewWriteBinding::inflate),
@@ -50,6 +51,7 @@ class ReviewWriteActivity :
     private var mStoreIdx: Int = -1
     private var mOrderIdx: Int = -1
     private var mReviewIdx: Int = -1
+    private var mPhotoList : ArrayList<String>? = null
     private val GET_GALLERY_IMAGE = 200
     lateinit var mFireBaseControl: FirebaseControl
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -227,6 +229,7 @@ class ReviewWriteActivity :
             if (mReviewIdx == -1) startReviewCreate()
             else {
                 //리뷰 수정 API조회
+                startReviewModifyApply()
             }
         }
     }
@@ -284,6 +287,30 @@ class ReviewWriteActivity :
             Log.d("리뷰 작성", "reviewCreateReqeust: $reviewCreateRequest")
             // 리뷰 작성
             ReviewWriteService(this).tryPostReviewWriteCreate(reviewCreateRequest)
+        }
+    }
+
+    fun startReviewModifyApply(){
+        val reviewWriteModifyApplyRequest = ReviewWriteModifyApplyRequest(
+            mRatingCount,
+            getRatingBadReason(),
+            binding.reviewWriteContentText.text.toString(),
+            getListSame(mPhotoList, getPhotoList()),
+            getPhotoList(),
+            mMenuAdapter.getMenuReviewData(),
+            getDeliveryReview()
+        )
+        Log.d("리뷰 수정 적용", "reviewWriteModifyApplyRequest: $reviewWriteModifyApplyRequest")
+        // 리뷰 수정 작성
+        ReviewWriteService(this).tryGetReviewWriteModifyApply(getUserIdx(), mReviewIdx, reviewWriteModifyApplyRequest)
+    }
+
+    fun getListSame(list1: ArrayList<String>?, list2: ArrayList<String>?) : String {
+        return if(list1 == null && list2 == null) "N"
+        else if(list1 == null && list2 != null) "Y"
+        else if(list1 != null && list2 == null) "Y"
+        else {
+            if(list1!!.containsAll(list2!!)) "N" else "Y"
         }
     }
 
@@ -398,7 +425,7 @@ class ReviewWriteActivity :
             mDeliveryEtcString = content
         } else {
             binding.reviewWriteDeliveryEtcText.text = "기타의견"
-            binding.reviewWriteDeliveryEtcText.setTextColor(Color.parseColor("#00AFFE"))  // 회색
+            binding.reviewWriteDeliveryEtcText.setTextColor(Color.parseColor("#00AFFE"))  // 파란색
             binding.reviewWriteDeliveryEtcModify.visibility = View.GONE
             mDeliveryEtcString = null
         }
@@ -466,6 +493,7 @@ class ReviewWriteActivity :
             if (result.badReason != null) setRatingCheck(result.badReason)
             binding.reviewWriteContentText.setText(result.contents) // 리뷰 내용 설정
             // 이미지 사진 추가!
+            mPhotoList = result.imgList
             if (result.imgList != null) mPhotoAdapter.changeItemList(result.imgList)
             // 메뉴 추가
             val menuList = ArrayList<ReviewWriteMenu>()
@@ -494,7 +522,7 @@ class ReviewWriteActivity :
                 var deliveryLiked: Boolean? = null
                 if (result.deliveryReview.deliveryLiked != null) {
                     val like = result.deliveryReview.deliveryLiked
-                    deliveryLiked = (like != "GOOD")
+                    deliveryLiked = (like == "GOOD")
                 }
                 changeDeliveryLike(deliveryLiked)
                 if (result.deliveryReview.deliveryComment != null) changeDeliveryEtc(result.deliveryReview.deliveryComment)
@@ -506,6 +534,17 @@ class ReviewWriteActivity :
     }
 
     override fun onGetReviewWriteModifyFailure(message: String) {
+
+    }
+
+    // 리뷰 수정 적용
+    override fun onGetReviewWriteModifyApplySuccess(response: BaseResponse) {
+        if(response.code == 1000){
+            finish()
+        }
+    }
+
+    override fun onGetReviewWriteModifyApplyFailure(message: String) {
 
     }
 

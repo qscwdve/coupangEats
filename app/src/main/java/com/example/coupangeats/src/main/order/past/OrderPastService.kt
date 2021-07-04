@@ -8,9 +8,9 @@ import retrofit2.Response
 
 class OrderPastService(val view: OrderPastFragmentView) {
 
-    fun tryGetOrderPastInfo(userIdx: Int){
+    fun tryGetOrderPastInfo(userIdx: Int, search: String? = null){
         val orderPastRetrofitInterface = ApplicationClass.sRetrofit.create(OrderPastRetrofitInterface::class.java)
-        orderPastRetrofitInterface.getOrderPastInfo(userIdx)
+        orderPastRetrofitInterface.getOrderPastInfo(userIdx, search)
             .enqueue(object : Callback<OrderPastInfoResponse>{
                 override fun onResponse(
                     call: Call<OrderPastInfoResponse>,

@@ -39,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
+                android:clickable="false"
                 android:id="@+id/order_past_search_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,6 +47,7 @@
                 android:paddingHorizontal="20dp">
 
                 <LinearLayout
+                    android:clickable="false"
                     android:layout_marginEnd="10dp"
                     android:visibility="visible"
                     android:layout_width="0dp"
@@ -64,12 +66,15 @@
                         tools:ignore="NestedWeights">
 
                         <EditText
+                            android:clickable="false"
                             android:layout_marginVertical="12dp"
                             android:id="@+id/order_past_search_text"
                             android:layout_gravity="center"
                             android:maxLines="1"
                             android:hint="주문한 메뉴/매장을 찾아보세요"
                             android:layout_width="0dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
                             android:layout_weight="7"
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
@@ -115,15 +120,59 @@
             <View
                 android:visibility="gone"
                 android:id="@+id/orderPastTransportMenu"
-                android:background="#AF000000"
+                android:background="#6F000000"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignBottom="@+id/order_past_menu"
                 android:layout_below="@+id/order_past_search_parent"/>
+
+
         </RelativeLayout>
 
 
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/order_past_not_search"
+        android:gravity="center"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/address_search_errorr"/>
+
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/baseColor"
+                android:text="@string/pastSearchNo"/>
+
+            <TextView
+                android:id="@+id/fragment_order_past_look"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/past_order_boxx"
+                android:text="쿠팡이츠 맛집 구경가기"
+                android:textColor="@color/black"
+                android:paddingVertical="7dp"
+                android:paddingHorizontal="10dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
 </RelativeLayout>
