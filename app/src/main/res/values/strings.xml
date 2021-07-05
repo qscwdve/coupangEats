@@ -136,13 +136,28 @@
     <string name="cart">카트</string>
     <string name="cart_modify">수정</string>
     <string name="cart_menu_add">+ 메뉴추가</string>
-    <string name="cart_discount">할인 쿠폰</string>
+    <string name="cart_discount">할인쿠폰</string>
     <string name="cart_use_coupon">사용가능 쿠폰</string>
     <string name="cart_delivery_price">배달비</string>
     <string name="cart_menu_price">주문 금액</string>
     <string name="cart_need">요청사항</string>
     <string name="cart_info">쿠팡은 통신판매중개자로서 통신판매의 당사자가 아니며, 판매자가 등록한 상품 정보, 상품의 품질 및 거래에 대해서 일체의 책임을 지지 않습니다. 회원은 주문 내용을 확인하였고, 결제에 동의합니다.</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="coupangInfo1">
+        쿠팡(주) | 대표이사 : 박태준\n
+        사업자 등록번호 : 120-88-00767 | 통신판매업신고 : 2017-\n
+        서울송파-0680 | 서울시 송파구 송파대로 570
+    </string>
+    <string name="coupangInfo2">쿠팡이츠 고객센터:&#160;</string>
+    <string name="coupangInfo3">1670-9827</string>
+    <string name="coupangInfo4">| 이메일 문의:</string>
+    <string name="coupangInfo5">
+        | 이메일 문의:\n
+        eatsheplp@coupang.com |\n
+        쿠팡은 통신판매중개자로서 통신판매의 당사자가 아니며, 판매자가\n등록한 상품 정보, 상품의 품질 및 거래에 대한 일체의 책임을 지지
+    </string>
+    <string name="coupangInfo6">않습니다.</string>
+    <string name="uesAgress">이용약관</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -310,4 +325,6 @@
     <string name="cart_replace">주문할 가게를 변경하실 경우 이전에 담은 메뉴가 삭제됩니다.</string>
     <string name="cart_replace_title">같은 가게의 메뉴만 담을 수 있습니다.</string>
     <string name="pastSearchNo">주문내역 검색 결과가 없습니다.</string>
+    <string name="no_super_title">조건에 맞는 매장이 없습니다.</string>
+    <string name="no_info_info">검색 조건 변경 후 다시 시도해 보세요.</string>
 </resources>

@@ -2,13 +2,16 @@ package com.softsquared.template.kotlin.config
 
 import android.app.Application
 import android.content.SharedPreferences
-import android.util.Log
+import android.os.Build
 import com.kakao.sdk.common.KakaoSdk
+import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
 import java.util.concurrent.TimeUnit
+
 
 // 앱이 실행될때 1번만 실행이 됩니다.
 class ApplicationClass : Application() {
@@ -56,7 +59,10 @@ class ApplicationClass : Application() {
     // 레트로핏 인스턴스를 생성하고, 레트로핏에 각종 설정값들을 지정해줍니다.
     // 연결 타임아웃시간은 5초로 지정이 되어있고, HttpLoggingInterceptor를 붙여서 어떤 요청이 나가고 들어오는지를 보여줍니다.
     private fun initRetrofitInstance() {
+        val tlsSpecs: List<ConnectionSpec> = listOf(ConnectionSpec.MODERN_TLS)
+
         val client: OkHttpClient = OkHttpClient.Builder()
+            .connectionSpecs(tlsSpecs)
             .readTimeout(5000, TimeUnit.MILLISECONDS)
             .connectTimeout(5000, TimeUnit.MILLISECONDS)
             // 로그캣에 okhttp.OkHttpClient로 검색하면 http 통신 내용을 보여줍니다.

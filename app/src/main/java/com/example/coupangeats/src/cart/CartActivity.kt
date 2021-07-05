@@ -139,11 +139,15 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
                         binding.cartCouponStatusImg.visibility = View.VISIBLE
                         binding.cartCouponStatus.visibility = View.VISIBLE
                         binding.cartCouponStatus.text = "쿠폰 적용"
-                        binding.cartCouponStatus.setTextColor(Color.parseColor("D67D42"))
+                        binding.cartCouponStatus.setTextColor(Color.parseColor("#D67D42"))
                         binding.cartCouponStatusImg.setImageResource(R.drawable.ic_coupon_check)
-                        price = "-${price}"
-                        binding.cartCouponPrice.text = price
-                        mCouponPrice = price.toInt()
+                        val couponPrice = price.replace("원 할인", "")
+                        val priceText = "-${couponPrice}원"
+                        binding.cartCouponPrice.text = priceText
+                        mCouponPrice = couponPrice.replace(",", "").toInt()
+                        binding.cartMenuDiscountParent.visibility = View.VISIBLE
+                        val couponText = "${priceText}원"
+                        binding.cartMenuDiscountPrice.text = couponText
                         changeCouponPrice()
                     }
                 } else {
@@ -278,7 +282,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             if(coupon.redeemStatus == "쿠폰 적용" || coupon.redeemStatus == "쿠폰 자동적용"){
                 binding.cartCouponStatus.visibility = View.VISIBLE
                 binding.cartCouponStatusImg.visibility = View.VISIBLE
-                binding.cartCouponStatus.text = if(coupon.redeemStatus == "쿠폰 적용") "쿠폰 적용" else "쿠폰 자동 적용"
+                binding.cartCouponStatus.text = if(coupon.redeemStatus == "쿠폰 적용") "쿠폰 적용" else "쿠폰 자동적용"
                 binding.cartCouponStatusImg.setImageResource(R.drawable.ic_coupon_check)
                 binding.cartCouponStatus.setTextColor(Color.parseColor("#D67D42")) // 빨강
                 // 쿠폰 가격 설정

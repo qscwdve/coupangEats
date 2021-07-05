@@ -19,6 +19,7 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
     private var mIsModify = false
     private var mSort = "recentAdd"  // recentAdd || recentOrder
     private lateinit var mAdapter: FavoritesSuperAdapter
+    private var mIsCount = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,23 +34,26 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
         }
 
         binding.favoritesModify.setOnClickListener {
-            if(mIsModify){
-                Log.d("modify", "$mIsModify")
-                // true -> false
-                mIsModify = false
-                binding.favoritesModify.text = "수정"
-                binding.favoritesInfo.visibility = View.VISIBLE
+            if(mIsCount > 0){
+                if(mIsModify){
+                    Log.d("modify", "$mIsModify")
+                    // true -> false
+                    mIsModify = false
+                    binding.favoritesModify.text = "수정"
+                    binding.favoritesInfo.visibility = View.VISIBLE
 
-                mAdapter.changeVersion(1)
-            } else {
-                // false -> true
-                Log.d("modify", "$mIsModify")
-                mIsModify = true
-                binding.favoritesModify.text = "취소"
-                binding.favoritesInfo.visibility = View.GONE
+                    mAdapter.changeVersion(1)
+                } else {
+                    // false -> true
+                    Log.d("modify", "$mIsModify")
+                    mIsModify = true
+                    binding.favoritesModify.text = "취소"
+                    binding.favoritesInfo.visibility = View.GONE
 
-                mAdapter.changeVersion(2)
+                    mAdapter.changeVersion(2)
+                }
             }
+
         }
 
         binding.favoritesSelectParent.setOnClickListener{
@@ -73,6 +77,7 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
             val result = response.result
             if(result != null){
                 // 즐겨찾기가 있을 경우
+                mIsCount = response.result.size
                 binding.favoritesNoContent.visibility = View.GONE
                 val numberText = "총 ${result.size}개"
                 binding.favoritesNumber.text = numberText
@@ -85,6 +90,7 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
             } else {
                 // 즐겨찾기가 없을 경우
                 binding.favoritesNoContent.visibility = View.VISIBLE
+                mIsCount = 0
             }
         } else {
             setDummyDate()

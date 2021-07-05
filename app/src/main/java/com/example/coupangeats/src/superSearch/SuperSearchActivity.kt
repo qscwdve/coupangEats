@@ -210,7 +210,7 @@ class SuperSearchActivity :
     // 최소 주문 바꾸는 함수 다이얼로그에서 호출
     fun changeOrderMinFilter(value: Int, valueString: String) {
         if (value != -1) {
-            val str = "최소주문 ${valueString}원 이하"
+            val str = "최소주문 $valueString"
             binding.homeFilterMiniOrderBackground.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterMiniOrderText.text = str
             binding.homeFilterMiniOrderText.setTextColor(Color.parseColor(whiteColor))

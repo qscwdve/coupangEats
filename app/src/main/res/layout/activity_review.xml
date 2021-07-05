@@ -147,9 +147,11 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:background="@drawable/circle_ripple_white_to_gray"
                         android:id="@+id/toolbar_back"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="5dp"
                         android:src="@drawable/ic_left_arrow_black" />

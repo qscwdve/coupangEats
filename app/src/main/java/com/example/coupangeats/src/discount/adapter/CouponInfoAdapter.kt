@@ -70,9 +70,11 @@ class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectU
                     parent.setBackgroundResource(R.drawable.round_blue_coupon)
                     check.visibility = View.VISIBLE
                     adapter.couponPriceString = item.discountPrice
+                    adapter.selectUserCouponIdx = item.userCouponIdx
                     adapter.discountActivity.changeCouponIdx(item.userCouponIdx)
                 } else {
                     check.visibility = View.GONE
+                    parent.setBackgroundResource(R.drawable.round_gray_box)
                 }
                 itemView.setOnClickListener {
                     // 유저가 쿠폰을 선택했을 경우
@@ -82,16 +84,17 @@ class CouponInfoAdapter(val superCouponList: ArrayList<SuperCoupon>, var selectU
                             adapter.selectUserCouponIdx = -1
                             parent.setBackgroundResource(R.drawable.round_gray_box)
                             check.visibility = View.GONE
+                            adapter.couponPriceString = ""
                             adapter.discountActivity.changeApplyText("쿠폰적용 안함")
                             adapter.discountActivity.changeCouponIdx(-1)
                         } else {
                             // 새로운 쿠폰을 선택했을 경우
                             adapter.selectUserCouponIdx = item.userCouponIdx
                             adapter.notifyDataSetChanged()
+                            adapter.couponPriceString = item.discountPrice
                             adapter.discountActivity.changeApplyText("적용하기")
                             adapter.discountActivity.changeCouponIdx(item.userCouponIdx)
                         }
-                        adapter.couponPriceString = item.discountPrice
                     }
                 }
             }

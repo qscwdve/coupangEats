@@ -340,8 +340,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             if(user == null){
                 // 로그인 실패
             } else {
-                val account = user.kakaoAccount
-                account!!.email
 
             }
         }

@@ -583,6 +583,96 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
+                        <include layout="@layout/item_no_super"
+                            android:id="@+id/no_super_parent"/>
+
+                        <RelativeLayout
+                            android:paddingVertical="25dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/line">
+
+                            <LinearLayout
+                                android:layout_centerInParent="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/coupangInfo1"
+                                    android:textColor="@color/baseColor"
+                                    android:textSize="13sp"/>
+                                <LinearLayout
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:gravity="center"
+                                        android:layout_gravity="center"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/coupangInfo2"
+                                        android:textColor="@color/baseColor"
+                                        android:textSize="13sp"/>
+                                    <TextView
+                                        android:gravity="center"
+                                        android:layout_gravity="center"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/coupangInfo3"
+                                        android:textColor="@color/black"
+                                        android:textStyle="bold"
+                                        android:textSize="13sp"/>
+                                    <TextView
+                                        android:gravity="center"
+                                        android:layout_gravity="center"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/coupangInfo4"
+                                        android:textColor="@color/baseColor"
+                                        android:textSize="13sp"/>
+                                </LinearLayout>
+                                <TextView
+                                    android:gravity="center"
+                                    android:layout_gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/coupangInfo5"
+                                    android:textColor="@color/baseColor"
+                                    android:textSize="13sp"/>
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+                                    <TextView
+                                        android:gravity="center"
+                                        android:layout_gravity="center"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/coupangInfo6"
+                                        android:textColor="@color/baseColor"
+                                        android:textSize="13sp"/>
+                                    <TextView
+                                        android:gravity="center"
+                                        android:layout_gravity="center"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/uesAgress"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/black"
+                                        android:textSize="13sp"/>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </RelativeLayout>
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -594,8 +684,9 @@
 
     <!-- 치타배달 배너 -->
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/home_cheetah_banner_parent"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="13dp"
         android:layout_marginHorizontal="10dp"
         android:paddingVertical="10dp"
         android:paddingHorizontal="20dp"

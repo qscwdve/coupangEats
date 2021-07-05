@@ -380,7 +380,7 @@ class HomeFragment() :
     // 최소 주문 바꾸는 함수 다이얼로그에서 호출
     fun changeOrderMinFilter(value: Int, valueString: String) {
         if (value != -1) {
-            val str = "최소주문 ${valueString}원 이하"
+            val str = "최소주문 ${valueString}"
             binding.homeFilterMiniOrderBackground.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterMiniOrderText.text = str
             binding.homeFilterMiniOrderText.setTextColor(Color.parseColor(whiteColor))
@@ -630,8 +630,10 @@ class HomeFragment() :
                 if (recommend != null) {
                     setRecommend(recommend)
                     binding.homeRecommendRecyclerview.visibility = View.VISIBLE
+                    binding.noSuperParent.itemNoSuperParent.visibility = View.GONE
                 } else {
                     binding.homeRecommendRecyclerview.visibility = View.GONE
+                    binding.noSuperParent.itemNoSuperParent.visibility = View.VISIBLE
                 }
             } else {
                 // 주변 매장 맛집 필터
@@ -639,8 +641,10 @@ class HomeFragment() :
                 if (recommend != null) {
                     setRecommend(recommend)
                     binding.homeRecommendRecyclerview.visibility = View.VISIBLE
+                    binding.noSuperParent.itemNoSuperParent.visibility = View.GONE
                 } else {
                     binding.homeRecommendRecyclerview.visibility = View.GONE
+                    binding.noSuperParent.itemNoSuperParent.visibility = View.VISIBLE
                 }
             }
 
