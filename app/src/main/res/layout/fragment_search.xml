@@ -25,8 +25,11 @@
             tools:ignore="NestedWeights">
 
             <ImageView
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="15dp"
+                android:layout_gravity="center"
                 android:background="@drawable/circle_ripple_white_to_gray"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:adjustViewBounds="true"
                 android:id="@+id/search_back_img"
                 android:padding="8dp"
@@ -141,7 +144,6 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:paddingHorizontal="20dp"
                     android:id="@+id/search_resent_search_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

@@ -18,6 +18,7 @@ import org.w3c.dom.DocumentFragment
 import org.w3c.dom.Text
 
 class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment): RecyclerView.Adapter<NewAdapter.NewViewHolder>() {
+
     class NewViewHolder(itemView: View, val newAdapter: NewAdapter) : RecyclerView.ViewHolder(itemView) {
         val img = itemView.findViewById<ImageView>(R.id.item_new_super_img)
         val name = itemView.findViewById<TextView>(R.id.item_new_super_name)
@@ -81,6 +82,7 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
                 }
                 false
             }
+
         }
     }
 

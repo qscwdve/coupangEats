@@ -33,13 +33,15 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
     private var version = 1  // 1이면 gps 선택, 2이면 배달지 주소 관리 - 배달지 추가! 3 이면 배달지 수정
     private var addressIdx = -1
     private var mModifyOrDelete = false
-    private var mLat = (-1).toDouble()
-    private var mLon = (-1).toDouble()
+    private var mLat = ""
+    private var mLon = ""
     private val MAP_ACTIVITY = 1234
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         version = arguments?.getInt("version", 1) ?: 1
+        mLat = arguments?.getString("lat") ?: ""
+        mLon = arguments?.getString("lon") ?: ""
         if(version == 3){
             addressIdx = arguments?.getInt("addressIdx", -1) ?: -1
             if(addressIdx != -1){
@@ -368,8 +370,8 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 binding.detailAddressAliasParent.visibility = View.VISIBLE
                 binding.detailAddressAliasEditText.setText(response.result.alias ?: "")
             }
-            mLat = response.result.latitude.toDouble()
-            mLon = response.result.longitude.toDouble()
+            mLat = response.result.latitude
+            mLon = response.result.longitude
         }
     }
 

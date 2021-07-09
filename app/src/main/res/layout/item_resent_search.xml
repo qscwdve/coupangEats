@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:paddingVertical="7dp"
+    android:paddingHorizontal="20dp"
     android:background="@drawable/white_to_gray_ripple"
     android:layout_height="wrap_content">
 

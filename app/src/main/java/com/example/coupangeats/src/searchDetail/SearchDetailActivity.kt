@@ -2,6 +2,7 @@ package com.example.coupangeats.src.searchDetail
 
 import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
@@ -39,6 +40,7 @@ class SearchDetailActivity :
     private var mSearchAble = false
     private var mSearchDetailRequest = SearchDetailRequest()
     var keyword = ""
+    private var mKeywordSearch = false
     private var mIsSearch = false
     private var mIsFinish = true
     var mLat = ""
@@ -48,10 +50,11 @@ class SearchDetailActivity :
     private var mRecommSelect = 1
     private var mUse = false
     var filterSelected = Array(5) { i -> false }  // 필터를 선택했는지 안했는데
-    private lateinit var inputMethodManager : InputMethodManager
+    private lateinit var inputMethodManager: InputMethodManager
     private lateinit var mDBHelper: ResentSearchDatabase
     private lateinit var mDB: SQLiteDatabase
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,7 +66,8 @@ class SearchDetailActivity :
         mDB = mDBHelper.writableDatabase
 
         // 최근 검색어 셋팅
-        binding.searchDetailResentSearchRecyclerview.adapter = ResentSearchAdapter(mDBHelper.getResentDate(mDB), this)
+        binding.searchDetailResentSearchRecyclerview.adapter =
+            ResentSearchAdapter(mDBHelper.getResentDate(mDB), this)
         binding.searchDetailResentSearchRecyclerview.layoutManager = LinearLayoutManager(this)
 
         mLat = intent.getStringExtra("lat") ?: ""
@@ -73,7 +77,7 @@ class SearchDetailActivity :
         mSearchDetailRequest.lat = mLat
         mSearchDetailRequest.lon = mLon
 
-        if(keyword == ""){
+        if (keyword == "") {
             binding.searchDetailKeywordParent.visibility = View.VISIBLE
         }
 
@@ -84,7 +88,10 @@ class SearchDetailActivity :
         // 툴바 설정
         setSupportActionBar(binding.toolbar)
         val stateListAnimator = StateListAnimator()
-        stateListAnimator.addState(intArrayOf(), ObjectAnimator.ofFloat(binding.appBar, "elevation", 0F))
+        stateListAnimator.addState(
+            intArrayOf(),
+            ObjectAnimator.ofFloat(binding.appBar, "elevation", 0F)
+        )
         binding.appBar.stateListAnimator = stateListAnimator
 
 
@@ -94,49 +101,63 @@ class SearchDetailActivity :
             mSearchDetailRequest.lon = mLon
             mSearchDetailRequest.keyword = keyword
             binding.searchDetailEditText.setText(keyword)
-            binding.searchEditDelete.visibility = View.VISIBLE
             startSearch()
+            mKeywordSearch = true
+            binding.searchEditDelete.visibility = View.GONE
         }
 
         // 최근 검색어 전체 삭제
         binding.searchDetailTotalDelete.setOnClickListener {
             mDBHelper.deleteTotal(mDB)
             val list = ArrayList<ResentSearchDate>()
-            (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(list)
+            (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(
+                list
+            )
         }
 
         // 엔터키 누름
         binding.searchDetailEditText.setOnKeyListener { v, keyCode, event ->
-            if((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+
+            if ((event != null) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 // 엔터키가 눌림
                 //showCustomToast("엔터키 눌림")
                 if (mSearchAble) {
                     // 서버한테 검색 요청
                     // showCustomToast("검색 가능 상태")
+                    mKeywordSearch = true
                     keyword = binding.searchDetailEditText.text.toString()
                     mSearchDetailRequest.keyword = keyword
                     // 최근 검색어에 넣기
                     mDBHelper.addKeyword(mDB, keyword)
                     Log.d("resentSearch", "keyword 넣음")
-                    inputMethodManager.hideSoftInputFromWindow(binding.searchDetailEditText.windowToken, 0)
+                    inputMethodManager.hideSoftInputFromWindow(
+                        binding.searchDetailEditText.windowToken,
+                        0
+                    )
                     binding.searchEditDelete.visibility = View.GONE
                     binding.searchDetailEditText.clearFocus()
-                    (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(mDBHelper.getResentDate(mDB))
+                    (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(
+                        mDBHelper.getResentDate(mDB)
+                    )
                     startSearch()
                 }
                 true
             } else false
+
 
         }
 
         binding.searchDetailEditText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 binding.searchDetailKeywordParent.visibility = View.VISIBLE
+                binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
+                binding.searchDetailNoSearchParent.itemNoSuperParent.visibility = View.GONE
                 binding.searchDetailSuperParent.visibility = View.GONE
                 mIsSearch = true
                 mIsFinish = false
                 Log.d("keyword", "포커스 상태")
-                if(binding.searchDetailEditText.text.toString().isNotEmpty()){
+                val str = binding.searchDetailEditText.text.toString()
+                if (str.isNotEmpty()) {
                     binding.searchEditDelete.visibility = View.VISIBLE
                 }
             }
@@ -163,7 +184,9 @@ class SearchDetailActivity :
                 Log.d("resentSearch", "keyword 넣음")
                 binding.searchEditDelete.visibility = View.GONE
                 binding.searchDetailEditText.clearFocus()
-                (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(mDBHelper.getResentDate(mDB))
+                (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(
+                    mDBHelper.getResentDate(mDB)
+                )
                 startSearch()
             }
         }
@@ -178,6 +201,7 @@ class SearchDetailActivity :
 
         binding.searchDetailEditText.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
                 if (!mSearchAble && binding.searchDetailEditText.text.toString() != "") {
                     // 사용자가 검색하기 시작할 때
                     mSearchAble = true
@@ -273,16 +297,22 @@ class SearchDetailActivity :
     }
 
     // 촤근 검색어로 검색
-    fun startResentSearch(key: String, id: Int){
+    fun startResentSearch(key: String, id: Int) {
+        mKeywordSearch = true
         keyword = key
         mSearchDetailRequest.keyword = key
         binding.searchDetailEditText.setText(key)
         mDBHelper.modifyDate(mDB, id)
-        (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(mDBHelper.getResentDate(mDB))
+        inputMethodManager.hideSoftInputFromWindow(binding.searchDetailEditText.windowToken, 0)
+        binding.searchEditDelete.visibility = View.GONE
+        binding.searchDetailEditText.clearFocus()
+        (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(
+            mDBHelper.getResentDate(mDB)
+        )
         startSearch()
     }
 
-    fun deleteResentSearchItem(id: Int){
+    fun deleteResentSearchItem(id: Int) {
         mDBHelper.deleteToId(mDB, id)
     }
 
@@ -312,6 +342,7 @@ class SearchDetailActivity :
         SearchDetailService(this).tryGetSearchSuper(mSearchDetailRequest)
         changeClearFilter()
     }
+
     // 추천순 필터 바꾸는 함수 다이얼로그에서 호출
     fun changeRecommendFilter(value: String, sendServerString: String, option: Int) {
         if (value == "추천순") {
@@ -425,20 +456,36 @@ class SearchDetailActivity :
         binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
 
     }
+
     override fun onGetSearchSuperSuccess(response: SearchDetailResponse) {
         if (response.code == 1000) {
             if (response.result.searchStores != null) {
                 binding.searchDetailKeywordParent.visibility = View.GONE
                 binding.searchDetailSuperParent.visibility = View.VISIBLE
                 binding.searchDetailSuperRecyclerview.visibility = View.VISIBLE
+                binding.searchDetailFilterParent.visibility = View.VISIBLE
+                // 검색 없을 때 필요한 것들
+                binding.searchDetailNoSearchParent.itemNoSuperParent.visibility = View.GONE
+                binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
                 changeSuperList(response.result.searchStores)
-                if(mIsSearch) changeSuperStatus()
+                if (mIsSearch) changeSuperStatus()
                 mUse = true
             } else {
                 binding.searchDetailKeywordParent.visibility = View.GONE
                 binding.searchDetailSuperParent.visibility = View.VISIBLE
                 binding.searchDetailSuperRecyclerview.visibility = View.GONE
+                if (mKeywordSearch) {
+                    Log.d("super", "mKeywordSearch : $mKeywordSearch")
+                    binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
+                    binding.searchDetailNoSearchParent.itemNoSuperParent.visibility = View.VISIBLE
+                    binding.searchDetailFilterParent.visibility = View.GONE
+                } else {
+                    binding.searchDetailFilterParent.visibility = View.VISIBLE
+                    binding.searchDetailNoSearchParent.itemNoSuperParent.visibility = View.GONE
+                    binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.VISIBLE
+                }
             }
+            mKeywordSearch = false
         }
     }
 

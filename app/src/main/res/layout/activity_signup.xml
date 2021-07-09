@@ -15,15 +15,16 @@
         tools:ignore="UseCompoundDrawables">
         <ImageView
             android:background="@drawable/circle_ripple_white_to_gray"
-            android:padding="10dp"
+            android:padding="8dp"
+            android:layout_marginStart="@dimen/actionBarImageMarginStar"
             android:contentDescription="@string/image_no"
             android:adjustViewBounds="true"
             android:id="@+id/sign_up_back"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:src="@drawable/cancel"/>
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cancel"/>
         <TextView
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/actionBarTextMarginStar"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

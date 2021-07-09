@@ -31,6 +31,9 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
     private var whiteColor = "#FFFFFF"
     private var blackColor = "#000000"
     private var mRecommSelect = 1
+    private var mStickyScroll = 240
+    private var mScrollFlag = false
+    private var mScrollValue = 0F
     var filterSelected = Array(5) { i -> false }  // 필터를 선택했는지 안했는데
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -146,7 +149,23 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
             binding.cartTitle.text = mCategorySuperRequest.category
             refreshFilter()
         }
+
+        // 스크롤 감지
+        binding.categorySuperSticyScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            Log.d("sticky", "scrollY : $scrollY, mStickry: $mStickyScroll")
+            if(mStickyScroll < scrollY){
+                binding.categorySuperFilterParent.translationZ = 1F
+                binding.categorySuperFilterParent.translationY = (scrollY - mStickyScroll).toFloat()
+                mScrollValue = (scrollY - mStickyScroll).toFloat()
+            } else if(scrollY == 0){
+                binding.categorySuperFilterParent.translationY = 0F
+            } else {
+                binding.categorySuperFilterParent.translationY = mScrollValue
+            }
+        }
+
      }
+
     // 추천순 필터 바꾸는 함수 다이얼로그에서 호출
     fun changeRecommendFilter(value: String, sendServerString: String, option: Int) {
         if (value == "추천순") {
@@ -260,6 +279,7 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
         binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
 
     }
+
     fun startSuperSearch(){
         CategorySuperService(this).tryGetCategorySuper(
             mCategorySuperRequest.lat,
@@ -281,8 +301,10 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
                 binding.categorySuperRecommendRecyclerView.adapter = RecommendCategoryAdapter(response.result.recommendStores, this)
                 binding.categorySuperRecommendRecyclerView.layoutManager = LinearLayoutManager(this)
                 binding.categorySuperRecommendRecyclerView.visibility = View.VISIBLE
+                binding.categorySuperNoSuperParent.itemNoSuperParent.visibility = View.GONE
             } else {
                 binding.categorySuperRecommendRecyclerView.visibility = View.GONE
+                binding.categorySuperNoSuperParent.itemNoSuperParent.visibility = View.VISIBLE
             }
         }
     }
@@ -293,7 +315,6 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
 
     override fun onGetSuperCategorySuccess(response: SuperCategoryResponse) {
         if(response.code == 1000){
-
             binding.categorySuperCategoryRecyclerView.adapter = CategorySuperAdapter(response.result, this, option)
             binding.categorySuperCategoryRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         }

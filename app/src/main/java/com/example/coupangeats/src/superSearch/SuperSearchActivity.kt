@@ -274,9 +274,15 @@ class SuperSearchActivity :
         binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
 
     }
+
     override fun onGetNewSuperSuccess(response: NewSuperResponse) {
-        if (response.code == 1000 && response.result.totalCount > 0) {
-            setRecycler(response.result.newStores!!)
+        if (response.code == 1000 ) {
+            if( response.result.totalCount > 0){
+                binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
+                setRecycler(response.result.newStores!!)
+            } else{
+                binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -286,7 +292,12 @@ class SuperSearchActivity :
 
     override fun onGetDiscountSuperSuccess(response: DiscountSuperResponse) {
         if (response.code == 1000 && response.result.totalCount > 0) {
-            setRecycler(response.result.onSaleStores!!)
+            if(response.result.totalCount > 0){
+                binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
+                setRecycler(response.result.onSaleStores!!)
+            } else {
+                binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.VISIBLE
+            }
         }
     }
 

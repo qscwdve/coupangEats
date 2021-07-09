@@ -37,10 +37,6 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
     var mSortNum = 1
     var mDeleteItem = -1
     var mType : String? = null
-    private enum class CollapsingToolbarLayoutState {
-        EXPANDED, COLLAPSED, INTERNEDIATE
-    }
-    private var mCollapsingToolbarState : CollapsingToolbarLayoutState? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,34 +66,16 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
             reviewFilterRecommendBottomSheetDialog.show(supportFragmentManager, "filter")
         }
 
-        setSupportActionBar(binding.toolbar)
-        val stateListAnimator = StateListAnimator()
-        stateListAnimator.addState(intArrayOf(), ObjectAnimator.ofFloat(binding.appBar, "elevation", 0F))
-        binding.appBar.stateListAnimator = stateListAnimator
-        binding.appBar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener{
-            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-                if(verticalOffset == 0){
-                    if(mCollapsingToolbarState != CollapsingToolbarLayoutState.EXPANDED){
-                        binding.reviewFilterParent.elevation = 0F
-                        mCollapsingToolbarState = CollapsingToolbarLayoutState.EXPANDED
-                    }
-                }
-                else if(kotlin.math.abs(verticalOffset) >= appBarLayout!!.totalScrollRange){
-                    // 액션바 스크롤 맨 위로 올림
-                    binding.reviewFilterParent.elevation = 10F
-                    mCollapsingToolbarState = CollapsingToolbarLayoutState.COLLAPSED
-                }
-                else if(kotlin.math.abs(verticalOffset) < appBarLayout.totalScrollRange){
-                    //Log.d("vertical", "아직 액션바 안에 있음")
-                    if(mCollapsingToolbarState != CollapsingToolbarLayoutState.INTERNEDIATE){
-                        binding.reviewFilterParent.elevation = 0F
-                        mCollapsingToolbarState = CollapsingToolbarLayoutState.INTERNEDIATE
-                    }
-                }
+        //스티키 스크롤 설정
+        binding.reviewStickyScrollView.run {
+            header = binding.reviewFilterParent
+            stickListener = { _ ->
+                binding.reviewFilterParent.elevation = 10F
             }
-
-        })
-
+            freeListener = { _ ->
+                binding.reviewFilterParent.elevation = 0F
+            }
+        }
 
     }
 

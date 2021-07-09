@@ -23,7 +23,8 @@
         tools:ignore="HardcodedDebugMode">
         <activity android:name=".src.findId.FindIdActivity"></activity>
         <activity android:name=".src.searchDetail.SearchDetailActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateUnchanged"/>
         <activity android:name=".src.eventItem.EventItemActivity" />
         <activity android:name=".src.event.EventActivity" />
         <activity android:name=".src.myReview.MyReviewActivity" />
@@ -41,7 +42,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".src.detailSuper.DetailSuperActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".src.map.MapActivity" />
         <activity android:name=".src.cart.CartActivity" />
         <activity

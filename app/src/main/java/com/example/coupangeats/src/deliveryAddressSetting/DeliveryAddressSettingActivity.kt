@@ -83,7 +83,7 @@ class DeliveryAddressSettingActivity() :
             binding.deliveryAddressManageParent.visibility = View.GONE
             binding.deliveryAddressTextParent.visibility = View.VISIBLE
             binding.deliveryAddressSettingNowGpsFind.visibility = View.VISIBLE
-            binding.deliveryAddressBack.setImageResource(R.drawable.left_arrow)
+            binding.deliveryAddressBack.setImageResource(R.drawable.ic_left_arrow_black)
             binding.detailAddressTitle.text = "배달지 주소 설정"
         }
         binding.deliveryAddressText.setOnFocusChangeListener { v, hasFocus ->
@@ -97,7 +97,7 @@ class DeliveryAddressSettingActivity() :
                 }
                 if (!mBackOrFinish) {
                     mBackOrFinish = true
-                    binding.deliveryAddressBack.setImageResource(R.drawable.left_arrow)
+                    binding.deliveryAddressBack.setImageResource(R.drawable.ic_left_arrow_black)
                 }
             }
         }
@@ -143,7 +143,7 @@ class DeliveryAddressSettingActivity() :
                     binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
                     binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
                     binding.detailAddressUserList.visibility = View.VISIBLE
-                    binding.deliveryAddressBack.setImageResource(R.drawable.cancel)
+                    binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
                     binding.detailAddressTitle.setText("배달 주소 관리")
                     mSearchTip = true
                 } else {
@@ -161,7 +161,7 @@ class DeliveryAddressSettingActivity() :
                 // 뒤로 가기
                 Log.d("selected", "뒤로가기")
                 mSearchTip = true
-                if(version == GPS_SELECT) binding.deliveryAddressBack.setImageResource(R.drawable.cancel)
+                if(version == GPS_SELECT) binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
                 binding.deliveryAddressSettingSelectedParent.visibility = View.VISIBLE
                 binding.deliveryAddressSettingSearchParent.visibility = View.GONE
                 binding.deliveryAddressText.setText("")
@@ -211,8 +211,8 @@ class DeliveryAddressSettingActivity() :
             val mLon = if(location != null) location.longitude else (-1).toDouble()
             val intent = Intent(this, MapActivity::class.java).apply {
                 // 현재 위치 가져와야 함
-                this.putExtra("lat", mLat)
-                this.putExtra("lon", mLon)
+                this.putExtra("lat", mLat.toString())
+                this.putExtra("lon", mLon.toString())
             }
             startActivityForResult(intent, MAP_ACTIVITY)
         }
@@ -225,7 +225,9 @@ class DeliveryAddressSettingActivity() :
             if(data != null){
                 val mainAddress = data.getStringExtra("mainAddress") ?: ""
                 val roadAddress = data.getStringExtra("roadAddress") ?: ""
-                changeDetailAddress(SearchAddress(mainAddress, roadAddress))
+                val lat = data.getStringExtra("lat") ?: ""
+                val lon = data.getStringExtra("lon") ?: ""
+                changeDetailAddress(SearchAddress(mainAddress, roadAddress), lat, lon)
             }
         }
     }
@@ -246,7 +248,7 @@ class DeliveryAddressSettingActivity() :
         startDeliveryAddressAdd()
     }
 
-    fun changeDetailAddress(searchAddress: SearchAddress){
+    fun changeDetailAddress(searchAddress: SearchAddress, lat: String, lon: String){
         binding.deliveryAddressDetailParent.visibility = View.VISIBLE
         binding.deliveryAddressNotDetailParent.visibility = View.GONE
         binding.detailAddressTitle.setText("배달지 상세 정보")
@@ -256,6 +258,8 @@ class DeliveryAddressSettingActivity() :
                 arguments = Bundle().apply {
                     putString("mainAddress", searchAddress.mainAddress)
                     putString("roadAddress", searchAddress.subAddress)
+                    putString("lat", lat)
+                    putString("lon", lon)
                     putInt("category", mCategory)
                 }
             }, )
@@ -286,7 +290,7 @@ class DeliveryAddressSettingActivity() :
             binding.deliveryAddressSettingSelectedParent.visibility = View.VISIBLE
             binding.deliveryAddressTextParent.visibility = View.GONE
             binding.deliveryAddressManageParent.visibility = View.VISIBLE
-            binding.deliveryAddressBack.setImageResource(R.drawable.cancel)
+            binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
             binding.detailAddressTitle.setText("배달 주소 관리")
             mSearchTip = true
             mDetailAddress = false
@@ -348,19 +352,23 @@ class DeliveryAddressSettingActivity() :
     override fun onPathUserCheckedAddressSuccess(response: UserCheckedAddressResponse) {
         dismissLoadingDialog()
         if (response.code == 1000) {
+            val intent = Intent().apply {
+                this.putExtra("check", true)
+            }
             if (userMainAddress != "" && userAddressIdx != -1) {
                 Log.d("selected", "company")
                 setUserAddress(userMainAddress, userAddressIdx)
-                setResult(RESULT_OK)
+                setResult(RESULT_OK, intent)
                 finish()
             }
-            if(mSelectedAddress == -1){
+            else if(mSelectedAddress == -1){
                 setUserAddress("배달주소를 선택해주세요", -1)
-                setResult(RESULT_OK)
+                setResult(RESULT_OK, intent)
+                finish()
+            } else {
+                setResult(RESULT_CANCELED, intent)
                 finish()
             }
-            setResult(RESULT_CANCELED)
-            finish()
         }
     }
 
@@ -378,7 +386,7 @@ class DeliveryAddressSettingActivity() :
         binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
         binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
         binding.detailAddressUserList.visibility = View.VISIBLE
-        binding.deliveryAddressBack.setImageResource(R.drawable.cancel)
+        binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
         binding.detailAddressTitle.setText("배달 주소 관리")
         mSearchTip = true
         binding.deliveryAddressBusinessDetail.visibility = View.VISIBLE
@@ -462,7 +470,7 @@ class DeliveryAddressSettingActivity() :
         binding.deliveryAddressDetailParent.visibility = View.VISIBLE
         binding.deliveryAddressNotDetailParent.visibility = View.GONE
         binding.detailAddressTitle.setText("배달지 상세 정보")
-        binding.deliveryAddressBack.setImageResource(R.drawable.left_arrow)
+        binding.deliveryAddressBack.setImageResource(R.drawable.ic_left_arrow_black)
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.delivery_address_detail_parent, DetailAddressFragment().apply {

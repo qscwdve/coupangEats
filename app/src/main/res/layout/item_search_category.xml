@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:background="@drawable/white_to_gray_ripple"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
-    android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="15sp" android:paddingVertical="10sp">
+    android:layout_height="wrap_content" android:orientation="vertical"
+    android:layout_marginHorizontal="15sp" android:paddingVertical="10sp">
 
     <ImageView
         android:adjustViewBounds="true"

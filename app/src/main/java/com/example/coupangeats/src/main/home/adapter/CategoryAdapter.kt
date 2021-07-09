@@ -15,6 +15,7 @@ import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.main.home.model.HomeInfo.StoreCategories
 
 class CategoryAdapter(val categoryList: ArrayList<StoreCategories>, val fragment: HomeFragment): RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+
     class CategoryViewHolder(itemView: View, val categoryAdapter: CategoryAdapter) : RecyclerView.ViewHolder(itemView) {
         val categoryImg = itemView.findViewById<ImageView>(R.id.item_home_category_img)
         val categoryName = itemView.findViewById<TextView>(R.id.item_home_category_name)
@@ -43,6 +44,7 @@ class CategoryAdapter(val categoryList: ArrayList<StoreCategories>, val fragment
             itemView.setOnClickListener {
                 categoryAdapter.fragment.startCategorySuper(item.categoryName)
             }
+
        }
     }
 

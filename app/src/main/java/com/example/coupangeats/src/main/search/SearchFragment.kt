@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentSearchBinding
+import com.example.coupangeats.src.categorySuper.CategorySuperActivity
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.search.adapter.ResentSearchNaviAdapter
 import com.example.coupangeats.src.main.search.category.CategorySearchFragment
@@ -26,10 +27,11 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
     private var mSearchAble = false
     private lateinit var mDBHelper: ResentSearchDatabase
     private lateinit var mDB: SQLiteDatabase
+    private lateinit var inputMethodManager : InputMethodManager
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val inputMethodManager = mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager = mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         // 데이타베이스 셋팅
         mDBHelper = ResentSearchDatabase(requireContext(), "Search.db", null, 1)
@@ -40,7 +42,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
         binding.searchResentSearchRecyclerview.layoutManager = LinearLayoutManager(requireContext())
 
         mainActivity.supportFragmentManager.beginTransaction()
-            .replace(R.id.search_fragment, CategorySearchFragment())
+            .replace(R.id.search_fragment, CategorySearchFragment(this))
             .commitAllowingStateLoss()
 
         if(version == 1){
@@ -66,9 +68,10 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
         binding.searchEditText.setOnKeyListener { v, keyCode, event ->
             if((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
                 // 엔터키가 눌림
-                showCustomToast("엔터키 눌림")
+                    // showCustomToast("엔터키 눌림")
                 if (mSearchAble) {
                     startSearch(binding.searchEditText.text.toString())
+                    inputMethodManager.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
                 }
                 true
             } else false
@@ -79,6 +82,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
             if(mSearchAble){
                 // 서버한테 검색 요청
                 // showCustomToast("검색 가능 상태")
+                inputMethodManager.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
                 startSearch(binding.searchEditText.text.toString())
             }
         }
@@ -125,6 +129,15 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
         })
     }
 
+    fun startCategorySuper(option: String) {
+        val intent = Intent(requireContext(), CategorySuperActivity::class.java).apply {
+            this.putExtra("lat", mainActivity.mLat)
+            this.putExtra("lon", mainActivity.mLon)
+            this.putExtra("categoryName", option)
+        }
+        startActivity(intent)
+    }
+
     fun startSearch(keyword: String){
         val intent = Intent(requireContext(), SearchDetailActivity::class.java).apply {
             this.putExtra("lat", mainActivity.mLat)
@@ -135,6 +148,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
     }
 
     fun startResentSearch(key: String, id: Int){
+        inputMethodManager.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
         mDBHelper.modifyDate(mDB, id)
         (binding.searchResentSearchRecyclerview.adapter as ResentSearchNaviAdapter).refresh(mDBHelper.getResentDate(mDB))
         startSearch(key)

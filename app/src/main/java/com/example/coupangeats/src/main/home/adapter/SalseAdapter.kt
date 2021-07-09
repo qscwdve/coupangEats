@@ -19,6 +19,7 @@ import com.example.coupangeats.src.main.home.model.HomeInfo.OnSaleStores
 import org.w3c.dom.Text
 
 class SalseAdapter(val saleList: ArrayList<OnSaleStores>, val fragment: HomeFragment) : RecyclerView.Adapter<SalseAdapter.SalseViewHolder>() {
+
     class SalseViewHolder(itemView: View, val salseAdapter: SalseAdapter) : RecyclerView.ViewHolder(itemView) {
         val img = itemView.findViewById<ImageView>(R.id.item_salse_super_img)
         val name = itemView.findViewById<TextView>(R.id.item_salse_super_name)
@@ -78,6 +79,7 @@ class SalseAdapter(val saleList: ArrayList<OnSaleStores>, val fragment: HomeFrag
                 }
                 false
             }
+
         }
     }
 

@@ -1,34 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/review_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".src.review.ReviewActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="?actionBarSize"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/toolbar_back"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:contentScrim="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:toolbarId="@+id/toolbar">
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="5dp"
+            android:background="@drawable/circle_ripple_white_to_gray"
+            android:padding="8dp"
+            android:src="@drawable/ic_left_arrow_black" />
 
-            <!-- 매장 정보 -->
+        <TextView
+            android:id="@+id/toolbar_super_name"
+            android:layout_width="0sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingStart="15dp"
+            android:text="버거킹 수원역점 리뷰"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
+
+    </LinearLayout>
+
+    <com.example.coupangeats.util.StickyScrollView
+        android:id="@+id/review_stickyScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- 매장 정보 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="?actionBarSize"
+                android:paddingHorizontal="20dp"
                 android:orientation="horizontal"
                 android:paddingVertical="20dp">
 
@@ -129,119 +157,63 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <!-- 필터 -->
+            <RelativeLayout
+                android:id="@+id/review_filter_parent"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:elevation="0dp"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+                android:paddingHorizontal="20dp"
+                android:tag="sticky">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:id="@+id/review_filter_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/white_to_gray_ripple"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:background="@drawable/circle_ripple_white_to_gray"
-                        android:id="@+id/toolbar_back"
+                        android:id="@+id/review_filter_photo_img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="5dp"
-                        android:src="@drawable/ic_left_arrow_black" />
+                        android:layout_marginEnd="5dp"
+                        android:src="@drawable/ic_add_option" />
 
                     <TextView
-                        android:id="@+id/toolbar_super_name"
-                        android:layout_width="0sp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:gravity="center_vertical"
-                        android:maxLines="1"
-                        android:paddingStart="15dp"
-                        android:text="버거킹 수원역점 리뷰"
-                        android:textColor="@color/black"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        tools:ignore="RtlSymmetry" />
-
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/reviewPhotoReview"
+                        android:textColor="@color/loginBlue"
+                        android:textSize="13dp"
+                        android:textStyle="bold" />
                 </LinearLayout>
-            </androidx.appcompat.widget.Toolbar>
-
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-
-    <RelativeLayout
-        android:layout_gravity="top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <!-- 필터 -->
-        <RelativeLayout
-            android:paddingHorizontal="20dp"
-            android:layout_alignParentTop="true"
-            android:id="@+id/review_filter_parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:tag="sticky">
-
-            <LinearLayout
-                android:id="@+id/review_filter_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginVertical="10dp"
-                android:background="@drawable/white_to_gray_ripple"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/review_filter_photo_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:src="@drawable/ic_add_option" />
 
                 <TextView
+                    android:id="@+id/review_filter_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/reviewPhotoReview"
-                    android:textColor="@color/loginBlue"
-                    android:textSize="13dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/white_to_gray_ripple"
+                    android:paddingVertical="10dp"
+                    android:text="최신순 ∨"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+            </RelativeLayout>
 
-            <TextView
-                android:id="@+id/review_filter_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/white_to_gray_ripple"
-                android:paddingVertical="10dp"
-                android:text="최신순 ∨"
-                android:textColor="@color/black"
-                android:textSize="13sp" />
-        </RelativeLayout>
+            <!-- 리뷰 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/review_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <!-- 리뷰 -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_below="@+id/review_filter_parent"
-            android:id="@+id/review_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-    </RelativeLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </com.example.coupangeats.util.StickyScrollView>
 
+
+</LinearLayout>

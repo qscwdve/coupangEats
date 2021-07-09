@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -12,9 +13,8 @@ import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.widget.NestedScrollView
+import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
@@ -47,6 +47,7 @@ class HomeFragment() :
     var mScrollFlag = false
     var mScrollStart = false
     var mScrollValue = 0
+    var mStickyCount = 0
     private var countDownTimer: CountDownTimer? = null
     private lateinit var mGpsControl: GpsControl
     private var mUserAddress: UserCheckResponseResult? = null
@@ -173,22 +174,7 @@ class HomeFragment() :
         // 초기화 누름
         binding.homeFilterClear.setOnClickListener {
             // 초기화 시키기
-            mHomeInfoRequest = HomeInfoRequest(
-                mUserAddress!!.latitude,
-                mUserAddress!!.longitude,
-                "recomm",
-                null,
-                null,
-                null,
-                null,
-                1,
-                10
-            )
-            for (i in 0..4) {
-                filterSelected[i] = false
-            }
-            HomeService(this).tryGetHomeData(mHomeInfoRequest)
-            refreshFilter()
+            resetFilter()
         }
         // 할인중인 맛집 보러가기
         binding.homeDiscountSuperLook.setOnClickListener {
@@ -245,6 +231,25 @@ class HomeFragment() :
             //binding.homeCheetahBannerParent.visibility = View.GONE
         }
 
+    }
+    fun resetFilter(){
+        // 초기화 시키기
+        mHomeInfoRequest = HomeInfoRequest(
+            mUserAddress!!.latitude,
+            mUserAddress!!.longitude,
+            "recomm",
+            null,
+            null,
+            null,
+            null,
+            1,
+            10
+        )
+        for (i in 0..4) {
+            filterSelected[i] = false
+        }
+        HomeService(this).tryGetHomeData(mHomeInfoRequest)
+        refreshFilter()
     }
     fun scrollStart(){
         val transition: Transition = Slide(Gravity.BOTTOM)
@@ -315,10 +320,10 @@ class HomeFragment() :
             else binding.homeNoticeTextCartAbove
 
         val transition: Transition = Slide(Gravity.BOTTOM)
+        view.visibility = View.VISIBLE
         transition.duration = 600
         transition.addTarget(view)
         TransitionManager.beginDelayedTransition(binding.root, transition)
-        view.visibility = View.VISIBLE
 
         Handler(Looper.getMainLooper()).postDelayed({
             TransitionManager.beginDelayedTransition(binding.root, transition)
@@ -451,7 +456,12 @@ class HomeFragment() :
         cartChange()
     }
 
-    fun startUserAddressCheckAndGetMainDate(){
+    fun startUserAddressCheckAndGetMainDate(check: Boolean = false){
+        if(check){
+            // 토글 해야함
+            toggle()
+            Log.d("toggle", "토글함")
+        }
         HomeService(this).tryGetUserCheckAddress(getUserIdx())
     }
 
@@ -647,7 +657,24 @@ class HomeFragment() :
                     binding.noSuperParent.itemNoSuperParent.visibility = View.VISIBLE
                 }
             }
+            if(mStickyCount <= 0){
+                resetFilter()
+                mStickyCount = 1
+            }
+        }
+    }
 
+    fun setStickyScroll() {
+        // 스티키 스크롤
+        binding.homeScrollView.mHeaderParentPosition = binding.homeRecommendSuper.top.toFloat()
+        binding.homeScrollView.run {
+            header = binding.homeFilterParent
+            stickListener = { _ ->
+                binding.homeFilterParent.elevation = 10F
+            }
+            freeListener = { _ ->
+                binding.homeFilterParent.elevation = 0F
+            }
         }
     }
 

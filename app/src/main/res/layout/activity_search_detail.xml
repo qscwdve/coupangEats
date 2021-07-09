@@ -128,6 +128,7 @@
             android:orientation="vertical">
 
             <HorizontalScrollView
+                android:id="@+id/searchDetailFilterParent"
                 android:layout_marginTop="3dp"
                 android:scrollbars="none"
                 android:layout_width="match_parent"
@@ -371,6 +372,13 @@
                 android:id="@+id/search_detail_super_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+            <include layout="@layout/item_no_filter_super"
+                android:id="@+id/searchDetailNoFilterParent"/>
+
+            <include layout="@layout/item_no_search_super"
+                android:id="@+id/searchDetailNoSearchParent"/>
+
         </LinearLayout>
 
         <ScrollView
@@ -412,7 +420,6 @@
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_marginHorizontal="20dp"
                     android:id="@+id/search_detail_resent_search_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

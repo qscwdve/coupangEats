@@ -15,6 +15,7 @@ import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.main.home.model.HomeInfo.RecommendStores
 
 class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragment: HomeFragment) : RecyclerView.Adapter<RecommendAdapter.RecommendViewHolder>(){
+    var stickyFlag = false
     class RecommendViewHolder(itemView: View, val recommendAdapter: RecommendAdapter) : RecyclerView.ViewHolder(itemView) {
         val mainimg = itemView.findViewById<ImageView>(R.id.item_recommend_img)
         val subImgParent = itemView.findViewById<LinearLayout>(R.id.item_recommend_img_sub_parent)
@@ -34,6 +35,7 @@ class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragme
 
         @SuppressLint("ClickableViewAccessibility")
         fun bind(item: RecommendStores) {
+
             itemView.tag = adapterPosition
             val image = item.url
             if(image.size > 0){
@@ -95,6 +97,11 @@ class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragme
             itemView.setOnClickListener {
                 // 매장 선택
                 recommendAdapter.fragment.startSuper(item.storeIdx)
+            }
+
+            if(!recommendAdapter.stickyFlag){
+                recommendAdapter.fragment.setStickyScroll()
+                recommendAdapter.stickyFlag = true
             }
         }
     }

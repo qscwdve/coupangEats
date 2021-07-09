@@ -34,15 +34,18 @@
         <ImageView
             android:background="@drawable/transpart_to_gray_ripple"
             android:id="@+id/map_back"
-            android:layout_margin="25dp"
+            android:padding="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/map_left_arrow"/>
+            android:src="@drawable/map_left_arrow" />
         <ImageView
             android:id="@+id/gps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_map_person"
+            android:layout_marginBottom="5dp"
             android:layout_centerInParent="true"/>
     </RelativeLayout>
     <RelativeLayout
@@ -54,10 +57,10 @@
 
         <TextView
             android:layout_alignParentTop="true"
-            android:gravity="start"
+            android:gravity="start|center_vertical"
             android:visibility="visible"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:textSize="18sp"
             android:textColor="@color/black"
             android:textStyle="bold"

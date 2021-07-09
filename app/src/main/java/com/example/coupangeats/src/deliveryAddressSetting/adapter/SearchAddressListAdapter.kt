@@ -22,7 +22,7 @@ class SearchAddressListAdapter(val addressList: ArrayList<SearchAddress>, val ac
 
             itemView.setOnClickListener {
                 // 주소 선택
-                 activity.changeDetailAddress(item)
+                 activity.changeDetailAddress(item, "", "")
             }
         }
     }

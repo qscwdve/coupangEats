@@ -18,12 +18,14 @@
         <ImageView
             android:id="@+id/event_back"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:layout_marginStart="@dimen/actionBarImageMarginStar"
             android:background="@drawable/circle_ripple_white_to_gray"
             android:contentDescription="@string/image_no"
-            android:padding="18sp"
-            android:src="@drawable/left_arrow"
+            android:padding="8sp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_left_arrow_black"
             android:visibility="visible" />
 
         <TextView
@@ -32,7 +34,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/actionBarTextMarginStar"
             android:text="@string/eventTitle"
             android:textColor="@color/black"
             android:textSize="20sp"

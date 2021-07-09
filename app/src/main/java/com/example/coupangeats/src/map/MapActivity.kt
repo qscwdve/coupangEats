@@ -2,6 +2,7 @@ package com.example.coupangeats.src.map
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -27,8 +28,8 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
     lateinit var mNaverMap : NaverMap
     private lateinit var mapView: MapView
     private lateinit var locationSource: FusedLocationSource
-    private var mLat = (-1).toDouble()
-    private var mLon = (-1).toDouble()
+    private var mLat = ""
+    private var mLon = ""
     private var firstFlag = false
     private var tvHeight = 0
     private var tvWidth = 0
@@ -45,8 +46,8 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
         mapView = findViewById(R.id.map)
         mapView.onCreate(savedInstanceState)
 
-        mLat = intent.getDoubleExtra("lat", (-1).toDouble())
-        mLon = intent.getDoubleExtra("lon", (-1).toDouble())
+        mLat = intent.getStringExtra("lat") ?: ""
+        mLon = intent.getStringExtra("lon") ?: ""
         val n = intent.getIntExtra("version", -1) ?: -1
         if(n != -1){
             version = 1
@@ -96,31 +97,24 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
         }
         // 배달주소로 정하기 서버와 통신하고 난 후 선택도 해야함
         binding.mapDeliveryBtn.setOnClickListener {
-            if(version != 1){
-                // 선택 -> 배달 추가 후 선택하 다음 종료
-                val address = binding.mapMainAddress.text.toString()
-                val roadAddress = binding.mapAddress.text.toString()
-                /*val request = DeliveryAddressAddRequest(address, roadAddress, null, "ETC", null, getUserIdx())
-                // 배달 -> 추가
-                showLoadingDialog(this)
-                MapService(this).tryPostDeliveryAddressAdd(request)
-                */
-                val intent = Intent().apply {
-                    this.putExtra("mainAddress",  address)
-                    this.putExtra("roadAddress", roadAddress)
-                    this.putExtra("lat", nowLat)
-                    this.putExtra("lon", nowLon)
-                }
-                setResult(RESULT_OK, intent)
-                finish()
-            } else {
-                // 수정
-                val edit = ApplicationClass.sSharedPreferences.edit()
-                edit.putString("mainAddress", binding.mapMainAddress.text.toString())
-                edit.putString("roadAddress", binding.mapAddress.text.toString())
-                edit.apply()
-                finish()
+            // 주소 선택함 -> DeliveryAddressSetting에 넘겨야함
+            val address = binding.mapMainAddress.text.toString()
+            val roadAddress = binding.mapAddress.text.toString()
+
+            val edit = ApplicationClass.sSharedPreferences.edit()
+            edit.putString("mainAddress", binding.mapMainAddress.text.toString())
+            edit.putString("roadAddress", binding.mapAddress.text.toString())
+            edit.apply()
+
+            val intent = Intent().apply {
+                this.putExtra("mainAddress",  address)
+                this.putExtra("roadAddress", roadAddress)
+                this.putExtra("lat", nowLat)
+                this.putExtra("lon", nowLon)
             }
+            setResult(RESULT_OK, intent)
+            finish()
+
         }
 
     }
@@ -177,24 +171,33 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
 
         // 현재 위치 마크 표시
         uiSettings = mNaverMap.uiSettings
-
-        if(mLat != -1.0 && mLon != -1.0){
+        val lat = mLat.toDouble()
+        val lon = mLon.toDouble()
+        if(lat != -1.0 && lon != -1.0){
             Log.d("mark", "마크 표시 보여야함")
-            Log.d("mark", "lat : ${mLat}  , lon : ${mLon}")
+            Log.d("mark", "lat : ${lat}  , lon : ${lon}")
 
-            val address : ArrayList<String>? = gpsControl.getCurrentAddressArray(mLat, mLon)
+            val address : ArrayList<String>? = gpsControl.getCurrentAddressArray(lat, lon)
             if(address != null){
                 binding.mapMainAddress.text = address[1]
                 binding.mapAddress.text = address[0]
             }
         }
-        val marker = Marker(LatLng(mLat, mLon))
-        marker.map = mNaverMap
+        //val marker = Marker(LatLng(lat, lon))
+        val locationOverlay = mNaverMap.locationOverlay
+        locationOverlay.isVisible = true
+        locationOverlay.iconHeight = 70
+        locationOverlay.iconWidth = 70
+        locationOverlay.circleRadius = 50
+        locationOverlay.circleColor = Color.parseColor("#AEE0F8")
+        locationOverlay.position = LatLng(lat, lon)
+
+        //marker.map = mNaverMap
         //위치 및 각도 조정
         //위치 및 각도 조정
         val cameraPosition = CameraPosition(
-            LatLng(mLat, mLon),  // 위치 지정
-            16.0,  // 줌 레벨
+            LatLng(lat, lon),  // 위치 지정
+            18.0,  // 줌 레벨
             0.0,  // 기울임 각도
             0.0 // 방향
         )

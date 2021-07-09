@@ -179,7 +179,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == DRIVERYADDRESSSETTING && resultCode == RESULT_OK) {
             val home = supportFragmentManager.findFragmentByTag("homeFragment") as HomeFragment
-            home.startUserAddressCheckAndGetMainDate()
+            val check = data?.getBooleanExtra("check", false) ?: false
+            Log.d("toggle", "main activity에서 받음 : $check")
+            home.startUserAddressCheckAndGetMainDate(check)
         }
         else if(requestCode == FAVORITES_REQUEST_CODE && resultCode == RESULT_OK){
             var version : Int? = null

@@ -10,20 +10,24 @@
     tools:context=".src.deliveryAddressSetting.DeliveryAddressSettingActivity">
 
     <LinearLayout
+        android:paddingStart="15dp"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:orientation="horizontal"
-        android:paddingBottom="5dp">
+        android:paddingBottom="5dp"
+        tools:ignore="RtlSymmetry">
 
         <ImageView
             android:id="@+id/delivery_address_back"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:adjustViewBounds="true"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:layout_marginStart="@dimen/actionBarImageMarginStar"
             android:background="@drawable/circle_ripple_white_to_gray"
             android:contentDescription="@string/image_no"
-            android:padding="18sp"
-            android:src="@drawable/cancel"
+            android:src="@drawable/ic_cancel"
             android:visibility="visible" />
 
         <TextView
@@ -31,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="@dimen/actionBarTextMarginStar"
             android:text="@string/divery_address_setting"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -202,7 +206,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_marginStart="20dp"
+                            android:layout_marginStart="10dp"
                             android:layout_weight="1"
                             android:contentDescription="@string/image_no"
                             android:src="@drawable/ic_delivery_home"
@@ -291,7 +295,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:layout_marginStart="20dp"
+                            android:layout_marginStart="10dp"
                             android:layout_weight="1"
                             android:scaleType="centerInside"
                             android:contentDescription="@string/image_no"

@@ -16,29 +16,30 @@ import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.main.home.model.HomeInfo.Events
 
 class EventAdapter(val eventList: ArrayList<Events>, val fragment: HomeFragment) : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
-    class EventViewHolder(itemView: View, val fragment: HomeFragment) : RecyclerView.ViewHolder(itemView) {
+
+    class EventViewHolder(itemView: View, val adapter: EventAdapter) : RecyclerView.ViewHolder(itemView) {
         val eventImg = itemView.findViewById<ImageView>(R.id.item_event_img)
 
         @SuppressLint("ClickableViewAccessibility")
         fun bind(item: Events, totalNum: Int) {
-            Glide.with(fragment.requireContext()).load(item.url).into(eventImg)
+            Glide.with(adapter.fragment.requireContext()).load(item.url).into(eventImg)
 
             itemView.setOnClickListener {
-                fragment.startEventItem(item.eventIdx)
+                adapter.fragment.startEventItem(item.eventIdx)
             }
 
             itemView.setOnTouchListener { v, event ->
                 if(event.action == MotionEvent.ACTION_UP){
-                    if(fragment.mScrollStart){
-                        fragment.mScrollStart  = false
-                        fragment.mScrollFlag = false
+                    if(adapter.fragment.mScrollStart){
+                        adapter.fragment.mScrollStart  = false
+                        adapter.fragment.mScrollFlag = false
                     } else {
-                        fragment.mScrollFlag = false
+                        adapter.fragment.mScrollFlag = false
                     }
                 } else if(event.action == MotionEvent.ACTION_DOWN){
                     // 누름
-                    fragment.mScrollFlag = true
-                    fragment.mScrollValue = -1
+                    adapter.fragment.mScrollFlag = true
+                    adapter.fragment.mScrollValue = -1
                 }
                 false
             }
@@ -47,7 +48,7 @@ class EventAdapter(val eventList: ArrayList<Events>, val fragment: HomeFragment)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_event_viewpager, parent, false)
-        return EventViewHolder(view, fragment)
+        return EventViewHolder(view, this)
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
