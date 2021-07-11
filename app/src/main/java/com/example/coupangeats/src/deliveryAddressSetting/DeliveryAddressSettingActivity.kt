@@ -213,6 +213,7 @@ class DeliveryAddressSettingActivity() :
                 // 현재 위치 가져와야 함
                 this.putExtra("lat", mLat.toString())
                 this.putExtra("lon", mLon.toString())
+                this.putExtra("detailAddressVersion", version)
             }
             startActivityForResult(intent, MAP_ACTIVITY)
         }

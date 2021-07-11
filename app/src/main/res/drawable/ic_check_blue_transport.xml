@@ -1,4 +1,8 @@
-<vector android:height="19.999563dp" android:viewportHeight="45.7"
-    android:viewportWidth="45.701" android:width="20dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="@color/transportLoginBlue" android:pathData="M20.687,38.332c-2.072,2.072 -5.434,2.072 -7.505,0L1.554,26.704c-2.072,-2.071 -2.072,-5.433 0,-7.504c2.071,-2.072 5.433,-2.072 7.505,0l6.928,6.927c0.523,0.522 1.372,0.522 1.896,0L36.642,7.368c2.071,-2.072 5.433,-2.072 7.505,0c0.995,0.995 1.554,2.345 1.554,3.752c0,1.407 -0.559,2.757 -1.554,3.752L20.687,38.332z"/>
+<vector android:height="15dp" android:viewportHeight="857"
+    android:viewportWidth="1070" android:width="18dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <group>
+        <clip-path android:pathData="M0,0h1070v857h-1070z"/>
+        <path android:fillColor="@color/transportLoginBlue" android:fillType="evenOdd" android:pathData="M0.3,491.78 L100.12,367.34 554.28,731.63 454.46,856.07Z"/>
+        <path android:fillColor="@color/transportLoginBlue" android:fillType="evenOdd" android:pathData="M926.03,0.49 L1070,119.81 459.78,856.07 315.81,736.75Z"/>
+    </group>
 </vector>

@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:orientation="vertical"
-    android:padding="20dp" android:background="@drawable/bottom_sheet_dialog_top_radius_circle"
+    android:padding="20dp"
     android:layout_height="wrap_content">
 
     <EditText
+        android:textSelectHandle="@color/loginBlue"
+        android:textSelectHandleRight="@color/loginBlue"
+        android:textSelectHandleLeft="@color/loginBlue"
+        android:textCursorDrawable="@drawable/cursor_setting"
         android:id="@+id/dialog_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

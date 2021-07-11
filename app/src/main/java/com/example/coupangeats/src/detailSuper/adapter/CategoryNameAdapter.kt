@@ -25,7 +25,7 @@ class CategoryNameAdapter(val categoryList: ArrayList<Menu>, val activity: Detai
             itemView.setOnClickListener {
                 Handler(Looper.getMainLooper()).postDelayed({
                     // 해당 항목으로 메뉴 리스트 리사이클러뷰 선택해야 함
-                    //categoryNameAdapter.activity.menuFouceItem(position)
+                    categoryNameAdapter.activity.menuFouceItem(position)
                     // 강조줄 나타내기
                     if(categoryNameAdapter.nowSelected != position){
                         categoryNameAdapter.changeHighlight(position)
@@ -50,5 +50,12 @@ class CategoryNameAdapter(val categoryList: ArrayList<Menu>, val activity: Detai
     fun changeHighlight(num: Int) {
         nowSelected = num
         notifyDataSetChanged()
+    }
+
+    fun changeHighlightCheck(num: Int) {
+        if(nowSelected != num){
+            nowSelected = num
+            notifyDataSetChanged()
+        }
     }
 }

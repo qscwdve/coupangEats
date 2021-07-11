@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityFavoritesBinding
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.favorites.adapter.FavoritesSuperAdapter
@@ -96,6 +97,11 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
             setDummyDate()
         }
 
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition( R.anim.horiaon_exit, R.anim.horizon_enter)
     }
 
     fun changeSelectLook(isCheck: Boolean, num: Int = 0) {

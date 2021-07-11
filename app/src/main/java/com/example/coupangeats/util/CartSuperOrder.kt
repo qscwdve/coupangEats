@@ -1,11 +1,14 @@
 package com.example.coupangeats.util
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.DialogEditTextBinding
@@ -22,15 +25,19 @@ class CartSuperOrder(val activity: CartActivity): BottomSheetDialogFragment()  {
         savedInstanceState: Bundle?
     ): View? {
         binding = DialogEditTextBinding.inflate(layoutInflater)
+        //dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        //dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.EditTextDialogStyle)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppBottomSheetDialogTheme)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         if(activity.mSuperOrderString == "예) 견과류는 빼주세요") activity.mSuperOrderString = ""
         binding.dialogEditText.setText(activity.mSuperOrderString)
         // 글자 수 감지

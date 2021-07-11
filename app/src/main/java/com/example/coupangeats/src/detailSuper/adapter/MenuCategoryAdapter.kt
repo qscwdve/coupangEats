@@ -31,6 +31,7 @@ class MenuCategoryAdapter(val menuCategoryList: ArrayList<Menu>, val activity: D
             // 리사이클러뷰 생성
             menuRecyclerView.adapter = MenuAdapter(item.menuList, menuCategoryAdapter.activity)
             menuRecyclerView.layoutManager = LinearLayoutManager(itemView.context)
+
         }
     }
 

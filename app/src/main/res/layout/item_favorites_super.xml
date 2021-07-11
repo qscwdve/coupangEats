@@ -185,16 +185,33 @@
             </LinearLayout>
         </LinearLayout>
 
-        <ImageView
-            android:background="@drawable/circle_ripple_white_to_gray"
+        <LinearLayout
+            android:layout_gravity="center"
+            android:id="@+id/item_favorites_select"
+            android:layout_marginStart="10dp"
             android:visibility="visible"
             android:padding="4dp"
-            android:layout_marginStart="10dp"
-            android:id="@+id/item_favorites_select"
-            android:layout_gravity="center"
+            android:background="@drawable/circle_ripple_white_to_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_necessary_option"/>
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/item_favorites_select_parent"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_check_box">
+
+                <ImageView
+                    android:id="@+id/item_favorites_select_img"
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:src="@drawable/ic_nessary_option_round_gray" />
+
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 
     <View

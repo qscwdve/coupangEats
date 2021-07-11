@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.DialogCategoryChangeBinding
 import com.example.coupangeats.databinding.DialogDetailAddressDeleteBinding
@@ -18,6 +19,7 @@ import com.example.coupangeats.databinding.DialogLogoutBinding
 import com.example.coupangeats.databinding.FragmentDeliveryDetailAddressBinding
 import com.example.coupangeats.src.deliveryAddressSetting.DeliveryAddressSettingActivity
 import com.example.coupangeats.src.deliveryAddressSetting.DeliveryAddressSettingService
+import com.example.coupangeats.src.deliveryAddressSetting.adapter.data.SearchAddress
 import com.example.coupangeats.src.deliveryAddressSetting.detail.model.*
 import com.example.coupangeats.src.deliveryAddressSetting.model.DeliveryAddressAddRequest
 import com.example.coupangeats.src.map.MapActivity
@@ -160,8 +162,9 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 this.putExtra("lat", mLat)
                 this.putExtra("lon", mLon)
                 this.putExtra("version", 1)
+                this.putExtra("detailAddressVersion", version)
             }
-            startActivity(intent)
+            startActivityForResult(intent, MAP_ACTIVITY)
         }
 
         // 배달지 주소 삭제
@@ -181,6 +184,21 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 // 상세주소 입력 바라는 다이얼로그 뿌림
                 val detailAddressBottomSheetDialog = DetailAddressBottomSheetDialog(this)
                 detailAddressBottomSheetDialog.show(requireFragmentManager(), "detailAddress")
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == MAP_ACTIVITY && resultCode == AppCompatActivity.RESULT_OK){
+            // 배달지 주소 추가
+            if(data != null){
+                mMainAddress = data.getStringExtra("mainAddress") ?: ""
+                mRoadAddress = data.getStringExtra("roadAddress") ?: ""
+                mLat = data.getStringExtra("lat") ?: ""
+                mLon = data.getStringExtra("lon") ?: ""
+                binding.detailAddressMainAddress.text = mMainAddress
+                binding.detailAddressRoadAddress.text = mRoadAddress
             }
         }
     }

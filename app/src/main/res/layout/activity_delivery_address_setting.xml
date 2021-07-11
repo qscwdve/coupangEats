@@ -24,7 +24,6 @@
             android:adjustViewBounds="true"
             android:layout_gravity="center"
             android:padding="8dp"
-            android:layout_marginStart="@dimen/actionBarImageMarginStar"
             android:background="@drawable/circle_ripple_white_to_gray"
             android:contentDescription="@string/image_no"
             android:src="@drawable/ic_cancel"
@@ -252,12 +251,13 @@
                                 <ImageView
                                     android:id="@+id/delivery_address_setting_home_checked"
                                     android:layout_width="0dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:layout_marginEnd="20dp"
                                     android:layout_weight="1"
                                     android:contentDescription="@string/image_no"
                                     android:padding="8dp"
-                                    android:src="@drawable/ic_sign_up_checked"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_check_blue"
                                     android:visibility="invisible" />
 
                             </LinearLayout>
@@ -343,12 +343,13 @@
                                 <ImageView
                                     android:id="@+id/delivery_address_business_checked"
                                     android:layout_width="0dp"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:layout_marginEnd="20dp"
                                     android:layout_weight="1"
                                     android:contentDescription="@string/image_no"
                                     android:padding="8dp"
-                                    android:src="@drawable/ic_sign_up_checked"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_check_blue"
                                     android:visibility="invisible" />
 
                             </LinearLayout>

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
@@ -36,6 +37,8 @@ class SuperSearchActivity :
     private var mRecommSelect = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        overridePendingTransition( R.anim.horizon_start_enter, R.anim.horizon_start_exit)
 
         lat = intent.getStringExtra("lat") ?: ""
         lon = intent.getStringExtra("lon") ?: ""
@@ -132,8 +135,28 @@ class SuperSearchActivity :
             startFilterSuper()
             refreshFilter()
         }
+
+        // 스크롤
+        binding.searchRecommendRecyclerview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            Log.d("scroll", "y : $scrollY")
+            if(scrollY > 400){
+                binding.superSearchScrollUpBtn.visibility = View.VISIBLE
+            } else {
+                binding.superSearchScrollUpBtn.visibility = View.GONE
+            }
+        }
+
+        binding.superSearchScrollUpBtn.setOnClickListener {
+            binding.searchRecommendRecyclerview.scrollTo(0, 0)
+        }
+
         // 종료
         binding.superSearchBack.setOnClickListener { finish() }
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition( R.anim.horiaon_exit, R.anim.horizon_enter)
     }
 
     fun startFilterSuper() {
@@ -298,6 +321,7 @@ class SuperSearchActivity :
             } else {
                 binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.VISIBLE
             }
+            binding.searchRecommendRecyclerview.scrollTo(0,0)
         }
     }
 

@@ -55,6 +55,11 @@ class CategorySuperAdapter(val categoryList: ArrayList<SuperCategoryResponseResu
 
     fun changeCategory(value: String){
         notifyDataSetChanged()
-        activity.categoryChange(value)
+        activity.categoryChange(value, 1)
+    }
+
+    fun changeCategoryOnly(value: String){
+        categoryCheck = value
+        notifyDataSetChanged()
     }
 }

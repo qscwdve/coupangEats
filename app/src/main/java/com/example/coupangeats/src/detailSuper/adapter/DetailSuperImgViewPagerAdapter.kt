@@ -24,8 +24,8 @@ class DetailSuperImgViewPagerAdapter(val imgList: ArrayList<String>) : RecyclerV
     }
 
     override fun onBindViewHolder(holder: DetailSuperImgViewpagerViewHoler, position: Int) {
-        holder.bind(imgList[position], position)
+        holder.bind(imgList[position%(imgList.size)], position%(imgList.size))
     }
 
-    override fun getItemCount(): Int = imgList.size
+    override fun getItemCount(): Int = (imgList.size * 100)
 }

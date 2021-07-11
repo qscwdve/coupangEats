@@ -34,7 +34,9 @@ class FavoritesSuperAdapter(var superList: ArrayList<FavoritesSuperInfo>, val ac
         val deliveryPriceFree = itemView.findViewById<TextView>(R.id.item_favorites_super_delivery_price_free)
         val discountParent = itemView.findViewById<LinearLayout>(R.id.item_favorites_super_discount_parent)
         val discountText = itemView.findViewById<TextView>(R.id.item_favorites_super_discount_text)
-        val select = itemView.findViewById<ImageView>(R.id.item_favorites_select)
+        val select = itemView.findViewById<LinearLayout>(R.id.item_favorites_select)
+        val selectParent = itemView.findViewById<LinearLayout>(R.id.item_favorites_select_parent)
+        val selectImg = itemView.findViewById<ImageView>(R.id.item_favorites_select_img)
         val parent = itemView.findViewById<LinearLayout>(R.id.item_favorites_super_parent)
 
         fun bind(item: FavoritesSuperInfo, position: Int) {
@@ -125,11 +127,13 @@ class FavoritesSuperAdapter(var superList: ArrayList<FavoritesSuperInfo>, val ac
         fun changeSelect(position: Int) {
             if(adapter.selectCheckList[position]){
                 adapter.selectCheckList[position] = false
-                select.setImageResource(R.drawable.ic_necessary_option)
+                selectParent.setBackgroundResource(R.drawable.menu_check_box)
+                selectImg.setImageResource(R.drawable.ic_nessary_option_round_gray)
                 select.setBackgroundResource(R.drawable.circle_ripple_white_loginblue)
             } else {
                 adapter.selectCheckList[position] = true
-                select.setImageResource(R.drawable.ic_necessary_option_click)
+                selectParent.setBackgroundResource(R.drawable.menu_check_box_click)
+                selectImg.setImageResource(R.drawable.ic_nessary_option_round_white)
                 select.setBackgroundResource(R.drawable.circle_ripple_white_to_gray)
             }
             adapter.checkSelectNum()

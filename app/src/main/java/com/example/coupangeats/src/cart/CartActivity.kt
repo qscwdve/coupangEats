@@ -15,6 +15,7 @@ import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.discount.DiscountActivity
 import com.example.coupangeats.util.CartMenuDatabase
 import com.example.coupangeats.util.CartOrderRider
+import com.example.coupangeats.util.CartOrderRiderEdit
 import com.example.coupangeats.util.CartSuperOrder
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
@@ -30,6 +31,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     var mCheckSpoon = "N"
     var mSuperOrderString = ""
     var mCouponCount = 0
+    var mRequestChange = true
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
     private val DISCOUNT_ACTIVITY_NUM = 1234
@@ -69,13 +71,20 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             val cartOrderRider = CartOrderRider(this, mRiderOrder)
             cartOrderRider.show(supportFragmentManager, "riderOrder")
         }
+        // 배달 요청사항 직접 입력하기
+        binding.cartRiderOrderEdit.setOnClickListener {
+            val cartOrderRiderEdit = CartOrderRiderEdit(this, binding.cartRiderOrderEdit.text.toString())
+            cartOrderRiderEdit.show(supportFragmentManager, "riderOrderEdit")
+        }
         // 일회용 젓가락 사용 비사용
         binding.cartOneSpoonCheck.setOnClickListener {
             if(mCheckSpoon == "N"){
-                binding.cartOneSpoonCheck.setImageResource(R.drawable.ic_add_option_click)
+                binding.cartOneSpoonCheck.setBackgroundResource(R.drawable.check_box_on)
+                binding.cartOneSpoonCheckImg.setImageResource(R.drawable.ic_check_white)
                 mCheckSpoon = "Y"
             } else {
-                binding.cartOneSpoonCheck.setImageResource(R.drawable.ic_add_option)
+                binding.cartOneSpoonCheck.setBackgroundResource(R.drawable.check_box_off)
+                binding.cartOneSpoonCheckImg.setImageResource(R.drawable.ic_check_gray)
                 mCheckSpoon = "N"
             }
         }
@@ -87,10 +96,20 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         }
         // 요청사항 보여지고 안보여지고
         binding.cartRequestChange.setOnClickListener {
-            if(binding.cartRequestParent.visibility == View.VISIBLE)
+            if(mRequestChange){
+                // true면 보여짐-> false
                 binding.cartRequestParent.visibility = View.GONE
-            else
+                binding.cartRequestChange.setImageResource(R.drawable.ic_up_arrow_cart)
+                binding.cartSuperOrderText.text = binding.cartSuperOrder.text
+                binding.cartSuperOrderText.visibility = View.VISIBLE
+                mRequestChange = false
+            } else{
+                // false면 안보여짐 -> true로 바꿈
                 binding.cartRequestParent.visibility = View.VISIBLE
+                binding.cartRequestChange.setImageResource(R.drawable.ic_down_arrow_cart)
+                binding.cartSuperOrderText.visibility = View.GONE
+                mRequestChange = true
+            }
         }
         // 결제하기!!
         binding.cartOk.setOnClickListener {
@@ -106,7 +125,10 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             var storeOrder = binding.cartSuperOrder.text.toString()
             storeOrder = if(storeOrder == "예) 견과류는 빼주세요") "" else storeOrder
             val checkEchoProduct = mCheckSpoon
-            val deliveryRequests = binding.cartRiderOrder.text.toString()
+            val deliveryRequests = if(mRiderOrder == 7) {
+                val str = binding.cartRiderOrderEdit.text.toString()
+                if(str == "상세 요청사항을 입력해주세요") "" else str
+            } else binding.cartRiderOrderText.text.toString()
             val payType = "만나서 현금결제"
             val userIdx = getUserIdx()
             val request = OrderRequest(address, storeIdx, order, couponIdx, orderPrice, deliveryPrice, discountPrice, totalPrice, storeOrder, checkEchoProduct, deliveryRequests, payType, userIdx)
@@ -130,7 +152,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             if(data != null){
                 if(data.getBooleanExtra("exist", false)){
                     var price = data.getStringExtra("coupon") ?: ""
-                    Log.d("coupon", "price: $price")
+
                     if(price == "" || price == "0"){
                         changeCouponNo()
                     } else {
@@ -307,21 +329,43 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             }
         }
         // 쿠폰 개수
-        val couponNum = "${coupon.couponCount}장  ▶"
+        val couponNum = "${coupon.couponCount}장"
         mCouponCount = coupon.couponCount
         binding.cartCouponNum.text = couponNum
     }
 
     // 배달 요청사항 고르기
     fun changeRiderOrder(index: Int, value: String) {
-        binding.cartRiderOrder.text = value
+        binding.cartRiderOrderText.text = value
         mRiderOrder = index
         // 7번일 경우 직접 입력하기가 보여야함
+        if(index == 7){
+            binding.cartRiderOrderEdit.visibility = View.VISIBLE
+        } else {
+            binding.cartRiderOrderEdit.visibility = View.GONE
+        }
     }
 
     // 가게 요청사항 고르기
     fun changeSuperOrder(value: String){
-        binding.cartSuperOrder.text = value
+        if(value == ""){
+            binding.cartSuperOrder.text = "예) 견과류는 빼주세요"
+            binding.cartSuperOrder.setTextColor(Color.parseColor("#9E9EA0"))
+        } else {
+            binding.cartSuperOrder.text = value
+            binding.cartSuperOrder.setTextColor(Color.parseColor("#202020"))
+        }
+    }
+
+    // 배달 요청사항 직접 입력
+    fun changeOrderRiderEdit(value: String){
+        if(value == ""){
+            binding.cartRiderOrderEdit.text = "상세 요청사항을 입력해주세요"
+            binding.cartRiderOrderEdit.setTextColor(Color.parseColor("#9E9EA0"))
+        } else {
+            binding.cartRiderOrderEdit.text = value
+            binding.cartRiderOrderEdit.setTextColor(Color.parseColor("#202020"))
+        }
     }
     fun priceIntToString(value: Int) : String {
         val target = value.toString()

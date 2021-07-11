@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
 import com.example.coupangeats.src.menuSelect.MenuSelectActivity
@@ -24,7 +26,10 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
     var selectedOption = Array(optionList.size){i -> false}   // 추가한 것들 저장
     class MenuDetailViewHolder(itemView: View, val menuDetailAdapter: MenuDetailAdapter) : RecyclerView.ViewHolder(itemView){
         val name = itemView.findViewById<TextView>(R.id.item_menu_detail_name)
-        val click = itemView.findViewById<ImageView>(R.id.item_menu_detail_click)
+        val necessaryParent = itemView.findViewById<LinearLayout>(R.id.item_menu_detail_necessary_check_parent)
+        val necessaryImg = itemView.findViewById<ImageView>(R.id.item_menu_detail_necessary_check_img)
+        val optionParent = itemView.findViewById<LinearLayout>(R.id.item_menu_detail_check_parent)
+        val optionImg = itemView.findViewById<ImageView>(R.id.item_menu_detail_check_img)
         val price = itemView.findViewById<TextView>(R.id.item_menu_detail_price)
 
         fun bind(item: Option, position: Int){
@@ -33,16 +38,22 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
             price.text = extraPrice
             if(menuDetailAdapter.version == 1){
                 // 필수
-                if(menuDetailAdapter.necessary == position)
-                    click.setImageResource(R.drawable.ic_necessary_option_click)
-                 else
-                     click.setImageResource(R.drawable.ic_necessary_option)
+                optionParent.visibility = View.GONE
+                necessaryParent.visibility = View.VISIBLE
+                if(menuDetailAdapter.necessary == position){
+                    necessaryParent.setBackgroundResource(R.drawable.menu_check_box_click)
+                    necessaryImg.setImageResource(R.drawable.ic_nessary_option_round_white)
+                } else {
+                    necessaryParent.setBackgroundResource(R.drawable.menu_check_box)
+                    necessaryImg.setImageResource(R.drawable.ic_nessary_option_round_gray)
+                }
                 itemView.setOnClickListener {
                     Log.d("checkSelect", "아이템 눌림")
                     // 아이템 선택시
                     if(menuDetailAdapter.count == 0){
                         menuDetailAdapter.count = 1
-                        click.setImageResource(R.drawable.ic_necessary_option_click)
+                        necessaryParent.setBackgroundResource(R.drawable.menu_check_box_click)
+                        necessaryImg.setImageResource(R.drawable.ic_nessary_option_round_white)
                         menuDetailAdapter.necessary = position
                     } else {
                         // 필수면 1개인데 이미 선택된 상태이므로 다른 것을 선택하고 되돌려야 한다.
@@ -54,14 +65,28 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
                 }
             } else {
                 // 추가 선택
+                optionParent.visibility = View.VISIBLE
+                necessaryParent.visibility = View.GONE
+                optionImg.visibility = View.VISIBLE
                 if(menuDetailAdapter.count == menuDetailAdapter.numberOfChoices) {
                     // 선택 불가능으로 나머지 돌려야 한다.
-                    if(menuDetailAdapter.selectedOption[position]) click.setImageResource(R.drawable.ic_add_option_click)
-                    else click.setImageResource(R.drawable.ic_add_option_false)
+                    if(menuDetailAdapter.selectedOption[position]){
+                        optionParent.setBackgroundResource(R.drawable.check_box_on)
+                        optionImg.setImageResource(R.drawable.ic_check_white)
+                    }
+                    else{
+                        optionParent.setBackgroundResource(R.drawable.check_box_block)
+                        optionImg.visibility = View.INVISIBLE
+                    }
                 } else {
                     // 선택 아직 가능
-                    if(menuDetailAdapter.selectedOption[position]) click.setImageResource(R.drawable.ic_add_option_click)
-                    else click.setImageResource(R.drawable.ic_add_option)
+                    if(menuDetailAdapter.selectedOption[position]) {
+                        optionParent.setBackgroundResource(R.drawable.check_box_on)
+                        optionImg.setImageResource(R.drawable.ic_check_white)}
+                    else {
+                        optionParent.setBackgroundResource(R.drawable.check_box_off)
+                        optionImg.setImageResource(R.drawable.ic_check_gray)
+                    }
                 }
                 itemView.setOnClickListener {
                     Log.d("checkSelect", "아이템 눌림")
@@ -70,7 +95,8 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
                         if(menuDetailAdapter.count == menuDetailAdapter.numberOfChoices){
                             if(menuDetailAdapter.selectedOption[position]){
                                 // 취소
-                                click.setImageResource(R.drawable.ic_add_option)
+                                optionParent.setBackgroundResource(R.drawable.check_box_off)
+                                optionImg.setImageResource(R.drawable.ic_check_gray)
                                 menuDetailAdapter.count--
                                 menuDetailAdapter.selectedOption[position] = false
                                 menuDetailAdapter.refresh()
@@ -78,7 +104,8 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
                         } else {
                             if(!menuDetailAdapter.selectedOption[position] && menuDetailAdapter.count < menuDetailAdapter.numberOfChoices){
                                 // 아직 선택 안했을 때
-                                click.setImageResource(R.drawable.ic_add_option_click)
+                                optionParent.setBackgroundResource(R.drawable.check_box_on)
+                                optionImg.setImageResource(R.drawable.ic_check_white)
                                 menuDetailAdapter.selectedOption[position] = true
                                 menuDetailAdapter.count++
                                 if(menuDetailAdapter.count == menuDetailAdapter.numberOfChoices){
@@ -87,7 +114,8 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
                                 }
                             } else {
                                 // 선택된 것 취소
-                                click.setImageResource(R.drawable.ic_add_option)
+                                optionParent.setBackgroundResource(R.drawable.check_box_off)
+                                optionImg.setImageResource(R.drawable.ic_check_gray)
                                 menuDetailAdapter.count--
                                 menuDetailAdapter.selectedOption[position] = false
                             }

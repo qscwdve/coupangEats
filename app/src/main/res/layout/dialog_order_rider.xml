@@ -45,7 +45,7 @@
     <LinearLayout
         android:id="@+id/dialog_order_rider_option1"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="16dp"
+        android:paddingVertical="13dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -58,6 +58,7 @@
                 android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option1_img"
                 android:visibility="invisible"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_check_blue"/>
@@ -66,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="문 앞에 두고 사진 (초인종 O)"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
 
@@ -80,7 +81,7 @@
     <LinearLayout
         android:id="@+id/dialog_order_rider_option2"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="16dp"
+        android:paddingVertical="13dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,6 +95,7 @@
                 android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option2_img"
                 android:visibility="invisible"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_check_blue"/>
@@ -102,7 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="문 앞에 두고 사진 (초인종 X)"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
 
@@ -116,7 +118,7 @@
     <LinearLayout
         android:id="@+id/dialog_order_rider_option3"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="16dp"
+        android:paddingVertical="13dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -130,6 +132,7 @@
                 android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option3_img"
                 android:visibility="invisible"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_check_blue"/>
@@ -138,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="신규매장순"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
 
@@ -152,7 +155,7 @@
     <LinearLayout
         android:id="@+id/dialog_order_rider_option4"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="16dp"
+        android:paddingVertical="13dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -166,6 +169,7 @@
                 android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option4_img"
                 android:visibility="invisible"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_check_blue"/>
@@ -174,7 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="신규매장순"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
 
@@ -188,7 +192,7 @@
     <LinearLayout
         android:id="@+id/dialog_order_rider_option5"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="16dp"
+        android:paddingVertical="13dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -202,6 +206,7 @@
                 android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option5_img"
                 android:visibility="invisible"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_check_blue"/>
@@ -210,7 +215,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="신규매장순"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
 
@@ -224,7 +229,7 @@
     <LinearLayout
         android:id="@+id/dialog_order_rider_option6"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="16dp"
+        android:paddingVertical="13dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -238,6 +243,7 @@
                 android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option6_img"
                 android:visibility="invisible"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_check_blue"/>
@@ -246,7 +252,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="신규매장순"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
 
@@ -260,7 +266,7 @@
     <LinearLayout
         android:id="@+id/dialog_order_rider_option7"
         android:background="@drawable/white_to_gray_ripple"
-        android:paddingVertical="16dp"
+        android:paddingVertical="13dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -273,16 +279,17 @@
             <ImageView
                 android:layout_marginEnd="10dp"
                 android:id="@+id/dialog_order_rider_option7_img"
-                android:visibility="gone"
+                android:visibility="invisible"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:src="@drawable/ic_check_blue"/>
             <TextView
                 android:id="@+id/dialog_order_rider_option7_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="신규매장순"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:textColor="@color/black"/>
         </LinearLayout>
 

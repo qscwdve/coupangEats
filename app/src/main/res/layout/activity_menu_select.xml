@@ -283,7 +283,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/loginBlue"
+        android:background="@drawable/blue_to_dark_blue_ripple"
         android:gravity="center"
         android:padding="17dp"
         android:text="카트에 담기"

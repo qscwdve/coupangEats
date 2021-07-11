@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="80dp"
+    android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/white_to_gray_ripple">
+
+    <TextView
+        android:paddingHorizontal="10dp"
+        android:id="@+id/item_category_super_category_sticky_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="신규 맛집"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="center"/>
+
+    <RelativeLayout
+        android:layout_marginTop="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_alignParentTop="true"
+            android:visibility="invisible"
+            android:id="@+id/item_category_super_category_sticky_line"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/loginBlue"/>
+        <View
+            android:layout_alignBottom="@+id/item_category_super_category_sticky_line"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/line"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

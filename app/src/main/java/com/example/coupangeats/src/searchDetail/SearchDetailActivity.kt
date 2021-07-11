@@ -58,6 +58,8 @@ class SearchDetailActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        overridePendingTransition( R.anim.horizon_start_enter, R.anim.horizon_start_exit)
+
         inputMethodManager =
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -296,6 +298,11 @@ class SearchDetailActivity :
         }
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition( R.anim.horiaon_exit, R.anim.horizon_enter)
+    }
+
     // 촤근 검색어로 검색
     fun startResentSearch(key: String, id: Int) {
         mKeywordSearch = true
@@ -486,6 +493,7 @@ class SearchDetailActivity :
                 }
             }
             mKeywordSearch = false
+            binding.searchDetailSuperRecyclerview.scrollTo(0, 0)
         }
     }
 

@@ -5,13 +5,38 @@
     android:layout_height="wrap_content"
     android:focusable="true">
 
-    <ImageView
-        android:id="@+id/item_menu_detail_click"
-        android:adjustViewBounds="true"
-        android:layout_gravity="center"
+    <LinearLayout
+        android:id="@+id/item_menu_detail_necessary_check_parent"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_necessary_option"/>
+        android:background="@drawable/menu_check_box">
+
+        <ImageView
+            android:id="@+id/item_menu_detail_necessary_check_img"
+            android:layout_width="9dp"
+            android:layout_height="9dp"
+            android:src="@drawable/ic_nessary_option_round_gray" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/item_menu_detail_check_parent"
+        android:paddingHorizontal="@dimen/checkBoxPaddingHorizon"
+        android:paddingVertical="@dimen/checkBoxPaddingVertical"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:background="@drawable/check_box_off">
+
+        <ImageView
+            android:id="@+id/item_menu_detail_check_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check_gray" />
+
+    </LinearLayout>
+
 
     <TextView
         android:layout_marginStart="10dp"

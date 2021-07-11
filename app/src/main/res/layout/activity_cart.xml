@@ -83,6 +83,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <!-- 카트 공지 -->
+            <LinearLayout
+                android:padding="10dp"
+                android:background="@drawable/notice_box"
+                android:layout_marginHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_marginEnd="7dp"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_notice"/>
+                <TextView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="이제 일회용 수저/포크는 요청해야 받을 수 있어요"
+                    android:textColor="#027DBB"
+                    android:textSize="11sp"/>
+            </LinearLayout>
+
             <!-- 배달지 주소 설정 -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -270,6 +295,12 @@
                         android:textSize="10sp"
                         tools:ignore="SmallSp" />
 
+                    <ImageView
+                        android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_coupon_right_arrow"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -421,7 +452,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="10dp"
                 android:background="@color/line" />
 
             <!-- 요청사항 -->
@@ -434,7 +465,7 @@
 
                 <TextView
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/cart_need"
                     android:gravity="center_vertical|start"
@@ -446,9 +477,21 @@
                     android:id="@+id/cart_request_change"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/main_address_arrow"/>
+                    android:src="@drawable/ic_down_arrow_cart"/>
 
             </LinearLayout>
+
+            <TextView
+                android:layout_marginBottom="15dp"
+                android:visibility="gone"
+                android:id="@+id/cart_super_order_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="요청사항 내용"
+                android:gravity="center_vertical|start"
+                android:textColor="@color/lightBlack"
+                android:layout_marginHorizontal="25dp"
+                android:textSize="13sp" />
 
             <!-- 요청사항 내용 -->
             <LinearLayout
@@ -457,6 +500,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
+                android:paddingBottom="20dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -473,6 +517,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="10dp"
                     android:layout_marginEnd="7dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/cart_need_box"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="15dp"
@@ -488,12 +533,26 @@
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
-                    <ImageView
+                    <!--<ImageView
                         android:id="@+id/cart_one_spoon_check"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_add_option" />
+                        android:src="@drawable/ic_add_option" />-->
+                    <LinearLayout
+                        android:id="@+id/cart_one_spoon_check"
+                        android:paddingHorizontal="@dimen/checkBoxPaddingHorizon"
+                        android:paddingVertical="@dimen/checkBoxPaddingVertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/check_box_off">
 
+                        <ImageView
+                            android:id="@+id/cart_one_spoon_check_img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_check_gray" />
+
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -502,9 +561,11 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:layout_marginTop="3dp"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:text="일회용 수저, 포크 받기"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
@@ -527,18 +588,44 @@
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
-                <TextView
+                <LinearLayout
                     android:id="@+id/cart_rider_order"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
                     android:layout_marginEnd="7dp"
                     android:background="@drawable/cart_need_box"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="15dp"
-                    android:text="초인종 누르고 문 앞"
-                    android:textColor="@color/baseColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/cart_rider_order_text"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="초인종 누르고 문 앞"
+                        android:textColor="@color/lightBlack"
+                        android:textSize="13sp" />
+                    <ImageView
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_down"/>
+                </LinearLayout>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/cart_rider_order_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:layout_marginEnd="7dp"
+                    android:background="@drawable/cart_need_box"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="15dp"
+                    android:text="상세 요청사항을 입력해주세요"
+                    android:textColor="@color/searchHint"
                     android:textSize="13sp" />
 
             </LinearLayout>
@@ -584,7 +671,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/blue_right_arrow"/>
+                    android:src="@drawable/ic_right_arrow_cart"/>
 
             </LinearLayout>
 
@@ -618,13 +705,12 @@
                     android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:background="@color/line"
                 android:gravity="center"
-                android:layout_gravity="center"
                 android:padding="20dp"
                 android:text="@string/cart_info"
                 android:textColor="@color/baseColor"
@@ -644,4 +730,5 @@
         android:textColor="@color/white"
         android:textSize="17sp"
         android:textStyle="bold" />
+
 </RelativeLayout>

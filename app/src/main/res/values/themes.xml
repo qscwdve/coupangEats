@@ -15,6 +15,15 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_dialog_top_radius_circle</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
     <style name="actionbarok" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/white</item>

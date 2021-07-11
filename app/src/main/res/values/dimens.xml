@@ -3,5 +3,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="actionBarTextMarginStar">15dp</dimen>
-    <dimen name="actionBarImageMarginStar">10dp</dimen>
+    <dimen name="actionBarImageMarginStar">15dp</dimen>
+    <dimen name="checkBoxPaddingVertical">7.5dp</dimen>
+    <dimen name="checkBoxPaddingHorizon">6dp</dimen>
+    <dimen name="scrollUpBottomMargin">70dp</dimen>
 </resources>

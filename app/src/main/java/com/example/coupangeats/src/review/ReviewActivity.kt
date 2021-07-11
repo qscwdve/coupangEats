@@ -3,6 +3,7 @@ package com.example.coupangeats.src.review
 import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
@@ -16,11 +17,13 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityReviewBinding
+import com.example.coupangeats.src.cart.CartActivity
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.review.adapter.ReviewAdapter
 import com.example.coupangeats.src.review.dialog.ReviewFilterBottomSheetDialog
 import com.example.coupangeats.src.review.model.*
 import com.example.coupangeats.src.reviewWrite.ReviewWriteActivity
+import com.example.coupangeats.util.CartMenuDatabase
 import com.google.android.material.appbar.AppBarLayout
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
@@ -37,9 +40,17 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
     var mSortNum = 1
     var mDeleteItem = -1
     var mType : String? = null
-
+    private var mCartMenuNum = 0
+    private lateinit var mDBHelper: CartMenuDatabase
+    private lateinit var mDB: SQLiteDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        overridePendingTransition( R.anim.horizon_start_enter, R.anim.horizon_start_exit)
+
+        // 데이터베이스 셋팅
+        mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
+        mDB = mDBHelper.writableDatabase
 
         // 리뷰 불러오기
         mStoreIdx = intent.getIntExtra("storeIdx", -1)
@@ -52,10 +63,16 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
         binding.reviewFilterPhoto.setOnClickListener {
             if(mPhotoReview){
                 // true -> false
-                binding.reviewFilterPhotoImg.setImageResource(R.drawable.ic_add_option)
+                binding.reviewFilterPhotoCheck2.setBackgroundResource(R.drawable.check_box_off)
+                binding.reviewFilterPhotoCheckImg2.setImageResource(R.drawable.ic_check_gray)
+                binding.reviewFilterPhotoCheck.setBackgroundResource(R.drawable.check_box_off)
+                binding.reviewFilterPhotoCheckImg.setImageResource(R.drawable.ic_check_gray)
             } else {
                 // false -> true
-                binding.reviewFilterPhotoImg.setImageResource(R.drawable.ic_add_option_click)
+                binding.reviewFilterPhotoCheck.setBackgroundResource(R.drawable.check_box_on)
+                binding.reviewFilterPhotoCheckImg.setImageResource(R.drawable.ic_check_white)
+                binding.reviewFilterPhotoCheck2.setBackgroundResource(R.drawable.check_box_on)
+                binding.reviewFilterPhotoCheckImg2.setImageResource(R.drawable.ic_check_white)
             }
             mPhotoReview = !mPhotoReview
             startReviewInfo()
@@ -66,17 +83,93 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
             reviewFilterRecommendBottomSheetDialog.show(supportFragmentManager, "filter")
         }
 
+        // 필터2
+        binding.reviewFilterPhoto2.setOnClickListener {
+            if(mPhotoReview){
+                // true -> false
+                binding.reviewFilterPhotoCheck.setBackgroundResource(R.drawable.check_box_off)
+                binding.reviewFilterPhotoCheckImg.setImageResource(R.drawable.ic_check_gray)
+                binding.reviewFilterPhotoCheck2.setBackgroundResource(R.drawable.check_box_off)
+                binding.reviewFilterPhotoCheckImg2.setImageResource(R.drawable.ic_check_gray)
+            } else {
+                // false -> true
+                binding.reviewFilterPhotoCheck2.setBackgroundResource(R.drawable.check_box_on)
+                binding.reviewFilterPhotoCheckImg2.setImageResource(R.drawable.ic_check_white)
+                binding.reviewFilterPhotoCheck.setBackgroundResource(R.drawable.check_box_on)
+                binding.reviewFilterPhotoCheckImg.setImageResource(R.drawable.ic_check_white)
+            }
+            mPhotoReview = !mPhotoReview
+            startReviewInfo()
+        }
+
+        binding.reviewFilterText2.setOnClickListener {
+            val reviewFilterRecommendBottomSheetDialog = ReviewFilterBottomSheetDialog(this, mSortNum)
+            reviewFilterRecommendBottomSheetDialog.show(supportFragmentManager, "filter")
+        }
+
         //스티키 스크롤 설정
         binding.reviewStickyScrollView.run {
-            header = binding.reviewFilterParent
-            stickListener = { _ ->
-                binding.reviewFilterParent.elevation = 10F
-            }
-            freeListener = { _ ->
-                binding.reviewFilterParent.elevation = 0F
+            header = binding.reviewFilterParent2
+            position = binding.reviewFilterParent
+        }
+
+        binding.reviewStickyScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if(scrollY > 700){
+                binding.reviewScrollUpBtn.visibility = View.VISIBLE
+            } else {
+                binding.reviewScrollUpBtn.visibility = View.GONE
             }
         }
 
+        binding.reviewScrollUpBtn.setOnClickListener {
+            val position = binding.reviewStickyScrollView.mHeaderParentPosition + binding.reviewStickyScrollView.mHeaderInitPosition
+            binding.reviewStickyScrollView.scrollTo(0, position.toInt())
+            binding.reviewScrollUpBtn.visibility = View.GONE
+        }
+
+        //카트 보기
+        binding.reviewCartParent.setOnClickListener {
+            startActivity(Intent(this, CartActivity::class.java))
+        }
+    }
+    // 카트 보는거 체인지
+    fun cartChange() {
+        // 카트 담긴거 있는지 확인
+        val num = mDBHelper.checkMenuNum(mDB)
+        if(num > 0){
+            // 카트가 있음
+            binding.reviewCartParent.visibility = View.VISIBLE
+            binding.reviewCartNum.text = num.toString()
+            // 전체 가격
+            val totalPrice = mDBHelper.menuTotalPrice(mDB)
+            val totalPricetext = "${priceIntToString(totalPrice)}원"
+            binding.reviewCartPrice.text = totalPricetext
+            // 알림 오픈
+            if(mCartMenuNum != num && mCartMenuNum != 0){  }
+            mCartMenuNum = num
+        } else {
+            binding.reviewCartParent.visibility = View.GONE
+        }
+    }
+
+    fun priceIntToString(value: Int) : String {
+        val target = value.toString()
+        val size = target.length
+        return if(size > 3){
+            val last = target.substring(size - 3 until size)
+            val first = target.substring(0..(size - 4))
+            "$first,$last"
+        } else target
+    }
+
+    override fun onResume() {
+        super.onResume()
+        cartChange()
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition( R.anim.horiaon_exit, R.anim.horizon_enter)
     }
 
     fun setStar(num: Double) {
@@ -113,6 +206,9 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
             binding.reviewRating.text = response.result.totalRating.toString()  // 별점 점수
             binding.reviewNum.text = response.result.reviewCount   // 리뷰 수
             setStar(response.result.totalRating)  // 별점
+
+            val position = binding.reviewStickyScrollView.mHeaderInitPosition + binding.reviewStickyScrollView.mHeaderParentPosition
+            binding.reviewStickyScrollView.scrollTo(0, position.toInt())
 
             if(response.result.reviews != null){
                 val reviews = response.result.reviews

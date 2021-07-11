@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import com.example.coupangeats.R
 import com.example.coupangeats.util.LoadingDialog
 
 // 액티비티의 기본을 작성, 뷰 바인딩 활용
@@ -21,6 +22,14 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
         super.onCreate(savedInstanceState)
         binding = inflate(layoutInflater)
         setContentView(binding.root)
+
+        //overridePendingTransition(R.anim.horizon_enter, R.anim.none)
+    }
+
+    override fun finish() {
+        super.finish()
+
+        //overridePendingTransition(R.anim.none, R.anim.horiaon_exit)
     }
 
     // 로딩 다이얼로그, 즉 로딩창을 띄워줌.

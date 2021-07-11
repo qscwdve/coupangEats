@@ -8,13 +8,12 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Gravity
+import android.os.Message
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.Slide
-import androidx.transition.Transition
-import androidx.transition.TransitionManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityDetailSuperBinding
@@ -29,7 +28,6 @@ import com.example.coupangeats.src.favorites.model.FavoritesSuperDeleteRequest
 import com.example.coupangeats.src.menuSelect.MenuSelectActivity
 import com.example.coupangeats.src.review.ReviewActivity
 import com.example.coupangeats.util.CartMenuDatabase
-import com.example.coupangeats.util.StatusBarColorControl
 import com.google.android.material.appbar.AppBarLayout
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
@@ -47,15 +45,20 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     private var mSuperName = "동대문 엽기떡볶이"
     private var mCartMenuNum = 0
     private var mFavorites = 0
+    private var mMenuPosition = 0
     private enum class CollapsingToolbarLayoutState {
         EXPANDED, COLLAPSED, INTERNEDIATE
     }
     private var mCollapsingToolbarState : CollapsingToolbarLayoutState? = null
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
+    private var myHandler = MyHandler()
+    private val intervalTime = 2000.toLong() // 몇초 간격으로 페이지를 넘길것인지 (1500 = 1.5초)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        overridePendingTransition( R.anim.horizon_start_enter, R.anim.horizon_start_exit)
 
         // 데이터베이스 셋팅
         mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
@@ -92,7 +95,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                 val couponText = "${priceIntToString(mCouponPrice)}원 쿠폰 받기완료"
                 binding.detailSuperCouponText.setTextColor(Color.parseColor("#949DA6"))
                 binding.detailSuperCouponText.text = couponText
-                binding.detailSuperCouponImg.setImageResource(R.drawable.ic_check_gray)
+                binding.detailSuperCouponImg.setImageResource(R.drawable.ic_check_dark_gray)
             }
         }
 
@@ -178,6 +181,33 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         binding.detailSuperCartParent.setOnClickListener {
             startActivity(Intent(this, CartActivity::class.java))
         }
+
+        // 메뉴 스크롤
+        binding.detailSuperMenuRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val lastPosition = (recyclerView.adapter!!.itemCount - 1)
+                val itemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager?)!!.findFirstVisibleItemPosition()
+                val lastVisibleItemPosition =
+                    (recyclerView.layoutManager as LinearLayoutManager?)!!.findLastVisibleItemPosition()
+
+                if(lastVisibleItemPosition == lastPosition){
+                    // 마지막
+                    if(mMenuPosition != lastPosition){
+                        (binding.detailSuperMenuCategoryRecyclerview.adapter as CategoryNameAdapter).changeHighlightCheck(lastPosition)
+                        binding.detailSuperMenuCategoryRecyclerview.smoothScrollToPosition(lastPosition)
+                        mMenuPosition = lastPosition
+                    }
+                } else if(itemPosition != mMenuPosition){
+                    mMenuPosition = itemPosition
+                    (binding.detailSuperMenuCategoryRecyclerview.adapter as CategoryNameAdapter).changeHighlightCheck(mMenuPosition)
+                    binding.detailSuperMenuCategoryRecyclerview.smoothScrollToPosition(itemPosition)
+                }
+            }
+
+        })
     }
 
     // 리뷰 보러가기
@@ -187,6 +217,11 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             this.putExtra("reviewIdx", reviewIdx)
         }
         startActivity(intent)
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition( R.anim.horiaon_exit, R.anim.horizon_enter)
     }
 
     // 카트 보는거 체인지
@@ -204,7 +239,6 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             // 알림 오픈
             if(mCartMenuNum != num && mCartMenuNum != 0){  }
             mCartMenuNum = num
-
         } else {
             binding.detailSuperCartParent.visibility = View.GONE
         }
@@ -212,6 +246,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
 
     override fun onResume() {
         super.onResume()
+        autoScrollStart(intervalTime)
         cartChange()
     }
 
@@ -376,9 +411,9 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         if(result.reviewCount == null){
             binding.detailSuperReviewCount.visibility = View.GONE
         } else {
-            val review = "리뷰 ${result.reviewCount}개  ＞"
+            val count = " ${result.reviewCount}"
             binding.detailSuperReviewCount.visibility = View.VISIBLE
-            binding.detailSuperReviewCount.text = review
+            binding.detailSuperReviewCountText.text = count
         }
 
         // 할인 쿠폰
@@ -391,7 +426,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                 couponText = "${priceIntToString(result.coupon.price)}원 쿠폰 받기완료"
                 binding.detailSuperCouponText.setTextColor(Color.parseColor("#949DA6"))
                 binding.detailSuperCouponImg.visibility = View.VISIBLE
-                binding.detailSuperCouponImg.setImageResource(R.drawable.ic_check_gray)
+                binding.detailSuperCouponImg.setImageResource(R.drawable.ic_check_dark_gray)
                 mCouponStatus = false
             } else {
                 // 쿠폰 살아있음
@@ -435,15 +470,16 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     fun menuFouceItem(position: Int){
         Handler(Looper.getMainLooper()).postDelayed({
             // 해당 항목으로 메뉴 리스트 리사이클러뷰 선택해야 함
+            //binding.detailSuperMenuRecyclerview.smoothScrollToPosition(position)
             binding.detailSuperMenuRecyclerview.scrollToPosition(position)
-
         }, 300)
 
     }
 
     // 어댑터 설정
     fun setSuperImgViewPager(imgList: ArrayList<String>) {
-        if(imgList.size != 0){
+        val size = imgList.size
+        if( size != 0){
             binding.detailSuperImgViewPager.adapter = DetailSuperImgViewPagerAdapter(imgList)
             binding.detailSuperImgViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
@@ -453,10 +489,51 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             binding.detailSuperImgViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    binding.detailSuperImgNum.text = (position + 1).toString()
+                    binding.detailSuperImgNum.text = (position%size + 1).toString()
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {
+                    super.onPageScrollStateChanged(state)
+                    if(size > 1){
+                        when(state){
+                            // 멈춰있을 때
+                            ViewPager2.SCROLL_STATE_IDLE -> autoScrollStart(intervalTime)
+                            ViewPager2.SCROLL_STATE_DRAGGING -> autoScrollStop()
+                            ViewPager2.SCROLL_STATE_SETTLING -> { }
+                        }
+                    }
+
                 }
             })
+
         }
+    }
+
+    private fun autoScrollStart(intervalTime: Long) {
+        myHandler.removeMessages(0) // 이거 안하면 핸들러가 1개, 2개, 3개 ... n개 만큼 계속 늘어남
+        myHandler.sendEmptyMessageDelayed(0, intervalTime) // intervalTime 만큼 반복해서 핸들러를 실행하게 함
+    }
+
+    private fun autoScrollStop(){
+        myHandler.removeMessages(0) // 핸들러를 중지시킴
+    }
+
+    private inner class MyHandler : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+
+            if(msg.what == 0) {
+                val count = binding.detailSuperImgViewPager.currentItem + 1
+                binding.detailSuperImgViewPager.setCurrentItem(count, true) // 다음 페이지로 이동
+                autoScrollStart(intervalTime) // 스크롤을 계속 이어서 한다.
+            }
+        }
+    }
+
+    // 다른 페이지로 떠나있는 동안 스크롤이 동작할 필요는 없음. 정지
+    override fun onPause() {
+        super.onPause()
+        autoScrollStop()
     }
 
     fun setPhotoReview(reviewList: ArrayList<PhotoReview>) {

@@ -52,8 +52,8 @@ class EventAdapter(val eventList: ArrayList<Events>, val fragment: HomeFragment)
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
-        holder.bind(eventList[position], eventList.size)
+        holder.bind(eventList[position%(eventList.size)], eventList.size)
     }
 
-    override fun getItemCount(): Int = eventList.size
+    override fun getItemCount(): Int = (eventList.size * 100)
 }

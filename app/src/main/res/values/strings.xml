@@ -284,7 +284,7 @@
     <string name="introduction">매장소개</string>
     <string name="countryInfo">원산지 정보</string>
     <string name="notice">공지사항</string>
-    <string name="superInfo">매장 / 원산지정보 ＞</string>
+    <string name="superInfo">매장 / 원산지정보</string>
     <string name="superInfoTitle">매장정보</string>
     <string name="deliverypatner">배달파트너</string>
     <string name="outo">오토바이</string>
@@ -327,4 +327,6 @@
     <string name="pastSearchNo">주문내역 검색 결과가 없습니다.</string>
     <string name="no_super_title">조건에 맞는 매장이 없습니다.</string>
     <string name="no_info_info">검색 조건 변경 후 다시 시도해 보세요.</string>
+    <string name="review">리뷰</string>
+    <string name="num">개</string>
 </resources>

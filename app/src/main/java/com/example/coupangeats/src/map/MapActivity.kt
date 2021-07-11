@@ -3,6 +3,7 @@ package com.example.coupangeats.src.map
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -38,16 +39,27 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
     private lateinit var gpsControl : GpsControl
     private var nowLat = ""
     private var nowLon = ""
+    private var mGpsX = 0
+    private var mGpsY = 0
+    private var mDetailAddressVersion = 1  // 1이면 gps_select , 2 이면 배달지 추가 , 3이면 배달지 수정
     private val PERMISSION_REQUEST_CODE = 100
 
     @SuppressLint("ClickableViewAccessibility", "Recycle")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        overridePendingTransition( R.anim.horizon_start_enter, R.anim.horizon_start_exit)
+
         mapView = findViewById(R.id.map)
         mapView.onCreate(savedInstanceState)
 
         mLat = intent.getStringExtra("lat") ?: ""
         mLon = intent.getStringExtra("lon") ?: ""
+        nowLat = mLat
+        nowLon = mLon
+        Log.d("mapActivity", "받음 : ($nowLat , $nowLon)")
+        mDetailAddressVersion = intent.getIntExtra("detailAddressVersion", 1)
+
         val n = intent.getIntExtra("version", -1) ?: -1
         if(n != -1){
             version = 1
@@ -62,6 +74,7 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
         locationSource = FusedLocationSource(this, PERMISSION_REQUEST_CODE)
         gpsControl = GpsControl(this)
 
+        // 이미지 좌표 구하기
         mapView.getMapAsync(this)
 
         binding.map.setOnTouchListener { v, event ->
@@ -81,10 +94,17 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
                 setM(binding.gps)
                 flag = true
 
+                // 이미지 절대 좌표 구하기
+                val rect = Rect()
+                binding.gps.getGlobalVisibleRect(rect)
+                mGpsX = (rect.left + rect.right)/2
+                mGpsY = (rect.top + rect.bottom)/2
+                Log.d("mapActivity", "X : $mGpsX , Y : $mGpsY")
+
                 val downTime = SystemClock.uptimeMillis()
                 val eventTime = SystemClock.uptimeMillis() + 2000
                 val aevent =
-                    MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, 100f, 100f, 0)
+                    MotionEvent.obtain(downTime, eventTime, MotionEvent.ACTION_DOWN, mGpsX.toFloat(), mGpsY.toFloat(), 0)
                 binding.map.dispatchTouchEvent(aevent)
             }
             false
@@ -112,6 +132,7 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
                 this.putExtra("lat", nowLat)
                 this.putExtra("lon", nowLon)
             }
+            Log.d("mapActivity", "($nowLat , $nowLon)")
             setResult(RESULT_OK, intent)
             finish()
 
@@ -186,8 +207,8 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
         //val marker = Marker(LatLng(lat, lon))
         val locationOverlay = mNaverMap.locationOverlay
         locationOverlay.isVisible = true
-        locationOverlay.iconHeight = 70
-        locationOverlay.iconWidth = 70
+        locationOverlay.iconHeight = 60
+        locationOverlay.iconWidth = 60
         locationOverlay.circleRadius = 50
         locationOverlay.circleColor = Color.parseColor("#AEE0F8")
         locationOverlay.position = LatLng(lat, lon)

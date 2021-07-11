@@ -44,7 +44,8 @@
             android:name=".src.detailSuper.DetailSuperActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".src.map.MapActivity" />
-        <activity android:name=".src.cart.CartActivity" />
+        <activity android:name=".src.cart.CartActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".src.menuSelect.MenuSelectActivity"
             android:theme="@style/AppTheme.NoActionBar" />

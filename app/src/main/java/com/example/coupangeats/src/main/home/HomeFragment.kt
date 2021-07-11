@@ -4,16 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
-import android.graphics.Rect
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
 import androidx.transition.Transition
@@ -40,6 +35,8 @@ import com.example.coupangeats.util.FilterSuperBottomSheetDialog
 import com.example.coupangeats.util.GpsControl
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseFragment
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeFragment() :
     BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home), HomeFragmentView {
@@ -61,6 +58,8 @@ class HomeFragment() :
     private var mRecommSelect = 1
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
+    private var myHandler = MyHandler()
+    private val intervalTime = 2000.toLong() // 몇초 간격으로 페이지를 넘길것인지 (1500 = 1.5초)
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -140,6 +139,9 @@ class HomeFragment() :
                 binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_click)
                 binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah_click)
                 binding.homeFilterCheetahText.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah_click)
+                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(whiteColor))
                 mHomeInfoRequest.cheetah = "Y"
                 filterSelected[1] = true
             } else {
@@ -147,6 +149,9 @@ class HomeFragment() :
                 binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_no_click)
                 binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah)
                 binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah)
+                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(blackColor))
                 mHomeInfoRequest.cheetah = null
                 filterSelected[1] = false
             }
@@ -158,12 +163,16 @@ class HomeFragment() :
             if (!filterSelected[4]) {
                 binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_click)
                 binding.homeFilterCouponText.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCouponText2.setTextColor(Color.parseColor(whiteColor))
                 // 선택
                 mHomeInfoRequest.coupon = "Y"
                 filterSelected[4] = true
             } else {
                 binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_no_click)
                 binding.homeFilterCouponText.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCouponText2.setTextColor(Color.parseColor(blackColor))
                 // 선택 취소
                 mHomeInfoRequest.coupon = null
                 filterSelected[4] = false
@@ -176,6 +185,77 @@ class HomeFragment() :
             // 초기화 시키기
             resetFilter()
         }
+
+        // 배달비
+        binding.homeFilterDeliveryPrice2.setOnClickListener {
+            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 1)
+            filterSuperBottomSheetDialog.show(requireFragmentManager(), "deliveryPrice")
+        }
+        // 최소주문
+        binding.homeFilterMiniOrder2.setOnClickListener {
+            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 2)
+            filterSuperBottomSheetDialog.show(requireFragmentManager(), "deliveryPrice")
+        }
+        // 추천순
+        binding.homeFilterRecommend2.setOnClickListener {
+            val filterRecommendBottomSheetDialog =
+                FilterRecommendBottomSheetDialog(this, mRecommSelect)
+            filterRecommendBottomSheetDialog.show(requireFragmentManager(), "recommend")
+        }
+        // 치타 배달
+        binding.homeFilterCheetah2.setOnClickListener {
+            if (!filterSelected[1]) {
+                // 선택
+                binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah_click)
+                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah_click)
+                binding.homeFilterCheetahText.setTextColor(Color.parseColor(whiteColor))
+                mHomeInfoRequest.cheetah = "Y"
+                filterSelected[1] = true
+            } else {
+                // 취소
+                binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah)
+                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah)
+                binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
+                mHomeInfoRequest.cheetah = null
+                filterSelected[1] = false
+            }
+            // 서버와 통신
+            startFilterServerSend()
+        }
+        // 할인쿠폰
+        binding.homeFilterCoupon2.setOnClickListener {
+            if (!filterSelected[4]) {
+                binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCouponText2.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCouponText.setTextColor(Color.parseColor(blackColor))
+                // 선택
+                mHomeInfoRequest.coupon = "Y"
+                filterSelected[4] = true
+            } else {
+                binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCouponText2.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCouponText.setTextColor(Color.parseColor(blackColor))
+                // 선택 취소
+                mHomeInfoRequest.coupon = null
+                filterSelected[4] = false
+            }
+            // 서버와 통신해야 함
+            startFilterServerSend()
+        }
+        // 초기화 누름
+        binding.homeFilterClear2.setOnClickListener {
+            // 초기화 시키기
+            resetFilter()
+        }
+
         // 할인중인 맛집 보러가기
         binding.homeDiscountSuperLook.setOnClickListener {
             startSalseSuper()
@@ -190,9 +270,20 @@ class HomeFragment() :
             startActivity(Intent(requireContext(), CartActivity::class.java))
         }
 
+        // 스크롤 위로 가기
+        binding.homeScrollUpBtn.setOnClickListener {
+            binding.homeScrollView.scrollTo(0, 0)
+            binding.homeScrollUpBtn.visibility = View.GONE
+        }
+
         // 스크롤 감지
         binding.homeScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             //Log.d("scrolled", "( $scrollX, $scrollY)  ,  ( $oldScrollX , $oldScrollY )")
+            if(scrollY > 550){
+                binding.homeScrollUpBtn.visibility = View.VISIBLE
+            } else {
+                binding.homeScrollUpBtn.visibility = View.GONE
+            }
             lastPosUpdate(scrollY)
         }
         binding.homeRecommendRecyclerview.setOnTouchListener { v, event ->
@@ -319,14 +410,21 @@ class HomeFragment() :
             if(binding.homeCartBag.visibility == View.GONE) binding.homeNoticeTextParentAbove
             else binding.homeNoticeTextCartAbove
 
-        val transition: Transition = Slide(Gravity.BOTTOM)
+        val transitionEnd: Transition = Slide(Gravity.BOTTOM)
+        val transitionStart: Transition = Slide(Gravity.TOP)
+
         view.visibility = View.VISIBLE
-        transition.duration = 600
-        transition.addTarget(view)
-        TransitionManager.beginDelayedTransition(binding.root, transition)
+        transitionEnd.duration = 400
+        transitionEnd.addTarget(view)
+        transitionStart.duration = 400
+        transitionStart.addTarget(view)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            TransitionManager.beginDelayedTransition(binding.root, transition)
+            TransitionManager.beginDelayedTransition(binding.root, transitionStart)
+        }, 500)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            TransitionManager.beginDelayedTransition(binding.root, transitionEnd)
             view.visibility = View.GONE
         }, 1500)
     }
@@ -344,6 +442,10 @@ class HomeFragment() :
             binding.homeFilterRecommendText.text = value
             binding.homeFilterRecommendText.setTextColor(Color.parseColor(blackColor))
             binding.homeFilterRecommendImg.setImageResource(R.drawable.ic_arrow_down)
+            binding.homeFilterRecommendBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+            binding.homeFilterRecommendText2.text = value
+            binding.homeFilterRecommendText2.setTextColor(Color.parseColor(blackColor))
+            binding.homeFilterRecommendImg2.setImageResource(R.drawable.ic_arrow_down)
             filterSelected[0] = false
             mHomeInfoRequest.sort = sendServerString
         } else {
@@ -351,6 +453,10 @@ class HomeFragment() :
             binding.homeFilterRecommendText.text = value
             binding.homeFilterRecommendText.setTextColor(Color.parseColor(whiteColor))
             binding.homeFilterRecommendImg.setImageResource(R.drawable.ic_arrow_down_white)
+            binding.homeFilterRecommendBackground2.setBackgroundResource(R.drawable.super_filter_click)
+            binding.homeFilterRecommendText2.text = value
+            binding.homeFilterRecommendText2.setTextColor(Color.parseColor(whiteColor))
+            binding.homeFilterRecommendImg2.setImageResource(R.drawable.ic_arrow_down_white)
             filterSelected[0] = true
             mHomeInfoRequest.sort = sendServerString
         }
@@ -367,6 +473,10 @@ class HomeFragment() :
             binding.homeFilterDeliveryPriceText.text = str
             binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(whiteColor))
             binding.homeFilterDeliveryPriceImg.setImageResource(R.drawable.ic_arrow_down_white)
+            binding.homeFilterDeliveryPriceBackground2.setBackgroundResource(R.drawable.super_filter_click)
+            binding.homeFilterDeliveryPriceText2.text = str
+            binding.homeFilterDeliveryPriceText2.setTextColor(Color.parseColor(whiteColor))
+            binding.homeFilterDeliveryPriceImg2.setImageResource(R.drawable.ic_arrow_down_white)
             // 배달비 바꾸기
             mHomeInfoRequest.deliverymin = value
             filterSelected[2] = true
@@ -375,6 +485,10 @@ class HomeFragment() :
             binding.homeFilterDeliveryPriceText.text = "배달비"
             binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(blackColor))
             binding.homeFilterDeliveryPriceImg.setImageResource(R.drawable.ic_arrow_down)
+            binding.homeFilterDeliveryPriceBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+            binding.homeFilterDeliveryPriceText2.text = "배달비"
+            binding.homeFilterDeliveryPriceText2.setTextColor(Color.parseColor(blackColor))
+            binding.homeFilterDeliveryPriceImg2.setImageResource(R.drawable.ic_arrow_down)
             mHomeInfoRequest.deliverymin = null
             filterSelected[2] = false
         }
@@ -390,6 +504,10 @@ class HomeFragment() :
             binding.homeFilterMiniOrderText.text = str
             binding.homeFilterMiniOrderText.setTextColor(Color.parseColor(whiteColor))
             binding.homeFilterMiniOrderImg.setImageResource(R.drawable.ic_arrow_down_white)
+            binding.homeFilterMiniOrderBackground2.setBackgroundResource(R.drawable.super_filter_click)
+            binding.homeFilterMiniOrderText2.text = str
+            binding.homeFilterMiniOrderText2.setTextColor(Color.parseColor(whiteColor))
+            binding.homeFilterMiniOrderImg2.setImageResource(R.drawable.ic_arrow_down_white)
             // 최소주문 바꾸기
             mHomeInfoRequest.ordermin = value
             filterSelected[3] = true
@@ -399,6 +517,10 @@ class HomeFragment() :
             binding.homeFilterMiniOrderText.text = "최소주문"
             binding.homeFilterMiniOrderText.setTextColor(Color.parseColor(blackColor))
             binding.homeFilterMiniOrderImg.setImageResource(R.drawable.ic_arrow_down)
+            binding.homeFilterMiniOrderBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+            binding.homeFilterMiniOrderText2.text = "최소주문"
+            binding.homeFilterMiniOrderText2.setTextColor(Color.parseColor(blackColor))
+            binding.homeFilterMiniOrderImg2.setImageResource(R.drawable.ic_arrow_down)
             mHomeInfoRequest.ordermin = null
             filterSelected[3] = false
         }
@@ -414,10 +536,13 @@ class HomeFragment() :
         if (num == 0) {
             // 초기화 필터 다운
             binding.homeFilterClear.visibility = View.GONE
+            binding.homeFilterClear2.visibility = View.GONE
         } else {
             // 초기화 필터 오픈
             binding.homeFilterClear.visibility = View.VISIBLE
             binding.homeFilterClearNum.text = num.toString()
+            binding.homeFilterClear2.visibility = View.VISIBLE
+            binding.homeFilterClearNum2.text = num.toString()
         }
     }
 
@@ -449,10 +574,37 @@ class HomeFragment() :
         binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah)
         binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
 
+        // 2
+        // 초기화 필터 다운
+        binding.homeFilterClear2.visibility = View.GONE
+        // 최소 주문
+        binding.homeFilterMiniOrderBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+        binding.homeFilterMiniOrderText2.text = "최소주문"
+        binding.homeFilterMiniOrderText2.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterMiniOrderImg2.setImageResource(R.drawable.ic_arrow_down)
+        // 배달비
+        binding.homeFilterDeliveryPriceBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+        binding.homeFilterDeliveryPriceText2.text = "배달비"
+        binding.homeFilterDeliveryPriceText2.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterDeliveryPriceImg2.setImageResource(R.drawable.ic_arrow_down)
+        // 추천순
+        binding.homeFilterRecommendBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+        binding.homeFilterRecommendText2.text = "추천순"
+        binding.homeFilterRecommendText2.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterRecommendImg2.setImageResource(R.drawable.ic_arrow_down)
+        mRecommSelect = 1
+        // 할인쿠폰
+        binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+        binding.homeFilterCouponText2.setTextColor(Color.parseColor(blackColor))
+        // 치타배달
+        binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+        binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah)
+        binding.homeFilterCheetahText2.setTextColor(Color.parseColor(blackColor))
     }
 
     override fun onResume() {
         super.onResume()
+        autoScrollStart(intervalTime)
         cartChange()
     }
 
@@ -628,14 +780,18 @@ class HomeFragment() :
                 if (salse != null) {
                     setOnSalse(salse)
                     binding.homeDiscountSuper.visibility = View.VISIBLE
+                    binding.homeDiscountLine.visibility = View.VISIBLE
                 } else {
                     binding.homeDiscountSuper.visibility = View.GONE
+                    binding.homeDiscountLine.visibility = View.GONE
                 }
                 if (new != null) {
                     setNew(new)
                     binding.homeNewSuper.visibility = View.VISIBLE
+                    binding.homeNewLine.visibility = View.VISIBLE
                 } else {
                     binding.homeNewSuper.visibility = View.GONE
+                    binding.homeNewLine.visibility = View.GONE
                 }
                 if (recommend != null) {
                     setRecommend(recommend)
@@ -668,13 +824,8 @@ class HomeFragment() :
         // 스티키 스크롤
         binding.homeScrollView.mHeaderParentPosition = binding.homeRecommendSuper.top.toFloat()
         binding.homeScrollView.run {
-            header = binding.homeFilterParent
-            stickListener = { _ ->
-                binding.homeFilterParent.elevation = 10F
-            }
-            freeListener = { _ ->
-                binding.homeFilterParent.elevation = 0F
-            }
+            header = binding.homeFilterParent2
+            position = binding.homeFilterParent
         }
     }
 
@@ -743,18 +894,57 @@ class HomeFragment() :
 
     // 어댑터 설정하기
     fun setEvent(eventList: ArrayList<Events>) {
+        val size = eventList.size
         binding.homeEventBannerViewpager.adapter = EventAdapter(eventList, this)
         binding.homeEventBannerViewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        binding.homeEventBannerViewpager.setCurrentItem(size*50, false)
 
-        val str = " / ${eventList.size}"
+        val str = " / $size"
         binding.homeEventPageNumTotal.text = str
         binding.homeEventBannerViewpager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                binding.homeEventPageNum.text = (position + 1).toString()
+                binding.homeEventPageNum.text = (position%size + 1).toString()
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+                super.onPageScrollStateChanged(state)
+                when(state){
+                    // 멈춰있을 때
+                    ViewPager2.SCROLL_STATE_IDLE -> autoScrollStart(intervalTime)
+                    ViewPager2.SCROLL_STATE_DRAGGING -> autoScrollStop()
+                    ViewPager2.SCROLL_STATE_SETTLING -> { }
+                }
             }
         })
+
+    }
+    private fun autoScrollStart(intervalTime: Long) {
+        myHandler.removeMessages(0) // 이거 안하면 핸들러가 1개, 2개, 3개 ... n개 만큼 계속 늘어남
+        myHandler.sendEmptyMessageDelayed(0, intervalTime) // intervalTime 만큼 반복해서 핸들러를 실행하게 함
+    }
+
+    private fun autoScrollStop(){
+        myHandler.removeMessages(0) // 핸들러를 중지시킴
+    }
+
+    private inner class MyHandler : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+
+            if(msg.what == 0) {
+                val count = binding.homeEventBannerViewpager.currentItem + 1
+                binding.homeEventBannerViewpager.setCurrentItem(count, true) // 다음 페이지로 이동
+                autoScrollStart(intervalTime) // 스크롤을 계속 이어서 한다.
+            }
+        }
+    }
+
+    // 다른 페이지로 떠나있는 동안 스크롤이 동작할 필요는 없음. 정지
+    override fun onPause() {
+        super.onPause()
+        autoScrollStop()
     }
 
     fun setCategory(categoryList: ArrayList<StoreCategories>) {
@@ -778,6 +968,16 @@ class HomeFragment() :
     fun setRecommend(recommendList: ArrayList<RecommendStores>) {
         binding.homeRecommendRecyclerview.adapter = RecommendAdapter(recommendList, this)
         binding.homeRecommendRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+
+        if(mStickyCount != 0){
+            // 스크롤 올림
+            if(mStickyCount > 1){
+                val position = binding.homeScrollView.mHeaderInitPosition + binding.homeScrollView.mHeaderParentPosition
+                binding.homeScrollView.scrollTo(0, position.toInt())
+            } else {
+                mStickyCount++
+            }
+        }
     }
 
     fun priceIntToString(value: Int) : String {

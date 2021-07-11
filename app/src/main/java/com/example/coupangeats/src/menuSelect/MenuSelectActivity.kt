@@ -44,6 +44,8 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        overridePendingTransition( R.anim.horizon_start_enter, R.anim.horizon_start_exit)
+
         menuIdx = intent.getIntExtra("menuIdx", -1)
         mStoreIdx = intent.getIntExtra("storeIdx", -1)
 
@@ -236,6 +238,11 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
             mDBHelper.deleteTotal(mDB)
             saveMenuFinish(menu)
         }
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition( R.anim.horiaon_exit, R.anim.horizon_enter)
     }
 
     fun getStoreIdx(): Int = ApplicationClass.sSharedPreferences.getInt("storeIdx", -1)
