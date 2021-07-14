@@ -76,6 +76,7 @@
 
                 <!-- 필터 -->
                 <HorizontalScrollView
+                    android:id="@+id/category_super_origin_filter"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="10dp"
                     android:scrollbars="none"
@@ -347,6 +348,7 @@
             android:layout_height="wrap_content"/>
 
         <HorizontalScrollView
+            android:id="@+id/category_super_sticky_filter"
             android:background="@color/white"
             android:visibility="visible"
             android:scrollbars="none"

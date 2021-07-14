@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityCategorySuperBinding
 import com.example.coupangeats.src.categorySuper.adapter.CategorySuperAdapter
@@ -48,7 +49,7 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
         mLon = intent.getStringExtra("lon") ?: ""
         mCategorySuperRequest.lat = mLat
         mCategorySuperRequest.lon = mLon
-        Log.d("위도", "lat: $mLat lon: $mLon")
+
         mCategorySuperRequest.category = option
         binding.cartTitle.text = option
         // 카테고리 선택
@@ -262,18 +263,28 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
         }
 
         // 스크롤 감지
-        binding.categorySuperSticyScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            /*Log.d("sticky", "scrollY : $scrollY, mStickry: $mStickyScroll")
-            if(mStickyScroll < scrollY){
-                binding.categorySuperFilterParent.translationZ = 1F
-                binding.categorySuperFilterParent.translationY = (scrollY - mStickyScroll).toFloat()
-                mScrollValue = (scrollY - mStickyScroll).toFloat()
-                Log.d("sticky", "(scrollY - mStickyScroll).toFloat() : ${(scrollY - mStickyScroll).toFloat()}")
-            } else {
-                binding.categorySuperFilterParent.translationY = 0F
-            }*/
-        }
-
+        binding.categorySuperCategoryRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                    val position =  (recyclerView.layoutManager as LinearLayoutManager?)!!.findFirstVisibleItemPosition()
+                    //val offsetX = recyclerView.computeHorizontalScrollOffset()
+                    //Log.d("position", "origin : $position")
+                    binding.categorySuperCategoryRecyclerView2.scrollToPosition(position)
+                }
+            }
+        })
+        binding.categorySuperCategoryRecyclerView2.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                    val position =  (recyclerView.layoutManager as LinearLayoutManager?)!!.findFirstVisibleItemPosition()
+                    //val offsetX = recyclerView.computeHorizontalScrollOffset()
+                    //Log.d("position", "sticky : $position")
+                    binding.categorySuperCategoryRecyclerView.scrollToPosition(position)
+                }
+            }
+        })
      }
 
     override fun finish() {
@@ -498,6 +509,8 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
             // 스티키 스크롤 설정
             binding.categorySuperSticyScrollView.run {
                 header = binding.categorySuperStickyItem
+                stickyHorizonScrollView = binding.categorySuperStickyFilter
+                originHorizonScrollView = binding.categorySuperOriginFilter
             }
         }
     }
