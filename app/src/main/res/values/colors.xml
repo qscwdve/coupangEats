@@ -28,6 +28,7 @@
     <color name="yellow">#FFC202</color>
     <color name="linegray">#E7E8EA</color>
     <color name="couponGray">#DFE2E7</color>
+    <color name="pink">#E54176</color>
     <!-- 다이얼로그 로그인 -->
     <color name="loginBlue">#00AFFE</color>
     <color name="loginBlueDark">#00608C</color>

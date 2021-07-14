@@ -17,7 +17,7 @@ class CategorySuperCustomScrollView: NestedScrollView {
         overScrollMode = OVER_SCROLL_NEVER
     }
 
-    private var mStickyScroll = 240
+    var mStickyScroll = 240
     var header: View? = null
         set(value) {
             field = value

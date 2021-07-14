@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -81,7 +82,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
         binding.orderPastSearchText.setOnKeyListener { v, keyCode, event ->
             if((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
                 // 엔터키가 눌림
-                showCustomToast("엔터키 눌림")
+                // showCustomToast("엔터키 눌림")
                 val keyword = binding.orderPastSearchText.text.toString()
                 if(keyword != ""){
                     mKeyword = keyword
@@ -128,6 +129,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
     override fun onResume() {
         super.onResume()
         // 요청하기
+        binding.orderPastSearchText.setText("")
         OrderPastService(this).tryGetOrderPastInfo(getUserIdx())
     }
 
@@ -163,6 +165,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
 
     override fun onGetOrderPastInfoSuccess(response: OrderPastInfoResponse) {
         if(response.code == 1000){
+            binding.orderPastMenu.visibility = View.VISIBLE
             if(mIsSearchRequest){
                 mIsSearchRequest = false
                 if(response.result != null){
@@ -177,6 +180,8 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
                     binding.orderPastNotSearch.visibility = View.VISIBLE
                     binding.orderPastSearchParent.visibility = View.VISIBLE
                     binding.orderPastNoContent.visibility = View.GONE
+                    binding.orderPastMenu.visibility = View.GONE
+                    Log.d("pastorder", "맛집 결과 없음")
                 }
             }
             else if(response.result != null){

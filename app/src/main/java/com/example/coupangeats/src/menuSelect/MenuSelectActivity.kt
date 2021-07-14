@@ -2,6 +2,7 @@ package com.example.coupangeats.src.menuSelect
 
 import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
+import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityMenuSelectBinding
-import com.example.coupangeats.databinding.DialogCartChangeBinding
 import com.example.coupangeats.databinding.DialogCartReplaceBinding
 import com.example.coupangeats.src.cart.model.CartMenuInfo
 import com.example.coupangeats.src.detailSuper.adapter.DetailSuperImgViewPagerAdapter
@@ -165,7 +165,6 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
                     showCustomToast("필수선택을 체크해주세요")
                 }
             }
-
         }
 
         // 뒤로가기

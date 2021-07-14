@@ -6,11 +6,14 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityCartBinding
 import com.example.coupangeats.src.cart.adapter.CartMenuInfoAdatper
 import com.example.coupangeats.src.cart.model.*
+import com.example.coupangeats.src.deliveryStatus.DeliveryStatusActivity
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.discount.DiscountActivity
 import com.example.coupangeats.util.CartMenuDatabase
@@ -20,7 +23,8 @@ import com.example.coupangeats.util.CartSuperOrder
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 
-class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::inflate), CartActivityView{
+class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::inflate),
+    CartActivityView {
     var mCouponPrice = 0
     var mDeliveryPrice = 0
     var mMenuPrice = 0
@@ -34,7 +38,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     var mRequestChange = true
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
-    private val DISCOUNT_ACTIVITY_NUM = 1234
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -51,7 +55,8 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         menuSetting()
 
         // 매장 이름
-        binding.cartStoreName.text = ApplicationClass.sSharedPreferences.getString("storeName", "매장 없음")
+        binding.cartStoreName.text =
+            ApplicationClass.sSharedPreferences.getString("storeName", "매장 없음")
         binding.cartBack.setOnClickListener { finish() }
 
         // 메뉴 추가
@@ -73,12 +78,13 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         }
         // 배달 요청사항 직접 입력하기
         binding.cartRiderOrderEdit.setOnClickListener {
-            val cartOrderRiderEdit = CartOrderRiderEdit(this, binding.cartRiderOrderEdit.text.toString())
+            val cartOrderRiderEdit =
+                CartOrderRiderEdit(this, binding.cartRiderOrderEdit.text.toString())
             cartOrderRiderEdit.show(supportFragmentManager, "riderOrderEdit")
         }
         // 일회용 젓가락 사용 비사용
         binding.cartOneSpoonCheck.setOnClickListener {
-            if(mCheckSpoon == "N"){
+            if (mCheckSpoon == "N") {
                 binding.cartOneSpoonCheck.setBackgroundResource(R.drawable.check_box_on)
                 binding.cartOneSpoonCheckImg.setImageResource(R.drawable.ic_check_white)
                 mCheckSpoon = "Y"
@@ -96,14 +102,14 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         }
         // 요청사항 보여지고 안보여지고
         binding.cartRequestChange.setOnClickListener {
-            if(mRequestChange){
+            if (mRequestChange) {
                 // true면 보여짐-> false
                 binding.cartRequestParent.visibility = View.GONE
                 binding.cartRequestChange.setImageResource(R.drawable.ic_up_arrow_cart)
                 binding.cartSuperOrderText.text = binding.cartSuperOrder.text
                 binding.cartSuperOrderText.visibility = View.VISIBLE
                 mRequestChange = false
-            } else{
+            } else {
                 // false면 안보여짐 -> true로 바꿈
                 binding.cartRequestParent.visibility = View.VISIBLE
                 binding.cartRequestChange.setImageResource(R.drawable.ic_down_arrow_cart)
@@ -117,21 +123,35 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             val address = binding.cartDeliveryRoadAddress.text.toString()
             val storeIdx = getStoreIdx()
             val order = getOrderMenu()
-            val couponIdx = if(mCouponIdx != -1) mCouponIdx else null
+            val couponIdx = if (mCouponIdx != -1) mCouponIdx else null
             val orderPrice = mMenuPrice
             val deliveryPrice = mDeliveryPrice
             val discountPrice = mCouponPrice
             val totalPrice = mTotalPrice
             var storeOrder = binding.cartSuperOrder.text.toString()
-            storeOrder = if(storeOrder == "예) 견과류는 빼주세요") "" else storeOrder
+            storeOrder = if (storeOrder == "예) 견과류는 빼주세요") "" else storeOrder
             val checkEchoProduct = mCheckSpoon
-            val deliveryRequests = if(mRiderOrder == 7) {
+            val deliveryRequests = if (mRiderOrder == 7) {
                 val str = binding.cartRiderOrderEdit.text.toString()
-                if(str == "상세 요청사항을 입력해주세요") "" else str
+                if (str == "상세 요청사항을 입력해주세요") "" else str
             } else binding.cartRiderOrderText.text.toString()
             val payType = "만나서 현금결제"
             val userIdx = getUserIdx()
-            val request = OrderRequest(address, storeIdx, order, couponIdx, orderPrice, deliveryPrice, discountPrice, totalPrice, storeOrder, checkEchoProduct, deliveryRequests, payType, userIdx)
+            val request = OrderRequest(
+                address,
+                storeIdx,
+                order,
+                couponIdx,
+                orderPrice,
+                deliveryPrice,
+                discountPrice,
+                totalPrice,
+                storeOrder,
+                checkEchoProduct,
+                deliveryRequests,
+                payType,
+                userIdx
+            )
             // 서버 통신하기
             showLoadingDialog(this)
             CartService(this).tryPostOrder(request)
@@ -143,46 +163,47 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             this.putExtra("storeIdx", getStoreIdx())
             this.putExtra("selectCouponIdx", mCouponIdx)
         }
-        startActivityForResult(intent, DISCOUNT_ACTIVITY_NUM)
+        val discountActivityLauncher: ActivityResultLauncher<Intent> =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.data == null) {
+                    changeCouponNo()
+                } else {
+                    resultDiscountActivity(result.data!!)
+                }
+            }
+        discountActivityLauncher.launch(intent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == DISCOUNT_ACTIVITY_NUM){
-            if(data != null){
-                if(data.getBooleanExtra("exist", false)){
-                    var price = data.getStringExtra("coupon") ?: ""
+    fun resultDiscountActivity(data: Intent) {
+        if (data.getBooleanExtra("exist", false)) {
+            val price = data.getStringExtra("coupon") ?: ""
 
-                    if(price == "" || price == "0"){
-                        changeCouponNo()
-                    } else {
-                        mCouponIdx = data.getIntExtra("couponIdx", -1)
-                        Log.d("coupon", "couponIdx : $mCouponIdx")
-                        binding.cartCouponStatusImg.visibility = View.VISIBLE
-                        binding.cartCouponStatus.visibility = View.VISIBLE
-                        binding.cartCouponStatus.text = "쿠폰 적용"
-                        binding.cartCouponStatus.setTextColor(Color.parseColor("#D67D42"))
-                        binding.cartCouponStatusImg.setImageResource(R.drawable.ic_coupon_check)
-                        val couponPrice = price.replace("원 할인", "")
-                        val priceText = "-${couponPrice}원"
-                        binding.cartCouponPrice.text = priceText
-                        mCouponPrice = couponPrice.replace(",", "").toInt()
-                        binding.cartMenuDiscountParent.visibility = View.VISIBLE
-                        val couponText = "${priceText}원"
-                        binding.cartMenuDiscountPrice.text = couponText
-                        changeCouponPrice()
-                    }
-                } else {
-                    changeCouponNo()
-                }
-            } else {
+            if (price == "" || price == "0") {
                 changeCouponNo()
+            } else {
+                mCouponIdx = data.getIntExtra("couponIdx", -1)
+                Log.d("coupon", "couponIdx : $mCouponIdx")
+                binding.cartCouponStatusImg.visibility = View.VISIBLE
+                binding.cartCouponStatus.visibility = View.VISIBLE
+                binding.cartCouponStatus.text = "쿠폰 적용"
+                binding.cartCouponStatus.setTextColor(Color.parseColor("#D67D42"))
+                binding.cartCouponStatusImg.setImageResource(R.drawable.ic_coupon_check)
+                val couponPrice = price.replace("원 할인", "")
+                val priceText = "-${couponPrice}원"
+                binding.cartCouponPrice.text = priceText
+                mCouponPrice = couponPrice.replace(",", "").toInt()
+                binding.cartMenuDiscountParent.visibility = View.VISIBLE
+                val couponText = "${priceText}원"
+                binding.cartMenuDiscountPrice.text = couponText
+                changeCouponPrice()
             }
+        } else {
+            changeCouponNo()
         }
     }
 
-    fun changeCouponNo(){
-        if(mCouponCount == 0){
+    fun changeCouponNo() {
+        if (mCouponCount == 0) {
             // 쿠폰 적용 가능한 것이 없음
             binding.cartCouponStatusImg.visibility = View.GONE
             binding.cartCouponStatus.visibility = View.GONE
@@ -201,18 +222,19 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         changeCouponPrice()
     }
 
-    fun getOrderMenu() : ArrayList<OrderMenu> {
+    fun getOrderMenu(): ArrayList<OrderMenu> {
         val array = ArrayList<OrderMenu>()
         val orderMenuList = mDBHelper.menuSelect(mDB)
-        for(item in orderMenuList){
+        for (item in orderMenuList) {
             array.add(OrderMenu(item.menuIdx, item.name, item.sub, item.num, item.price))
         }
         return array
     }
-    fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
-    fun getStoreIdx() : Int = ApplicationClass.sSharedPreferences.getInt("storeIdx", -1)
 
-    fun menuSetting(){
+    fun getUserIdx(): Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
+    fun getStoreIdx(): Int = ApplicationClass.sSharedPreferences.getInt("storeIdx", -1)
+
+    fun menuSetting() {
         // 메뉴 세팅
 
         // 메뉴 불러오기
@@ -238,7 +260,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         binding.cartOk.text = total
     }
 
-    fun changeCouponPrice(){
+    fun changeCouponPrice() {
         // 총 결제 금액
         mTotalPrice = mMenuPrice + mDeliveryPrice - mCouponPrice
         val superTotalPrice = "${priceIntToString(mTotalPrice)}원"
@@ -249,7 +271,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
 
     override fun onGetCartLookSuccess(response: CartMenuLookResponse) {
         dismissLoadingDialog()
-        if(response.code == 1000){
+        if (response.code == 1000) {
             val result = response.result
             // 주소
             binding.cartDeliveryMainAddress.text = result.mainAddress
@@ -283,9 +305,11 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
 
     override fun onPostOrderSuccess(response: OrderResponse) {
         dismissLoadingDialog()
-        if(response.code == 1000){
+        if (response.code == 1000) {
             // 주문내역 다 삭제
             mDBHelper.deleteTotal(mDB)
+            val intent = Intent(this, DeliveryStatusActivity::class.java)
+            startActivity(intent)
             finish()
         }
     }
@@ -296,15 +320,16 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     }
 
     fun couponSetting(coupon: CartCoupon) {
-        if(coupon.redeemStatus == null){
+        if (coupon.redeemStatus == null) {
             binding.cartCouponStatus.visibility = View.GONE
             binding.cartCouponStatusImg.visibility = View.GONE
             binding.cartMenuDiscountParent.visibility = View.GONE
         } else {
-            if(coupon.redeemStatus == "쿠폰 적용" || coupon.redeemStatus == "쿠폰 자동적용"){
+            if (coupon.redeemStatus == "쿠폰 적용" || coupon.redeemStatus == "쿠폰 자동적용") {
                 binding.cartCouponStatus.visibility = View.VISIBLE
                 binding.cartCouponStatusImg.visibility = View.VISIBLE
-                binding.cartCouponStatus.text = if(coupon.redeemStatus == "쿠폰 적용") "쿠폰 적용" else "쿠폰 자동적용"
+                binding.cartCouponStatus.text =
+                    if (coupon.redeemStatus == "쿠폰 적용") "쿠폰 적용" else "쿠폰 자동적용"
                 binding.cartCouponStatusImg.setImageResource(R.drawable.ic_coupon_check)
                 binding.cartCouponStatus.setTextColor(Color.parseColor("#D67D42")) // 빨강
                 // 쿠폰 가격 설정
@@ -339,7 +364,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         binding.cartRiderOrderText.text = value
         mRiderOrder = index
         // 7번일 경우 직접 입력하기가 보여야함
-        if(index == 7){
+        if (index == 7) {
             binding.cartRiderOrderEdit.visibility = View.VISIBLE
         } else {
             binding.cartRiderOrderEdit.visibility = View.GONE
@@ -347,8 +372,8 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     }
 
     // 가게 요청사항 고르기
-    fun changeSuperOrder(value: String){
-        if(value == ""){
+    fun changeSuperOrder(value: String) {
+        if (value == "") {
             binding.cartSuperOrder.text = "예) 견과류는 빼주세요"
             binding.cartSuperOrder.setTextColor(Color.parseColor("#9E9EA0"))
         } else {
@@ -358,8 +383,8 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     }
 
     // 배달 요청사항 직접 입력
-    fun changeOrderRiderEdit(value: String){
-        if(value == ""){
+    fun changeOrderRiderEdit(value: String) {
+        if (value == "") {
             binding.cartRiderOrderEdit.text = "상세 요청사항을 입력해주세요"
             binding.cartRiderOrderEdit.setTextColor(Color.parseColor("#9E9EA0"))
         } else {
@@ -367,16 +392,18 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             binding.cartRiderOrderEdit.setTextColor(Color.parseColor("#202020"))
         }
     }
-    fun priceIntToString(value: Int) : String {
+
+    fun priceIntToString(value: Int): String {
         val target = value.toString()
         val size = target.length
-        return if(size > 3){
+        return if (size > 3) {
             val last = target.substring(size - 3 until size)
             val first = target.substring(0..(size - 4))
             "$first,$last"
         } else target
     }
-    fun cartEmpty(){
+
+    fun cartEmpty() {
         binding.cartFill.visibility = View.GONE
         binding.cartEmpty.visibility = View.VISIBLE
         binding.cartOk.visibility = View.GONE

@@ -87,16 +87,16 @@ class DeliveryStatusActivity : BaseActivity<ActivityDeliveryStatusBinding>(Activ
         })
 
         binding.statusTest.setOnClickListener {
-            if(mAnimationCheck[0]){
+           /* if(mAnimationCheck[0]){
                 changeStatus(2)
             } else if(mAnimationCheck[1]){
                 changeStatus(3)
             } else if(mAnimationCheck[2]){
                 changeStatus(4)
-            }
+            }*/
         }
 
-        changeStatus(1)
+        //changeStatus(1)
 
         binding.toolbarBack.setOnClickListener { finish() }
 

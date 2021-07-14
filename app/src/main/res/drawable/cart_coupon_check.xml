@@ -6,10 +6,10 @@
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
             <stroke
-                android:width="0.5dp"
-                android:color="@color/linegray" />
-            <corners android:radius="2dp" />
-            <solid android:color="@color/linglight" />
+                android:width="1dp"
+                android:color="@color/loginBlue" />
+            <corners android:radius="5dp" />
+            <solid android:color="@color/line" />
         </shape>
     </item>
 </ripple>

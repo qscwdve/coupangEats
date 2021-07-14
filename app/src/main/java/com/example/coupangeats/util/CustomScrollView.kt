@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.HorizontalScrollView
 import androidx.core.widget.NestedScrollView
 
 class CustomScrollView : NestedScrollView, ViewTreeObserver.OnGlobalLayoutListener {
@@ -27,6 +28,8 @@ class CustomScrollView : NestedScrollView, ViewTreeObserver.OnGlobalLayoutListen
         }
 
     var position: View? = null
+    var originHorizonScrollView: HorizontalScrollView? = null
+    var stickyHorizonScrollView: HorizontalScrollView? = null
 
     var stickListener: (View) -> Unit = {}
     var freeListener: (View) -> Unit = {}
@@ -42,6 +45,11 @@ class CustomScrollView : NestedScrollView, ViewTreeObserver.OnGlobalLayoutListen
         val distance = if(version == 1) mHeaderInitPosition + mHeaderParentPosition else mHeaderInitPosition + mHeaderParentPosition - 100
         if (scrolly > distance) {
             if (!mIsHeaderSticky) {
+                if(originHorizonScrollView != null){
+                    val stickyPositionX = originHorizonScrollView!!.scrollX
+                    val stickyPositionY = originHorizonScrollView!!.scrollY
+                    stickyHorizonScrollView?.scrollTo(stickyPositionX, stickyPositionY)
+                }
                 header?.visibility = View.VISIBLE
                 mIsHeaderSticky = true
             }
@@ -49,6 +57,11 @@ class CustomScrollView : NestedScrollView, ViewTreeObserver.OnGlobalLayoutListen
             if (mIsHeaderSticky) {
                 header?.visibility = View.GONE
                 mIsHeaderSticky = false
+                if(stickyHorizonScrollView != null){
+                    val stickyPositionX = stickyHorizonScrollView!!.scrollX
+                    val stickyPositionY = stickyHorizonScrollView!!.scrollY
+                    originHorizonScrollView?.scrollTo(stickyPositionX, stickyPositionY)
+                }
             }
         }
 

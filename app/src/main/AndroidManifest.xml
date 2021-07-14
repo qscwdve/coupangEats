@@ -4,27 +4,33 @@
     package="com.example.coupangeats">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name="com.softsquared.template.kotlin.config.ApplicationClass"
         android:allowBackup="true"
+        android:debuggable="false"
         android:icon="@mipmap/ic_launcher"
         android:label="쿠팡이츠"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        android:debuggable="false"
-        tools:replace="android:label"
-        tools:ignore="HardcodedDebugMode">
-        <activity android:name=".src.findId.FindIdActivity"></activity>
-        <activity android:name=".src.searchDetail.SearchDetailActivity"
+        tools:ignore="HardcodedDebugMode"
+        tools:replace="android:label">
+        <activity android:name=".src.TestActivity"
+            android:theme="@style/AppTheme2">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".src.findId.FindIdActivity" />
+        <activity
+            android:name=".src.searchDetail.SearchDetailActivity"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateUnchanged"/>
+            android:windowSoftInputMode="stateUnchanged" />
         <activity android:name=".src.eventItem.EventItemActivity" />
         <activity android:name=".src.event.EventActivity" />
         <activity android:name=".src.myReview.MyReviewActivity" />
@@ -42,10 +48,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".src.detailSuper.DetailSuperActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".src.map.MapActivity" />
-        <activity android:name=".src.cart.CartActivity"
-            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".src.cart.CartActivity"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".src.menuSelect.MenuSelectActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -57,31 +64,28 @@
             android:name=".src.login.LoginActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".src.main.MainActivity"
-            android:windowSoftInputMode="adjustNothing" />
+            android:name=".src.main.MainActivity"/>
         <activity android:name=".src.favorites.FavoritesActivity" />
         <activity
             android:name=".src.splash.SplashActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <!-- Redirect URI: "kakao{NATIVE_APP_KEY}://oauth" -->
-                <data android:host="oauth"
+                <data
+                    android:host="oauth"
                     android:scheme="kakao{acf919d14f1072fd5b7524916b93db20}" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="2w3o4zjo8d" />

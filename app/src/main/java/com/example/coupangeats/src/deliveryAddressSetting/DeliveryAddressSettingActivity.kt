@@ -4,14 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.KeyEvent
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityDeliveryAddressSettingBinding
@@ -21,15 +18,11 @@ import com.example.coupangeats.src.deliveryAddressSetting.adapter.data.SearchAdd
 import com.example.coupangeats.src.deliveryAddressSetting.detail.DetailAddressFragment
 import com.example.coupangeats.src.deliveryAddressSetting.model.*
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.DeliveryAddressResponse
-import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListRequest
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListResponse
-import com.example.coupangeats.src.main.home.model.userCheckAddress.UserCheckResponseResult
-import com.example.coupangeats.src.main.search.SearchFragment
 import com.example.coupangeats.src.map.MapActivity
 import com.example.coupangeats.util.GpsControl
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
-import java.util.function.LongFunction
 
 class DeliveryAddressSettingActivity() :
     BaseActivity<ActivityDeliveryAddressSettingBinding>(ActivityDeliveryAddressSettingBinding::inflate),
@@ -86,7 +79,9 @@ class DeliveryAddressSettingActivity() :
             binding.deliveryAddressBack.setImageResource(R.drawable.ic_left_arrow_black)
             binding.detailAddressTitle.text = "배달지 주소 설정"
         }
-        binding.deliveryAddressText.setOnFocusChangeListener { v, hasFocus ->
+
+        // edittext 설정
+        /*binding.deliveryAddressText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 // 클릭됨
                 if (mSearchTip) {
@@ -114,7 +109,7 @@ class DeliveryAddressSettingActivity() :
         // 키보드 상에서 완료 버튼 누름
         binding.deliveryAddressText.setOnEditorActionListener { v, actionId, event ->
             //showCustomToast("엔터키 눌림")
-            imm.hideSoftInputFromWindow(binding.deliveryAddressText.windowToken, 0)
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
             val keyword = binding.deliveryAddressText.text.toString()
             // 검색 API 서버 호출
             binding.deliveryAddressSettingSearchTip.visibility = View.GONE
@@ -123,7 +118,7 @@ class DeliveryAddressSettingActivity() :
             val searchAddrListRequest = SearchAddrListRequest(1, keyword)
             DeliveryAddressSettingService(this).tryGetSearchAddrList(searchAddrListRequest)
             false
-        }
+        }*/
 
         // editText 전체 취소 리스너
         binding.deliveryAddressTextCancel.setOnClickListener {
@@ -165,7 +160,7 @@ class DeliveryAddressSettingActivity() :
                 binding.deliveryAddressSettingSelectedParent.visibility = View.VISIBLE
                 binding.deliveryAddressSettingSearchParent.visibility = View.GONE
                 binding.deliveryAddressText.setText("")
-                imm.hideSoftInputFromWindow(binding.deliveryAddressText.windowToken, 0)
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
                 binding.deliveryAddressText.clearFocus()
                 binding.deliveryAddressTextCancel.visibility = View.INVISIBLE
                 mBackOrFinish = false
@@ -215,21 +210,21 @@ class DeliveryAddressSettingActivity() :
                 this.putExtra("lon", mLon.toString())
                 this.putExtra("detailAddressVersion", version)
             }
-            startActivityForResult(intent, MAP_ACTIVITY)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == MAP_ACTIVITY && resultCode == RESULT_OK){
-            // 배달지 주소 추가
-            if(data != null){
-                val mainAddress = data.getStringExtra("mainAddress") ?: ""
-                val roadAddress = data.getStringExtra("roadAddress") ?: ""
-                val lat = data.getStringExtra("lat") ?: ""
-                val lon = data.getStringExtra("lon") ?: ""
-                changeDetailAddress(SearchAddress(mainAddress, roadAddress), lat, lon)
+            val mapActivityLauncher : ActivityResultLauncher<Intent> =
+                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                     if(result.resultCode == RESULT_OK){
+                         val data = result.data
+                         // 배달지 주소 추가
+                         if(data != null){
+                             val mainAddress = data.getStringExtra("mainAddress") ?: ""
+                             val roadAddress = data.getStringExtra("roadAddress") ?: ""
+                             val lat = data.getStringExtra("lat") ?: ""
+                             val lon = data.getStringExtra("lon") ?: ""
+                             changeDetailAddress(SearchAddress(mainAddress, roadAddress), lat, lon)
+                         }
+                     }
             }
+            mapActivityLauncher.launch(intent)
         }
     }
 

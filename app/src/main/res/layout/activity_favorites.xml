@@ -169,7 +169,7 @@
         android:layout_above="@+id/favorites_select_parent"
         android:layout_below="@id/favorites_info"
         android:layout_width="match_parent"
-        android:background="@color/line"
+        android:background="@color/white"
         android:layout_height="match_parent">
 
         <LinearLayout

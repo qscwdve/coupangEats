@@ -233,8 +233,8 @@ class HomeFragment() :
             if (!filterSelected[4]) {
                 binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_click)
                 binding.homeFilterCouponText2.setTextColor(Color.parseColor(whiteColor))
-                binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_no_click)
-                binding.homeFilterCouponText.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCouponText.setTextColor(Color.parseColor(whiteColor))
                 // 선택
                 mHomeInfoRequest.coupon = "Y"
                 filterSelected[4] = true
@@ -411,22 +411,15 @@ class HomeFragment() :
             else binding.homeNoticeTextCartAbove
 
         val transitionEnd: Transition = Slide(Gravity.BOTTOM)
-        val transitionStart: Transition = Slide(Gravity.TOP)
 
         view.visibility = View.VISIBLE
         transitionEnd.duration = 400
         transitionEnd.addTarget(view)
-        transitionStart.duration = 400
-        transitionStart.addTarget(view)
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            TransitionManager.beginDelayedTransition(binding.root, transitionStart)
-        }, 500)
 
         Handler(Looper.getMainLooper()).postDelayed({
             TransitionManager.beginDelayedTransition(binding.root, transitionEnd)
             view.visibility = View.GONE
-        }, 1500)
+        }, 1200)
     }
 
     // 필터 활용해서 서버한테 보내기
@@ -618,12 +611,6 @@ class HomeFragment() :
     }
 
     fun getUserIdx(): Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
-
-    fun changeGpsInfo() {
-        // 현재 주소에 변화가 생김
-        binding.homeGpsAddress.text =
-            ApplicationClass.sSharedPreferences.getString("userMainAddressIdx", "주소 실패..")
-    }
 
     private fun loginCheck(): Boolean {
         return ApplicationClass.sSharedPreferences.getInt("userIdx", -1) != -1
@@ -826,6 +813,8 @@ class HomeFragment() :
         binding.homeScrollView.run {
             header = binding.homeFilterParent2
             position = binding.homeFilterParent
+            stickyHorizonScrollView = binding.homeStickyScroll
+            originHorizonScrollView = binding.homeFilterParent
         }
     }
 
@@ -929,6 +918,7 @@ class HomeFragment() :
         myHandler.removeMessages(0) // 핸들러를 중지시킴
     }
 
+    @SuppressLint("HandlerLeak")
     private inner class MyHandler : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)

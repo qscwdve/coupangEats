@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityReviewWriteBinding
@@ -218,7 +220,14 @@ class ReviewWriteActivity :
                     "image/*"
                 )
             }
-            startActivityForResult(intent, GET_GALLERY_IMAGE)
+            val photoAddLauncher : ActivityResultLauncher<Intent> =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if(result.resultCode == RESULT_OK && result.data != null && result.data!!.data != null){
+                    // 사진 추가 리스트에 추가해야함
+                    mFireBaseControl.addFireBaseImg(result.data!!.data!!)
+                }
+            }
+            photoAddLauncher.launch(intent)
         }
 
         binding.reviewWriteDeliveryEtcModify.setOnClickListener { startEtcDialog(2) }
@@ -235,14 +244,6 @@ class ReviewWriteActivity :
     }
 
     fun getUserIdx(): Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.data != null) {
-            // 사진 추가 리스트에 추가해야함
-            mFireBaseControl.addFireBaseImg(data.data!!)
-        }
-    }
 
     fun gonePhotoAdd(){
         binding.reviewWritePhotoAdd.visibility = View.GONE

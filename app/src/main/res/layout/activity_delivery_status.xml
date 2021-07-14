@@ -144,7 +144,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="17"
+                    android:text="배달완료"
                     android:textColor="@color/black"
                     android:textSize="30sp"
                     android:textStyle="bold" />
@@ -154,7 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:text="분"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
@@ -181,7 +181,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="5.5dp"
                     android:layout_marginTop="15dp"
-                    android:src="@drawable/ic_delivery_status_1" />
+                    android:src="@drawable/ic_delivery_status_4" />
 
                 <LinearLayout
                     android:layout_marginTop="3dp"
@@ -227,7 +227,7 @@
                         android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_delivery_status_circle"
+                        android:src="@drawable/ic_delivery_status_ok"
                         android:visibility="visible" />
 
                     <TextView
@@ -262,7 +262,7 @@
                         android:visibility="invisible"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_delivery_status_circle" />
+                        android:src="@drawable/ic_delivery_status_ok" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -296,7 +296,7 @@
                         android:visibility="invisible"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_delivery_status_circle" />
+                        android:src="@drawable/ic_delivery_status_ok" />
 
                     <TextView
                         android:layout_gravity="center"

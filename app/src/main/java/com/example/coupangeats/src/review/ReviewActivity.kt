@@ -78,7 +78,7 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
             startReviewInfo()
         }
         // 필터
-        binding.reviewFilterText.setOnClickListener {
+        binding.reviewFilterTextParent.setOnClickListener {
             val reviewFilterRecommendBottomSheetDialog = ReviewFilterBottomSheetDialog(this, mSortNum)
             reviewFilterRecommendBottomSheetDialog.show(supportFragmentManager, "filter")
         }
@@ -102,7 +102,7 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
             startReviewInfo()
         }
 
-        binding.reviewFilterText2.setOnClickListener {
+        binding.reviewFilterTextParent2.setOnClickListener {
             val reviewFilterRecommendBottomSheetDialog = ReviewFilterBottomSheetDialog(this, mSortNum)
             reviewFilterRecommendBottomSheetDialog.show(supportFragmentManager, "filter")
         }
@@ -173,16 +173,16 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
     }
 
     fun setStar(num: Double) {
-        binding.reviewStar1.setImageResource(R.drawable.ic_star_no)
-        binding.reviewStar2.setImageResource(R.drawable.ic_star_no)
-        binding.reviewStar3.setImageResource(R.drawable.ic_star_no)
-        binding.reviewStar4.setImageResource(R.drawable.ic_star_no)
-        binding.reviewStar5.setImageResource(R.drawable.ic_star_no)
-        if (num >= 0.0) binding.reviewStar1.setImageResource(R.drawable.ic_star)
-        if (num >= 1.0) binding.reviewStar2.setImageResource(R.drawable.ic_star)
-        if (num >= 2.0) binding.reviewStar3.setImageResource(R.drawable.ic_star)
-        if (num >= 3.0) binding.reviewStar4.setImageResource(R.drawable.ic_star)
-        if (num >= 4.0) binding.reviewStar5.setImageResource(R.drawable.ic_star)
+        binding.reviewStar1.setImageResource(R.drawable.ic_big_star_no)
+        binding.reviewStar2.setImageResource(R.drawable.ic_big_star_no)
+        binding.reviewStar3.setImageResource(R.drawable.ic_big_star_no)
+        binding.reviewStar4.setImageResource(R.drawable.ic_big_star_no)
+        binding.reviewStar5.setImageResource(R.drawable.ic_big_star_no)
+        if (num >= 0.0) binding.reviewStar1.setImageResource(R.drawable.ic_big_star)
+        if (num >= 1.0) binding.reviewStar2.setImageResource(R.drawable.ic_big_star)
+        if (num >= 2.0) binding.reviewStar3.setImageResource(R.drawable.ic_big_star)
+        if (num >= 3.0) binding.reviewStar4.setImageResource(R.drawable.ic_big_star)
+        if (num >= 4.0) binding.reviewStar5.setImageResource(R.drawable.ic_big_star)
     }
 
     fun startReviewInfo() {

@@ -236,6 +236,7 @@
             android:textColor="@color/baseColor"/>
     </LinearLayout>
     <LinearLayout
+        android:layout_marginBottom="10dp"
         android:id="@+id/item_review_evaluation_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

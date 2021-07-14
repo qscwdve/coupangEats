@@ -1,14 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <!-- Base application theme. -->
+    <style name="AppTheme2" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:editTextStyle">@style/myEditText</item>
-        <item name="android:textCursorDrawable">@drawable/cursor_setting</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textSelectHandle">@color/loginBlue</item>
-        <item name="android:textSelectHandleLeft">@color/loginBlue</item>
-        <item name="android:textSelectHandleRight">@color/loginBlue</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <!--Status Bar 글자색깔 false 하얀색 true 검정색-->
@@ -33,18 +37,8 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:elevation">0dp</item>
-        <item name="elevation">0dp</item>
     </style>
 
-    <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="myEditText" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="android:textCursorDrawable">@color/loginBlue</item>
-        <item name="android:height">20sp</item>
-    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -92,7 +86,6 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
     <style name="EditTextDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="android:windowIsFloating">false</item>
         <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
         <item name="android:windowSoftInputMode">adjustResize</item>
         <item name="shapeAppearanceOverlay">@style/CustomBottomSheet</item>
@@ -114,8 +107,6 @@
     <!-- collasping Tool bar status bar trasport -->
     <style name="NonStatusBar" parent="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
     </style>
 </resources>

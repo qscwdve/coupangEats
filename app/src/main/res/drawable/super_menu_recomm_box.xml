@@ -5,7 +5,7 @@
             <solid android:color="#00000000" /> <!-- background color -->
             <corners android:radius="20dp"/>
             <stroke
-                android:width="0.5dp"
+                android:width="0.3dp"
                 android:color="@color/loginBlue"/>
         </shape>
     </item>

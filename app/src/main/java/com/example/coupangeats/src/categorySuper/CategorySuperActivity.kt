@@ -89,6 +89,9 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
                 binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_click)
                 binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah_click)
                 binding.homeFilterCheetahText.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah_click)
+                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(whiteColor))
                 mCategorySuperRequest.cheetah = "Y"
                 filterSelected[1] = true
             } else {
@@ -96,6 +99,9 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
                 binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_no_click)
                 binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah)
                 binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah)
+                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(blackColor))
                 mCategorySuperRequest.cheetah = null
                 filterSelected[1] = false
             }
@@ -107,12 +113,16 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
             if (!filterSelected[4]) {
                 binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_click)
                 binding.homeFilterCouponText.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCouponText2.setTextColor(Color.parseColor(whiteColor))
                 // 선택
                 mCategorySuperRequest.coupon = "Y"
                 filterSelected[4] = true
             } else {
                 binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_no_click)
                 binding.homeFilterCouponText.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCouponText2.setTextColor(Color.parseColor(blackColor))
                 // 선택 취소
                 mCategorySuperRequest.coupon = null
                 filterSelected[4] = false
@@ -122,6 +132,104 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
         }
         // 초기화 누름
         binding.homeFilterClear.setOnClickListener {
+            // 초기화 시키기
+            val category = mCategorySuperRequest.category
+            mCategorySuperRequest = CategorySuperRequest(
+                mLat,
+                mLon,
+                category,
+                "recomm",
+                null,
+                null,
+                null,
+                null,
+                1,
+                10
+            )
+            for (i in 0..4) {
+                filterSelected[i] = false
+            }
+            CategorySuperService(this).tryGetCategorySuper(
+                mCategorySuperRequest.lat,
+                mCategorySuperRequest.lon,
+                mCategorySuperRequest.category,
+                mCategorySuperRequest.sort,
+                mCategorySuperRequest.cheetah,
+                mCategorySuperRequest.coupon,
+                mCategorySuperRequest.ordermin,
+                mCategorySuperRequest.deliverymin
+            )
+            binding.cartTitle.text = mCategorySuperRequest.category
+            refreshFilter()
+        }
+
+        // 필터2
+        // 필터
+        // 배달비
+        binding.homeFilterDeliveryPrice.setOnClickListener {
+            val filter = FilterCateforyDialog(this, 1)
+            filter.show(supportFragmentManager, "deliveryPrice")
+        }
+        // 최소주문
+        binding.homeFilterMiniOrder.setOnClickListener {
+            val filter = FilterCateforyDialog(this, 2)
+            filter.show(supportFragmentManager, "orderMin")
+        }
+        // 추천순
+        binding.homeFilterRecommend2.setOnClickListener {
+            val filter = FilterRecommendCategoryDialog(this, mRecommSelect)
+            filter.show(supportFragmentManager, "recommend")
+        }
+        // 치타 배달
+        binding.homeFilterCheetah2.setOnClickListener {
+            if (!filterSelected[1]) {
+                // 선택
+                binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah_click)
+                binding.homeFilterCheetahText.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah_click)
+                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(whiteColor))
+                mCategorySuperRequest.cheetah = "Y"
+                filterSelected[1] = true
+            } else {
+                // 취소
+                binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah)
+                binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah)
+                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(blackColor))
+                mCategorySuperRequest.cheetah = null
+                filterSelected[1] = false
+            }
+            // 서버와 통신
+            startSuperSearch()
+        }
+        // 할인쿠폰
+        binding.homeFilterCoupon2.setOnClickListener {
+            if (!filterSelected[4]) {
+                binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCouponText.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCouponText2.setTextColor(Color.parseColor(whiteColor))
+                // 선택
+                mCategorySuperRequest.coupon = "Y"
+                filterSelected[4] = true
+            } else {
+                binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCouponText.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
+                binding.homeFilterCouponText2.setTextColor(Color.parseColor(blackColor))
+                // 선택 취소
+                mCategorySuperRequest.coupon = null
+                filterSelected[4] = false
+            }
+            // 서버와 통신해야 함
+            startSuperSearch()
+        }
+        // 초기화 누름
+        binding.homeFilterClear2.setOnClickListener {
             // 초기화 시키기
             val category = mCategorySuperRequest.category
             mCategorySuperRequest = CategorySuperRequest(
@@ -362,6 +470,12 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
                 binding.categorySuperRecommendRecyclerView.layoutManager = LinearLayoutManager(this)
                 binding.categorySuperRecommendRecyclerView.visibility = View.VISIBLE
                 binding.categorySuperNoSuperParent.itemNoSuperParent.visibility = View.GONE
+
+                val scrollY = binding.categorySuperSticyScrollView.scrollY
+                val position = binding.categorySuperSticyScrollView.mStickyScroll
+
+                if(scrollY > position) binding.categorySuperSticyScrollView.scrollTo(0, position)
+                else binding.categorySuperSticyScrollView.scrollTo(0, 0)
             } else {
                 binding.categorySuperRecommendRecyclerView.visibility = View.GONE
                 binding.categorySuperNoSuperParent.itemNoSuperParent.visibility = View.VISIBLE

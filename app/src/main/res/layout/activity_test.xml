@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".src.TestActivity">
+
+    <EditText
+        style="@style/AppTheme2"
+        android:theme="@style/AppTheme2"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp"
+        android:id="@+id/delivery_address_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="@string/address_info"
+        android:inputType="text"
+        android:autofillHints="String"
+        android:cursorVisible="true"
+        android:focusable="true"
+        android:layout_gravity="center"
+        android:textSelectHandle="@color/loginBlue"
+        android:padding="10dp"
+        android:textColorHint="@color/searchHint"
+        android:textSize="17sp"
+        tools:ignore="LabelFor"/>
+
+</LinearLayout>

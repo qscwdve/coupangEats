@@ -9,9 +9,10 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -53,6 +54,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
     private var myHandler = MyHandler()
+    private var mSize = 0
     private val intervalTime = 2000.toLong() // 몇초 간격으로 페이지를 넘길것인지 (1500 = 1.5초)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -246,7 +248,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
 
     override fun onResume() {
         super.onResume()
-        autoScrollStart(intervalTime)
+        if(mSize > 1) autoScrollStart(intervalTime)
         cartChange()
     }
 
@@ -379,15 +381,15 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             this.putExtra("menuIdx", menuIdx)
             this.putExtra("storeIdx", mSuperIdx)
         }
-        startActivityForResult(intent, MENU_SELECT_ACTIVITY)
+        val menuSelectActivityLauncher : ActivityResultLauncher<Intent> =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if(result.resultCode == RESULT_OK){
+                    cartChange()
+                }
+            }
+        menuSelectActivityLauncher.launch(intent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == MENU_SELECT_ACTIVITY && resultCode == RESULT_OK){
-            cartChange()
-        }
-    }
 
     // 메뉴 설정
     fun setSuperInfo(result : SuperResponseResult){
@@ -478,8 +480,8 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
 
     // 어댑터 설정
     fun setSuperImgViewPager(imgList: ArrayList<String>) {
-        val size = imgList.size
-        if( size != 0){
+        mSize = imgList.size
+        if( mSize != 0){
             binding.detailSuperImgViewPager.adapter = DetailSuperImgViewPagerAdapter(imgList)
             binding.detailSuperImgViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
@@ -489,12 +491,12 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             binding.detailSuperImgViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    binding.detailSuperImgNum.text = (position%size + 1).toString()
+                    binding.detailSuperImgNum.text = (position%mSize + 1).toString()
                 }
 
                 override fun onPageScrollStateChanged(state: Int) {
                     super.onPageScrollStateChanged(state)
-                    if(size > 1){
+                    if(mSize > 1){
                         when(state){
                             // 멈춰있을 때
                             ViewPager2.SCROLL_STATE_IDLE -> autoScrollStart(intervalTime)
@@ -533,7 +535,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     // 다른 페이지로 떠나있는 동안 스크롤이 동작할 필요는 없음. 정지
     override fun onPause() {
         super.onPause()
-        autoScrollStop()
+        if(mSize > 1) autoScrollStop()
     }
 
     fun setPhotoReview(reviewList: ArrayList<PhotoReview>) {

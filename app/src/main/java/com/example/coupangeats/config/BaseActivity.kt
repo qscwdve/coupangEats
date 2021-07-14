@@ -26,12 +26,6 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
         //overridePendingTransition(R.anim.horizon_enter, R.anim.none)
     }
 
-    override fun finish() {
-        super.finish()
-
-        //overridePendingTransition(R.anim.none, R.anim.horiaon_exit)
-    }
-
     // 로딩 다이얼로그, 즉 로딩창을 띄워줌.
     // 네트워크가 시작될 때 사용자가 무작정 기다리게 하지 않기 위해 작성.
     fun showLoadingDialog(context: Context) {

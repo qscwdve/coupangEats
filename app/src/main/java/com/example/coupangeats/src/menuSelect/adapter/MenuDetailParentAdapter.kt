@@ -1,5 +1,9 @@
 package com.example.coupangeats.src.menuSelect.adapter
 
+import android.graphics.Color
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.BackgroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +14,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
 import com.example.coupangeats.src.menuSelect.MenuSelectActivity
 import com.example.coupangeats.src.menuSelect.model.MenuOption
+import com.example.coupangeats.src.reviewWrite.model.menuReview
 
-class MenuDetailParentAdapter(val menuOptionList: ArrayList<MenuOption>, val activity: MenuSelectActivity) : RecyclerView.Adapter<MenuDetailParentAdapter.MenuDetailParentViewHolder>() {
+class MenuDetailParentAdapter(
+    val menuOptionList: ArrayList<MenuOption>,
+    val activity: MenuSelectActivity
+) : RecyclerView.Adapter<MenuDetailParentAdapter.MenuDetailParentViewHolder>() {
     data class necessaryCheckData(var necessary: Boolean = false, var check: Boolean = false)
-    val necessaryCheckList = Array(menuOptionList.size){i -> necessaryCheckData()}
-    class MenuDetailParentViewHolder(itemView: View, val activity: MenuSelectActivity, val adapter: MenuDetailParentAdapter) : RecyclerView.ViewHolder(itemView) {
+
+    val necessaryCheckList = Array(menuOptionList.size) { i -> necessaryCheckData() }
+    class MenuDetailParentViewHolder(
+        itemView: View,
+        val activity: MenuSelectActivity,
+        val adapter: MenuDetailParentAdapter
+    ) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById<TextView>(R.id.item_menu_detail_parent_name)
         val necessary = itemView.findViewById<TextView>(R.id.item_menu_detail_parent_nessary)
         val recyclerView =
             itemView.findViewById<RecyclerView>(R.id.item_menu_detail_parent_recyclerView)
+
 
         fun bind(item: MenuOption, position: Int) {
             name.text = item.optionCategoryName
@@ -38,7 +52,19 @@ class MenuDetailParentAdapter(val menuOptionList: ArrayList<MenuOption>, val act
                 }
             }
         }
+
+        fun setTextBackgroundColor(item: String): SpannableStringBuilder {
+            val ssb = SpannableStringBuilder(item)
+            ssb.setSpan(
+                BackgroundColorSpan(Color.parseColor("#F5FDA0")),
+                0,
+                item.length,
+                Spanned.SPAN_EXCLUSIVE_INCLUSIVE
+            )
+            return ssb
+        }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuDetailParentViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -52,13 +78,14 @@ class MenuDetailParentAdapter(val menuOptionList: ArrayList<MenuOption>, val act
 
     override fun getItemCount(): Int = menuOptionList.size
 
-    fun checkNecessary() : Boolean{
-        for(index in necessaryCheckList.indices){
-            if(necessaryCheckList[index].necessary && (!necessaryCheckList[index].check)){
+    fun checkNecessary(): Boolean {
+        for (index in necessaryCheckList.indices) {
+            if (necessaryCheckList[index].necessary && (!necessaryCheckList[index].check)) {
                 return false
             }
         }
-
         return true
     }
+
 }
+

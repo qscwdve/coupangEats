@@ -545,7 +545,6 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            style="@style/myEditText"
                             android:id="@+id/sign_up_phone_certification_text"
                             android:background="@drawable/phone_certification_box"
                             android:layout_width="0dp"

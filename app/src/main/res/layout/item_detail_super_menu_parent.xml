@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/item_detail_menu_category_name"
         android:layout_marginStart="15sp"
-        android:layout_marginTop="25sp"
+        android:layout_marginTop="35sp"
         android:layout_marginBottom="15sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

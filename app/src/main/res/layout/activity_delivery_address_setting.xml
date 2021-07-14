@@ -84,10 +84,10 @@
                 android:background="@color/white"
                 android:hint="@string/address_info"
                 android:inputType="text"
+                android:autofillHints="String"
+                android:cursorVisible="true"
+                android:focusable="true"
                 android:textSelectHandle="@color/loginBlue"
-                android:textSelectHandleRight="@color/loginBlue"
-                android:textSelectHandleLeft="@color/loginBlue"
-                android:textCursorDrawable="@drawable/cursor_setting"
                 android:padding="10dp"
                 android:textColorHint="@color/searchHint"
                 android:textSize="17sp" />

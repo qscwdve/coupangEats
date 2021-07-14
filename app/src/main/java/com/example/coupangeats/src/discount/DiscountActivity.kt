@@ -123,11 +123,14 @@ class DiscountActivity : BaseActivity<ActivityDiscountBinding>(ActivityDiscountB
 
     override fun onPostApplyCouponSuccess(response: ApplyCouponResponse) {
         if (response.code == 1000) {
+            showCustomToast("쿠폰이 지급되었습니다")
+            binding.discountCouponNumError.visibility = View.GONE
             DiscountService(this).tryGetCouponInfo(mStoreIdx, getUserIdx())
         } else if (response.code == 3056) {
             // 이미 지급받은 쿠폰임
             binding.discountCouponNumError.visibility = View.VISIBLE
             binding.discountCouponNumError.text = "이미 지급받은 쿠폰입니다."
+            showCustomToast("이미 지급받은 쿠폰입니다")
         }
     }
 
