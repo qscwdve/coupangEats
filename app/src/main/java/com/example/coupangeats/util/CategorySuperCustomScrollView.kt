@@ -49,6 +49,5 @@ class CategorySuperCustomScrollView: NestedScrollView {
                 stickyHorizonScrollView?.scrollTo(stickyPositionX, stickyPositionY)
             }
         }
-
     }
 }

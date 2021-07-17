@@ -19,10 +19,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="HardcodedDebugMode"
         tools:replace="android:label">
-        <activity android:name=".src.TestActivity"
-            android:theme="@style/AppTheme2">
-
-        </activity>
         <activity android:name=".src.findId.FindIdActivity" />
         <activity
             android:name=".src.searchDetail.SearchDetailActivity"
