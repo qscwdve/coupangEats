@@ -17,13 +17,13 @@ import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseFragment
 import okhttp3.internal.notify
 
-class OrderPrepareFragment : BaseFragment<FragmentOrderPrepareBinding>(FragmentOrderPrepareBinding::bind, R.layout.fragment_order_prepare), OrderPrepareFragmentView {
+class OrderPrepareFragment(val fragment: OrderFragment) : BaseFragment<FragmentOrderPrepareBinding>(FragmentOrderPrepareBinding::bind, R.layout.fragment_order_prepare), OrderPrepareFragmentView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.orderPreparePastLook.setOnClickListener {
-            //(requireParentFragment() as OrderFragment).changeTab()
+            fragment.changePastFragment()
         }
 
     }

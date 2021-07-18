@@ -14,14 +14,14 @@ class OrderFragment(val mainActivity: MainActivity) : BaseFragment<FragmentOrder
         super.onViewCreated(view, savedInstanceState)
 
         val tabElement = arrayListOf("과거 주문 내역", "준비중")
-        binding.topNavigationViewPager2.adapter = TopNavigationAdapter(requireActivity(), mainActivity)
+        binding.topNavigationViewPager2.adapter = TopNavigationAdapter(requireActivity(), mainActivity, this)
         TabLayoutMediator(binding.orderTabLayout, binding.topNavigationViewPager2) { tab, position ->
             tab.text = tabElement[position]
         }.attach()
     }
 
-    /*fun changeTab(){
+    fun changePastFragment() {
         val tab = binding.orderTabLayout.getTabAt(0)
-        tab!!.select()
-    }*/
+        binding.orderTabLayout.selectTab(tab)
+    }
 }

@@ -180,6 +180,7 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
             }
         }
         activity.saveMenuInfo(mPosition, SelectMenu(content, totalPrice))
+        activity.changeTotalPrice(totalPrice)
     }
 
     fun priceIntToString(value: Int) : String {

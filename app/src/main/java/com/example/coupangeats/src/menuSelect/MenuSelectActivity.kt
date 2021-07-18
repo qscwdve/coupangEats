@@ -275,6 +275,12 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
         }
     }
 
+    // 추가 선택에 따른 전체 가격 변동
+    fun changeTotalPrice(price: Int) {
+        val menuPrice = priceIntToString(binding.menuSelectNum.text.toString().toInt() * mMenuPrice + price) + "원"
+        binding.menuSelectMenuPrice.text = menuPrice
+    }
+
     override fun onGetMenuDetailSuccess(response: MenuDetailResponse) {
         if(response.code == 1000){
             binding.menuSelectMenuName.text = response.result.menuName

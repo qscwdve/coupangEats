@@ -23,7 +23,7 @@ class MenuDetailParentAdapter(
     data class necessaryCheckData(var necessary: Boolean = false, var check: Boolean = false)
     val necessaryCheckList = Array(menuOptionList.size) { i -> necessaryCheckData() }
     var parentList = Array<LinearLayout?>(menuOptionList.size) {i -> null}
-    var necessaryTextList =  Array<TextView?>(menuOptionList.size) {i -> null}
+    var necessaryBackList = Array<LinearLayout?>(menuOptionList.size) {i -> null}
     class MenuDetailParentViewHolder(
         itemView: View,
         val activity: MenuSelectActivity,
@@ -31,13 +31,15 @@ class MenuDetailParentAdapter(
     ) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById<TextView>(R.id.item_menu_detail_parent_name)
         val necessary = itemView.findViewById<TextView>(R.id.item_menu_detail_parent_nessary)
+        val necessaryBack = itemView.findViewById<LinearLayout>(R.id.item_menu_detail_necessary_back)
         val parent = itemView.findViewById<LinearLayout>(R.id.item_menu_detail_parent_item_parent)
         val recyclerView =
             itemView.findViewById<RecyclerView>(R.id.item_menu_detail_parent_recyclerView)
 
 
         fun bind(item: MenuOption, position: Int) {
-            adapter.necessaryTextList[position] = necessary
+            adapter.necessaryBackList[position] = necessaryBack
+            necessaryBack.setBackgroundResource(R.drawable.white_null)
             name.text = item.optionCategoryName
             if(item.requiredChoiceFlag == "Y"){
                 adapter.necessaryCheckList[position].necessary = true
@@ -82,26 +84,15 @@ class MenuDetailParentAdapter(
     }
 
     fun checkedNecessary(index: Int){
-        necessaryTextList[index]!!.text = "필수 선택"
+        necessaryBackList[index]!!.setBackgroundResource(R.drawable.white_null)
     }
 
     fun changeNecessaryCheck() {
         for (index in necessaryCheckList.indices) {
             if (necessaryCheckList[index].necessary && (!necessaryCheckList[index].check)) {
-                necessaryTextList[index]!!.text = setTextBackgroundColor("필수 선택")
+                necessaryBackList[index]!!.setBackgroundResource(R.drawable.menu_select_necessary_box)
             }
         }
-    }
-
-    fun setTextBackgroundColor(item: String): SpannableStringBuilder {
-        val ssb = SpannableStringBuilder(item)
-        ssb.setSpan(
-            BackgroundColorSpan(Color.parseColor("#F5FDA0")),
-            0,
-            item.length,
-            Spanned.SPAN_EXCLUSIVE_INCLUSIVE
-        )
-        return ssb
     }
 
     fun getPosition(index: Int) : Int{
