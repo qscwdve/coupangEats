@@ -302,7 +302,7 @@
 
     <LinearLayout
         android:layout_below="@+id/super_search_filter_parent"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <include layout="@layout/item_no_filter_super"

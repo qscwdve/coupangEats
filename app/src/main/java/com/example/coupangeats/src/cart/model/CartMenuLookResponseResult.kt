@@ -7,5 +7,6 @@ data class CartMenuLookResponseResult(
     @SerializedName("address") val address: String,
     @SerializedName("coupon") val coupon: CartCoupon,
     @SerializedName("payType") val payType: String?,
-    @SerializedName("deliveryPrice") val deliveryPrice: Int
+    @SerializedName("deliveryPrice") val deliveryPrice: Int,
+    @SerializedName("cheetahDelivery") val cheetahDelivery: String
 )

@@ -281,6 +281,13 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             // 쿠폰 제어
             couponSetting(result.coupon)
 
+            // 치타배달 유무
+            if(result.cheetahDelivery == "Y"){
+                binding.cartCheetah.visibility = View.VISIBLE
+            } else {
+                binding.cartCheetah.visibility = View.GONE
+            }
+
             // 주문 금액
             mMenuPrice = mDBHelper.menuTotalPrice(mDB)
             val menuPrice = "${priceIntToString(mMenuPrice)}원"

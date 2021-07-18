@@ -82,11 +82,12 @@ class MyReviewActivity : BaseActivity<ActivityMyReviewBinding>(ActivityMyReviewB
 
             if(reviewInfo.remainingReviewTime == 0){
                 // 수정 불가능
-                binding.myReviewModify.visibility = View.GONE
+                binding.myReviewModifyDate.visibility = View.GONE
             } else {
                 // 수정 가능
-                binding.myReviewModify.visibility = View.VISIBLE
+                binding.myReviewModifyDate.visibility = View.VISIBLE
                 val modifyText = "리뷰 수정기간이 ${reviewInfo.remainingReviewTime}일 남았습니다"
+                binding.myReviewModifyDate.text = modifyText
             }
         }
     }

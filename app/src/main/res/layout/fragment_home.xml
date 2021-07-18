@@ -948,7 +948,7 @@
 
     <!-- 치타배달 배너 -->
     <LinearLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/home_cheetah_banner_parent"
         android:layout_marginBottom="13dp"
         android:layout_marginHorizontal="10dp"
@@ -990,6 +990,7 @@
             android:textColor="@color/black"
             android:textSize="15sp"/>
         <ImageView
+            android:padding="10dp"
             android:id="@+id/home_cheetah_banner_cancel"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
@@ -1015,7 +1016,7 @@
         android:layout_width="match_parent"
         android:background="@drawable/blue_to_dark_blue_ripple"
         android:orientation="horizontal"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_height="wrap_content">
 
         <LinearLayout

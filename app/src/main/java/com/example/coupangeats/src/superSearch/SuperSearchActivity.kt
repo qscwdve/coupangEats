@@ -316,7 +316,7 @@ class SuperSearchActivity :
     }
 
     override fun onGetDiscountSuperSuccess(response: DiscountSuperResponse) {
-        if (response.code == 1000 && response.result.totalCount > 0) {
+        if (response.code == 1000) {
             if(response.result.totalCount > 0){
                 binding.searchRecommendRecyclerview.visibility = View.VISIBLE
                 binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
