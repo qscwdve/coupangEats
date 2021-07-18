@@ -38,9 +38,18 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     var mRequestChange = true
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
-
+    lateinit var discountActivityLauncher: ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        discountActivityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.data == null) {
+                    changeCouponNo()
+                } else {
+                    resultDiscountActivity(result.data!!)
+                }
+            }
 
         // 데이터베이스 셋팅
         mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
@@ -163,14 +172,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             this.putExtra("storeIdx", getStoreIdx())
             this.putExtra("selectCouponIdx", mCouponIdx)
         }
-        val discountActivityLauncher: ActivityResultLauncher<Intent> =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.data == null) {
-                    changeCouponNo()
-                } else {
-                    resultDiscountActivity(result.data!!)
-                }
-            }
+
         discountActivityLauncher.launch(intent)
     }
 

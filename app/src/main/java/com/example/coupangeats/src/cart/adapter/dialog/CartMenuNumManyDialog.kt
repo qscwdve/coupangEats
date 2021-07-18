@@ -21,18 +21,20 @@ class CartMenuNumManyDialog(val cartMenuInfoAdatper: CartMenuInfoAdatper, val nu
         savedInstanceState: Bundle?
     ): View? {
         binding = DialogCartMenuManyBinding.inflate(layoutInflater)
+        // 모서리 둥글게
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 모서리 둥글게
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
         binding.dialogCartMenuManyNumText.text = mNum.toString()
-
         binding.dialogCartMenuManyNumCancel.setOnClickListener { dismiss() }
         binding.dialogCartMenuManyNumPlus.setOnClickListener {
             if(mNum != 100){

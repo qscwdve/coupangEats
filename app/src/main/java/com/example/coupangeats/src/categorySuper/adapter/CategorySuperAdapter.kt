@@ -1,6 +1,7 @@
 package com.example.coupangeats.src.categorySuper.adapter
 
 import android.graphics.Color
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +15,10 @@ import com.example.coupangeats.src.main.search.category.model.SuperCategoryRespo
 
 class CategorySuperAdapter(val categoryList: ArrayList<SuperCategoryResponseResult>, val activity: CategorySuperActivity, val option: String): RecyclerView.Adapter<CategorySuperAdapter.CategorySuperViewHolder>() {
     var categoryCheck = option
+    var textView : TextView? = null
     class CategorySuperViewHolder(itemView: View, val categorySuperAdapter: CategorySuperAdapter) : RecyclerView.ViewHolder(itemView) {
         val categoryImg = itemView.findViewById<ImageView>(R.id.item_category_super_category_img)
+        val back = itemView.findViewById<ImageView>(R.id.item_category_super_category_img_back)
         val categoryName = itemView.findViewById<TextView>(R.id.item_category_super_category_name)
         val line = itemView.findViewById<View>(R.id.item_category_super_category_line)
 
@@ -27,9 +30,12 @@ class CategorySuperAdapter(val categoryList: ArrayList<SuperCategoryResponseResu
             if(categorySuperAdapter.categoryCheck == item.name){
                 line.visibility = View.VISIBLE
                 categoryName.setTextColor(Color.parseColor("#00AFFE"))
+                back.visibility = View.VISIBLE
+                Glide.with(back).load(R.drawable.rectangle_blue_box).circleCrop().into(back)
             } else {
                 line.visibility = View.INVISIBLE
                 categoryName.setTextColor(Color.parseColor("#000000"))
+                back.visibility = View.INVISIBLE
             }
 
             itemView.setOnClickListener {
@@ -39,6 +45,7 @@ class CategorySuperAdapter(val categoryList: ArrayList<SuperCategoryResponseResu
                     categorySuperAdapter.changeCategory(item.name)
                 }
             }
+            categorySuperAdapter.textView = categoryName
         }
     }
 
@@ -62,4 +69,9 @@ class CategorySuperAdapter(val categoryList: ArrayList<SuperCategoryResponseResu
         categoryCheck = value
         notifyDataSetChanged()
     }
+
+    fun getHeight(): Int{
+        return textView!!.top
+    }
+
 }

@@ -329,4 +329,6 @@
     <string name="no_info_info">검색 조건 변경 후 다시 시도해 보세요.</string>
     <string name="review">리뷰</string>
     <string name="num">개</string>
+    <string name="couponLook">혜택보기</string>
+    <string name="necessaryCheck">필수 선택</string>
 </resources>

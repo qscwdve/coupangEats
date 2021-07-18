@@ -21,7 +21,7 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
                         val activity: MenuSelectActivity,
                         val parentAdapter: MenuDetailParentAdapter) : RecyclerView.Adapter<MenuDetailAdapter.MenuDetailViewHolder>() {
     // 버전이 1이면 필수 , 2이면 추가선택
-    var count = 0;
+    var count = 0
     var necessary = -1
     var selectedOption = Array(optionList.size){i -> false}   // 추가한 것들 저장
     class MenuDetailViewHolder(itemView: View, val menuDetailAdapter: MenuDetailAdapter) : RecyclerView.ViewHolder(itemView){
@@ -62,6 +62,7 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
                     }
                     menuDetailAdapter.sendActivityData()
                     menuDetailAdapter.changeNecessaryCheck()   // 필수선택을 했는지 확인하는 로직
+                    menuDetailAdapter.parentAdapter.checkedNecessary(menuDetailAdapter.mPosition)
                 }
             } else {
                 // 추가 선택
@@ -108,7 +109,7 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
                                 optionImg.setImageResource(R.drawable.ic_check_white)
                                 menuDetailAdapter.selectedOption[position] = true
                                 menuDetailAdapter.count++
-                                if(menuDetailAdapter.count == menuDetailAdapter.numberOfChoices){
+                                 if(menuDetailAdapter.count == menuDetailAdapter.numberOfChoices){
                                     // 선택 불가능으로 나머지 돌려야 한다.
                                     menuDetailAdapter.refresh()
                                 }
@@ -122,7 +123,7 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
                         }
                     }
                     menuDetailAdapter.sendActivityData()
-                }
+              }
             }
         }
         fun priceIntToString(value: Int) : String {
@@ -190,4 +191,5 @@ class MenuDetailAdapter(val optionList: ArrayList<Option>,
             "$first,$last"
         } else target
     }
+
 }

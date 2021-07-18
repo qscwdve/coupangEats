@@ -56,12 +56,17 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     private var myHandler = MyHandler()
     private var mSize = 0
     private val intervalTime = 2000.toLong() // 몇초 간격으로 페이지를 넘길것인지 (1500 = 1.5초)
-
+    lateinit var menuSelectActivityLauncher : ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         overridePendingTransition( R.anim.horizon_start_enter, R.anim.horizon_start_exit)
 
+        menuSelectActivityLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if(result.resultCode == RESULT_OK){
+                cartChange()
+            }
+        }
         // 데이터베이스 셋팅
         mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
         mDB = mDBHelper.writableDatabase
@@ -381,12 +386,6 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             this.putExtra("menuIdx", menuIdx)
             this.putExtra("storeIdx", mSuperIdx)
         }
-        val menuSelectActivityLauncher : ActivityResultLauncher<Intent> =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if(result.resultCode == RESULT_OK){
-                    cartChange()
-                }
-            }
         menuSelectActivityLauncher.launch(intent)
     }
 

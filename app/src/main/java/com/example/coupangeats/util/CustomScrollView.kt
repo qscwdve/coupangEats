@@ -74,7 +74,6 @@ class CustomScrollView : NestedScrollView, ViewTreeObserver.OnGlobalLayoutListen
 
     override fun onGlobalLayout() {
         mHeaderInitPosition = position?.top?.toFloat() ?: 0f
-
     }
 
 }

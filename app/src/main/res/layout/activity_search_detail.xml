@@ -23,7 +23,6 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@+id/toolbar">
 
-
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -367,11 +366,67 @@
 
             </HorizontalScrollView>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:paddingVertical="10dp"
-                android:id="@+id/search_detail_super_recyclerview"
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/search_detail_real_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_marginBottom="15dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:padding="15dp"
+                        android:background="@drawable/notice_box">
+
+                        <ImageView
+                            android:layout_marginEnd="40dp"
+                            android:layout_centerVertical="true"
+                            android:adjustViewBounds="true"
+                            android:layout_toStartOf="@+id/category_super_coupon_look"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/category_coupon_text1"/>
+
+                        <LinearLayout
+                            android:id="@+id/category_super_coupon_look"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingVertical="7dp"
+                            android:paddingHorizontal="10dp"
+                            android:orientation="horizontal"
+                            android:background="@drawable/category_coupon_look_box">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/couponLook"
+                                android:textColor="@color/white"
+                                android:textSize="13sp"
+                                android:layout_marginEnd="5dp"
+                                android:textStyle="bold"/>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_right_arrow_white"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:paddingVertical="10dp"
+                        android:id="@+id/search_detail_super_recyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
 
             <include layout="@layout/item_no_filter_super"
                 android:id="@+id/searchDetailNoFilterParent"/>

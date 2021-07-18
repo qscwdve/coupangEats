@@ -23,15 +23,14 @@ class ReceiptPastDialog (val menuData: pastOrder) : DialogFragment()  {
         savedInstanceState: Bundle?
     ): View? {
         binding = DialogReceiptBinding.inflate(layoutInflater)
+        // 모서리 둥글게
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // 모서리 둥글게
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
         binding.dialogReceiptBack.setOnClickListener { dismiss() }
 

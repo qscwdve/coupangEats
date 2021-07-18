@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -18,6 +20,7 @@ import com.example.coupangeats.databinding.ActivityMenuSelectBinding
 import com.example.coupangeats.databinding.DialogCartReplaceBinding
 import com.example.coupangeats.src.cart.model.CartMenuInfo
 import com.example.coupangeats.src.detailSuper.adapter.DetailSuperImgViewPagerAdapter
+import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.menuSelect.adapter.MenuDetailParentAdapter
 import com.example.coupangeats.src.menuSelect.model.MenuDetailResponse
 import com.example.coupangeats.src.menuSelect.model.MenuOption
@@ -117,7 +120,8 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
                     ))
                 }
             } else {
-                if ((binding.menuSelectRecyclerView.adapter as MenuDetailParentAdapter).checkNecessary()) {
+                val index = (binding.menuSelectRecyclerView.adapter as MenuDetailParentAdapter).checkNecessary()
+                if (index == -1) {
                     val mainMenu = binding.menuSelectMenuName.text.toString()
                     var sideMenu = ""
                     var totalPrice = mMenuPrice
@@ -163,6 +167,14 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
                     }
                 } else {
                     showCustomToast("필수선택을 체크해주세요")
+                    (binding.menuSelectRecyclerView.adapter as MenuDetailParentAdapter).changeNecessaryCheck()
+                    val menuPosition = if(index == 0){
+                        0
+                    } else {
+                        (binding.menuSelectRecyclerView.adapter as MenuDetailParentAdapter).getPosition(index - 1)
+                    }
+                    binding.menuSelectAppBar.setExpanded(false)
+                    binding.menuSelectContent.scrollTo(0, menuPosition + binding.menuSelectRecyclerView.top)
                 }
             }
         }

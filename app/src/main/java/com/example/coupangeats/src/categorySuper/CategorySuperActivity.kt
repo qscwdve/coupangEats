@@ -29,7 +29,7 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
     private var whiteColor = "#FFFFFF"
     private var blackColor = "#000000"
     private var mRecommSelect = 1
-    private var mStickyScroll = 225
+    private var mStickyScroll = 0
     private var mScrollHeight = 0
     private var mScrollFlag = true
     private var mHeightcheck = false
@@ -85,7 +85,11 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
             } else {
                 binding.categorySuperCategoryRecyclerView.translationY = 0f
                 binding.categorySuperContent.translationY = 0f
-                binding.categorySuperFilterLine.visibility = View.GONE
+                if(scrollY > 10){
+                    binding.categorySuperFilterLine.visibility = View.VISIBLE
+                } else {
+                    binding.categorySuperFilterLine.visibility = View.GONE
+                }
             }
 
 
@@ -321,6 +325,7 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
                 binding.categorySuperRecommendRecyclerView.layoutManager = LinearLayoutManager(this)
                 binding.categorySuperRecommendRecyclerView.visibility = View.VISIBLE
                 binding.categorySuperNoSuperParent.itemNoSuperParent.visibility = View.GONE
+                binding.categorySuperCoupon.visibility = View.VISIBLE
 
                 if(!mHeightcheck){
                     setScrollHeight(response.result.recommendStores.size)
@@ -329,6 +334,7 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
                     changeScrollHeight(response.result.recommendStores.size)
                 }
             } else {
+                binding.categorySuperCoupon.visibility = View.GONE
                 binding.categorySuperRecommendRecyclerView.visibility = View.GONE
                 binding.categorySuperNoSuperParent.itemNoSuperParent.visibility = View.VISIBLE
             }
@@ -379,6 +385,27 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
     }
 
     fun changeScrollHeight(num: Int) {
+        if(mStickyScroll < 100){
+            changeStickyScroll(num)
+        } else {
+            if(num > 2){
+                binding.categorySuperContent.layoutParams.height = mScrollHeight + mStickyScroll
+                mScrollFlag = true
+                Log.d("scrollPosition", "num > 2  :  ${binding.categorySuperContent.layoutParams.height}")
+            }
+            else{
+                binding.categorySuperContent.layoutParams.height = mScrollHeight
+                mScrollFlag = false
+                Log.d("scrollPosition", "num < 2  :  ${binding.categorySuperContent.layoutParams.height}")
+            }
+        }
+
+    }
+
+    fun changeStickyScroll(num : Int){
+        mStickyScroll = (binding.categorySuperCategoryRecyclerView.adapter as CategorySuperAdapter).getHeight()
+        Log.d("stickyScroll", "stickyScroll : $mStickyScroll")
+
         if(num > 2){
             binding.categorySuperContent.layoutParams.height = mScrollHeight + mStickyScroll
             mScrollFlag = true

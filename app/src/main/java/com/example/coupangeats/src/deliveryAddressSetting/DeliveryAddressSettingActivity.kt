@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -18,6 +20,7 @@ import com.example.coupangeats.src.deliveryAddressSetting.adapter.data.SearchAdd
 import com.example.coupangeats.src.deliveryAddressSetting.detail.DetailAddressFragment
 import com.example.coupangeats.src.deliveryAddressSetting.model.*
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.DeliveryAddressResponse
+import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListRequest
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListResponse
 import com.example.coupangeats.src.map.MapActivity
 import com.example.coupangeats.util.GpsControl
@@ -81,7 +84,7 @@ class DeliveryAddressSettingActivity() :
         }
 
         // edittext 설정
-        /*binding.deliveryAddressText.setOnFocusChangeListener { v, hasFocus ->
+        binding.deliveryAddressText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
                 // 클릭됨
                 if (mSearchTip) {
@@ -106,6 +109,8 @@ class DeliveryAddressSettingActivity() :
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
+
         // 키보드 상에서 완료 버튼 누름
         binding.deliveryAddressText.setOnEditorActionListener { v, actionId, event ->
             //showCustomToast("엔터키 눌림")
@@ -118,7 +123,7 @@ class DeliveryAddressSettingActivity() :
             val searchAddrListRequest = SearchAddrListRequest(1, keyword)
             DeliveryAddressSettingService(this).tryGetSearchAddrList(searchAddrListRequest)
             false
-        }*/
+        }
 
         // editText 전체 취소 리스너
         binding.deliveryAddressTextCancel.setOnClickListener {

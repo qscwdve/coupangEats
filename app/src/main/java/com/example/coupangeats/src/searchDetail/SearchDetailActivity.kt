@@ -471,6 +471,7 @@ class SearchDetailActivity :
                 binding.searchDetailSuperParent.visibility = View.VISIBLE
                 binding.searchDetailSuperRecyclerview.visibility = View.VISIBLE
                 binding.searchDetailFilterParent.visibility = View.VISIBLE
+                binding.searchDetailRealContent.visibility = View.VISIBLE
                 // 검색 없을 때 필요한 것들
                 binding.searchDetailNoSearchParent.itemNoSuperParent.visibility = View.GONE
                 binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
@@ -478,6 +479,7 @@ class SearchDetailActivity :
                 if (mIsSearch) changeSuperStatus()
                 mUse = true
             } else {
+                binding.searchDetailRealContent.visibility = View.GONE
                 binding.searchDetailKeywordParent.visibility = View.GONE
                 binding.searchDetailSuperParent.visibility = View.VISIBLE
                 binding.searchDetailSuperRecyclerview.visibility = View.GONE

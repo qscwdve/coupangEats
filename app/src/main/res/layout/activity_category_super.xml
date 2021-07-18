@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".src.categorySuper.CategorySuperActivity">
 
     <LinearLayout
@@ -323,6 +324,49 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <RelativeLayout
+                    android:id="@+id/category_super_coupon"
+                    android:layout_marginBottom="15dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:padding="15dp"
+                    android:background="@drawable/notice_box">
+
+                    <ImageView
+                        android:layout_marginEnd="40dp"
+                        android:layout_centerVertical="true"
+                        android:adjustViewBounds="true"
+                        android:layout_toStartOf="@+id/category_super_coupon_look"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/category_coupon_text1"/>
+
+                    <LinearLayout
+                        android:id="@+id/category_super_coupon_look"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:paddingVertical="7dp"
+                        android:paddingHorizontal="10dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/category_coupon_look_box">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/couponLook"
+                            android:textColor="@color/white"
+                            android:textSize="13sp"
+                            android:layout_marginEnd="5dp"
+                            android:textStyle="bold"/>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_right_arrow_white"/>
+                    </LinearLayout>
+                </RelativeLayout>
+
                 <!-- 주변 매장 -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/category_super_recommend_recyclerView"
@@ -343,7 +387,7 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@drawable/sticky_shadow"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
     </RelativeLayout>
 
