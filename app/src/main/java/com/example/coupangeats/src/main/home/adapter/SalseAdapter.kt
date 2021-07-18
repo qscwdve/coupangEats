@@ -64,18 +64,20 @@ class SalseAdapter(val saleList: ArrayList<OnSaleStores>, val fragment: HomeFrag
                 }
             }
             itemView.setOnTouchListener { v, event ->
-                if(event.action == MotionEvent.ACTION_UP){
-                    if(salseAdapter.fragment.mScrollStart){
-                        salseAdapter.fragment.scrollFinish()
-                        salseAdapter.fragment.mScrollStart  = false
-                        salseAdapter.fragment.mScrollFlag = false
-                    } else {
-                        salseAdapter.fragment.mScrollFlag = false
+                if(!salseAdapter.fragment.mScrollFinish) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        if (salseAdapter.fragment.mScrollStart) {
+                            salseAdapter.fragment.scrollFinish()
+                            salseAdapter.fragment.mScrollStart = false
+                            salseAdapter.fragment.mScrollFlag = false
+                        } else {
+                            salseAdapter.fragment.mScrollFlag = false
+                        }
+                    } else if (event.action == MotionEvent.ACTION_DOWN) {
+                        // 누름
+                        salseAdapter.fragment.mScrollFlag = true
+                        salseAdapter.fragment.mScrollValue = -1
                     }
-                } else if(event.action == MotionEvent.ACTION_DOWN){
-                    // 누름
-                    salseAdapter.fragment.mScrollFlag = true
-                    salseAdapter.fragment.mScrollValue = -1
                 }
                 false
             }

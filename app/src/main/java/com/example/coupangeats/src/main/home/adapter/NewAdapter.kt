@@ -67,18 +67,20 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
                 }
             }
             itemView.setOnTouchListener { v, event ->
-                if(event.action == MotionEvent.ACTION_UP){
-                    if(newAdapter.fragment.mScrollStart){
-                        newAdapter.fragment.scrollFinish()
-                        newAdapter.fragment.mScrollStart  = false
-                        newAdapter.fragment.mScrollFlag = false
-                    } else {
-                        newAdapter.fragment.mScrollFlag = false
+                if(!newAdapter.fragment.mScrollFinish) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        if (newAdapter.fragment.mScrollStart) {
+                            newAdapter.fragment.scrollFinish()
+                            newAdapter.fragment.mScrollStart = false
+                            newAdapter.fragment.mScrollFlag = false
+                        } else {
+                            newAdapter.fragment.mScrollFlag = false
+                        }
+                    } else if (event.action == MotionEvent.ACTION_DOWN) {
+                        // 누름
+                        newAdapter.fragment.mScrollFlag = true
+                        newAdapter.fragment.mScrollValue = -1
                     }
-                } else if(event.action == MotionEvent.ACTION_DOWN){
-                    // 누름
-                    newAdapter.fragment.mScrollFlag = true
-                    newAdapter.fragment.mScrollValue = -1
                 }
                 false
             }

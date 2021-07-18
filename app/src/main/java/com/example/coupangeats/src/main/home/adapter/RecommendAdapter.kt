@@ -38,17 +38,20 @@ class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragme
 
             itemView.tag = adapterPosition
             val image = item.url
-            if(image.size > 0){
-                Glide.with(mainimg).load(item.url[0]).centerCrop().into(mainimg)
+            if(image != null){
+                if(image.size > 0){
+                    Glide.with(mainimg).load(item.url[0]).centerCrop().into(mainimg)
+                }
+                //Glide.with(mainimg).load(item.url[0]).into(mainimg)
+                if(image.size == 3){
+                    subImgParent.visibility = View.VISIBLE
+                    Glide.with(sub1).load(image[1]).into(sub1)
+                    Glide.with(sub2).load(image[2]).into(sub2)
+                } else {
+                    subImgParent.visibility = View.GONE
+                }
             }
-            //Glide.with(mainimg).load(item.url[0]).into(mainimg)
-            if(image.size == 3){
-                subImgParent.visibility = View.VISIBLE
-                Glide.with(sub1).load(image[1]).into(sub1)
-                Glide.with(sub2).load(image[2]).into(sub2)
-            } else {
-                subImgParent.visibility = View.GONE
-            }
+
             name.text = item.storeName
             when(item.markIcon){
                 "신규" -> markIcon.setImageResource(R.drawable.new_super)
@@ -80,17 +83,19 @@ class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragme
                 couponParent.visibility = View.GONE
             }
             itemView.setOnTouchListener { v, event ->
-                if(event.action == MotionEvent.ACTION_UP){
-                    if(recommendAdapter.fragment.mScrollStart){
-                        recommendAdapter.fragment.mScrollStart  = false
-                        recommendAdapter.fragment.mScrollFlag = false
-                    } else {
-                        recommendAdapter.fragment.mScrollFlag = false
+                if(!recommendAdapter.fragment.mScrollFinish) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        if (recommendAdapter.fragment.mScrollStart) {
+                            recommendAdapter.fragment.mScrollStart = false
+                            recommendAdapter.fragment.mScrollFlag = false
+                        } else {
+                            recommendAdapter.fragment.mScrollFlag = false
+                        }
+                    } else if (event.action == MotionEvent.ACTION_DOWN) {
+                        // 누름
+                        recommendAdapter.fragment.mScrollFlag = true
+                        recommendAdapter.fragment.mScrollValue = -1
                     }
-                } else if(event.action == MotionEvent.ACTION_DOWN){
-                    // 누름
-                    recommendAdapter.fragment.mScrollFlag = true
-                    recommendAdapter.fragment.mScrollValue = -1
                 }
                 false
             }

@@ -166,7 +166,7 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
                         ))
                     }
                 } else {
-                    showCustomToast("필수선택을 체크해주세요")
+                    //showCustomToast("필수선택을 체크해주세요")
                     (binding.menuSelectRecyclerView.adapter as MenuDetailParentAdapter).changeNecessaryCheck()
                     val menuPosition = if(index == 0){
                         0

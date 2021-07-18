@@ -27,17 +27,19 @@ class CategoryAdapter(val categoryList: ArrayList<StoreCategories>, val fragment
             categoryName.text = item.categoryName
 
             itemView.setOnTouchListener { v, event ->
-                if(event.action == MotionEvent.ACTION_UP){
-                    if(categoryAdapter.fragment.mScrollStart){
-                        categoryAdapter.fragment.mScrollStart  = false
-                        categoryAdapter.fragment.mScrollFlag = false
-                    } else {
-                        categoryAdapter.fragment.mScrollFlag = false
+                if(!categoryAdapter.fragment.mScrollFinish) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        if (categoryAdapter.fragment.mScrollStart) {
+                            categoryAdapter.fragment.mScrollStart = false
+                            categoryAdapter.fragment.mScrollFlag = false
+                        } else {
+                            categoryAdapter.fragment.mScrollFlag = false
+                        }
+                    } else if (event.action == MotionEvent.ACTION_DOWN) {
+                        // 누름
+                        categoryAdapter.fragment.mScrollFlag = true
+                        categoryAdapter.fragment.mScrollValue = -1
                     }
-                } else if(event.action == MotionEvent.ACTION_DOWN){
-                    // 누름
-                    categoryAdapter.fragment.mScrollFlag = true
-                    categoryAdapter.fragment.mScrollValue = -1
                 }
                 false
             }

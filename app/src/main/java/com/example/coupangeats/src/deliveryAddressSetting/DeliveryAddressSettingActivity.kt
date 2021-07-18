@@ -313,10 +313,15 @@ class DeliveryAddressSettingActivity() :
                     View.VISIBLE
                 else binding.deliveryAddressSettingHomeChecked.visibility = View.INVISIBLE
                 isHome = true
+                if(version != GPS_SELECT){
+                    binding.deliveryAddressSettingHomeChecked.visibility = View.INVISIBLE
+                }
                 mHomeMainAddress = response.result.home.mainAddress
                 mHomeaddressIdx = response.result.home.addressIdx
+
             } else {
                 binding.deliveryAddressSettingHomeDetail.visibility = View.GONE
+                binding.deliveryAddressSettingHomeChecked.visibility = View.INVISIBLE
                 isHome = false
             }
             if (company != null) {
@@ -329,8 +334,13 @@ class DeliveryAddressSettingActivity() :
                 if (response.result.selectedAddressIdx == company.addressIdx) binding.deliveryAddressBusinessChecked.visibility =
                     View.VISIBLE
                 else binding.deliveryAddressBusinessChecked.visibility = View.INVISIBLE
+
+                if(version != GPS_SELECT){
+                    binding.deliveryAddressBusinessChecked.visibility = View.INVISIBLE
+                }
             } else {
                 isCompany = false
+                binding.deliveryAddressSettingHomeChecked.visibility = View.INVISIBLE
                 binding.deliveryAddressBusinessDetail.visibility = View.GONE
             }
             if (addressList != null) {

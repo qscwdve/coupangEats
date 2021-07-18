@@ -29,17 +29,19 @@ class EventAdapter(val eventList: ArrayList<Events>, val fragment: HomeFragment)
             }
 
             itemView.setOnTouchListener { v, event ->
-                if(event.action == MotionEvent.ACTION_UP){
-                    if(adapter.fragment.mScrollStart){
-                        adapter.fragment.mScrollStart  = false
-                        adapter.fragment.mScrollFlag = false
-                    } else {
-                        adapter.fragment.mScrollFlag = false
+                if(!adapter.fragment.mScrollFinish) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        if (adapter.fragment.mScrollStart) {
+                            adapter.fragment.mScrollStart = false
+                            adapter.fragment.mScrollFlag = false
+                        } else {
+                            adapter.fragment.mScrollFlag = false
+                        }
+                    } else if (event.action == MotionEvent.ACTION_DOWN) {
+                        // 누름
+                        adapter.fragment.mScrollFlag = true
+                        adapter.fragment.mScrollValue = -1
                     }
-                } else if(event.action == MotionEvent.ACTION_DOWN){
-                    // 누름
-                    adapter.fragment.mScrollFlag = true
-                    adapter.fragment.mScrollValue = -1
                 }
                 false
             }

@@ -102,6 +102,7 @@
                 android:visibility="invisible" />
 
             <EditText
+                android:textSelectHandle="@color/loginBlue"
                 android:id="@+id/detail_address_detail_text"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -286,7 +287,8 @@
                 android:inputType="text"
                 android:paddingHorizontal="5dp"
                 android:textSize="15sp"
-                tools:ignore="NestedWeights" />
+                tools:ignore="NestedWeights"
+                android:autofillHints="no" />
 
             <ImageView
                 android:id="@+id/detail_address_aliaS_text_cancel"

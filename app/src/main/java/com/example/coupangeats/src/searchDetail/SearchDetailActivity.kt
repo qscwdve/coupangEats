@@ -375,7 +375,7 @@ class SearchDetailActivity :
     // 배달비 필터 바꾸는 함수 다이얼로그에서 호출
     fun changeDeliveryFilter(value: Int, valueString: String) {
         if (value != -1) {
-            val str = "배달비 ${valueString}원 이하"
+            val str = if(valueString == "무료배달") "무료배달" else "배달비 ${valueString}원 이하"
             binding.homeFilterDeliveryPriceBackground.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterDeliveryPriceText.text = str
             binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(whiteColor))

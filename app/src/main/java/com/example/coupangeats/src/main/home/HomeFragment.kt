@@ -43,6 +43,7 @@ class HomeFragment() :
     private var mAddress = ""
     var mScrollFlag = false
     var mScrollStart = false
+    var mScrollFinish = false
     var mScrollValue = 0
     var mStickyCount = 0
     private var countDownTimer: CountDownTimer? = null
@@ -287,39 +288,43 @@ class HomeFragment() :
             lastPosUpdate(scrollY)
         }
         binding.homeRecommendRecyclerview.setOnTouchListener { v, event ->
-            if(event.action == MotionEvent.ACTION_UP){
-                if(mScrollStart){
-                    mScrollStart  = false
-                    mScrollFlag = false
-                } else {
-                    mScrollFlag = false
+            if(!mScrollFinish) {
+                if (event.action == MotionEvent.ACTION_UP) {
+                    if (mScrollStart) {
+                        mScrollStart = false
+                        mScrollFlag = false
+                    } else {
+                        mScrollFlag = false
+                    }
+                } else if (event.action == MotionEvent.ACTION_DOWN) {
+                    // 누름
+                    mScrollFlag = true
+                    mScrollValue = -1
                 }
-            } else if(event.action == MotionEvent.ACTION_DOWN){
-                // 누름
-                mScrollFlag = true
-                mScrollValue = -1
             }
             false
         }
         binding.homeScrollView.setOnTouchListener { v, event ->
-            if(event.action == MotionEvent.ACTION_UP){
-                if(mScrollStart){
-                    mScrollStart  = false
-                    mScrollFlag = false
-                } else {
-                    mScrollFlag = false
+            if(!mScrollFinish) {
+                if (event.action == MotionEvent.ACTION_UP) {
+                    if (mScrollStart) {
+                        mScrollStart = false
+                        mScrollFlag = false
+                    } else {
+                        mScrollFlag = false
+                    }
+                } else if (event.action == MotionEvent.ACTION_DOWN) {
+                    // 누름
+                    mScrollFlag = true
+                    mScrollValue = -1
                 }
-            } else if(event.action == MotionEvent.ACTION_DOWN){
-                // 누름
-                mScrollFlag = true
-                mScrollValue = -1
             }
             false
         }
         // 치타배달 내리기
         binding.homeCheetahBannerCancel.setOnClickListener {
-            //scrollStart()
-            //binding.homeCheetahBannerParent.visibility = View.GONE
+            mScrollFinish = true
+            binding.homeCheetahBannerParent.visibility = View.GONE
         }
 
     }
@@ -364,26 +369,30 @@ class HomeFragment() :
     // setonTouch
     private fun lastPosUpdate(scrollPos: Int){
         //Log.d("scrolled", "lastPosUpdate : falg = ${mScrollFlag} , start = ${mScrollStart} , scrollPos = ${scrollPos}")
-        if(mScrollFlag && !mScrollStart){
-            if(mScrollValue != -1 && mScrollValue != scrollPos){
-                // 스크롤 시작
-                scrollStart()
-                mScrollStart = true
-            } else if(mScrollValue == -1){
-                mScrollValue = scrollPos
+        if(!mScrollFinish) {
+            if (mScrollFlag && !mScrollStart) {
+                if (mScrollValue != -1 && mScrollValue != scrollPos) {
+                    // 스크롤 시작
+                    scrollStart()
+                    mScrollStart = true
+                } else if (mScrollValue == -1) {
+                    mScrollValue = scrollPos
+                }
             }
-        }
-        if(countDownTimer != null){
-            countDownTimer!!.cancel()
-        }
+            if (countDownTimer != null) {
+                countDownTimer!!.cancel()
+            }
 
-        countDownTimer = object: CountDownTimer(100, 100) {
-            override fun onTick(millisUntilFinished: Long) {}
-            override fun onFinish() {
-                if(!mScrollStart){ scrollFinish()}
+            countDownTimer = object : CountDownTimer(100, 100) {
+                override fun onTick(millisUntilFinished: Long) {}
+                override fun onFinish() {
+                    if (!mScrollStart) {
+                        scrollFinish()
+                    }
+                }
             }
+            countDownTimer!!.start()
         }
-        countDownTimer!!.start()
     }
 
     // 카트 보는거 체인지
@@ -461,7 +470,7 @@ class HomeFragment() :
     // 배달비 필터 바꾸는 함수 다이얼로그에서 호출
     fun changeDeliveryFilter(value: Int, valueString: String) {
         if (value != -1) {
-            val str = "배달비 ${valueString}원 이하"
+            val str =  if(valueString == "무료배달") "무료배달" else "배달비 ${valueString}원 이하"
             binding.homeFilterDeliveryPriceBackground.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterDeliveryPriceText.text = str
             binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(whiteColor))

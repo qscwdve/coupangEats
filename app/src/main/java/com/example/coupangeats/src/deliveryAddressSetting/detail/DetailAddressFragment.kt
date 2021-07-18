@@ -1,8 +1,10 @@
 package com.example.coupangeats.src.deliveryAddressSetting.detail
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.hardware.input.InputManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coupangeats.R
@@ -37,9 +40,13 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
     private var mModifyOrDelete = false
     private var mLat = ""
     private var mLon = ""
+    private lateinit var imm : InputMethodManager
     private val MAP_ACTIVITY = 1234
+    private var mEditFocus = -1
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         version = arguments?.getInt("version", 1) ?: 1
         mLat = arguments?.getString("lat") ?: ""
@@ -77,10 +84,12 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 // 편집하고 있을 때 검은색으로 바뀜
                 binding.detailAddressLine.visibility = View.VISIBLE
                 binding.detailAddressText.setTextColor(Color.parseColor("#000000"))
+                mEditFocus = 1
             } else {
                 // 원래 색깔로
                 binding.detailAddressLine.visibility = View.INVISIBLE
                 binding.detailAddressText.setTextColor(Color.parseColor("#949DA6"))   // baseColor
+                mEditFocus = -1
             }
         }
         binding.detailAddressDetailText.addTextChangedListener(object : TextWatcher {
@@ -105,10 +114,12 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 // 편집 중 검은색
                 binding.detailAddressAliasText.setTextColor(Color.parseColor("#000000"))
                 binding.detailAddressAliasLine.visibility = View.VISIBLE
+                mEditFocus = 2
             } else {
                 // 원래대로
                 binding.detailAddressAliasText.setTextColor(Color.parseColor("#949DA6"))  // baseColor
                 binding.detailAddressAliasLine.visibility = View.INVISIBLE
+                mEditFocus = -1
             }
         }
         binding.detailAddressAliasEditText.addTextChangedListener(object : TextWatcher{
@@ -186,6 +197,15 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 detailAddressBottomSheetDialog.show(requireFragmentManager(), "detailAddress")
             }
         }
+    }
+
+    override fun onDestroy() {
+        if(mEditFocus == 1){
+            imm.hideSoftInputFromWindow(binding.detailAddressDetailText.windowToken, 0)
+        } else if(mEditFocus == 2){
+            imm.hideSoftInputFromWindow(binding.detailAddressAliasEditText.windowToken, 0)
+        }
+        super.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

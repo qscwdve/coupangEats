@@ -210,7 +210,7 @@ class SuperSearchActivity :
     // 배달비 필터 바꾸는 함수 다이얼로그에서 호출
     fun changeDeliveryFilter(value: Int, valueString: String) {
         if (value != -1) {
-            val str = "배달비 ${valueString}원 이하"
+            val str = if(valueString == "무료배달") "무료배달" else "배달비 ${valueString}원 이하"
             binding.homeFilterDeliveryPriceBackground.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterDeliveryPriceText.text = str
             binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(whiteColor))
@@ -301,9 +301,11 @@ class SuperSearchActivity :
     override fun onGetNewSuperSuccess(response: NewSuperResponse) {
         if (response.code == 1000 ) {
             if( response.result.totalCount > 0){
+                binding.searchRecommendRecyclerview.visibility = View.VISIBLE
                 binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
                 setRecycler(response.result.newStores!!)
             } else{
+                binding.searchRecommendRecyclerview.visibility = View.GONE
                 binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.VISIBLE
             }
         }
@@ -316,9 +318,11 @@ class SuperSearchActivity :
     override fun onGetDiscountSuperSuccess(response: DiscountSuperResponse) {
         if (response.code == 1000 && response.result.totalCount > 0) {
             if(response.result.totalCount > 0){
+                binding.searchRecommendRecyclerview.visibility = View.VISIBLE
                 binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
                 setRecycler(response.result.onSaleStores!!)
             } else {
+                binding.searchRecommendRecyclerview.visibility = View.GONE
                 binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.VISIBLE
             }
             binding.searchRecommendRecyclerview.scrollTo(0,0)
