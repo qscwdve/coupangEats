@@ -131,7 +131,7 @@ class SearchDetailActivity :
                     mSearchDetailRequest.keyword = keyword
                     // 최근 검색어에 넣기
                     mDBHelper.addKeyword(mDB, keyword)
-                    Log.d("resentSearch", "keyword 넣음")
+                    //Log.d("resentSearch", "keyword 넣음")
                     inputMethodManager.hideSoftInputFromWindow(
                         binding.searchDetailEditText.windowToken,
                         0
@@ -157,7 +157,7 @@ class SearchDetailActivity :
                 binding.searchDetailSuperParent.visibility = View.GONE
                 mIsSearch = true
                 mIsFinish = false
-                Log.d("keyword", "포커스 상태")
+                //Log.d("keyword", "포커스 상태")
                 val str = binding.searchDetailEditText.text.toString()
                 if (str.isNotEmpty()) {
                     binding.searchEditDelete.visibility = View.VISIBLE
@@ -189,6 +189,8 @@ class SearchDetailActivity :
                 (binding.searchDetailResentSearchRecyclerview.adapter as ResentSearchAdapter).refresh(
                     mDBHelper.getResentDate(mDB)
                 )
+                mKeywordSearch = true
+                inputMethodManager.hideSoftInputFromWindow(binding.searchDetailEditText.windowToken, 0)
                 startSearch()
             }
         }

@@ -16,6 +16,7 @@ import com.example.coupangeats.src.main.search.category.model.SuperCategoryRespo
 class CategorySuperAdapter(val categoryList: ArrayList<SuperCategoryResponseResult>, val activity: CategorySuperActivity, val option: String): RecyclerView.Adapter<CategorySuperAdapter.CategorySuperViewHolder>() {
     var categoryCheck = option
     var textView : TextView? = null
+    var imageView: ImageView? = null
     class CategorySuperViewHolder(itemView: View, val categorySuperAdapter: CategorySuperAdapter) : RecyclerView.ViewHolder(itemView) {
         val categoryImg = itemView.findViewById<ImageView>(R.id.item_category_super_category_img)
         val back = itemView.findViewById<ImageView>(R.id.item_category_super_category_img_back)
@@ -46,6 +47,7 @@ class CategorySuperAdapter(val categoryList: ArrayList<SuperCategoryResponseResu
                 }
             }
             categorySuperAdapter.textView = categoryName
+            categorySuperAdapter.imageView = back
         }
     }
 
@@ -71,7 +73,8 @@ class CategorySuperAdapter(val categoryList: ArrayList<SuperCategoryResponseResu
     }
 
     fun getHeight(): Int{
-        return textView!!.top
+        //return textView!!.top
+        return imageView!!.bottom
     }
 
 }

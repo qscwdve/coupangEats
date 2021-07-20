@@ -364,6 +364,7 @@
             </HorizontalScrollView>
 
             <androidx.core.widget.NestedScrollView
+                android:visibility="gone"
                 android:id="@+id/search_detail_real_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

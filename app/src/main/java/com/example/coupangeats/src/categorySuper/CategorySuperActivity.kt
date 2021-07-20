@@ -1,9 +1,11 @@
 package com.example.coupangeats.src.categorySuper
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +37,7 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
     private var mHeightcheck = false
     var filterSelected = Array(5) { i -> false }  // 필터를 선택했는지 안했는데
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -67,8 +70,8 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
 
         // 스크롤
         binding.categorySuperBack.translationZ = 1f
-        binding.categorySuperNestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
 
+        binding.categorySuperNestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if(mScrollFlag){
                 if(scrollY < mStickyScroll){
                     binding.categorySuperCategoryRecyclerView.translationY = (-scrollY).toFloat()
