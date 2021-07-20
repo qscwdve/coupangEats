@@ -87,7 +87,6 @@
                 android:autofillHints="String"
                 android:cursorVisible="true"
                 android:focusable="true"
-                android:textSelectHandle="@color/loginBlue"
                 android:padding="10dp"
                 android:textColorHint="@color/searchHint"
                 android:textSize="17sp" />

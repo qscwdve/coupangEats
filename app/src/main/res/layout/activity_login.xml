@@ -19,17 +19,18 @@
             android:layout_height="wrap_content"
             android:weightSum="15"
             android:orientation="horizontal">
+
             <ImageView
+                android:id="@+id/basic_login_back"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
                 android:background="@drawable/circle_ripple_white_to_gray"
+                android:contentDescription="@string/image_no"
                 android:paddingVertical="13dp"
                 android:scaleType="fitStart"
-                android:id="@+id/basic_login_back"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:layout_height="wrap_content"
-                android:src="@drawable/cancel"
-                android:contentDescription="@string/image_no" />
+                android:paddingHorizontal="10dp"
+                android:src="@drawable/cancel" />
         </LinearLayout>
         <ImageView
             android:layout_gravity="center"

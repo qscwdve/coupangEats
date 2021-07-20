@@ -12,7 +12,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textSelectHandle">@color/loginBlue</item>
         <item name="android:textCursorDrawable">@drawable/cursor_setting</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
@@ -27,17 +26,6 @@
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bottom_sheet_dialog_top_radius_circle</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
-    </style>
-
-    <style name="actionbarok" parent="Theme.AppCompat.Light">
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/white</item>
-        <item name="colorAccent">@color/white</item>
-        <item name="statusBarBackground">@color/white</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:elevation">0dp</item>
     </style>
 
 
