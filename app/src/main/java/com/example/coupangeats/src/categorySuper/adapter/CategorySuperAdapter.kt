@@ -48,6 +48,7 @@ class CategorySuperAdapter(val categoryList: ArrayList<SuperCategoryResponseResu
             }
             categorySuperAdapter.textView = categoryName
             categorySuperAdapter.imageView = back
+            categorySuperAdapter.activity.setInitStartRecommend()
         }
     }
 

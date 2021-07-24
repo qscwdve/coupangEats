@@ -12,7 +12,7 @@ import com.example.coupangeats.R
 import com.example.coupangeats.src.categorySuper.CategorySuperActivity
 import com.example.coupangeats.src.main.home.model.HomeInfo.RecommendStores
 
-class RecommendCategoryAdapter(val recommendList: ArrayList<RecommendStores>, val activity: CategorySuperActivity) : RecyclerView.Adapter<RecommendCategoryAdapter.RecommendCategoryViewHolder>(){
+class RecommendCategoryAdapter(var recommendList: ArrayList<RecommendStores>, val activity: CategorySuperActivity, val height: Int = 1) : RecyclerView.Adapter<RecommendCategoryAdapter.RecommendCategoryViewHolder>(){
     class RecommendCategoryViewHolder(itemView: View, val recommendAdapter: RecommendCategoryAdapter) : RecyclerView.ViewHolder(itemView) {
         val mainimg = itemView.findViewById<ImageView>(R.id.item_recommend_img)
         val subImgParent = itemView.findViewById<LinearLayout>(R.id.item_recommend_img_sub_parent)
@@ -29,8 +29,10 @@ class RecommendCategoryAdapter(val recommendList: ArrayList<RecommendStores>, va
         val delivery = itemView.findViewById<TextView>(R.id.item_recommend_delivery)
         val couponParent = itemView.findViewById<LinearLayout>(R.id.item_recommend_coupon_parent)
         val coupon = itemView.findViewById<TextView>(R.id.item_recommend_coupon)
+        val parent = itemView.findViewById<LinearLayout>(R.id.item_recommend_super_item_parent)
+        val line = itemView.findViewById<View>(R.id.item_recommend_super_line)
 
-        fun bind(item: RecommendStores) {
+        fun bind(item: RecommendStores, position: Int) {
             val image = item.url
             if(image.size > 0){
                 Glide.with(mainimg).load(item.url[0]).centerCrop().into(mainimg)
@@ -73,9 +75,17 @@ class RecommendCategoryAdapter(val recommendList: ArrayList<RecommendStores>, va
             } else {
                 couponParent.visibility = View.GONE
             }
-            itemView.setOnClickListener {
+            parent.setOnClickListener {
                 // 매장 선택
                 recommendAdapter.activity.startSuper(item.storeIdx)
+            }
+
+            if(position + 1 == recommendAdapter.recommendList.size){
+                // categorySuperAdapter
+                line.layoutParams.height = recommendAdapter.height
+                line.visibility = View.VISIBLE
+            } else {
+                line.visibility = View.GONE
             }
         }
     }
@@ -90,7 +100,11 @@ class RecommendCategoryAdapter(val recommendList: ArrayList<RecommendStores>, va
 
     override fun getItemCount(): Int = recommendList.size
     override fun onBindViewHolder(holder: RecommendCategoryViewHolder, position: Int) {
-        holder.bind(recommendList[position])
+        holder.bind(recommendList[position], position)
     }
 
+    fun changeDate(array: ArrayList<RecommendStores>) {
+        recommendList = array
+        notifyDataSetChanged()
+    }
 }

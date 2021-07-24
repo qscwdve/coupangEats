@@ -5,10 +5,10 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityCategorySuperBinding
 import com.example.coupangeats.src.categorySuper.adapter.CategorySuperAdapter
@@ -23,15 +23,18 @@ import com.example.coupangeats.src.searchDetail.SearchDetailActivity
 import com.softsquared.template.kotlin.config.BaseActivity
 import kotlin.math.abs
 
-class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(ActivityCategorySuperBinding::inflate), CategorySuperActivityView {
-    private lateinit var option : String
-    private lateinit var mLat : String
-    private lateinit var mLon : String
+class CategorySuperActivity :
+    BaseActivity<ActivityCategorySuperBinding>(ActivityCategorySuperBinding::inflate),
+    CategorySuperActivityView {
+    private lateinit var option: String
+    private lateinit var mLat: String
+    private lateinit var mLon: String
     private var mCategorySuperRequest = CategorySuperRequest()
     private var whiteColor = "#FFFFFF"
     private var blackColor = "#000000"
     private var mRecommSelect = 1
     private var mStickyScroll = 0
+    var mRecommendFlag = false
     private var mScrollHeight = 0
     private var mScrollFlag = true
     private var mHeightcheck = false
@@ -41,7 +44,7 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        overridePendingTransition( R.anim.horizon_start_enter, R.anim.horizon_start_exit)
+        overridePendingTransition(R.anim.horizon_start_enter, R.anim.horizon_start_exit)
 
         // 카테고리 받아옴
         option = intent.getStringExtra("categoryName") ?: ""
@@ -54,7 +57,6 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
         binding.cartTitle.text = option
         // 카테고리 선택
         CategorySuperService(this).tryGetSuperCategory()
-        startSuperSearch()
 
         // 뒤로가기
         binding.cartBack.setOnClickListener { finish() }
@@ -70,32 +72,50 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
 
         // 스크롤
         binding.categorySuperBack.translationZ = 1f
-
+        var nowScrollY = 0
+        binding.categorySuperRecommendRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && nowScrollY < mStickyScroll) {
+                    // 손 뗀 상태
+                    val position = abs(binding.categorySuperBody.translationY)
+                    if (position > mStickyScroll / 2) {
+                        // 닫힘
+                        binding.categorySuperNestedScrollView.smoothScrollTo(0, mStickyScroll)
+                    } else {
+                        // 열림
+                        binding.categorySuperNestedScrollView.smoothScrollTo(0, 0)
+                    }
+                }
+            }
+        })
         binding.categorySuperNestedScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if(mScrollFlag){
-                if(scrollY < mStickyScroll){
-                    binding.categorySuperCategoryRecyclerView.translationY = (-scrollY).toFloat()
-                    binding.categorySuperContent.translationY = (-scrollY).toFloat()
+            if (mScrollFlag) {
+                if (scrollY <= mStickyScroll) {
+                    binding.categorySuperBody.translationY = -(scrollY).toFloat()
+                    binding.categorySuperNestedScrollView.translationY = scrollY.toFloat()
                     binding.categorySuperFilterLine.visibility = View.GONE
                 } else {
-                    val position = binding.categorySuperCategoryRecyclerView.translationY
-                    if(abs(position) < mStickyScroll) {
-                        binding.categorySuperCategoryRecyclerView.translationY = (-mStickyScroll).toFloat()
-                        binding.categorySuperContent.translationY = (-mStickyScroll).toFloat()
+                    val position = binding.categorySuperBody.translationY
+                    if (abs(position) <= mStickyScroll) {
+                        binding.categorySuperBody.translationY = -(mStickyScroll).toFloat()
+                        binding.categorySuperNestedScrollView.translationY =
+                            mStickyScroll.toFloat()
+                        //binding.categorySuperNestedScrollView.height =
                     }
                     binding.categorySuperFilterLine.visibility = View.VISIBLE
                 }
             } else {
-                binding.categorySuperCategoryRecyclerView.translationY = 0f
-                binding.categorySuperContent.translationY = 0f
-                if(scrollY > 10){
+                binding.categorySuperBody.translationY = 0f
+                binding.categorySuperNestedScrollView.translationY = 0F
+                if (scrollY > 10) {
                     binding.categorySuperFilterLine.visibility = View.VISIBLE
                 } else {
                     binding.categorySuperFilterLine.visibility = View.GONE
                 }
             }
-
-
+            nowScrollY = scrollY
         }
 
         // 필터
@@ -185,11 +205,11 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
             refreshFilter()
         }
 
-     }
+    }
 
     override fun finish() {
         super.finish()
-        overridePendingTransition( R.anim.horiaon_exit, R.anim.horizon_enter)
+        overridePendingTransition(R.anim.horiaon_exit, R.anim.horizon_enter)
     }
 
     // 추천순 필터 바꾸는 함수 다이얼로그에서 호출
@@ -217,7 +237,7 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
     // 배달비 필터 바꾸는 함수 다이얼로그에서 호출
     fun changeDeliveryFilter(value: Int, valueString: String) {
         if (value != -1) {
-            val str = if(valueString == "무료배달") "무료배달" else "배달비 ${valueString}원 이하"
+            val str = if (valueString == "무료배달") "무료배달" else "배달비 ${valueString}원 이하"
             binding.homeFilterDeliveryPriceBackground.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterDeliveryPriceText.text = str
             binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(whiteColor))
@@ -306,7 +326,7 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
 
     }
 
-    fun startSuperSearch(){
+    fun startSuperSearch() {
         CategorySuperService(this).tryGetCategorySuper(
             mCategorySuperRequest.lat,
             mCategorySuperRequest.lon,
@@ -321,21 +341,45 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
         changeClearFilter()
     }
 
+    fun setInitStartRecommend(){
+        if(!mRecommendFlag){
+            // recommend 시작
+            startSuperSearch()
+        }
+    }
+
     override fun onGetCategorySuperSuccess(response: CategorySuperResponse) {
-        if(response.code == 1000){
-            if(response.result.recommendStores != null){
-                binding.categorySuperRecommendRecyclerView.adapter = RecommendCategoryAdapter(response.result.recommendStores, this)
-                binding.categorySuperRecommendRecyclerView.layoutManager = LinearLayoutManager(this)
+        if (response.code == 1000) {
+            if (response.result.recommendStores != null) {
+                if(!mRecommendFlag){
+                    mStickyScroll =
+                        (binding.categorySuperCategoryRecyclerView.adapter as CategorySuperAdapter).getHeight()
+                    binding.categorySuperRecommendRecyclerView.adapter =
+                        RecommendCategoryAdapter(response.result.recommendStores, this, mStickyScroll)
+                    binding.categorySuperRecommendRecyclerView.layoutManager = LinearLayoutManager(this)
+                    mRecommendFlag = true
+
+                    setBodyHeight()
+                } else {
+                    (binding.categorySuperRecommendRecyclerView.adapter as RecommendCategoryAdapter).changeDate(
+                        response.result.recommendStores
+                    )
+                    // stickyScroll check
+                    changeStickyScroll(response.result.recommendStores.size)
+                }
+
                 binding.categorySuperRecommendRecyclerView.visibility = View.VISIBLE
                 binding.categorySuperNoSuperParent.itemNoSuperParent.visibility = View.GONE
                 binding.categorySuperCoupon.visibility = View.VISIBLE
 
-                if(!mHeightcheck){
-                    setScrollHeight(response.result.recommendStores.size)
-                    mHeightcheck = true
+                if(binding.categorySuperNestedScrollView.translationY != 0F){
+                    // 닫힘
+                    binding.categorySuperNestedScrollView.scrollTo(0, mStickyScroll)
                 } else {
-                    changeScrollHeight(response.result.recommendStores.size)
+                    // 열림
+                    binding.categorySuperNestedScrollView.scrollTo(0, 0)
                 }
+                Log.d("position", "translationY : ${binding.categorySuperNestedScrollView.translationY}")
             } else {
                 binding.categorySuperCoupon.visibility = View.GONE
                 binding.categorySuperRecommendRecyclerView.visibility = View.GONE
@@ -349,9 +393,11 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
     }
 
     override fun onGetSuperCategorySuccess(response: SuperCategoryResponse) {
-        if(response.code == 1000){
-            binding.categorySuperCategoryRecyclerView.adapter = CategorySuperAdapter(response.result, this, option)
-            binding.categorySuperCategoryRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        if (response.code == 1000) {
+            binding.categorySuperCategoryRecyclerView.adapter =
+                CategorySuperAdapter(response.result, this, option)
+            binding.categorySuperCategoryRecyclerView.layoutManager =
+                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         }
     }
@@ -364,60 +410,38 @@ class CategorySuperActivity : BaseActivity<ActivityCategorySuperBinding>(Activit
         // 바뀐걸로 서버 통신 해야 함
         mCategorySuperRequest.category = value
 
-        (binding.categorySuperCategoryRecyclerView.adapter as CategorySuperAdapter).changeCategoryOnly(value)
+        (binding.categorySuperCategoryRecyclerView.adapter as CategorySuperAdapter).changeCategoryOnly(
+            value
+        )
 
         startSuperSearch()
     }
 
-    fun startSuper(storeIdx: Int){
+    fun startSuper(storeIdx: Int) {
         val intent = Intent(this, DetailSuperActivity::class.java).apply {
             this.putExtra("storeIdx", storeIdx)
         }
         startActivity(intent)
     }
 
-    fun setScrollHeight(num: Int){
-        val vto: ViewTreeObserver = binding.categorySuperContent.viewTreeObserver
-        vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+    fun setBodyHeight() {
+        val vto2: ViewTreeObserver = binding.categorySuperBody.viewTreeObserver
+        vto2.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                binding.categorySuperContent.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                mScrollHeight = binding.categorySuperContent.measuredHeight
-                changeScrollHeight(num)
+                binding.categorySuperBody.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                val height = binding.categorySuperBody.measuredHeight
+                binding.categorySuperBody.layoutParams.height = height + mStickyScroll
+
             }
         })
     }
 
-    fun changeScrollHeight(num: Int) {
-        if(mStickyScroll < 100){
-            changeStickyScroll(num)
+    fun changeStickyScroll(num: Int) {
+        if (mStickyScroll < 100) {
+            mStickyScroll =
+                (binding.categorySuperCategoryRecyclerView.adapter as CategorySuperAdapter).getHeight()
         } else {
-            if(num > 2){
-                binding.categorySuperContent.layoutParams.height = mScrollHeight + mStickyScroll
-                mScrollFlag = true
-                Log.d("scrollPosition", "num > 2  :  ${binding.categorySuperContent.layoutParams.height}")
-            }
-            else{
-                binding.categorySuperContent.layoutParams.height = mScrollHeight
-                mScrollFlag = false
-                Log.d("scrollPosition", "num < 2  :  ${binding.categorySuperContent.layoutParams.height}")
-            }
-        }
-
-    }
-
-    fun changeStickyScroll(num : Int){
-        mStickyScroll = (binding.categorySuperCategoryRecyclerView.adapter as CategorySuperAdapter).getHeight()
-        Log.d("stickyScroll", "stickyScroll : $mStickyScroll")
-
-        if(num > 2){
-            binding.categorySuperContent.layoutParams.height = mScrollHeight + mStickyScroll
-            mScrollFlag = true
-            Log.d("scrollPosition", "num > 2  :  ${binding.categorySuperContent.layoutParams.height}")
-        }
-        else{
-            binding.categorySuperContent.layoutParams.height = mScrollHeight
-            mScrollFlag = false
-            Log.d("scrollPosition", "num < 2  :  ${binding.categorySuperContent.layoutParams.height}")
+            mScrollFlag = num > 0
         }
     }
 }
