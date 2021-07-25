@@ -83,6 +83,7 @@ class MyReviewActivity : BaseActivity<ActivityMyReviewBinding>(ActivityMyReviewB
             if(reviewInfo.remainingReviewTime == 0){
                 // 수정 불가능
                 binding.myReviewModifyDate.visibility = View.GONE
+                binding.myReviewModify.visibility = View.GONE
             } else {
                 // 수정 가능
                 binding.myReviewModifyDate.visibility = View.VISIBLE

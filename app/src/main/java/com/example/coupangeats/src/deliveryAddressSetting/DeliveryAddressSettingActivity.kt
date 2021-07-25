@@ -48,6 +48,7 @@ class DeliveryAddressSettingActivity() :
     var version = GPS_SELECT
     var mSelectedAddress = -1
     private val MAP_ACTIVITY = 1234
+    lateinit var mapActivityLauncher : ActivityResultLauncher<Intent>
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +56,21 @@ class DeliveryAddressSettingActivity() :
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         showLoadingDialog(this)
         DeliveryAddressSettingService(this).tryGetUserAddressList(getUserIdx())
+
+        mapActivityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if(result.resultCode == RESULT_OK){
+                    val data = result.data
+                    // 배달지 주소 추가
+                    if(data != null){
+                        val mainAddress = data.getStringExtra("mainAddress") ?: ""
+                        val roadAddress = data.getStringExtra("roadAddress") ?: ""
+                        val lat = data.getStringExtra("lat") ?: ""
+                        val lon = data.getStringExtra("lon") ?: ""
+                        changeDetailAddress(SearchAddress(mainAddress, roadAddress), lat, lon)
+                    }
+                }
+            }
 
         // 배달주소 관리인지 gps 선택인지
         version = intent.getIntExtra("version", GPS_SELECT)
@@ -215,20 +231,6 @@ class DeliveryAddressSettingActivity() :
                 this.putExtra("lon", mLon.toString())
                 this.putExtra("detailAddressVersion", version)
             }
-            val mapActivityLauncher : ActivityResultLauncher<Intent> =
-                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                     if(result.resultCode == RESULT_OK){
-                         val data = result.data
-                         // 배달지 주소 추가
-                         if(data != null){
-                             val mainAddress = data.getStringExtra("mainAddress") ?: ""
-                             val roadAddress = data.getStringExtra("roadAddress") ?: ""
-                             val lat = data.getStringExtra("lat") ?: ""
-                             val lon = data.getStringExtra("lon") ?: ""
-                             changeDetailAddress(SearchAddress(mainAddress, roadAddress), lat, lon)
-                         }
-                     }
-            }
             mapActivityLauncher.launch(intent)
         }
     }
@@ -252,7 +254,7 @@ class DeliveryAddressSettingActivity() :
     fun changeDetailAddress(searchAddress: SearchAddress, lat: String, lon: String){
         binding.deliveryAddressDetailParent.visibility = View.VISIBLE
         binding.deliveryAddressNotDetailParent.visibility = View.GONE
-        binding.detailAddressTitle.setText("배달지 상세 정보")
+        binding.detailAddressTitle.text = "배달지 상세 정보"
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.delivery_address_detail_parent, DetailAddressFragment().apply {

@@ -245,6 +245,7 @@
                         android:layout_height="wrap_content">
 
                         <LinearLayout
+                            android:padding="2dp"
                             android:id="@+id/my_review_modify"
                             android:layout_marginEnd="10dp"
                             android:background="@drawable/white_to_gray_ripple"
@@ -267,6 +268,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:padding="2dp"
                             android:id="@+id/my_review_cancel"
                             android:background="@drawable/white_to_gray_ripple"
                             android:layout_width="wrap_content"

@@ -2,6 +2,7 @@ package com.example.coupangeats.src.detailSuper
 
 import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.result.ActivityResultLauncher
@@ -26,6 +28,7 @@ import com.example.coupangeats.src.detailSuper.adapter.MenuCategoryAdapter
 import com.example.coupangeats.src.detailSuper.adapter.SuperPhotoReviewAdapter
 import com.example.coupangeats.src.detailSuper.model.*
 import com.example.coupangeats.src.favorites.model.FavoritesSuperDeleteRequest
+import com.example.coupangeats.src.lookImage.LookImageActivity
 import com.example.coupangeats.src.menuSelect.MenuSelectActivity
 import com.example.coupangeats.src.review.ReviewActivity
 import com.example.coupangeats.util.CartMenuDatabase
@@ -33,7 +36,9 @@ import com.google.android.material.appbar.AppBarLayout
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 import com.softsquared.template.kotlin.config.BaseResponse
+import kotlin.math.abs
 
+@SuppressLint("HandlerLeak")
 class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDetailSuperBinding::inflate)
     , DetailSuperActivityView {
     private var mIsServer = true
@@ -139,49 +144,44 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         val stateListAnimator = StateListAnimator()
         stateListAnimator.addState(intArrayOf(), ObjectAnimator.ofFloat(binding.appBar, "elevation", 0F))
         binding.appBar.stateListAnimator = stateListAnimator
-        binding.appBar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener{
-            override fun onOffsetChanged(appBarLayout: AppBarLayout?, verticalOffset: Int) {
-                if(verticalOffset == 0){
-                    if(mCollapsingToolbarState != CollapsingToolbarLayoutState.EXPANDED){
-                        binding.toolbar.setBackgroundColor(Color.parseColor("#00000000"))
-                        binding.toolbarSuperName.text = ""
-                        binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_white)
-                        if(mFavorites == 0)
-                            binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
-                        else
-                            binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white_fill)
-                        binding.toolbarShare.setImageResource(R.drawable.ic_share_white)
-                        mCollapsingToolbarState = CollapsingToolbarLayoutState.EXPANDED
-                    }
-                }
-                else if(Math.abs(verticalOffset) >= appBarLayout!!.totalScrollRange){
-                    // 액션바 스크롤 맨 위로 올림
-                    binding.toolbar.setBackgroundColor(Color.parseColor("#FFFFFF"))
-                    binding.toolbarSuperName.text = mSuperName
-                    binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_black)
+        binding.appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+            if(verticalOffset == 0){
+                if(mCollapsingToolbarState != CollapsingToolbarLayoutState.EXPANDED){
+                    binding.toolbar.setBackgroundColor(Color.parseColor("#00000000"))
+                    binding.toolbarSuperName.text = ""
+                    binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_white)
                     if(mFavorites == 0)
-                        binding.toolbarHeart.setImageResource(R.drawable.ic_heart_red)
+                        binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
                     else
-                        binding.toolbarHeart.setImageResource(R.drawable.ic_heart_red_fill)
-                    binding.toolbarShare.setImageResource(R.drawable.ic_share_black)
-                    mCollapsingToolbarState = CollapsingToolbarLayoutState.COLLAPSED
+                        binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white_fill)
+                    binding.toolbarShare.setImageResource(R.drawable.ic_share_white)
+                    mCollapsingToolbarState = CollapsingToolbarLayoutState.EXPANDED
                 }
-                else if(Math.abs(verticalOffset) < appBarLayout.totalScrollRange){
-                    //Log.d("vertical", "아직 액션바 안에 있음")
-                    if(mCollapsingToolbarState != CollapsingToolbarLayoutState.INTERNEDIATE){
-                        binding.toolbarSuperName.text = ""
-                        binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_white)
-                        if(mFavorites == 0)
-                            binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
-                        else
-                            binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white_fill)
-                        binding.toolbarShare.setImageResource(R.drawable.ic_share_white)
-                        binding.toolbar.setBackgroundColor(Color.parseColor("#00000000"))
-                        mCollapsingToolbarState = CollapsingToolbarLayoutState.INTERNEDIATE
-                    }
+            } else if(Math.abs(verticalOffset) >= appBarLayout!!.totalScrollRange){
+                // 액션바 스크롤 맨 위로 올림
+                binding.toolbar.setBackgroundColor(Color.parseColor("#FFFFFF"))
+                binding.toolbarSuperName.text = mSuperName
+                binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_black)
+                if(mFavorites == 0)
+                    binding.toolbarHeart.setImageResource(R.drawable.ic_heart_red)
+                else
+                    binding.toolbarHeart.setImageResource(R.drawable.ic_heart_red_fill)
+                binding.toolbarShare.setImageResource(R.drawable.ic_share_black)
+                mCollapsingToolbarState = CollapsingToolbarLayoutState.COLLAPSED
+            } else if(abs(verticalOffset) < appBarLayout.totalScrollRange){
+                //Log.d("vertical", "아직 액션바 안에 있음")
+                if(mCollapsingToolbarState != CollapsingToolbarLayoutState.INTERNEDIATE){
+                    binding.toolbarSuperName.text = ""
+                    binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_white)
+                    if(mFavorites == 0)
+                        binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white)
+                    else
+                        binding.toolbarHeart.setImageResource(R.drawable.ic_heart_white_fill)
+                    binding.toolbarShare.setImageResource(R.drawable.ic_share_white)
+                    binding.toolbar.setBackgroundColor(Color.parseColor("#00000000"))
+                    mCollapsingToolbarState = CollapsingToolbarLayoutState.INTERNEDIATE
                 }
             }
-
         })
 
         //카트 보기
@@ -253,7 +253,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
 
     override fun onResume() {
         super.onResume()
-        if(mSize > 1) autoScrollStart(intervalTime)
+        if(mSize > 1) autoScrollStart()
         cartChange()
     }
 
@@ -266,7 +266,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
 
     fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1) ?: -1
 
-    fun statusBarHeightControl(){
+    private fun statusBarHeightControl(){
         // status bar 높이 차이 해결
         val vto: ViewTreeObserver = binding.toolbarItem.viewTreeObserver
         vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -313,9 +313,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     }
 
     override fun onPostBookMarkAddSuccess(response: BookMarkAddResponse) {
-        if(response.code == 1000){
 
-        }
     }
 
     override fun onPostBookMarkAddFailure(message: String) {
@@ -391,7 +389,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
 
 
     // 메뉴 설정
-    fun setSuperInfo(result : SuperResponseResult){
+    private fun setSuperInfo(result : SuperResponseResult){
         setSuperImgViewPager(result.img)
         binding.detailSuperName.text = result.storeName
         // 리뷰수, 별점
@@ -478,10 +476,10 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     }
 
     // 어댑터 설정
-    fun setSuperImgViewPager(imgList: ArrayList<String>) {
+    private fun setSuperImgViewPager(imgList: ArrayList<String>) {
         mSize = imgList.size
         if( mSize != 0){
-            binding.detailSuperImgViewPager.adapter = DetailSuperImgViewPagerAdapter(imgList)
+            binding.detailSuperImgViewPager.adapter = DetailSuperImgViewPagerAdapter(imgList, this)
             binding.detailSuperImgViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
             // ViewPager 에 따라 숫자 넘기기
@@ -498,7 +496,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                     if(mSize > 1){
                         when(state){
                             // 멈춰있을 때
-                            ViewPager2.SCROLL_STATE_IDLE -> autoScrollStart(intervalTime)
+                            ViewPager2.SCROLL_STATE_IDLE -> autoScrollStart()
                             ViewPager2.SCROLL_STATE_DRAGGING -> autoScrollStop()
                             ViewPager2.SCROLL_STATE_SETTLING -> { }
                         }
@@ -510,7 +508,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         }
     }
 
-    private fun autoScrollStart(intervalTime: Long) {
+    private fun autoScrollStart() {
         myHandler.removeMessages(0) // 이거 안하면 핸들러가 1개, 2개, 3개 ... n개 만큼 계속 늘어남
         myHandler.sendEmptyMessageDelayed(0, intervalTime) // intervalTime 만큼 반복해서 핸들러를 실행하게 함
     }
@@ -526,9 +524,18 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             if(msg.what == 0) {
                 val count = binding.detailSuperImgViewPager.currentItem + 1
                 binding.detailSuperImgViewPager.setCurrentItem(count, true) // 다음 페이지로 이동
-                autoScrollStart(intervalTime) // 스크롤을 계속 이어서 한다.
+                autoScrollStart() // 스크롤을 계속 이어서 한다.
             }
         }
+    }
+
+    fun startLookImageActivity(num: Int, imgString: String){
+        val intent = Intent(this, LookImageActivity::class.java).apply {
+            putExtra("imgList", imgString)
+            putExtra("position", num)
+        }
+        Log.d("imgList", "${imgString}")
+        startActivity(intent)
     }
 
     // 다른 페이지로 떠나있는 동안 스크롤이 동작할 필요는 없음. 정지
@@ -537,22 +544,22 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         if(mSize > 1) autoScrollStop()
     }
 
-    fun setPhotoReview(reviewList: ArrayList<PhotoReview>) {
+    private fun setPhotoReview(reviewList: ArrayList<PhotoReview>) {
         binding.detailSuperPhotoReviewRecyclerview.adapter = SuperPhotoReviewAdapter(reviewList, this)
         binding.detailSuperPhotoReviewRecyclerview.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
-    fun setMenuCategory(categoryList: ArrayList<Menu>){
+    private fun setMenuCategory(categoryList: ArrayList<Menu>){
         binding.detailSuperMenuCategoryRecyclerview.adapter = CategoryNameAdapter(categoryList, this)
         binding.detailSuperMenuCategoryRecyclerview.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
-    fun setMenu(menuCategoryList: ArrayList<Menu>) {
+    private fun setMenu(menuCategoryList: ArrayList<Menu>) {
         binding.detailSuperMenuRecyclerview.adapter = MenuCategoryAdapter(menuCategoryList, this)
         binding.detailSuperMenuRecyclerview.layoutManager = LinearLayoutManager(this)
     }
 
-    fun priceIntToString(value: Int) : String {
+    private fun priceIntToString(value: Int) : String {
         val target = value.toString()
         val size = target.length
         return if(size > 3){

@@ -38,6 +38,7 @@ import com.softsquared.template.kotlin.config.BaseFragment
 import java.util.*
 import kotlin.collections.ArrayList
 
+@SuppressLint("HandlerLeak")
 class HomeFragment() :
     BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home), HomeFragmentView {
     private var mAddress = ""
@@ -891,7 +892,7 @@ class HomeFragment() :
     }
 
     // 어댑터 설정하기
-    fun setEvent(eventList: ArrayList<Events>) {
+    private fun setEvent(eventList: ArrayList<Events>) {
         val size = eventList.size
         binding.homeEventBannerViewpager.adapter = EventAdapter(eventList, this)
         binding.homeEventBannerViewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
@@ -927,7 +928,6 @@ class HomeFragment() :
         myHandler.removeMessages(0) // 핸들러를 중지시킴
     }
 
-    @SuppressLint("HandlerLeak")
     private inner class MyHandler : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)

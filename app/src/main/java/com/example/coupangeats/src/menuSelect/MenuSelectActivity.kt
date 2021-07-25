@@ -20,6 +20,7 @@ import com.example.coupangeats.databinding.ActivityMenuSelectBinding
 import com.example.coupangeats.databinding.DialogCartReplaceBinding
 import com.example.coupangeats.src.cart.model.CartMenuInfo
 import com.example.coupangeats.src.detailSuper.adapter.DetailSuperImgViewPagerAdapter
+import com.example.coupangeats.src.lookImage.LookImageActivity
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.menuSelect.adapter.MenuDetailParentAdapter
 import com.example.coupangeats.src.menuSelect.model.MenuDetailResponse
@@ -303,7 +304,7 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
 
             if(response.result.url != null){
                 // 이미지 뷰페이저
-                binding.menuSelectImgViewPager.adapter = DetailSuperImgViewPagerAdapter(response.result.url)
+                binding.menuSelectImgViewPager.adapter = DetailSuperImgViewPagerAdapter(response.result.url, this, 2)
                 binding.menuSelectImgViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
                 // 넘기는 이벤트
@@ -331,6 +332,14 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
     override fun onGetMenuDetailFailure(message: String) {
         //showCustomToast("메뉴 불러오기 실패")
         notServerDumyData()
+    }
+
+    fun startLookImageActivity(num: Int, imgString: String){
+        val intent = Intent(this, LookImageActivity::class.java).apply {
+            putExtra("imgList", imgString)
+            putExtra("position", num)
+        }
+        startActivity(intent)
     }
 
     fun notServerDumyData(){
@@ -363,7 +372,7 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
         val imageList = ArrayList<String>()
         imageList.add("https://t1.daumcdn.net/cfile/tistory/22084E4B593DF4D714")
         imageList.add("https://dbscthumb-phinf.pstatic.net/2765_000_39/20181007210844284_LW82GFYCC.jpg/247063.jpg?type=m4500_4500_fst&wm=N")
-        binding.menuSelectImgViewPager.adapter = DetailSuperImgViewPagerAdapter(imageList)
+        binding.menuSelectImgViewPager.adapter = DetailSuperImgViewPagerAdapter(imageList, this, 2)
         binding.menuSelectImgViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         // 넘기는 이벤트
