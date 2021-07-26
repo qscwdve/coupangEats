@@ -44,7 +44,7 @@ class LookImageActivity : BaseActivity<ActivityLookImageBinding>(ActivityLookIma
         imgSize = imgList.size
         binding.lookImageViewPager.adapter = LookImageViewPagerAdapter(imgList)
         binding.lookImageViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        binding.lookImageViewPager.setCurrentItem(imgSize*50 + mNow, false)
+        binding.lookImageViewPager.setCurrentItem(imgSize*50 + mNow - 1, false)
 
         binding.lookImageNow.text = mNow.toString()
         binding.lookImageTotal.text = imgSize.toString()

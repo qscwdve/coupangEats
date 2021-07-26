@@ -44,7 +44,7 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
     private var mCollapsingToolbarState : CollapsingToolbarLayoutState? = null
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
-
+    private var mSuperName = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,7 +52,10 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
 
         menuIdx = intent.getIntExtra("menuIdx", -1)
         mStoreIdx = intent.getIntExtra("storeIdx", -1)
+        mSuperName = intent.getStringExtra("storeName") ?: "천화쿵푸 수원역점"
 
+        // 매장 이름
+        binding.toolbarSuperName.text = mSuperName
         // 데이터베이스 셋팅
         mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
         mDB = mDBHelper.writableDatabase
@@ -204,7 +207,7 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
                 } else if (Math.abs(verticalOffset) >= appBarLayout!!.totalScrollRange) {
                     // 액션바 스크롤 맨 위로 올림
                     binding.menuSelectToolbar.setBackgroundColor(Color.parseColor("#FFFFFF"))
-                    binding.toolbarSuperName.text = "면을 품은 활금찜닭 한마리"
+                    binding.toolbarSuperName.text = mSuperName
                     binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_black)
                     binding.toolbarShare.setImageResource(R.drawable.ic_share_black)
                     mCollapsingToolbarState = CollapsingToolbarLayoutState.COLLAPSED
@@ -324,7 +327,7 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
                 binding.menuSelectImgNumParent.visibility = View.GONE
                 binding.toolbarBack.setImageResource(R.drawable.ic_left_arrow_black)
                 binding.toolbarShare.setImageResource(R.drawable.ic_share_black)
-                binding.toolbarSuperName.text = "면을 품은 활금찜닭 한마리"
+                binding.toolbarSuperName.text = mSuperName
             }
         } else notServerDumyData()
     }

@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:text="배달완료"
                     android:textColor="@color/black"
-                    android:textSize="30sp"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
 
 
@@ -200,7 +200,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="주문 수락됨"
+                        android:text="@string/orderCheck"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
@@ -234,7 +234,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="메뉴 준비중"
+                        android:text="@string/menuPrepare"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
@@ -259,7 +259,7 @@
                     <ImageView
                         android:id="@+id/status3_img"
                         android:layout_gravity="center"
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_delivery_status_ok" />
@@ -268,7 +268,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="배달중"
+                        android:text="@string/delivery"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
@@ -293,7 +293,7 @@
                     <ImageView
                         android:id="@+id/status4_img"
                         android:layout_gravity="center"
-                        android:visibility="invisible"
+                        android:visibility="visible"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_delivery_status_ok" />
@@ -304,7 +304,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:text="배달 완료됨"
+                        android:text="@string/deliveryComplete"
                         android:textColor="@color/black"
                         android:textSize="15sp" />
 
@@ -331,7 +331,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="배달주소"
+                android:text="@string/deliveryAddress"
                 android:textSize="20sp"
                 android:textColor="@color/black"
                 android:textStyle="bold"/>

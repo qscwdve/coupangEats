@@ -444,7 +444,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:background="@color/white"
-            android:paddingStart="10dp"
             tools:ignore="RtlSymmetry" />
 
         <androidx.recyclerview.widget.RecyclerView

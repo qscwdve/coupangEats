@@ -16,10 +16,7 @@ import com.example.coupangeats.src.cart.model.*
 import com.example.coupangeats.src.deliveryStatus.DeliveryStatusActivity
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.discount.DiscountActivity
-import com.example.coupangeats.util.CartMenuDatabase
-import com.example.coupangeats.util.CartOrderRider
-import com.example.coupangeats.util.CartOrderRiderEdit
-import com.example.coupangeats.util.CartSuperOrder
+import com.example.coupangeats.util.*
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 
@@ -34,6 +31,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     var mRiderOrder = -1
     var mCheckSpoon = "N"
     var mSuperOrderString = ""
+    var mDeliveryOrderString = ""
     var mCouponCount = 0
     var mRequestChange = true
     private lateinit var mDBHelper: CartMenuDatabase
@@ -317,6 +315,8 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         if (response.code == 1000) {
             // 주문내역 다 삭제
             mDBHelper.deleteTotal(mDB)
+            // 알림 띄우기
+            CustomNotification(this).createAlarmNotification(response.result.createIdx)
             val intent = Intent(this, DeliveryStatusActivity::class.java)
             startActivity(intent)
             finish()
@@ -400,6 +400,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
             binding.cartRiderOrderEdit.text = value
             binding.cartRiderOrderEdit.setTextColor(Color.parseColor("#202020"))
         }
+        mDeliveryOrderString = value
     }
 
     fun priceIntToString(value: Int): String {

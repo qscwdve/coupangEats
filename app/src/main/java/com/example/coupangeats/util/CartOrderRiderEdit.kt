@@ -38,7 +38,7 @@ class CartOrderRiderEdit(val activity: CartActivity, val value: String): BottomS
             binding.dialogEditText.setText(value)
         }
         binding.dialogEditText.hint = "예, \"공동 현관문 비밀번호는 1234입니다.\""
-        binding.dialogEditText.setText(activity.mSuperOrderString)
+        binding.dialogEditText.setText(activity.mDeliveryOrderString)
         // 글자 수 감지
         binding.dialogEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

@@ -383,6 +383,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         val intent = Intent(this, MenuSelectActivity::class.java).apply{
             this.putExtra("menuIdx", menuIdx)
             this.putExtra("storeIdx", mSuperIdx)
+            this.putExtra("storeName", mSuperName)
         }
         menuSelectActivityLauncher.launch(intent)
     }

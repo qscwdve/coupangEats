@@ -5,10 +5,7 @@
     android:layout_height="wrap_content">
 
     <EditText
-        android:textSelectHandle="@color/loginBlue"
-        android:textSelectHandleRight="@color/loginBlue"
-        android:textSelectHandleLeft="@color/loginBlue"
-        android:textCursorDrawable="@drawable/cursor_setting"
+        style="@style/AppTheme"
         android:id="@+id/dialog_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -331,4 +331,11 @@
     <string name="num">개</string>
     <string name="couponLook">혜택보기</string>
     <string name="necessaryCheck">필수 선택</string>
+    <string name="orderCheck">주문 수락됨</string>
+    <string name="menuPrepare">메뉴 준비중</string>
+    <string name="delivery">배달중</string>
+    <string name="deliveryComplete">배달 완료됨</string>
+    <string name="deliveryAddress">배달주소</string>
+    <string name="goodEat">맛있게 드세요!</string>
+    <string name="deliveryCompleteMent">17분만에 배달이 완료되었습니다.</string>
 </resources>

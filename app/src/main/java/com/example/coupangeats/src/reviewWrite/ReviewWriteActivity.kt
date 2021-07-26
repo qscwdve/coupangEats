@@ -56,6 +56,7 @@ class ReviewWriteActivity :
     private var mPhotoList : ArrayList<String>? = null
     private val GET_GALLERY_IMAGE = 200
     lateinit var mFireBaseControl: FirebaseControl
+    private lateinit var photoAddLauncher : ActivityResultLauncher<Intent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -68,6 +69,14 @@ class ReviewWriteActivity :
         binding.reviewWritePhotoRecyclerView.adapter = mPhotoAdapter
         binding.reviewWritePhotoRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        photoAddLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if(result.resultCode == RESULT_OK && result.data != null && result.data!!.data != null){
+                    // 사진 추가 리스트에 추가해야함
+                    mFireBaseControl.addFireBaseImg(result.data!!.data!!)
+                }
+            }
 
         // 리뷰 주문 조회
         if (mReviewIdx == -1) {
@@ -219,13 +228,6 @@ class ReviewWriteActivity :
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     "image/*"
                 )
-            }
-            val photoAddLauncher : ActivityResultLauncher<Intent> =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if(result.resultCode == RESULT_OK && result.data != null && result.data!!.data != null){
-                    // 사진 추가 리스트에 추가해야함
-                    mFireBaseControl.addFireBaseImg(result.data!!.data!!)
-                }
             }
             photoAddLauncher.launch(intent)
         }

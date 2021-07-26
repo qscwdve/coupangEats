@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:background="@color/white"
+    android:minHeight="100dp"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_marginBottom="10dp"
+        android:id="@+id/notification_delivery_logo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:adjustViewBounds="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_e"/>
+
+    <TextView
+        android:id="@+id/notification_delivery_app_name"
+        android:layout_marginHorizontal="5dp"
+        android:layout_toEndOf="@+id/notification_delivery_logo"
+        android:layout_alignTop="@+id/notification_delivery_logo"
+        android:layout_alignBottom="@+id/notification_delivery_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="쿠팡이츠"
+        android:textColor="#138BAE"
+        android:textSize="13sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/notification_delivery_time"
+        android:layout_marginHorizontal="5dp"
+        android:layout_toEndOf="@+id/notification_delivery_app_name"
+        android:layout_alignTop="@+id/notification_delivery_app_name"
+        android:layout_alignBottom="@+id/notification_delivery_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="오후 1:40"
+        android:textColor="@color/baseColor"
+        android:textSize="13sp"/>
+    <LinearLayout
+        android:layout_alignParentStart="true"
+        android:paddingStart="5dp"
+        android:layout_below="@+id/notification_delivery_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="RtlSymmetry">
+        <TextView
+            android:id="@+id/notification_delivery_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            android:textColor="#555555"
+            android:text="@string/deliveryCompleteMent"
+            tools:ignore="RtlSymmetry" />
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/black"
+            android:text="@string/goodEat"
+            tools:ignore="RtlSymmetry,SmallSp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
