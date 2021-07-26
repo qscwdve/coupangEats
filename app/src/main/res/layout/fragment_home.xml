@@ -998,6 +998,7 @@
             android:src="@drawable/ic_cancel_gray"/>
     </LinearLayout>
 
+
     <TextView
         android:visibility="gone"
         android:layout_above="@+id/home_cart_bag"

@@ -5,7 +5,7 @@
     tools:targetApi="lollipop"> <!-- ripple effect color -->
     <item android:id="@android:id/background">
         <shape android:shape="oval">
-            <solid android:color="@null" />
+            <solid android:color="#01FFFFFF" />
         </shape>
     </item>
 </ripple>

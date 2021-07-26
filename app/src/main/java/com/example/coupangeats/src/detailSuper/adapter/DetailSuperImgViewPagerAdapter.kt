@@ -15,12 +15,12 @@ import com.example.coupangeats.src.menuSelect.MenuSelectActivity
 class DetailSuperImgViewPagerAdapter(val imgList: ArrayList<String>, val activity: Activity, val version : Int = 1) : RecyclerView.Adapter<DetailSuperImgViewPagerAdapter.DetailSuperImgViewpagerViewHoler>() {
     class DetailSuperImgViewpagerViewHoler(itemView: View, val adapter: DetailSuperImgViewPagerAdapter) : RecyclerView.ViewHolder(itemView){
         val img = itemView.findViewById<ImageView>(R.id.item_detail_super_viewpager_img)
-        val parent = itemView.findViewById<ConstraintLayout>(R.id.item_detail_super_viewpager_parent)
+        val click = itemView.findViewById<View>(R.id.item_detail_super_click)
 
         fun bind(item: String, position: Int){
             Glide.with(img).load(item).into(img)
 
-            parent.setOnClickListener {
+            click.setOnClickListener {
                 adapter.startLookImgActivity(position + 1)
             }
         }

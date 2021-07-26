@@ -32,7 +32,7 @@
             android:textSize="12sp"
             android:text="지도를 움직여 배달받을 위치를 지정하세요"/>
         <ImageView
-            android:background="@drawable/transpart_to_gray_ripple"
+            android:background="@drawable/transport_to_gray_ripple"
             android:id="@+id/map_back"
             android:padding="8dp"
             android:layout_marginTop="20dp"

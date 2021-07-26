@@ -10,10 +10,14 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentSearchBinding
 import com.example.coupangeats.src.categorySuper.CategorySuperActivity
+import com.example.coupangeats.src.deliveryAddressSetting.adapter.data.SearchAddress
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.search.adapter.ResentSearchNaviAdapter
 import com.example.coupangeats.src.main.search.category.CategorySearchFragment
@@ -28,6 +32,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
     private lateinit var mDBHelper: ResentSearchDatabase
     private lateinit var mDB: SQLiteDatabase
     private lateinit var inputMethodManager : InputMethodManager
+    private lateinit var detailSearchActivityLauncher : ActivityResultLauncher<Intent>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -36,6 +41,12 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
         // 데이타베이스 셋팅
         mDBHelper = ResentSearchDatabase(requireContext(), "Search.db", null, 1)
         mDB = mDBHelper.writableDatabase
+
+        // detailSearchActivity Result 설정
+        detailSearchActivityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                (binding.searchResentSearchRecyclerview.adapter as ResentSearchNaviAdapter).refresh(mDBHelper.getResentDate(mDB))
+            }
 
         // 최근 검색어 셋팅
         binding.searchResentSearchRecyclerview.adapter = ResentSearchNaviAdapter(mDBHelper.getResentDate(mDB), this)
@@ -72,6 +83,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
                 if (mSearchAble) {
                     startSearch(binding.searchEditText.text.toString())
                     inputMethodManager.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
+                    mDBHelper.addKeyword(mDB, binding.searchEditText.text.toString())
                 }
                 true
             } else false
@@ -84,6 +96,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
                 // showCustomToast("검색 가능 상태")
                 inputMethodManager.hideSoftInputFromWindow(binding.searchEditText.windowToken, 0)
                 startSearch(binding.searchEditText.text.toString())
+                mDBHelper.addKeyword(mDB, binding.searchEditText.text.toString())
             }
         }
         // 뒤로가기 버튼
@@ -144,7 +157,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
             this.putExtra("lon", mainActivity.mLon)
             this.putExtra("keyword", keyword)
         }
-        startActivity(intent)
+        detailSearchActivityLauncher.launch(intent)
     }
 
     fun startResentSearch(key: String, id: Int){

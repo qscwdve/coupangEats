@@ -66,12 +66,12 @@
                             android:background="@drawable/search_editbox">
 
                             <EditText
+                                style="@style/AppTheme"
                                 android:maxLines="1"
                                 android:id="@+id/search_detail_edit_text"
                                 android:hint="@string/search_edit_hint"
                                 android:layout_width="0dp"
                                 android:layout_weight="7"
-                                android:textCursorDrawable="@drawable/cursor_setting"
                                 android:inputType="text"
                                 android:layout_height="match_parent"
                                 android:textSize="20sp"

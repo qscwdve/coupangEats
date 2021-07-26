@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
 import androidx.transition.Transition
@@ -62,6 +63,7 @@ class HomeFragment() :
     private lateinit var mDB: SQLiteDatabase
     private var myHandler = MyHandler()
     private val intervalTime = 2000.toLong() // 몇초 간격으로 페이지를 넘길것인지 (1500 = 1.5초)
+    private var mCheetahNum = 0
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -349,23 +351,15 @@ class HomeFragment() :
         refreshFilter()
     }
     fun scrollStart(){
-        val transition: Transition = Slide(Gravity.BOTTOM)
-        transition.duration = 300
-        transition.addTarget(binding.homeCheetahBannerParent)
-        TransitionManager.beginDelayedTransition(binding.root, transition)
+        val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.cheetah_start)
+        binding.homeCheetahBannerParent.startAnimation(animation)
         binding.homeCheetahBannerParent.visibility = View.GONE
-
-        TransitionManager.beginDelayedTransition(binding.root, transition)
-
     }
     fun scrollFinish(){
-        val transition: Transition = Slide(Gravity.BOTTOM)
-        transition.duration = 300
-        transition.addTarget(binding.homeCheetahBannerParent)
-        TransitionManager.beginDelayedTransition(binding.root, transition)
+        val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.cheetah_finish)
         binding.homeCheetahBannerParent.visibility = View.VISIBLE
+        binding.homeCheetahBannerParent.startAnimation(animation)
 
-        TransitionManager.beginDelayedTransition(binding.root, transition)
     }
     // setonTouch
     private fun lastPosUpdate(scrollPos: Int){
@@ -420,16 +414,14 @@ class HomeFragment() :
             if(binding.homeCartBag.visibility == View.GONE) binding.homeNoticeTextParentAbove
             else binding.homeNoticeTextCartAbove
 
-        val transitionEnd: Transition = Slide(Gravity.BOTTOM)
+        val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.check_box_down)
 
         view.visibility = View.VISIBLE
-        transitionEnd.duration = 400
-        transitionEnd.addTarget(view)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            TransitionManager.beginDelayedTransition(binding.root, transitionEnd)
+        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+            view.startAnimation(animation)
             view.visibility = View.GONE
-        }, 1200)
+        }, 500)
     }
 
     // 필터 활용해서 서버한테 보내기
@@ -837,6 +829,7 @@ class HomeFragment() :
         if(response.code == 1000){
             val cheetahText = "내 도착하는 맛집 ${response.result.count}개!"
             binding.homeCheetahBannerText.text = cheetahText
+            mCheetahNum = response.result.count
         }
     }
 
@@ -858,6 +851,7 @@ class HomeFragment() :
             this.putExtra("lat", mLat)
             this.putExtra("lon", mLon)
             this.putExtra("categoryName", option)
+            this.putExtra("cheetah", mCheetahNum)
         }
         Log.d("위도", "lat: $mLat 경도: $mLon")
         startActivity(intent)

@@ -12,16 +12,18 @@ import com.example.coupangeats.src.main.order.prepare.OrderPrepareFragment
 class TopNavigationAdapter (fragmentActivity: FragmentActivity,
                             val mainActivity: MainActivity,
                             val fragment: OrderFragment) : FragmentStateAdapter(fragmentActivity){
+
+    var tapFragment : ArrayList<Fragment> =
+        arrayListOf<Fragment>(
+        OrderPastFragment(mainActivity),
+        OrderPrepareFragment(fragment))
+
     override fun getItemCount(): Int {
         return 2
     }
 
     override fun createFragment(position: Int): Fragment {
-        return when(position){
-            0 -> OrderPastFragment(mainActivity)
-            1 -> OrderPrepareFragment(fragment)
-            else -> OrderPastFragment(mainActivity)
-        }
+        return tapFragment[position]
     }
 
 }

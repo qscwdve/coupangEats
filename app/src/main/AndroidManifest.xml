@@ -19,12 +19,12 @@
         android:theme="@style/AppTheme"
         tools:ignore="HardcodedDebugMode"
         tools:replace="android:label">
-        <activity android:name=".src.lookImage.LookImageActivity"></activity>
+        <activity
+            android:name=".src.lookImage.LookImageActivity"
+            android:theme="@style/AppTheme2" />
         <activity android:name=".src.findId.FindIdActivity" />
         <activity
-            android:name=".src.searchDetail.SearchDetailActivity"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateUnchanged" />
+            android:name=".src.searchDetail.SearchDetailActivity" />
         <activity android:name=".src.eventItem.EventItemActivity" />
         <activity android:name=".src.event.EventActivity" />
         <activity android:name=".src.myReview.MyReviewActivity" />
@@ -57,7 +57,8 @@
         <activity
             android:name=".src.login.LoginActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".src.main.MainActivity" />
+        <activity android:name=".src.main.MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".src.favorites.FavoritesActivity" />
         <activity
             android:name=".src.splash.SplashActivity"

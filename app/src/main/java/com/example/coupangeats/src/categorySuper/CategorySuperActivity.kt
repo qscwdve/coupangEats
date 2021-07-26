@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
@@ -39,6 +40,7 @@ class CategorySuperActivity :
     private var mScrollFlag = true
     private var mHeightcheck = false
     var filterSelected = Array(5) { i -> false }  // 필터를 선택했는지 안했는데
+    private var mCheetahBannerFlag = true  // 치타배달 보여지고 안보여지는걸 판단하는 변수
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +52,10 @@ class CategorySuperActivity :
         option = intent.getStringExtra("categoryName") ?: ""
         mLat = intent.getStringExtra("lat") ?: ""
         mLon = intent.getStringExtra("lon") ?: ""
+        val cheetahNum = intent.getIntExtra("cheetah", 0)
+        val cheetahText = "내 도착하는 맛집 ${cheetahNum}개!"
+        binding.categorySuperCheetahBannerText.text = cheetahText
+
         mCategorySuperRequest.lat = mLat
         mCategorySuperRequest.lon = mLon
 
@@ -70,7 +76,7 @@ class CategorySuperActivity :
             startActivity(intent)
         }
 
-        // 스크롤
+        // 카테고리 스크롤
         binding.categorySuperBack.translationZ = 1f
         var nowScrollY = 0
         binding.categorySuperRecommendRecyclerView.addOnScrollListener(object :
@@ -83,9 +89,13 @@ class CategorySuperActivity :
                     if (position > mStickyScroll / 2) {
                         // 닫힘
                         binding.categorySuperNestedScrollView.smoothScrollTo(0, mStickyScroll)
+
+                        if(binding.categorySuperCheetahBannerParent.translationY != 0F)
+                            binding.categorySuperCheetahBannerParent.translationY = 0f
                     } else {
                         // 열림
                         binding.categorySuperNestedScrollView.smoothScrollTo(0, 0)
+                        binding.categorySuperCheetahBannerParent.translationY = -mStickyScroll.toFloat()
                     }
                 }
             }
@@ -96,13 +106,17 @@ class CategorySuperActivity :
                     binding.categorySuperBody.translationY = -(scrollY).toFloat()
                     binding.categorySuperNestedScrollView.translationY = scrollY.toFloat()
                     binding.categorySuperFilterLine.visibility = View.GONE
+
                 } else {
                     val position = binding.categorySuperBody.translationY
                     if (abs(position) <= mStickyScroll) {
                         binding.categorySuperBody.translationY = -(mStickyScroll).toFloat()
                         binding.categorySuperNestedScrollView.translationY =
                             mStickyScroll.toFloat()
-                        //binding.categorySuperNestedScrollView.height =
+
+                        if(binding.categorySuperCheetahBannerParent.translationY != 0F)
+                            binding.categorySuperCheetahBannerParent.translationY = 0f
+
                     }
                     binding.categorySuperFilterLine.visibility = View.VISIBLE
                 }
@@ -111,11 +125,38 @@ class CategorySuperActivity :
                 binding.categorySuperNestedScrollView.translationY = 0F
                 if (scrollY > 10) {
                     binding.categorySuperFilterLine.visibility = View.VISIBLE
+
+                    if(binding.categorySuperCheetahBannerParent.translationY != 0F)
+                        binding.categorySuperCheetahBannerParent.translationY = 0f
                 } else {
                     binding.categorySuperFilterLine.visibility = View.GONE
                 }
             }
             nowScrollY = scrollY
+        }
+
+        // 치타배달 스크롤
+        binding.categorySuperRecommendRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if(mCheetahBannerFlag) {
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        startCheetahAnimation("finish")
+                        Log.d("scrollPosition", "state : finish")
+                    } else if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+                        startCheetahAnimation("start")
+                        Log.d("scrollPosition", "state : start")
+                    }
+                }
+                Log.d("scrollPosition", "state : ${newState}")
+            }
+        })
+
+        // 치타배달 배너 표시
+        binding.categorySuperCheetahBannerCancel.setOnClickListener {
+            binding.categorySuperCheetahBannerParent.visibility = View.GONE
+            mCheetahBannerFlag = false
         }
 
         // 필터
@@ -205,6 +246,22 @@ class CategorySuperActivity :
             refreshFilter()
         }
 
+    }
+
+    // 치타배달 애니메이션
+    fun startCheetahAnimation(version: String){
+        when(version){
+            "start" -> {
+                val animation = AnimationUtils.loadAnimation(this, R.anim.cheetah_start)
+                binding.categorySuperCheetahBannerParent.startAnimation(animation)
+                binding.categorySuperCheetahBannerParent.visibility = View.GONE
+            }
+            "finish" -> {
+                val animation = AnimationUtils.loadAnimation(this, R.anim.cheetah_finish)
+                binding.categorySuperCheetahBannerParent.startAnimation(animation)
+                binding.categorySuperCheetahBannerParent.visibility = View.VISIBLE
+            }
+        }
     }
 
     override fun finish() {
@@ -358,7 +415,8 @@ class CategorySuperActivity :
                         RecommendCategoryAdapter(response.result.recommendStores, this, mStickyScroll)
                     binding.categorySuperRecommendRecyclerView.layoutManager = LinearLayoutManager(this)
                     mRecommendFlag = true
-
+                    // 치타 배달 설정
+                    binding.categorySuperCheetahBannerParent.translationY = -mStickyScroll.toFloat()
                     setBodyHeight()
                 } else {
                     (binding.categorySuperRecommendRecyclerView.adapter as RecommendCategoryAdapter).changeDate(

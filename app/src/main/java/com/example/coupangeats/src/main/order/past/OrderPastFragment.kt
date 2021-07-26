@@ -1,7 +1,9 @@
 package com.example.coupangeats.src.main.order.past
 
+import android.accessibilityservice.AccessibilityService
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
+import android.media.MediaDrm
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -55,14 +57,21 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
             imm.showSoftInput(binding.orderPastSearchText, 0);
         }
 
+        // 검색 아이콘 선택
+        binding.orderPastSearchImg.setOnClickListener {
+            val keyword = binding.orderPastSearchText.text.toString()
+            if(keyword != ""){
+                mKeyword = keyword
+                // 요청중..
+                mIsSearchRequest = true
+                OrderPastService(this).tryGetOrderPastInfo(getUserIdx(), mKeyword)
+                searchFocusClear()
+            }
+        }
+
         // 검색 밖 화면 터치시 포커스 해제
         binding.orderPastTransportMenu.setOnClickListener {
-            mIsSearch = false
-            binding.orderPastSearchText.setText(mKeyword)
-            binding.orderPastSearchText.clearFocus()
-            binding.orderPastTransportMenu.visibility = View.GONE
-            binding.orderPastSearchText.hint = "주문한 메뉴/매장을 찾아보세요"
-            imm.hideSoftInputFromWindow(binding.orderPastSearchText.windowToken, 0)
+            searchFocusClear()
         }
 
         binding.orderPastSearchDelete.setOnClickListener {
@@ -89,12 +98,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
                     // 요청중..
                     mIsSearchRequest = true
                     OrderPastService(this).tryGetOrderPastInfo(getUserIdx(), mKeyword)
-                    binding.orderPastSearchText.hint = "주문한 메뉴/매장을 찾아보세요"
-                    binding.orderPastSearchText.setText(keyword)
-                    binding.orderPastSearchText.clearFocus()
-                    imm.hideSoftInputFromWindow(binding.orderPastSearchText.windowToken, 0)
-                    mIsSearch = false
-                    binding.orderPastTransportMenu.visibility = View.GONE
+                    searchFocusClear()
                 }
                 true
             } else false
@@ -124,6 +128,16 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
             }
             startActivity(intent)
         }
+    }
+
+    fun searchFocusClear(){
+        mIsSearch = false
+        binding.orderPastSearchText.setText(mKeyword)
+        binding.orderPastSearchText.clearFocus()
+        binding.orderPastTransportMenu.visibility = View.GONE
+        binding.orderPastSearchText.hint = "주문한 메뉴/매장을 찾아보세요"
+        imm.hideSoftInputFromWindow(binding.orderPastSearchText.windowToken, 0)
+
     }
 
     override fun onResume() {

@@ -8,12 +8,11 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.annotation.GlideModule
-import com.bumptech.glide.module.AppGlideModule
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityMainBinding
 import com.example.coupangeats.databinding.DialogGpsActiveCheckBinding
@@ -27,7 +26,7 @@ import com.example.coupangeats.src.main.order.OrderFragment
 import com.example.coupangeats.src.main.search.SearchFragment
 import com.example.coupangeats.util.CartMenuDatabase
 import com.example.coupangeats.util.LoginBottomSheetDialog
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.softsquared.template.kotlin.config.ApplicationClass
@@ -44,11 +43,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
-    val DRIVERYADDRESSSETTING = 1111
     lateinit var loginBottomSheetDialog : LoginBottomSheetDialog
-
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
+    lateinit var deliveryAddressSettingLauncher : ActivityResultLauncher<Intent>
+    lateinit var favoritesActivityLauncher : ActivityResultLauncher<Intent>
     // 로그인 공통 callback 구성
     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
@@ -80,59 +79,81 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         if (jwt != null) {
             Log.d("jwt", jwt)
         }
-        // 카트 초기화
-        // resetCart()
 
-        binding.mainBtmNav.setOnNavigationItemSelectedListener(
-            BottomNavigationView.OnNavigationItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.menu_main_btm_nav_home -> {
-                        mfragmentIndex = 1
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.main_frm, HomeFragment(), "homeFragment")
-                            .commitAllowingStateLoss()
-                        return@OnNavigationItemSelectedListener true
+        // deliveryAddressSettingActivity Result 설정
+        deliveryAddressSettingLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if(result.resultCode == RESULT_OK){
+                    val home = supportFragmentManager.findFragmentByTag("homeFragment") as HomeFragment
+                    val check = result.data?.getBooleanExtra("check", false) ?: false
+                    // Log.d("toggle", "main activity에서 받음 : $check")
+                    home.startUserAddressCheckAndGetMainDate(check)
+                }
+            }
+
+        // favoritesActivity Result 설정
+        favoritesActivityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if(result.resultCode == RESULT_OK){
+                    var version : Int? = null
+                    if(result.data != null){
+                        version = result.data!!.getIntExtra("version", -1)
                     }
-                    R.id.menu_main_btm_nav_search -> {
-                        mfragmentIndex = 2
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.main_frm, SearchFragment(this, 1))
-                            .commitAllowingStateLoss()
-                        return@OnNavigationItemSelectedListener true
-                    }
-                    R.id.menu_main_btm_nav_favorites -> {
-                        mfragmentIndex = 3
-                        startActivityForResult(Intent(this, FavoritesActivity::class.java), FAVORITES_REQUEST_CODE)
-                        return@OnNavigationItemSelectedListener true
-                    }
-                    R.id.menu_main_btm_nav_order -> {
-                        if (loginCheck()) {
-                            mfragmentIndex = 4
-                            supportFragmentManager.beginTransaction()
-                                .replace(R.id.main_frm, OrderFragment(this))
-                                .commitAllowingStateLoss()
-                            return@OnNavigationItemSelectedListener true
-                        } else {
-                            loginBottomSheetDialogShow()
-                            return@OnNavigationItemSelectedListener false
-                        }
-                    }
-                    R.id.menu_main_btm_nav_myeats -> {
-                        if (loginCheck()) {
-                            mfragmentIndex = 5
-                            supportFragmentManager.beginTransaction()
-                                .replace(R.id.main_frm, MyeatsFragment())
-                                .commitAllowingStateLoss()
-                            return@OnNavigationItemSelectedListener true
-                        } else {
-                            loginBottomSheetDialogShow()
-                            return@OnNavigationItemSelectedListener false
-                        }
+                    if(version != null && version == 1){
+                        // 홈으로 바로 클릭
+                        setHomeFragment()
                     }
                 }
-                false
             }
-        )
+
+        binding.mainBtmNav.setOnItemSelectedListener(NavigationBarView.OnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_main_btm_nav_home -> {
+                    mfragmentIndex = 1
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_frm, HomeFragment(), "homeFragment")
+                        .commitAllowingStateLoss()
+                    return@OnItemSelectedListener true
+                }
+                R.id.menu_main_btm_nav_search -> {
+                    mfragmentIndex = 2
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_frm, SearchFragment(this, 1))
+                        .commitAllowingStateLoss()
+                    return@OnItemSelectedListener true
+                }
+                R.id.menu_main_btm_nav_favorites -> {
+                    mfragmentIndex = 3
+                    favoritesActivityLauncher.launch(Intent(this, FavoritesActivity::class.java))
+                    return@OnItemSelectedListener true
+                }
+                R.id.menu_main_btm_nav_order -> {
+                    if (loginCheck()) {
+                        mfragmentIndex = 4
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.main_frm, OrderFragment(this), "orderFragment")
+                            .commitAllowingStateLoss()
+                        return@OnItemSelectedListener true
+                    } else {
+                        loginBottomSheetDialogShow()
+                        return@OnItemSelectedListener false
+                    }
+                }
+                R.id.menu_main_btm_nav_myeats -> {
+                    if (loginCheck()) {
+                        mfragmentIndex = 5
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.main_frm, MyeatsFragment())
+                            .commitAllowingStateLoss()
+                        return@OnItemSelectedListener true
+                    } else {
+                        loginBottomSheetDialogShow()
+                        return@OnItemSelectedListener false
+                    }
+                }
+            }
+            false
+        })
     }
 
     fun resetCart() {
@@ -142,7 +163,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onBackPressed() {
         if(mfragmentIndex != 1) {
+
             setHomeFragment()
+
         } else {
             super.onBackPressed()
         }
@@ -172,28 +195,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         intent = Intent(this, DeliveryAddressSettingActivity::class.java).apply {
             this.putExtra("version", version)
         }
-        startActivityForResult(intent, DRIVERYADDRESSSETTING)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == DRIVERYADDRESSSETTING && resultCode == RESULT_OK) {
-            val home = supportFragmentManager.findFragmentByTag("homeFragment") as HomeFragment
-            val check = data?.getBooleanExtra("check", false) ?: false
-            Log.d("toggle", "main activity에서 받음 : $check")
-            home.startUserAddressCheckAndGetMainDate(check)
-        }
-        else if(requestCode == FAVORITES_REQUEST_CODE && resultCode == RESULT_OK){
-            var version : Int? = null
-            if(data != null){
-                version = data.getIntExtra("version", -1)
-            }
-            if(version != null && version == 1){
-                // 홈으로 바로 클릭
-                setHomeFragment()
-            }
-        }
-
+        deliveryAddressSettingLauncher.launch(intent)
     }
 
     // 경도와 위도 바꾸기
@@ -203,11 +205,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     // 로그인 여부 확인
-    fun loginCheck() : Boolean {
+    private fun loginCheck() : Boolean {
         return ApplicationClass.sSharedPreferences.getInt("userIdx", -1) != -1
     }
     // gps
-    fun gpsCheck(){
+    private fun gpsCheck(){
         if (!checkLocationServicesStatus()) {
             activeGpsDialog()
         }else {
@@ -270,7 +272,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
     }
 
-    fun gpsStatusSave(toggle: Boolean) {
+    private fun gpsStatusSave(toggle: Boolean) {
         ApplicationClass.sSharedPreferences.edit().putBoolean("gps", toggle).apply()
     }
 
@@ -304,6 +306,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         permissions: Array<String?>,
         grandResults: IntArray
     ) {
+        super.onRequestPermissionsResult(permsRequestCode, permissions, grandResults)
         if (permsRequestCode == PERMISSIONS_REQUEST_CODE && grandResults.size == REQUIRED_PERMISSIONS.size) {
             // 요청 코드가 PERMISSIONS_REQUEST_CODE 이고, 요청한 퍼미션 개수만큼 수신되었다면
             var check_result = true
@@ -341,6 +344,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         UserApiClient.instance.me { user, error ->
             if(user == null){
                 // 로그인 실패
+                showCustomToast("로그인에 실패하였습니다")
             } else {
 
             }
