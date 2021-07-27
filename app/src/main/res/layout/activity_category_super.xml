@@ -101,13 +101,13 @@
                             android:layout_marginEnd="40dp"
                             android:layout_centerVertical="true"
                             android:adjustViewBounds="true"
-                            android:layout_toStartOf="@+id/category_super_coupon_look"
+                            android:layout_toStartOf="@+id/home_coupon_look"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:src="@drawable/category_coupon_text1"/>
 
                         <LinearLayout
-                            android:id="@+id/category_super_coupon_look"
+                            android:id="@+id/home_coupon_look"
                             android:layout_centerVertical="true"
                             android:layout_alignParentEnd="true"
                             android:layout_width="wrap_content"
@@ -283,7 +283,18 @@
                                 android:src="@drawable/main_cheetah" />
 
                             <TextView
+                                android:visibility="gone"
                                 android:id="@+id/home_filter_cheetah_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/filter_super_cheetah"
+                                android:layout_marginEnd="3dp"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"/>
+
+                            <TextView
+                                android:id="@+id/home_filter_cheetah_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="3dp"
@@ -313,12 +324,23 @@
                             android:paddingVertical="5dp">
 
                             <TextView
-                                android:id="@+id/home_filter_delivery_price_text"
+                                android:id="@+id/home_filter_delivery_price_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="3dp"
                                 android:text="@string/filter_super_delivery_price"
                                 android:textColor="@color/black"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/home_filter_delivery_price_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="3dp"
+                                android:textStyle="bold"
+                                android:text="@string/filter_super_delivery_price"
+                                android:textColor="@color/white"
                                 android:textSize="13sp" />
 
                             <ImageView
@@ -349,12 +371,23 @@
                             android:paddingVertical="5dp">
 
                             <TextView
-                                android:id="@+id/home_filter_mini_order_text"
+                                android:id="@+id/home_filter_mini_order_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="3dp"
                                 android:text="@string/filter_super_min_order"
                                 android:textColor="@color/black"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:visibility="gone"
+                                android:id="@+id/home_filter_mini_order_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="3dp"
+                                android:text="@string/filter_super_min_order"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
                                 android:textSize="13sp" />
 
                             <ImageView
@@ -385,7 +418,18 @@
                             android:paddingVertical="5dp">
 
                             <TextView
+                                android:visibility="gone"
                                 android:id="@+id/home_filter_coupon_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="3dp"
+                                android:text="@string/filter_supper_coupon"
+                                android:textStyle="bold"
+                                android:textColor="@color/white"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/home_filter_coupon_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="3dp"

@@ -13,7 +13,7 @@ import com.example.coupangeats.src.categorySuper.CategorySuperActivity
 import com.example.coupangeats.src.searchDetail.SearchDetailActivity
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class FilterCateforyDialog(val activity: CategorySuperActivity, val version: Int): BottomSheetDialogFragment() {
+class FilterCateforyDialog(val activity: CategorySuperActivity, val version: Int, val select: Int): BottomSheetDialogFragment() {
     private lateinit var binding : DialogFilterSuperBinding
     lateinit var mValue1 : String
     lateinit var mValue2 : String
@@ -79,10 +79,10 @@ class FilterCateforyDialog(val activity: CategorySuperActivity, val version: Int
             // 홈 프레그 먼트로 바꾸는거 함수 호출 필요
             if(version == 1){
                 // 배달비 순
-                activity.changeDeliveryFilter(priceDeliveryArray[mSelect - 1], mSelectString)
+                activity.changeDeliveryFilter(priceDeliveryArray[mSelect - 1], mSelectString, mSelect)
             } else {
                 // 최소 주문 순
-                activity.changeOrderMinFilter(priceMinorderArray[mSelect - 1], mSelectString)
+                activity.changeOrderMinFilter(priceMinorderArray[mSelect - 1], mSelectString, mSelect)
             }
             dismiss()
         }
@@ -131,6 +131,15 @@ class FilterCateforyDialog(val activity: CategorySuperActivity, val version: Int
         binding.dialogFilterValue5.setOnTouchListener { v, event ->
             if(event.action == MotionEvent.ACTION_UP) clickValue5();
             true
+        }
+
+        // 이전에 선택했던 값
+        when(select){
+            1 -> { clickValue1() }
+            2 -> { clickValue2() }
+            3 -> { clickValue3() }
+            4 -> { clickValue4() }
+            else -> { clickValue5() }
         }
     }
 

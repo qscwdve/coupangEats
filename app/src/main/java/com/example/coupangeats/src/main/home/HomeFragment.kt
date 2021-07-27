@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
 import androidx.transition.Transition
@@ -64,6 +65,8 @@ class HomeFragment() :
     private var myHandler = MyHandler()
     private val intervalTime = 2000.toLong() // 몇초 간격으로 페이지를 넘길것인지 (1500 = 1.5초)
     private var mCheetahNum = 0
+    private var mSelectDelivery = -1
+    private var mSelectMini = -1
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -85,7 +88,6 @@ class HomeFragment() :
         binding.homeSearch.setOnClickListener {
             (activity as MainActivity).setSearchAdvencedFragment()
         }
-
         // 이벤트 전체 보러가기
         binding.homeEventLook.setOnClickListener {
             startActivity( Intent(requireContext(), EventActivity::class.java))
@@ -122,19 +124,19 @@ class HomeFragment() :
 
         // 배달비
         binding.homeFilterDeliveryPrice.setOnClickListener {
-            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 1)
-            filterSuperBottomSheetDialog.show(requireFragmentManager(), "deliveryPrice")
+            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 1, mSelectDelivery)
+            filterSuperBottomSheetDialog.show(parentFragmentManager, "deliveryPrice")
         }
         // 최소주문
         binding.homeFilterMiniOrder.setOnClickListener {
-            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 2)
-            filterSuperBottomSheetDialog.show(requireFragmentManager(), "deliveryPrice")
+            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 2, mSelectMini)
+            filterSuperBottomSheetDialog.show(parentFragmentManager, "deliveryPrice")
         }
         // 추천순
         binding.homeFilterRecommend.setOnClickListener {
             val filterRecommendBottomSheetDialog =
                 FilterRecommendBottomSheetDialog(this, mRecommSelect)
-            filterRecommendBottomSheetDialog.show(requireFragmentManager(), "recommend")
+            filterRecommendBottomSheetDialog.show(parentFragmentManager, "recommend")
         }
         // 치타 배달
         binding.homeFilterCheetah.setOnClickListener {
@@ -142,20 +144,24 @@ class HomeFragment() :
                 // 선택
                 binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_click)
                 binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah_click)
-                binding.homeFilterCheetahText.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCheetahText.visibility = View.VISIBLE
+                binding.homeFilterCheetahTitle.visibility = View.GONE
                 binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_click)
                 binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah_click)
-                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCheetahText2.visibility = View.VISIBLE
+                binding.homeFilterCheetahTitle2.visibility = View.GONE
                 mHomeInfoRequest.cheetah = "Y"
                 filterSelected[1] = true
             } else {
                 // 취소
                 binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_no_click)
                 binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah)
-                binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCheetahText.visibility = View.GONE
+                binding.homeFilterCheetahTitle.visibility = View.VISIBLE
                 binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
                 binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah)
-                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCheetahText2.visibility = View.GONE
+                binding.homeFilterCheetahTitle2.visibility = View.VISIBLE
                 mHomeInfoRequest.cheetah = null
                 filterSelected[1] = false
             }
@@ -166,17 +172,21 @@ class HomeFragment() :
         binding.homeFilterCoupon.setOnClickListener {
             if (!filterSelected[4]) {
                 binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_click)
-                binding.homeFilterCouponText.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCouponText.visibility = View.VISIBLE
+                binding.homeFilterCouponTitle.visibility = View.GONE
                 binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_click)
-                binding.homeFilterCouponText2.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCouponText2.visibility = View.VISIBLE
+                binding.homeFilterCouponTitle2.visibility = View.GONE
                 // 선택
                 mHomeInfoRequest.coupon = "Y"
                 filterSelected[4] = true
             } else {
                 binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_no_click)
-                binding.homeFilterCouponText.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCouponText.visibility = View.GONE
+                binding.homeFilterCouponTitle.visibility = View.VISIBLE
                 binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
-                binding.homeFilterCouponText2.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCouponText2.visibility = View.GONE
+                binding.homeFilterCouponTitle2.visibility = View.VISIBLE
                 // 선택 취소
                 mHomeInfoRequest.coupon = null
                 filterSelected[4] = false
@@ -192,19 +202,19 @@ class HomeFragment() :
 
         // 배달비
         binding.homeFilterDeliveryPrice2.setOnClickListener {
-            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 1)
-            filterSuperBottomSheetDialog.show(requireFragmentManager(), "deliveryPrice")
+            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 1, mSelectDelivery)
+            filterSuperBottomSheetDialog.show(parentFragmentManager, "deliveryPrice")
         }
         // 최소주문
         binding.homeFilterMiniOrder2.setOnClickListener {
-            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 2)
-            filterSuperBottomSheetDialog.show(requireFragmentManager(), "deliveryPrice")
+            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 2, mSelectMini)
+            filterSuperBottomSheetDialog.show(parentFragmentManager, "deliveryPrice")
         }
         // 추천순
         binding.homeFilterRecommend2.setOnClickListener {
             val filterRecommendBottomSheetDialog =
                 FilterRecommendBottomSheetDialog(this, mRecommSelect)
-            filterRecommendBottomSheetDialog.show(requireFragmentManager(), "recommend")
+            filterRecommendBottomSheetDialog.show(parentFragmentManager, "recommend")
         }
         // 치타 배달
         binding.homeFilterCheetah2.setOnClickListener {
@@ -212,20 +222,24 @@ class HomeFragment() :
                 // 선택
                 binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_click)
                 binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah_click)
-                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCheetahText2.visibility = View.VISIBLE
+                binding.homeFilterCheetahTitle2.visibility = View.GONE
                 binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_click)
                 binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah_click)
-                binding.homeFilterCheetahText.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCheetahText.visibility = View.VISIBLE
+                binding.homeFilterCheetahTitle.visibility = View.GONE
                 mHomeInfoRequest.cheetah = "Y"
                 filterSelected[1] = true
             } else {
                 // 취소
                 binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
                 binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah)
-                binding.homeFilterCheetahText2.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCheetahText2.visibility = View.GONE
+                binding.homeFilterCheetahTitle2.visibility = View.VISIBLE
                 binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_no_click)
                 binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah)
-                binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCheetahText.visibility = View.GONE
+                binding.homeFilterCheetahTitle.visibility = View.VISIBLE
                 mHomeInfoRequest.cheetah = null
                 filterSelected[1] = false
             }
@@ -235,18 +249,22 @@ class HomeFragment() :
         // 할인쿠폰
         binding.homeFilterCoupon2.setOnClickListener {
             if (!filterSelected[4]) {
-                binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_click)
-                binding.homeFilterCouponText2.setTextColor(Color.parseColor(whiteColor))
                 binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_click)
-                binding.homeFilterCouponText.setTextColor(Color.parseColor(whiteColor))
+                binding.homeFilterCouponText.visibility = View.VISIBLE
+                binding.homeFilterCouponTitle.visibility = View.GONE
+                binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_click)
+                binding.homeFilterCouponText2.visibility = View.VISIBLE
+                binding.homeFilterCouponTitle2.visibility = View.GONE
                 // 선택
                 mHomeInfoRequest.coupon = "Y"
                 filterSelected[4] = true
             } else {
                 binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
-                binding.homeFilterCouponText2.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCouponText2.visibility = View.GONE
+                binding.homeFilterCouponTitle2.visibility = View.VISIBLE
                 binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_no_click)
-                binding.homeFilterCouponText.setTextColor(Color.parseColor(blackColor))
+                binding.homeFilterCouponText.visibility = View.GONE
+                binding.homeFilterCouponTitle.visibility = View.VISIBLE
                 // 선택 취소
                 mHomeInfoRequest.coupon = null
                 filterSelected[4] = false
@@ -461,47 +479,51 @@ class HomeFragment() :
     }
 
     // 배달비 필터 바꾸는 함수 다이얼로그에서 호출
-    fun changeDeliveryFilter(value: Int, valueString: String) {
+    fun changeDeliveryFilter(value: Int, valueString: String, select: Int) {
         if (value != -1) {
             val str =  if(valueString == "무료배달") "무료배달" else "배달비 ${valueString}원 이하"
             binding.homeFilterDeliveryPriceBackground.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterDeliveryPriceText.text = str
-            binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(whiteColor))
+            binding.homeFilterDeliveryPriceText.visibility = View.VISIBLE
+            binding.homeFilterDeliveryPriceTitle.visibility = View.GONE
             binding.homeFilterDeliveryPriceImg.setImageResource(R.drawable.ic_arrow_down_white)
             binding.homeFilterDeliveryPriceBackground2.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterDeliveryPriceText2.text = str
-            binding.homeFilterDeliveryPriceText2.setTextColor(Color.parseColor(whiteColor))
+            binding.homeFilterDeliveryPriceText2.visibility = View.VISIBLE
+            binding.homeFilterDeliveryPriceTitle2.visibility = View.GONE
             binding.homeFilterDeliveryPriceImg2.setImageResource(R.drawable.ic_arrow_down_white)
             // 배달비 바꾸기
             mHomeInfoRequest.deliverymin = value
             filterSelected[2] = true
         } else {
             binding.homeFilterDeliveryPriceBackground.setBackgroundResource(R.drawable.super_filter_no_click)
-            binding.homeFilterDeliveryPriceText.text = "배달비"
-            binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(blackColor))
+            binding.homeFilterDeliveryPriceText.visibility = View.GONE
+            binding.homeFilterDeliveryPriceTitle.visibility = View.VISIBLE
             binding.homeFilterDeliveryPriceImg.setImageResource(R.drawable.ic_arrow_down)
             binding.homeFilterDeliveryPriceBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
-            binding.homeFilterDeliveryPriceText2.text = "배달비"
-            binding.homeFilterDeliveryPriceText2.setTextColor(Color.parseColor(blackColor))
+            binding.homeFilterDeliveryPriceText.visibility = View.GONE
+            binding.homeFilterDeliveryPriceTitle.visibility = View.VISIBLE
             binding.homeFilterDeliveryPriceImg2.setImageResource(R.drawable.ic_arrow_down)
             mHomeInfoRequest.deliverymin = null
             filterSelected[2] = false
         }
-
+        mSelectDelivery = select
         startFilterServerSend()
     }
 
     // 최소 주문 바꾸는 함수 다이얼로그에서 호출
-    fun changeOrderMinFilter(value: Int, valueString: String) {
+    fun changeOrderMinFilter(value: Int, valueString: String, select: Int) {
         if (value != -1) {
             val str = "최소주문 ${valueString}"
             binding.homeFilterMiniOrderBackground.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterMiniOrderText.text = str
-            binding.homeFilterMiniOrderText.setTextColor(Color.parseColor(whiteColor))
+            binding.homeFilterMiniOrderText.visibility = View.VISIBLE
+            binding.homeFilterMiniOrderTitle.visibility = View.GONE
             binding.homeFilterMiniOrderImg.setImageResource(R.drawable.ic_arrow_down_white)
             binding.homeFilterMiniOrderBackground2.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterMiniOrderText2.text = str
-            binding.homeFilterMiniOrderText2.setTextColor(Color.parseColor(whiteColor))
+            binding.homeFilterMiniOrderText2.visibility = View.VISIBLE
+            binding.homeFilterMiniOrderTitle2.visibility = View.GONE
             binding.homeFilterMiniOrderImg2.setImageResource(R.drawable.ic_arrow_down_white)
             // 최소주문 바꾸기
             mHomeInfoRequest.ordermin = value
@@ -509,16 +531,17 @@ class HomeFragment() :
         } else {
             // 전체
             binding.homeFilterMiniOrderBackground.setBackgroundResource(R.drawable.super_filter_no_click)
-            binding.homeFilterMiniOrderText.text = "최소주문"
-            binding.homeFilterMiniOrderText.setTextColor(Color.parseColor(blackColor))
+            binding.homeFilterMiniOrderText.visibility = View.GONE
+            binding.homeFilterMiniOrderTitle.visibility = View.VISIBLE
             binding.homeFilterMiniOrderImg.setImageResource(R.drawable.ic_arrow_down)
             binding.homeFilterMiniOrderBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
-            binding.homeFilterMiniOrderText2.text = "최소주문"
-            binding.homeFilterMiniOrderText2.setTextColor(Color.parseColor(blackColor))
+            binding.homeFilterMiniOrderText2.visibility = View.GONE
+            binding.homeFilterMiniOrderTitle2.visibility = View.VISIBLE
             binding.homeFilterMiniOrderImg2.setImageResource(R.drawable.ic_arrow_down)
             mHomeInfoRequest.ordermin = null
             filterSelected[3] = false
         }
+        mSelectMini = select
         startFilterServerSend()
     }
 
@@ -543,17 +566,19 @@ class HomeFragment() :
 
     // 초기화
     fun refreshFilter() {
+        mSelectMini = 5
+        mSelectDelivery = 5
         // 초기화 필터 다운
         binding.homeFilterClear.visibility = View.GONE
         // 최소 주문
         binding.homeFilterMiniOrderBackground.setBackgroundResource(R.drawable.super_filter_no_click)
-        binding.homeFilterMiniOrderText.text = "최소주문"
-        binding.homeFilterMiniOrderText.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterMiniOrderText.visibility = View.GONE
+        binding.homeFilterMiniOrderTitle.visibility = View.VISIBLE
         binding.homeFilterMiniOrderImg.setImageResource(R.drawable.ic_arrow_down)
         // 배달비
         binding.homeFilterDeliveryPriceBackground.setBackgroundResource(R.drawable.super_filter_no_click)
-        binding.homeFilterDeliveryPriceText.text = "배달비"
-        binding.homeFilterDeliveryPriceText.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterDeliveryPriceText.visibility = View.GONE
+        binding.homeFilterDeliveryPriceTitle.visibility = View.VISIBLE
         binding.homeFilterDeliveryPriceImg.setImageResource(R.drawable.ic_arrow_down)
         // 추천순
         binding.homeFilterRecommendBackground.setBackgroundResource(R.drawable.super_filter_no_click)
@@ -563,24 +588,26 @@ class HomeFragment() :
         mRecommSelect = 1
         // 할인쿠폰
         binding.homeFilterCouponBackground.setBackgroundResource(R.drawable.super_filter_no_click)
-        binding.homeFilterCouponText.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterCouponText.visibility = View.GONE
+        binding.homeFilterCouponTitle.visibility = View.VISIBLE
         // 치타배달
         binding.homeFilterCheetahBackground.setBackgroundResource(R.drawable.super_filter_no_click)
         binding.homeFilterCheetahImg.setImageResource(R.drawable.main_cheetah)
-        binding.homeFilterCheetahText.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterCheetahTitle.visibility = View.VISIBLE
+        binding.homeFilterCheetahText.visibility = View.GONE
 
         // 2
         // 초기화 필터 다운
         binding.homeFilterClear2.visibility = View.GONE
         // 최소 주문
         binding.homeFilterMiniOrderBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
-        binding.homeFilterMiniOrderText2.text = "최소주문"
-        binding.homeFilterMiniOrderText2.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterMiniOrderText2.visibility = View.GONE
+        binding.homeFilterMiniOrderTitle2.visibility = View.VISIBLE
         binding.homeFilterMiniOrderImg2.setImageResource(R.drawable.ic_arrow_down)
         // 배달비
         binding.homeFilterDeliveryPriceBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
-        binding.homeFilterDeliveryPriceText2.text = "배달비"
-        binding.homeFilterDeliveryPriceText2.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterDeliveryPriceText2.visibility = View.GONE
+        binding.homeFilterDeliveryPriceTitle2.visibility = View.VISIBLE
         binding.homeFilterDeliveryPriceImg2.setImageResource(R.drawable.ic_arrow_down)
         // 추천순
         binding.homeFilterRecommendBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
@@ -590,11 +617,13 @@ class HomeFragment() :
         mRecommSelect = 1
         // 할인쿠폰
         binding.homeFilterCouponBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
-        binding.homeFilterCouponText2.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterCouponText2.visibility = View.GONE
+        binding.homeFilterCouponTitle2.visibility = View.VISIBLE
         // 치타배달
         binding.homeFilterCheetahBackground2.setBackgroundResource(R.drawable.super_filter_no_click)
         binding.homeFilterCheetahImg2.setImageResource(R.drawable.main_cheetah)
-        binding.homeFilterCheetahText2.setTextColor(Color.parseColor(blackColor))
+        binding.homeFilterCheetahTitle2.visibility = View.VISIBLE
+        binding.homeFilterCheetahText2.visibility = View.GONE
     }
 
     override fun onResume() {
@@ -764,7 +793,9 @@ class HomeFragment() :
                 val salse = response.result.onSaleStores
                 val new = response.result.newStores
                 val recommend = response.result.recommendStores
-                setEvent(events)
+                if(events != null){
+                    setEvent(events)
+                }
                 setCategory(category)
                 if (salse != null) {
                     setOnSalse(salse)
