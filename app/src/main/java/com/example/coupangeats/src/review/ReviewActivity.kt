@@ -8,6 +8,8 @@ import android.graphics.Color
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.animation.OvershootInterpolator
@@ -55,6 +57,7 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
         // 리뷰 불러오기
         mStoreIdx = intent.getIntExtra("storeIdx", -1)
         mReviewIdx = intent.getIntExtra("reviewIdx", -1)
+        Log.d("scrolled", "reviewIdx : ${mReviewIdx}")
         ReviewService(this).tryGetReviewInfo(mStoreIdx, null, null)
 
         binding.toolbarBack.setOnClickListener { finish() }
@@ -200,6 +203,10 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
         ReviewService(this).tryGetReviewInfo(mStoreIdx, type, mSort)
     }
 
+    fun changeReviewScroll(value: Int){
+        binding.reviewStickyScrollView.scrollTo(0, value)
+    }
+
     override fun onGetReviewInfoSuccess(response: ReviewInfoResponse) {
         if(response.code == 1000){
             binding.toolbarSuperName.text = response.result.title
@@ -212,41 +219,38 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
 
             if(response.result.reviews != null){
                 val reviews = response.result.reviews
+                if(mReviewIdx != -1){
+                    var positionIndex = -2
+                    for(index in reviews.indices){
+                        if(reviews[index].reviewIdx == mReviewIdx){
+                            positionIndex = index
+                            break
+                        }
+                    }
 
-                binding.reviewRecyclerview.adapter = ReviewAdapter(reviews, this)
-                binding.reviewRecyclerview.layoutManager = LinearLayoutManager(this)
+                    binding.reviewRecyclerview.adapter = ReviewAdapter(reviews, this)
+                    binding.reviewRecyclerview.layoutManager = LinearLayoutManager(this)
 
-                //binding.reviewParent.smoothScrollTo(0, binding.reviewFilterParent.top)
-                //binding.reviewParent.scrollToPosition(binding.reviewFilterParent)
+                    mReviewIdx = -1
+
+                    Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                        val diff = binding.reviewFilterParent.top - binding.reviewRecyclerview.top
+                        val value = (binding.reviewRecyclerview.adapter as ReviewAdapter).getPosition(positionIndex) + binding.reviewRecyclerview.top + diff
+                        binding.reviewStickyScrollView.scrollTo(0, value)
+                    }, 100)
+                } else {
+                    if(binding.reviewRecyclerview.adapter == null) {
+                        binding.reviewRecyclerview.adapter = ReviewAdapter(reviews, this)
+                        binding.reviewRecyclerview.layoutManager = LinearLayoutManager(this)
+                    } else {
+                        (binding.reviewRecyclerview.adapter as ReviewAdapter).refresh(reviews)
+                    }
+                }
+
             }
         }
     }
-    // 리사이클러뷰에서 선택한 포지션으로 스크롤 이동
-    /*fun moveScrollToPosition(position: Int){
-        binding.reviewRecyclerview.scrollToPosition(position)
-    }
 
-    fun StickyScrollView.scrollToPosition(view: View) {
-        val y = computeDistanceToView(view)
-        //Log.d("scrolled", " scrollToPosition : $y")
-        this.scrollTo(0, y)
-    }
-
-    internal fun StickyScrollView.computeDistanceToView(view: View): Int {
-        return abs(calculateRectOnScreen(this).top - (this.scrollY + calculateRectOnScreen(view).top))
-    }
-
-    internal fun calculateRectOnScreen(view: View): Rect {
-        val location = IntArray(2)
-        view.getLocationOnScreen(location)
-        return Rect(
-            location[0],
-            location[1],
-            location[0] + view.measuredWidth,
-            location[1] + view.measuredHeight
-        )
-    }
-*/
     override fun onGetReviewInfoFailure(message: String) {
         // 리뷰 불러오기 실패 서버 통신 실패
         val reviewList = ArrayList<Review>()

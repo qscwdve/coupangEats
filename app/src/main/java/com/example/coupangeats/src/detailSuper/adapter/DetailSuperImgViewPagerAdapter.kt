@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -15,12 +16,11 @@ import com.example.coupangeats.src.menuSelect.MenuSelectActivity
 class DetailSuperImgViewPagerAdapter(val imgList: ArrayList<String>, val activity: Activity, val version : Int = 1) : RecyclerView.Adapter<DetailSuperImgViewPagerAdapter.DetailSuperImgViewpagerViewHoler>() {
     class DetailSuperImgViewpagerViewHoler(itemView: View, val adapter: DetailSuperImgViewPagerAdapter) : RecyclerView.ViewHolder(itemView){
         val img = itemView.findViewById<ImageView>(R.id.item_detail_super_viewpager_img)
-        val click = itemView.findViewById<View>(R.id.item_detail_super_click)
 
         fun bind(item: String, position: Int){
             Glide.with(img).load(item).into(img)
 
-            click.setOnClickListener {
+            img.setOnClickListener {
                 adapter.startLookImgActivity(position + 1)
             }
         }

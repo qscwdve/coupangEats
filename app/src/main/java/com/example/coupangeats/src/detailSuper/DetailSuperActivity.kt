@@ -246,8 +246,10 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             // 알림 오픈
             if(mCartMenuNum != num && mCartMenuNum != 0){  }
             mCartMenuNum = num
+            (binding.detailSuperMenuRecyclerview.adapter as MenuCategoryAdapter?)?.changeLastFlag(true)
         } else {
             binding.detailSuperCartParent.visibility = View.GONE
+            (binding.detailSuperMenuRecyclerview.adapter as MenuCategoryAdapter?)?.changeLastFlag(false)
         }
     }
 
@@ -558,6 +560,9 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     private fun setMenu(menuCategoryList: ArrayList<Menu>) {
         binding.detailSuperMenuRecyclerview.adapter = MenuCategoryAdapter(menuCategoryList, this)
         binding.detailSuperMenuRecyclerview.layoutManager = LinearLayoutManager(this)
+
+        // 카트 보기에 따라 메뉴 리사이클러뷰의 크기를 조절해야함
+        cartChange()
     }
 
     private fun priceIntToString(value: Int) : String {

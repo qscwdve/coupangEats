@@ -12,11 +12,13 @@ import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.detailSuper.model.Menu
 
 class MenuCategoryAdapter(val menuCategoryList: ArrayList<Menu>, val activity: DetailSuperActivity) : RecyclerView.Adapter<MenuCategoryAdapter.MenuCategoryViewHolder>() {
+    var lastFlag = false
     class MenuCategoryViewHolder(itemView: View, val menuCategoryAdapter: MenuCategoryAdapter): RecyclerView.ViewHolder(itemView) {
         val categoryName = itemView.findViewById<TextView>(R.id.item_detail_menu_category_name)
         val categoryIntroduce = itemView.findViewById<TextView>(R.id.item_detail_menu_category_introduce)
         val menuRecyclerView = itemView.findViewById<RecyclerView>(R.id.item_detail_menuList_recyclerView)
         val view = itemView.findViewById<View>(R.id.item_detail_menu_category_view)
+        val last = itemView.findViewById<View>(R.id.item_detail_super_menu_parent_last)
 
         fun bind(item: Menu, position: Int) {
             categoryName.text = item.categoryName
@@ -32,6 +34,11 @@ class MenuCategoryAdapter(val menuCategoryList: ArrayList<Menu>, val activity: D
             menuRecyclerView.adapter = MenuAdapter(item.menuList, menuCategoryAdapter.activity)
             menuRecyclerView.layoutManager = LinearLayoutManager(itemView.context)
 
+            if(menuCategoryAdapter.lastFlag && position == menuCategoryAdapter.menuCategoryList.size - 1){
+                last.visibility = View.VISIBLE
+            } else {
+                last.visibility = View.GONE
+            }
         }
     }
 
@@ -46,7 +53,8 @@ class MenuCategoryAdapter(val menuCategoryList: ArrayList<Menu>, val activity: D
 
     override fun getItemCount(): Int = menuCategoryList.size
 
-    fun setFocus(position: Int){
-
+    fun changeLastFlag(value: Boolean){
+        lastFlag = value
+        notifyItemChanged(menuCategoryList.size - 1)
     }
 }

@@ -11,11 +11,6 @@
         android:scaleType="fitXY"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:foreground="@drawable/image_overlay"/>
+        android:foreground="@drawable/image_overlay" />
 
-    <View
-        style="@style/ImgRippleEffect"
-        android:id="@+id/item_detail_super_click"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 </RelativeLayout>

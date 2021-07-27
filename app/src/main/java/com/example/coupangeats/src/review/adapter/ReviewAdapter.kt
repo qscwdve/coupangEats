@@ -15,9 +15,10 @@ import com.example.coupangeats.R
 import com.example.coupangeats.src.review.ReviewActivity
 import com.example.coupangeats.src.review.model.Review
 
-class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: ReviewActivity) :
+class ReviewAdapter(var reviewList: ArrayList<Review>, val reviewActivity: ReviewActivity) :
     RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
-    class ReviewViewHolder(itemView: View, val reviewActivity: ReviewActivity) : RecyclerView.ViewHolder(itemView) {
+    var parentList = Array<LinearLayout?>(reviewList.size) {i -> null}
+    class ReviewViewHolder(itemView: View, val reviewActivity: ReviewActivity, val adapter: ReviewAdapter) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById<TextView>(R.id.item_review_name)
         val star1 = itemView.findViewById<ImageView>(R.id.item_review_star1)
         val star2 = itemView.findViewById<ImageView>(R.id.item_review_star2)
@@ -47,7 +48,9 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
         val cancel = itemView.findViewById<LinearLayout>(R.id.item_review_cancel)
         val evaluation = itemView.findViewById<LinearLayout>(R.id.item_review_evaluation_parent)
 
-        fun bind(review: Review) {
+        fun bind(review: Review, position: Int) {
+            adapter.parentList[position] = reviewParent
+
             name.text = review.writerName  // 이름
             setStar(review.rating)   // 별점
             date.text = review.writingTimeStamp  // 날짜
@@ -124,13 +127,8 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
                     review.isLiked = "NO"
                 }
             }
-            if(reviewActivity.mReviewIdx == review.reviewIdx){
-                Log.d("scrolled", "reviewIdx : ${review.reviewIdx}")
-                //reviewActivity.moveScrollToPosition(adapterPosition)
-                reviewActivity.mReviewIdx = -1
-            }
         }
-        fun setReviewCountSetting(likeCount: Int){
+        private fun setReviewCountSetting(likeCount: Int){
             if(likeCount <= 0){
                 reviewCount.visibility = View.GONE
                 reviewCountText.text = "리뷰가 도움이 되었나요?"
@@ -162,7 +160,7 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
             // 서버 통신
             if(version == null) reviewActivity.startReviewHelpUnlike(reviewIdx)
         }
-        fun changeNull(num: Int, reviewIdx: Int, version: Int? = null){
+        private fun changeNull(num: Int, reviewIdx: Int, version: Int? = null){
             setReviewCountSetting(num)
             likeParent.setBackgroundResource(R.drawable.delivery_gps_box)
             likeImg.setImageResource(R.drawable.ic_like)
@@ -174,7 +172,7 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
             if(version == null) reviewActivity.startReviewHelpDelete(reviewIdx)
         }
 
-        fun setStar(num: Int) {
+        private fun setStar(num: Int) {
             star1.setImageResource(R.drawable.ic_star_no)
             star2.setImageResource(R.drawable.ic_star_no)
             star3.setImageResource(R.drawable.ic_star_no)
@@ -187,7 +185,7 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
             if (num >= 5) star5.setImageResource(R.drawable.ic_star)
         }
 
-        fun setViewpagerSetting(imgUrls: ArrayList<String>) {
+        private fun setViewpagerSetting(imgUrls: ArrayList<String>) {
             imgViewPager.adapter = ReviewPhotoViewpagerAdapter(imgUrls)
             imgViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
@@ -205,17 +203,16 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
             } else {
                 imgViewPagerNumParent.visibility = View.GONE
             }
-
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_review, parent, false)
-        return ReviewViewHolder(view, reviewActivity)
+        return ReviewViewHolder(view, reviewActivity, this)
     }
 
     override fun onBindViewHolder(holder: ReviewViewHolder, position: Int) {
-        holder.bind(reviewList[position])
+        holder.bind(reviewList[position], position)
     }
 
     override fun getItemCount(): Int = reviewList.size
@@ -223,5 +220,14 @@ class ReviewAdapter(val reviewList: ArrayList<Review>, val reviewActivity: Revie
     fun deleteItem(position: Int){
         reviewList.removeAt(position)
         notifyItemRemoved(position)
+    }
+
+    fun getPosition(position: Int) : Int{
+        return parentList[position]?.top ?: 0
+    }
+
+    fun refresh(array: ArrayList<Review>){
+        reviewList = array
+        notifyDataSetChanged()
     }
 }

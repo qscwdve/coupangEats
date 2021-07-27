@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:text="배달완료"
                     android:textColor="@color/black"
-                    android:textSize="22sp"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
 

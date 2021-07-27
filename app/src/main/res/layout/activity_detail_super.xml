@@ -451,12 +451,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/detail_super_menu_category_recyclerview"
-            android:layout_marginBottom="40dp"
             android:background="@color/white" />
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/detail_super_cart_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
