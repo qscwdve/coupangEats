@@ -30,7 +30,7 @@
                 android:paddingVertical="13dp"
                 android:scaleType="fitStart"
                 android:paddingHorizontal="10dp"
-                android:src="@drawable/cancel" />
+                android:src="@drawable/ic_cancel" />
         </LinearLayout>
         <ImageView
             android:layout_gravity="center"

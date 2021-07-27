@@ -53,7 +53,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:contentDescription="@string/image_no"
-                    android:padding="7dp"
+                    android:padding="13dp"
                     android:src="@drawable/myeats_address_manage"/>
 
                 <TextView
@@ -79,9 +79,9 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:padding="7dp"
+                    android:padding="13dp"
                     android:contentDescription="@string/image_no"
-                    android:src="@drawable/myeats_favorites"/>
+                    android:src="@drawable/myeats_heart"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -160,7 +160,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:padding="7dp"
+                    android:padding="13dp"
                     android:contentDescription="@string/image_no"
                     android:src="@drawable/myeats_pay"/>
 
@@ -266,7 +266,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:padding="7dp"
+                    android:padding="13dp"
                     android:contentDescription="@string/image_no"
                     android:src="@drawable/myeats_setting"/>
 
