@@ -23,7 +23,7 @@ class ApplicationClass : Application() {
     // 실 서버 주소
     val API_URL = "https://prod.hellosilver.shop/"
     // 도로명 팝업 API : devU01TX0FVVEgyMDIxMDUyNDIyMjAwMDExMTE5ODk=
-    // 주소 검색 API : devU01TX0FVVEgyMDIxMDUyNDIyMjMwMzExMTE5OTA=
+    // 주소 검색 API : devU01TX0FVVEgyMDIxMDgwODIwMDcxMTExMTQ5ODY=
 
     val SEARCH_ADDRESS_URL = "https://www.juso.go.kr/"
     // 코틀린의 전역변수 문법
@@ -36,7 +36,7 @@ class ApplicationClass : Application() {
 
         // 도로명 주소 API Key 값
         val SEARCH_API_KEY = "devU01TX0FVVEgyMDIxMDYyNTE1MzM1MzExMTMyNTk="
-
+        val SEARCH_XY_KEY = "devU01TX0FVVEgyMDIxMDgwODIwMDcxMTExMTQ5ODY="
         val KAKAO_NATIVE_KEY = "acf919d14f1072fd5b7524916b93db20"
 
         // Retrofit 인스턴스, 앱 실행시 한번만 생성하여 사용합니다.
@@ -94,5 +94,6 @@ class ApplicationClass : Application() {
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
     }
 }

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
 import com.example.coupangeats.src.deliveryAddressSetting.DeliveryAddressSettingActivity
 import com.example.coupangeats.src.deliveryAddressSetting.adapter.data.SearchAddress
-import kotlin.contracts.contract
 
 class SearchAddressListAdapter(val addressList: ArrayList<SearchAddress>, val activity: DeliveryAddressSettingActivity) : RecyclerView.Adapter<SearchAddressListAdapter.SearchAddressViewHolder>() {
     private var nowCountPage = 1

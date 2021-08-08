@@ -192,6 +192,7 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
 
         // 현재 위치 마크 표시
         uiSettings = mNaverMap.uiSettings
+        Log.d("position", "mLat : $mLat , mLon : $mLon")
         val lat = mLat.toDouble()
         val lon = mLon.toDouble()
         if(lat != -1.0 && lon != -1.0){

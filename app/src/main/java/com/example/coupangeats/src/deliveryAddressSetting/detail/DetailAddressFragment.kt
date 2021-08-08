@@ -8,6 +8,7 @@ import android.hardware.input.InputManager
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +52,8 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         version = arguments?.getInt("version", 1) ?: 1
         mLat = arguments?.getString("lat") ?: ""
         mLon = arguments?.getString("lon") ?: ""
+
+        Log.d("position", "mLat : $mLat , mLon : $mLon")
         if(version == 3){
             addressIdx = arguments?.getInt("addressIdx", -1) ?: -1
             if(addressIdx != -1){

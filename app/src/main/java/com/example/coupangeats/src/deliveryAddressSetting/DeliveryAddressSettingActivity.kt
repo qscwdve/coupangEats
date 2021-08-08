@@ -2,6 +2,7 @@ package com.example.coupangeats.src.deliveryAddressSetting
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.location.GpsSatellite
 import android.location.Location
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +10,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,8 +24,11 @@ import com.example.coupangeats.src.deliveryAddressSetting.model.*
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.DeliveryAddressResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListRequest
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListResponse
+import com.example.coupangeats.src.deliveryAddressSetting.model.SearchXY.SearchXYRequest
+import com.example.coupangeats.src.deliveryAddressSetting.model.SearchXY.SearchXYResult
 import com.example.coupangeats.src.map.MapActivity
 import com.example.coupangeats.util.GpsControl
+import com.naver.maps.map.NaverMap
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseActivity
 
@@ -150,7 +155,7 @@ class DeliveryAddressSettingActivity() :
         binding.deliveryAddressBack.setOnClickListener {
             if (!mBackOrFinish) {
                 // 종료
-                Log.d("selected", "종료")
+                // Log.d("selected", "종료")
                 if(binding.detailAddressTitle.text == "배달지 상세 정보" || (version != GPS_SELECT && (binding.deliveryAddressManageParent.visibility != View.VISIBLE || binding.deliveryAddressSettingNowGpsFind.visibility == View.VISIBLE))){
                     Log.d("selected", "종료안되야함")
                     binding.deliveryAddressManageParent.visibility = View.VISIBLE
@@ -163,19 +168,19 @@ class DeliveryAddressSettingActivity() :
                     binding.detailAddressTitle.setText("배달 주소 관리")
                     mSearchTip = true
                 } else {
-                    Log.d("selected", "종료")
+                    // Log.d("selected", "종료")
                     setResult(RESULT_CANCELED)
                     finish()
                 }
             } else if(mDetailAddress){
-                Log.d("selected", "mDetailAddress")
+                // Log.d("selected", "mDetailAddress")
                 binding.deliveryAddressDetailParent.visibility = View.GONE
                 binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
                 binding.detailAddressTitle.setText("배달지 주소 설정")
                 mDetailAddress = false
             } else {
                 // 뒤로 가기
-                Log.d("selected", "뒤로가기")
+                // Log.d("selected", "뒤로가기")
                 mSearchTip = true
                 if(version == GPS_SELECT) binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
                 binding.deliveryAddressSettingSelectedParent.visibility = View.VISIBLE
@@ -237,7 +242,7 @@ class DeliveryAddressSettingActivity() :
 
     fun getUserIdx(): Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
 
-    fun setUserAddress(mainAddress: String, addressIdx: Int) {
+    private fun setUserAddress(mainAddress: String, addressIdx: Int) {
         val edit = ApplicationClass.sSharedPreferences.edit()
         edit.putInt("userAddressIdx", addressIdx)
         edit.putString("userMainAddressIdx", mainAddress)
@@ -252,22 +257,37 @@ class DeliveryAddressSettingActivity() :
     }
 
     fun changeDetailAddress(searchAddress: SearchAddress, lat: String, lon: String){
+        var latitude = lat
+        var longiute = lon
         binding.deliveryAddressDetailParent.visibility = View.VISIBLE
         binding.deliveryAddressNotDetailParent.visibility = View.GONE
         binding.detailAddressTitle.text = "배달지 상세 정보"
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.delivery_address_detail_parent, DetailAddressFragment().apply {
-                arguments = Bundle().apply {
-                    putString("mainAddress", searchAddress.mainAddress)
-                    putString("roadAddress", searchAddress.subAddress)
-                    putString("lat", lat)
-                    putString("lon", lon)
-                    putInt("category", mCategory)
-                }
-            }, )
-            .commitAllowingStateLoss()
-        mDetailAddress = true
+        if(lat == "" || lon == ""){
+            val address = GpsControl(this).getLocationToXY(searchAddress.subAddress)
+            if(address != null){
+                latitude = address.latitude.toString()
+                longiute = address.longitude.toString()
+            }
+            Log.d("addressSetting", "subAdress : ${searchAddress.subAddress}, main : ${searchAddress.mainAddress}")
+        }
+
+        if(latitude != "" && longiute != ""){
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.delivery_address_detail_parent, DetailAddressFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("mainAddress", searchAddress.mainAddress)
+                        putString("roadAddress", searchAddress.subAddress)
+                        putString("lat", latitude)
+                        putString("lon", longiute)
+                        putInt("category", mCategory)
+                    }
+                }, )
+                .commitAllowingStateLoss()
+            mDetailAddress = true
+        }
+
+
     }
 
     fun deliveryCheckedAndFinish(){
@@ -417,7 +437,7 @@ class DeliveryAddressSettingActivity() :
         //dismissLoadingDialog()
         val common = response.results.common
         val jusoList = response.results.juso
-        if (common.errorCode == "0" && jusoList.size != 0) {
+        if (common.errorCode == "0" && jusoList.isNotEmpty()) {
             // 정상
             binding.deliverySearchError.visibility = View.GONE
             binding.deliveryAddressSettingSearchParent.visibility = View.VISIBLE
@@ -425,12 +445,11 @@ class DeliveryAddressSettingActivity() :
                 // 처음 시작
                 val addressList = ArrayList<SearchAddress>()
                 for (juso in jusoList) {
-                    var mainAddress = ""
-                    if (juso.detBdNmList != null && juso.detBdNmList != "") mainAddress =
-                        juso.detBdNmList
-                    else if (juso.bdNm != null && juso.bdNm != "") mainAddress = juso.bdNm
-                    else mainAddress = juso.jibunAddr!!
-                    addressList.add(SearchAddress(mainAddress, juso.roadAddrPart1!!))
+                    val mainAddress =
+                        if (juso.detBdNmList != null && juso.detBdNmList != "") juso.detBdNmList
+                        else if (juso.bdNm != null && juso.bdNm != "") juso.bdNm
+                        else juso.jibunAddr!!
+                    addressList.add(SearchAddress(mainAddress, juso.roadAddrPart1!!, juso))
                 }
                 binding.deliveryAddressSettingSearchList.adapter =
                     SearchAddressListAdapter(addressList, this)
@@ -467,7 +486,7 @@ class DeliveryAddressSettingActivity() :
         }
     }
 
-    fun startDeliveryAddressAdd() {
+    private fun startDeliveryAddressAdd() {
         showLoadingDialog(this)
         DeliveryAddressSettingService(this).tryPatchPathUserCheckedAddress(getUserIdx(), userAddressIdx)
     }
@@ -482,7 +501,7 @@ class DeliveryAddressSettingActivity() :
     fun startDeliveryAddressModify(addressIdx: Int) {
         binding.deliveryAddressDetailParent.visibility = View.VISIBLE
         binding.deliveryAddressNotDetailParent.visibility = View.GONE
-        binding.detailAddressTitle.setText("배달지 상세 정보")
+        binding.detailAddressTitle.text = "배달지 상세 정보"
         binding.deliveryAddressBack.setImageResource(R.drawable.ic_left_arrow_black)
 
         supportFragmentManager.beginTransaction()
@@ -497,7 +516,7 @@ class DeliveryAddressSettingActivity() :
         mBackOrFinish = false
     }
 
-    fun gpsCheck() : Location? {
+    private fun gpsCheck() : Location? {
         var gpsCheck = false
         if(ApplicationClass.sSharedPreferences.getBoolean("gps", false)){
             // gps 사용 가능
@@ -506,5 +525,46 @@ class DeliveryAddressSettingActivity() :
             return location
         }
         return null
+    }
+
+    override fun onBackPressed() {
+        if (!mBackOrFinish) {
+            // 종료
+            // Log.d("selected", "종료")
+            if(binding.detailAddressTitle.text == "배달지 상세 정보" || (version != GPS_SELECT && (binding.deliveryAddressManageParent.visibility != View.VISIBLE || binding.deliveryAddressSettingNowGpsFind.visibility == View.VISIBLE))){
+                Log.d("selected", "종료안되야함")
+                binding.deliveryAddressManageParent.visibility = View.VISIBLE
+                binding.deliveryAddressTextParent.visibility = View.GONE
+                binding.deliveryAddressDetailParent.visibility = View.GONE
+                binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
+                binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
+                binding.detailAddressUserList.visibility = View.VISIBLE
+                binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
+                binding.detailAddressTitle.setText("배달 주소 관리")
+                mSearchTip = true
+            } else {
+                // Log.d("selected", "종료")
+                setResult(RESULT_CANCELED)
+                finish()
+            }
+        } else if(mDetailAddress){
+            // Log.d("selected", "mDetailAddress")
+            binding.deliveryAddressDetailParent.visibility = View.GONE
+            binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
+            binding.detailAddressTitle.setText("배달지 주소 설정")
+            mDetailAddress = false
+        } else {
+            // 뒤로 가기
+            // Log.d("selected", "뒤로가기")
+            mSearchTip = true
+            if(version == GPS_SELECT) binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
+            binding.deliveryAddressSettingSelectedParent.visibility = View.VISIBLE
+            binding.deliveryAddressSettingSearchParent.visibility = View.GONE
+            binding.deliveryAddressText.setText("")
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            binding.deliveryAddressText.clearFocus()
+            binding.deliveryAddressTextCancel.visibility = View.INVISIBLE
+            mBackOrFinish = false
+        }
     }
 }

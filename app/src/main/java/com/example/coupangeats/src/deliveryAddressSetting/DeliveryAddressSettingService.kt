@@ -4,6 +4,8 @@ import com.example.coupangeats.src.deliveryAddressSetting.model.DeliveryAddressA
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.DeliveryAddressResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListRequest
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListResponse
+import com.example.coupangeats.src.deliveryAddressSetting.model.SearchXY.SearchXYRequest
+import com.example.coupangeats.src.deliveryAddressSetting.model.SearchXY.SearchXYResult
 import com.example.coupangeats.src.deliveryAddressSetting.model.UserAddrListResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.UserAddrListResponseResult
 import com.example.coupangeats.src.deliveryAddressSetting.model.UserCheckedAddressResponse
@@ -83,4 +85,5 @@ class DeliveryAddressSettingService(val view: DeliveryAddressSettingActivityView
                 }
             })
     }
+
 }

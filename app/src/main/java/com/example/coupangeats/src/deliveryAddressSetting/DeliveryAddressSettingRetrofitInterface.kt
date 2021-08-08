@@ -3,9 +3,11 @@ package com.example.coupangeats.src.deliveryAddressSetting
 import com.example.coupangeats.src.deliveryAddressSetting.model.DeliveryAddressAddRequest
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.DeliveryAddressResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.SearchAddrListResponse
+import com.example.coupangeats.src.deliveryAddressSetting.model.SearchXY.SearchXYResult
 import com.example.coupangeats.src.deliveryAddressSetting.model.UserAddrListResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.UserAddrListResponseResult
 import com.example.coupangeats.src.deliveryAddressSetting.model.UserCheckedAddressResponse
+import com.softsquared.template.kotlin.config.ApplicationClass
 import retrofit2.Call
 import retrofit2.http.*
 

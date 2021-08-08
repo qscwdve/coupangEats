@@ -13,6 +13,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class GpsControl(val context: Context) : LocationListener {
+    data class AddressXY(val latitude: Double, val longitude: Double)
     private val MIN_DISTANCE_CHANGE_FOR_UPDATES: Long = 10
     private val MIN_TIME_BW_UPDATES = (1000 * 60 * 1).toLong()
     var locationManager: LocationManager? = null
@@ -127,6 +128,12 @@ class GpsControl(val context: Context) : LocationListener {
         answer.add(addresses[0].getAddressLine(0).toString())
         answer.add(addresses[1].getAddressLine(0).toString())
         return answer
+    }
+
+    fun getLocationToXY(address: String) : AddressXY?{
+        val list : List<Address>? = Geocoder(context).getFromLocationName(address, 1)
+        return if(list == null) null
+        else AddressXY(list[0].latitude, list[0].longitude)
     }
     // LocationListener 관련 함수들
     override fun onLocationChanged(location: Location) {
