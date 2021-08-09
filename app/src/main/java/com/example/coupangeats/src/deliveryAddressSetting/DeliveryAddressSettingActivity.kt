@@ -228,8 +228,8 @@ class DeliveryAddressSettingActivity() :
         binding.deliveryAddressSettingNowGps.setOnClickListener {
             // 지도가 있는 액티비티 부름
             val location = gpsCheck()
-            val mLat = if(location != null) location.latitude else (-1).toDouble()
-            val mLon = if(location != null) location.longitude else (-1).toDouble()
+            val mLat = location?.latitude ?: (-1).toDouble()
+            val mLon = location?.longitude ?: (-1).toDouble()
             val intent = Intent(this, MapActivity::class.java).apply {
                 // 현재 위치 가져와야 함
                 this.putExtra("lat", mLat.toString())

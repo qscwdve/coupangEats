@@ -349,7 +349,7 @@ class HomeFragment() :
         }
 
     }
-    fun resetFilter(){
+    private fun resetFilter(){
         // 초기화 시키기
         mHomeInfoRequest = HomeInfoRequest(
             mUserAddress!!.latitude,
@@ -368,7 +368,7 @@ class HomeFragment() :
         HomeService(this).tryGetHomeData(mHomeInfoRequest)
         refreshFilter()
     }
-    fun scrollStart(){
+    private fun scrollStart(){
         val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.cheetah_start)
         binding.homeCheetahBannerParent.startAnimation(animation)
         binding.homeCheetahBannerParent.visibility = View.GONE
@@ -546,7 +546,7 @@ class HomeFragment() :
     }
 
     // 초기화 필터 체크
-    fun changeClearFilter() {
+    private fun changeClearFilter() {
         var num = 0
         for (value in filterSelected) {
             if (value) num++
@@ -565,7 +565,7 @@ class HomeFragment() :
     }
 
     // 초기화
-    fun refreshFilter() {
+    private fun refreshFilter() {
         mSelectMini = 5
         mSelectDelivery = 5
         // 초기화 필터 다운
@@ -652,7 +652,7 @@ class HomeFragment() :
         binding.homeRealContent.visibility = View.VISIBLE
     }
 
-    fun gpsCheck() {
+    private fun gpsCheck() {
         var gpsCheck = false
         if (ApplicationClass.sSharedPreferences.getBoolean("gps", false)) {
             // gps 사용 가능
