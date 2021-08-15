@@ -75,7 +75,7 @@
                 android:layout_marginTop="-200dp"
                 android:id="@+id/category_super_nested_scroll_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/category_super_filter"
                 android:background="@color/white">
 

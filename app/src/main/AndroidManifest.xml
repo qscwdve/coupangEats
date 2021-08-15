@@ -19,12 +19,18 @@
         android:theme="@style/AppTheme"
         tools:ignore="HardcodedDebugMode"
         tools:replace="android:label">
+        <activity android:name=".src.TestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".src.lookImage.LookImageActivity"
             android:theme="@style/AppTheme2" />
         <activity android:name=".src.findId.FindIdActivity" />
-        <activity
-            android:name=".src.searchDetail.SearchDetailActivity" />
+        <activity android:name=".src.searchDetail.SearchDetailActivity" />
         <activity android:name=".src.eventItem.EventItemActivity" />
         <activity android:name=".src.event.EventActivity" />
         <activity android:name=".src.myReview.MyReviewActivity" />
@@ -52,24 +58,22 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".src.superSearch.SuperSearchActivity" />
         <activity android:name=".src.setting.SettingActivity" />
-        <activity android:name=".src.deliveryAddressSetting.DeliveryAddressSettingActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".src.deliveryAddressSetting.DeliveryAddressSettingActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".src.signUp.SignUpActivity" />
         <activity
             android:name=".src.login.LoginActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".src.main.MainActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".src.main.MainActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".src.favorites.FavoritesActivity" />
         <activity
             android:name=".src.splash.SplashActivity"
             android:screenOrientation="fullSensor"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>

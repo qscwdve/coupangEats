@@ -46,6 +46,7 @@ class RecommendCategoryAdapter(var recommendList: ArrayList<RecommendStores>, va
                 subImgParent.visibility = View.GONE
             }
             name.text = item.storeName
+            markIcon.visibility = View.VISIBLE
             when(item.markIcon){
                 "신규" -> markIcon.setImageResource(R.drawable.new_super)
                 "치타배달" -> markIcon.setImageResource(R.drawable.ic_cheetah)
