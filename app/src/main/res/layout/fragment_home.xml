@@ -372,8 +372,7 @@
             android:layout_height="3dp"/>
     </LinearLayout>
 
-
-    <com.example.coupangeats.util.StickyScrollView
+    <ScrollView
         android:visibility="gone"
         android:layout_below="@+id/home_toolbar_line"
         android:layout_above="@+id/home_cart_bag"
@@ -407,7 +406,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/home_no_address_recyclerview"/>
         </LinearLayout>
-    </com.example.coupangeats.util.StickyScrollView>
+    </ScrollView>
 
     <LinearLayout
         android:layout_below="@+id/home_toolbar_line"

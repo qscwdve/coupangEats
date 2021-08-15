@@ -65,385 +65,392 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <RelativeLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:layout_below="@+id/category_super_category_recyclerView"
-            android:id="@+id/category_super_content"
+            android:id="@+id/category_super_swipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <androidx.core.widget.NestedScrollView
-                android:layout_marginTop="-200dp"
-                android:id="@+id/category_super_nested_scroll_view"
+            <RelativeLayout
+                android:layout_below="@+id/category_super_category_recyclerView"
+                android:id="@+id/category_super_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/category_super_filter"
-                android:background="@color/white">
+                android:layout_height="match_parent">
 
-                <LinearLayout
+                <androidx.core.widget.NestedScrollView
+                    android:layout_marginTop="-200dp"
+                    android:id="@+id/category_super_nested_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_below="@+id/category_super_filter"
+                    android:background="@color/white">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"/>
-
-                    <RelativeLayout
-                        android:id="@+id/category_super_coupon"
-                        android:layout_marginBottom="15dp"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="15dp"
-                        android:padding="15dp"
-                        android:background="@drawable/notice_box">
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_marginEnd="40dp"
-                            android:layout_centerVertical="true"
-                            android:adjustViewBounds="true"
-                            android:layout_toStartOf="@+id/home_coupon_look"
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"/>
+
+                        <RelativeLayout
+                            android:id="@+id/category_super_coupon"
+                            android:layout_marginBottom="15dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/category_coupon_text1"/>
-
-                        <LinearLayout
-                            android:id="@+id/home_coupon_look"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:paddingVertical="7dp"
-                            android:paddingHorizontal="10dp"
-                            android:orientation="horizontal"
-                            android:background="@drawable/category_coupon_look_box">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/couponLook"
-                                android:textColor="@color/white"
-                                android:textSize="13sp"
-                                android:layout_marginEnd="5dp"
-                                android:textStyle="bold"/>
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/ic_right_arrow_white"/>
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                    <!-- 주변 매장 -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/category_super_recommend_recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="10dp" />
-
-                    <include
-                        android:id="@+id/category_super_no_super_parent"
-                        layout="@layout/item_no_filter_super" />
-                </LinearLayout>
-
-
-            </androidx.core.widget.NestedScrollView>
-            <View
-                android:layout_below="@+id/category_super_filter"
-                android:id="@+id/category_super_filter_line"
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@drawable/sticky_shadow"
-                android:visibility="gone" />
-            <!-- 매장 -->
-            <HorizontalScrollView
-                android:id="@+id/category_super_filter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:paddingVertical="5dp"
-                android:scrollbars="none"
-                android:visibility="visible">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!-- 초기화 -->
-                    <LinearLayout
-                        android:id="@+id/home_filter_clear"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="5dp"
-                        android:layout_marginVertical="5dp"
-                        android:layout_marginStart="15dp"
-                        android:background="@drawable/white_to_gray_ripple"
-                        android:visibility="gone">
-
-                        <LinearLayout
-                            android:id="@+id/home_filter_clear_background"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/super_filter_no_click"
-                            android:orientation="horizontal"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="5dp">
+                            android:layout_marginHorizontal="15dp"
+                            android:padding="15dp"
+                            android:background="@drawable/notice_box">
 
                             <ImageView
-                                android:id="@+id/home_filter_clear_img"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
+                                android:layout_marginEnd="40dp"
+                                android:layout_centerVertical="true"
                                 android:adjustViewBounds="true"
-                                android:padding="2dp"
-                                android:src="@drawable/ic_filter_clear" />
-
-                            <TextView
-                                android:id="@+id/home_filter_clear_text"
-                                android:layout_width="wrap_content"
+                                android:layout_toStartOf="@+id/home_coupon_look"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="3dp"
-                                android:text="@string/filter_clear"
-                                android:textColor="@color/black"
-                                android:textSize="13sp" />
+                                android:src="@drawable/category_coupon_text1"/>
 
-                            <TextView
-                                android:id="@+id/home_filter_clear_num"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="3dp"
-                                android:text="1"
-                                android:textColor="@color/loginBlue"
-                                android:textSize="13sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <!-- 추천순 -->
-                    <LinearLayout
-                        android:id="@+id/home_filter_recommend"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginVertical="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/white_to_gray_ripple">
-
-                        <LinearLayout
-                            android:id="@+id/home_filter_recommend_background"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/super_filter_no_click"
-                            android:orientation="horizontal"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="5dp">
-
-                            <TextView
-                                android:id="@+id/home_filter_recommend_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="3dp"
-                                android:text="@string/filter_super_recommend"
-                                android:textColor="@color/black"
-                                android:textSize="13sp" />
-
-                            <ImageView
-                                android:id="@+id/home_filter_recommend_img"
+                            <LinearLayout
+                                android:id="@+id/home_coupon_look"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentEnd="true"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:padding="2dp"
-                                android:src="@drawable/ic_arrow_down" />
-                        </LinearLayout>
+                                android:paddingVertical="7dp"
+                                android:paddingHorizontal="10dp"
+                                android:orientation="horizontal"
+                                android:background="@drawable/category_coupon_look_box">
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/couponLook"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp"
+                                    android:layout_marginEnd="5dp"
+                                    android:textStyle="bold"/>
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/ic_right_arrow_white"/>
+                            </LinearLayout>
+                        </RelativeLayout>
 
-                    </LinearLayout>
-
-                    <!-- 치타배달 -->
-                    <LinearLayout
-                        android:id="@+id/home_filter_cheetah"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginHorizontal="5dp"
-                        android:layout_marginVertical="10dp"
-                        android:background="@drawable/white_to_gray_ripple">
-
-                        <LinearLayout
-                            android:id="@+id/home_filter_cheetah_background"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/super_filter_no_click"
-                            android:orientation="horizontal"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="5dp">
-
-                            <ImageView
-                                android:id="@+id/home_filter_cheetah_img"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/main_cheetah" />
-
-                            <TextView
-                                android:visibility="gone"
-                                android:id="@+id/home_filter_cheetah_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/filter_super_cheetah"
-                                android:layout_marginEnd="3dp"
-                                android:textSize="13sp"
-                                android:textStyle="bold"
-                                android:textColor="@color/white"/>
-
-                            <TextView
-                                android:id="@+id/home_filter_cheetah_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="3dp"
-                                android:text="@string/filter_super_cheetah"
-                                android:textColor="@color/black"
-                                android:textSize="13sp" />
-
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- 배달비 -->
-                    <LinearLayout
-                        android:id="@+id/home_filter_delivery_price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="5dp"
-                        android:layout_marginVertical="10dp"
-                        android:background="@drawable/white_to_gray_ripple">
-
-                        <LinearLayout
-                            android:id="@+id/home_filter_delivery_price_background"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/super_filter_no_click"
-                            android:orientation="horizontal"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="5dp">
-
-                            <TextView
-                                android:id="@+id/home_filter_delivery_price_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="3dp"
-                                android:text="@string/filter_super_delivery_price"
-                                android:textColor="@color/black"
-                                android:textSize="13sp" />
-
-                            <TextView
-                                android:visibility="gone"
-                                android:id="@+id/home_filter_delivery_price_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="3dp"
-                                android:textStyle="bold"
-                                android:text="@string/filter_super_delivery_price"
-                                android:textColor="@color/white"
-                                android:textSize="13sp" />
-
-                            <ImageView
-                                android:id="@+id/home_filter_delivery_price_img"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:padding="2dp"
-                                android:src="@drawable/ic_arrow_down" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- 최소 주문 -->
-                    <LinearLayout
-                        android:id="@+id/home_filter_mini_order"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="5dp"
-                        android:layout_marginVertical="10dp"
-                        android:background="@drawable/white_to_gray_ripple">
-
-                        <LinearLayout
-                            android:id="@+id/home_filter_mini_order_background"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/super_filter_no_click"
-                            android:orientation="horizontal"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="5dp">
-
-                            <TextView
-                                android:id="@+id/home_filter_mini_order_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="3dp"
-                                android:text="@string/filter_super_min_order"
-                                android:textColor="@color/black"
-                                android:textSize="13sp" />
-
-                            <TextView
-                                android:visibility="gone"
-                                android:id="@+id/home_filter_mini_order_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="3dp"
-                                android:text="@string/filter_super_min_order"
-                                android:textColor="@color/white"
-                                android:textStyle="bold"
-                                android:textSize="13sp" />
-
-                            <ImageView
-                                android:id="@+id/home_filter_mini_order_img"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:padding="2dp"
-                                android:src="@drawable/ic_arrow_down" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- 할인 쿠폰 -->
-                    <LinearLayout
-                        android:id="@+id/home_filter_coupon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="5dp"
-                        android:layout_marginVertical="10dp"
-                        android:background="@drawable/white_to_gray_ripple">
-
-                        <LinearLayout
-                            android:id="@+id/home_filter_coupon_background"
+                        <!-- 주변 매장 -->
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/category_super_recommend_recyclerView"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/super_filter_no_click"
-                            android:orientation="horizontal"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="5dp">
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp" />
 
-                            <TextView
-                                android:visibility="gone"
-                                android:id="@+id/home_filter_coupon_text"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="3dp"
-                                android:text="@string/filter_supper_coupon"
-                                android:textStyle="bold"
-                                android:textColor="@color/white"
-                                android:textSize="13sp" />
-
-                            <TextView
-                                android:id="@+id/home_filter_coupon_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="3dp"
-                                android:text="@string/filter_supper_coupon"
-                                android:textColor="@color/black"
-                                android:textSize="13sp" />
-
-                        </LinearLayout>
+                        <include
+                            android:id="@+id/category_super_no_super_parent"
+                            layout="@layout/item_no_filter_super" />
                     </LinearLayout>
 
-                </LinearLayout>
 
-            </HorizontalScrollView>
-        </RelativeLayout>
+                </androidx.core.widget.NestedScrollView>
+                <View
+                    android:layout_below="@+id/category_super_filter"
+                    android:id="@+id/category_super_filter_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@drawable/sticky_shadow"
+                    android:visibility="gone" />
+                <!-- 매장 -->
+                <HorizontalScrollView
+                    android:id="@+id/category_super_filter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingVertical="5dp"
+                    android:scrollbars="none"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- 초기화 -->
+                        <LinearLayout
+                            android:id="@+id/home_filter_clear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginVertical="5dp"
+                            android:layout_marginStart="15dp"
+                            android:background="@drawable/white_to_gray_ripple"
+                            android:visibility="gone">
+
+                            <LinearLayout
+                                android:id="@+id/home_filter_clear_background"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/super_filter_no_click"
+                                android:orientation="horizontal"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp">
+
+                                <ImageView
+                                    android:id="@+id/home_filter_clear_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:adjustViewBounds="true"
+                                    android:padding="2dp"
+                                    android:src="@drawable/ic_filter_clear" />
+
+                                <TextView
+                                    android:id="@+id/home_filter_clear_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="3dp"
+                                    android:text="@string/filter_clear"
+                                    android:textColor="@color/black"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/home_filter_clear_num"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="3dp"
+                                    android:text="1"
+                                    android:textColor="@color/loginBlue"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!-- 추천순 -->
+                        <LinearLayout
+                            android:id="@+id/home_filter_recommend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginVertical="10dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/white_to_gray_ripple">
+
+                            <LinearLayout
+                                android:id="@+id/home_filter_recommend_background"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/super_filter_no_click"
+                                android:orientation="horizontal"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp">
+
+                                <TextView
+                                    android:id="@+id/home_filter_recommend_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="3dp"
+                                    android:text="@string/filter_super_recommend"
+                                    android:textColor="@color/black"
+                                    android:textSize="13sp" />
+
+                                <ImageView
+                                    android:id="@+id/home_filter_recommend_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:padding="2dp"
+                                    android:src="@drawable/ic_arrow_down" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!-- 치타배달 -->
+                        <LinearLayout
+                            android:id="@+id/home_filter_cheetah"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginVertical="10dp"
+                            android:background="@drawable/white_to_gray_ripple">
+
+                            <LinearLayout
+                                android:id="@+id/home_filter_cheetah_background"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/super_filter_no_click"
+                                android:orientation="horizontal"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp">
+
+                                <ImageView
+                                    android:id="@+id/home_filter_cheetah_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:src="@drawable/main_cheetah" />
+
+                                <TextView
+                                    android:visibility="gone"
+                                    android:id="@+id/home_filter_cheetah_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/filter_super_cheetah"
+                                    android:layout_marginEnd="3dp"
+                                    android:textSize="13sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/white"/>
+
+                                <TextView
+                                    android:id="@+id/home_filter_cheetah_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="3dp"
+                                    android:text="@string/filter_super_cheetah"
+                                    android:textColor="@color/black"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- 배달비 -->
+                        <LinearLayout
+                            android:id="@+id/home_filter_delivery_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginVertical="10dp"
+                            android:background="@drawable/white_to_gray_ripple">
+
+                            <LinearLayout
+                                android:id="@+id/home_filter_delivery_price_background"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/super_filter_no_click"
+                                android:orientation="horizontal"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp">
+
+                                <TextView
+                                    android:id="@+id/home_filter_delivery_price_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="3dp"
+                                    android:text="@string/filter_super_delivery_price"
+                                    android:textColor="@color/black"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:visibility="gone"
+                                    android:id="@+id/home_filter_delivery_price_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="3dp"
+                                    android:textStyle="bold"
+                                    android:text="@string/filter_super_delivery_price"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp" />
+
+                                <ImageView
+                                    android:id="@+id/home_filter_delivery_price_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:padding="2dp"
+                                    android:src="@drawable/ic_arrow_down" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- 최소 주문 -->
+                        <LinearLayout
+                            android:id="@+id/home_filter_mini_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginVertical="10dp"
+                            android:background="@drawable/white_to_gray_ripple">
+
+                            <LinearLayout
+                                android:id="@+id/home_filter_mini_order_background"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/super_filter_no_click"
+                                android:orientation="horizontal"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp">
+
+                                <TextView
+                                    android:id="@+id/home_filter_mini_order_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="3dp"
+                                    android:text="@string/filter_super_min_order"
+                                    android:textColor="@color/black"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:visibility="gone"
+                                    android:id="@+id/home_filter_mini_order_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="3dp"
+                                    android:text="@string/filter_super_min_order"
+                                    android:textColor="@color/white"
+                                    android:textStyle="bold"
+                                    android:textSize="13sp" />
+
+                                <ImageView
+                                    android:id="@+id/home_filter_mini_order_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:padding="2dp"
+                                    android:src="@drawable/ic_arrow_down" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- 할인 쿠폰 -->
+                        <LinearLayout
+                            android:id="@+id/home_filter_coupon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginVertical="10dp"
+                            android:background="@drawable/white_to_gray_ripple">
+
+                            <LinearLayout
+                                android:id="@+id/home_filter_coupon_background"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/super_filter_no_click"
+                                android:orientation="horizontal"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="5dp">
+
+                                <TextView
+                                    android:visibility="gone"
+                                    android:id="@+id/home_filter_coupon_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="3dp"
+                                    android:text="@string/filter_supper_coupon"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/white"
+                                    android:textSize="13sp" />
+
+                                <TextView
+                                    android:id="@+id/home_filter_coupon_title"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="3dp"
+                                    android:text="@string/filter_supper_coupon"
+                                    android:textColor="@color/black"
+                                    android:textSize="13sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+            </RelativeLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
         <!-- 치타배달 배너 -->
         <LinearLayout

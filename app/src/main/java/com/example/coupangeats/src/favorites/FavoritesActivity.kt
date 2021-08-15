@@ -25,7 +25,13 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
         super.onCreate(savedInstanceState)
 
         // 서버통신 시작
+        binding.favoritesSwipeRefresh.isRefreshing = true
         FavoritesService(this).tryGetFavoritesInfoSort(getUserIdx(), mSort)
+
+        // swipeRefresh
+        binding.favoritesSwipeRefresh.setOnRefreshListener {
+            FavoritesService(this).tryGetFavoritesInfoSort(getUserIdx(), mSort)
+        }
 
         binding.favoritesBack.setOnClickListener {
             setResult(RESULT_OK, Intent().apply {
@@ -74,6 +80,7 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
     fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
 
     override fun onGetFavoritesInfoSortSuccess(response: FavoritesInfoResponse) {
+        binding.favoritesSwipeRefresh.isRefreshing = false
         if(response.code == 1000){
             val result = response.result
             if(result != null){
@@ -118,10 +125,12 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
     fun startSortSearch(sort: String, filterName: String){
         mSort = sort
         binding.favoritesFilterText.text = filterName
+        binding.favoritesSwipeRefresh.isRefreshing = true
         FavoritesService(this).tryGetFavoritesInfoSort(getUserIdx(), mSort)
     }
 
     override fun onGetFavoritesInfoSortFailure(message: String) {
+        binding.favoritesSwipeRefresh.isRefreshing = false
         setDummyDate()
     }
 
@@ -131,6 +140,7 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
             binding.favoritesModify.text = "수정"
             binding.favoritesInfo.visibility = View.VISIBLE
             // 이제 다시 정보 부르기
+            binding.favoritesSwipeRefresh.isRefreshing = true
             FavoritesService(this).tryGetFavoritesInfoSort(getUserIdx(), mSort)
         } else showCustomToast("즐겨찾기 해제를 실패하였습니다.")
     }
@@ -147,7 +157,7 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
         finish()
     }
 
-    fun setDummyDate(){
+    private fun setDummyDate(){
 
         val superList = ArrayList<FavoritesSuperInfo>()
         val img = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA1MjdfNTUg%2FMDAxNjIyMTEzMDg3Njc5.J0L7A04dtBVEKOcBVbdbKmJFgHq12BTAAq3fDHFlQoIg.0vN8BoEqOEQjqhU3i-Q7s6MFWbrQ4ElJiJfGWWxoeBQg.JPEG.hs_1472%2Foutput_2445714095.jpg&type=sc960_832"

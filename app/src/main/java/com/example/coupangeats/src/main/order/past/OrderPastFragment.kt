@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
@@ -30,7 +31,8 @@ import com.softsquared.template.kotlin.config.BaseFragment
 class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPastBinding::bind, R.layout.fragment_order_past), OrderPastFragmentView {
     private var mIsSearch = false
     private var mIsSearchRequest = false
-    private var mOrderIdx = -1
+    private var mParentHeight = 0
+    private var mEditHeight = 0
     private var mKeyword = ""
     private lateinit var imm: InputMethodManager
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,8 +40,6 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
 
         imm = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         binding.orderPastSearchText.clearFocus()
-        // 요청하기
-        // OrderPastService(this).tryGetOrderPastInfo(getUserIdx())
 
         binding.orderPastSearchText.setOnFocusChangeListener { v, hasFocus ->
             if(hasFocus){
@@ -151,7 +151,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
 
     fun lookReceipt(order: pastOrder) {
         val receiptDialog = ReceiptPastDialog(order)
-        receiptDialog.show(requireFragmentManager(), "receipt")
+        receiptDialog.show(parentFragmentManager, "receipt")
     }
 
     fun startDetailSuper(storeIdx: Int){
@@ -195,7 +195,6 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
                     binding.orderPastSearchParent.visibility = View.VISIBLE
                     binding.orderPastNoContent.visibility = View.GONE
                     binding.orderPastMenu.visibility = View.GONE
-                    Log.d("pastorder", "맛집 결과 없음")
                 }
             }
             else if(response.result != null){
@@ -229,4 +228,6 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
         binding.orderPastNoContent.visibility = View.GONE
         binding.orderPastSearchParent.visibility = View.VISIBLE
     }
+
+
 }

@@ -4,6 +4,7 @@
     android:layout_width="match_parent" android:background="@color/white"
     android:layout_height="match_parent">
 
+    <!-- 과거 주문 내역이 없을 경우 -->
     <LinearLayout
         android:id="@+id/order_past_no_content"
         android:visibility="gone"
@@ -24,12 +25,13 @@
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="주문 내역이 없습니다."
+            android:text="@string/no_order"
             android:textSize="17sp"
             android:textColor="@color/baseColor"/>
 
     </LinearLayout>
 
+    <!-- 검색 결과 없을 경우 -->
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/order_past_not_search"
@@ -67,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/past_order_boxx"
-                android:text="쿠팡이츠 맛집 구경가기"
+                android:text="@string/coupon_eat_look"
                 android:textColor="@color/black"
                 android:paddingVertical="7dp"
                 android:paddingHorizontal="10dp"/>
@@ -105,7 +107,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:layout_marginVertical="15dp"
+                        android:layout_marginVertical="10dp"
                         android:orientation="horizontal"
                         android:background="@drawable/past_order_search_box"
                         tools:ignore="NestedWeights">
@@ -116,13 +118,13 @@
                             android:id="@+id/order_past_search_text"
                             android:layout_gravity="center"
                             android:maxLines="1"
-                            android:hint="주문한 메뉴/매장을 찾아보세요"
+                            android:hint="@string/order_past_hint"
                             android:layout_width="0dp"
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:layout_weight="7"
                             android:layout_height="wrap_content"
-                            android:textSize="15sp"
+                            android:textSize="17sp"
                             android:paddingHorizontal="20sp"
                             android:textColorHint="@color/baseColor"
                             android:textColor="@color/black"
@@ -161,16 +163,14 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
             <View
+                android:layout_below="@+id/order_past_search_parent"
                 android:visibility="gone"
                 android:id="@+id/orderPastTransportMenu"
                 android:background="#6F000000"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignBottom="@+id/order_past_menu"
-                android:layout_below="@+id/order_past_search_parent"/>
-
+                android:layout_alignBottom="@+id/order_past_menu"/>
 
         </RelativeLayout>
 

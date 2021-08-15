@@ -19,12 +19,18 @@ class CategoryAdapter(val categoryList: ArrayList<StoreCategories>, val fragment
     class CategoryViewHolder(itemView: View, val categoryAdapter: CategoryAdapter) : RecyclerView.ViewHolder(itemView) {
         val categoryImg = itemView.findViewById<ImageView>(R.id.item_home_category_img)
         val categoryName = itemView.findViewById<TextView>(R.id.item_home_category_name)
-
+        val new = itemView.findViewById<TextView>(R.id.item_home_category_new)
         @SuppressLint("ClickableViewAccessibility")
         fun bind(item: StoreCategories){
 
             Glide.with(categoryImg).load(item.url).circleCrop().into(categoryImg)
             categoryName.text = item.categoryName
+
+            if(item.categoryName == "신규 맛집"){
+                new.visibility = View.VISIBLE
+            } else {
+                new.visibility = View.GONE
+            }
 
             itemView.setOnTouchListener { v, event ->
                 if(!categoryAdapter.fragment.mScrollFinish) {

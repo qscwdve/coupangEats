@@ -338,4 +338,8 @@
     <string name="deliveryAddress">배달주소</string>
     <string name="goodEat">맛있게 드세요!</string>
     <string name="deliveryCompleteMent">17분만에 배달이 완료되었습니다.</string>
+    <string name="new_category">NEW</string>
+    <string name="no_order">주문 내역이 없습니다.</string>
+    <string name="coupon_eat_look">쿠팡이츠 맛집 구경가기</string>
+    <string name="order_past_hint">주문한 메뉴/매장을 찾아보세요</string>
 </resources>

@@ -97,6 +97,19 @@ class SearchDetailActivity :
         )
         binding.appBar.stateListAnimator = stateListAnimator
 
+        // swipeRefresh
+        binding.searchDetailSwipeRefresh.setOnRefreshListener {
+            startSearch()
+        }
+
+        // 필터 그림자 설정
+        binding.searchDetailRealContent.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if(scrollY == 0){
+                binding.searchDetailLine.visibility = View.GONE
+            } else if(binding.searchDetailLine.visibility == View.GONE){
+                binding.searchDetailLine.visibility = View.VISIBLE
+            }
+        }
 
         // 이미 키워드 값이 있으면 이걸로 함
         if (keyword != "" && mLat != "" && mLon != "") {
@@ -155,7 +168,8 @@ class SearchDetailActivity :
                 binding.searchDetailKeywordParent.visibility = View.VISIBLE
                 binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
                 binding.searchDetailNoSearchParent.itemNoSuperParent.visibility = View.GONE
-                binding.searchDetailSuperParent.visibility = View.GONE
+                binding.searchDetailSwipeRefresh.visibility = View.GONE
+                // binding.searchDetailSuperParent.visibility = View.GONE
                 mIsSearch = true
                 mIsFinish = false
                 //Log.d("keyword", "포커스 상태")
@@ -300,6 +314,8 @@ class SearchDetailActivity :
             for (i in 0..4) {
                 filterSelected[i] = false
             }
+            // 로딩 애니메이션
+            binding.searchDetailSwipeRefresh.isRefreshing = true
             SearchDetailService(this).tryGetSearchSuper(mSearchDetailRequest)
             refreshFilter()
         }
@@ -332,7 +348,8 @@ class SearchDetailActivity :
 
     fun changeSuperStatus() {
         binding.searchDetailKeywordParent.visibility = View.GONE
-        binding.searchDetailSuperParent.visibility = View.VISIBLE
+        binding.searchDetailSwipeRefresh.visibility = View.VISIBLE
+        // binding.searchDetailSuperParent.visibility = View.VISIBLE
         binding.searchDetailEditText.setText(keyword)
         mIsSearch = true
         mIsFinish = true
@@ -341,7 +358,7 @@ class SearchDetailActivity :
         inputMethodManager.hideSoftInputFromWindow(binding.searchDetailEditText.windowToken, 0);
     }
 
-    fun changeSuperList(list: ArrayList<RecommendStores>) {
+    private fun changeSuperList(list: ArrayList<RecommendStores>) {
         (binding.searchDetailSuperRecyclerview.adapter as SuperStoreAdapter).changeList(list)
     }
 
@@ -353,6 +370,7 @@ class SearchDetailActivity :
     }
 
     fun startSearch() {
+        binding.searchDetailSwipeRefresh.isRefreshing = true
         SearchDetailService(this).tryGetSearchSuper(mSearchDetailRequest)
         changeClearFilter()
     }
@@ -429,7 +447,7 @@ class SearchDetailActivity :
     }
 
     // 초기화 필터 체크
-    fun changeClearFilter() {
+    private fun changeClearFilter() {
         var num = 0
         for (value in filterSelected) {
             if (value) num++
@@ -445,7 +463,7 @@ class SearchDetailActivity :
     }
 
     // 초기화
-    fun refreshFilter() {
+    private fun refreshFilter() {
         mSelectMinOrder = 5
         mSelectDelivery = 5
         // 초기화 필터 다운
@@ -478,10 +496,13 @@ class SearchDetailActivity :
     }
 
     override fun onGetSearchSuperSuccess(response: SearchDetailResponse) {
+        binding.searchDetailSwipeRefresh.isRefreshing = false
+        binding.searchDetailLine.visibility = View.GONE
         if (response.code == 1000) {
             if (response.result.searchStores != null) {
                 binding.searchDetailKeywordParent.visibility = View.GONE
-                binding.searchDetailSuperParent.visibility = View.VISIBLE
+                binding.searchDetailSwipeRefresh.visibility = View.VISIBLE
+                // binding.searchDetailSuperParent.visibility = View.VISIBLE
                 binding.searchDetailSuperRecyclerview.visibility = View.VISIBLE
                 binding.searchDetailFilterParent.visibility = View.VISIBLE
                 binding.searchDetailRealContent.visibility = View.VISIBLE
@@ -494,15 +515,19 @@ class SearchDetailActivity :
             } else {
                 binding.searchDetailRealContent.visibility = View.GONE
                 binding.searchDetailKeywordParent.visibility = View.GONE
-                binding.searchDetailSuperParent.visibility = View.VISIBLE
+                binding.searchDetailSwipeRefresh.visibility = View.VISIBLE
+                // binding.searchDetailSuperParent.visibility = View.VISIBLE
                 binding.searchDetailSuperRecyclerview.visibility = View.GONE
                 if (mKeywordSearch) {
                     Log.d("super", "mKeywordSearch : $mKeywordSearch")
+                    binding.searchDetailRealContent.visibility = View.GONE
+                    binding.searchDetailNoFilterLinearLayout.visibility = View.GONE
                     binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
                     binding.searchDetailNoSearchParent.itemNoSuperParent.visibility = View.VISIBLE
                     binding.searchDetailFilterParent.visibility = View.GONE
                 } else {
                     binding.searchDetailFilterParent.visibility = View.VISIBLE
+                    binding.searchDetailNoFilterLinearLayout.visibility = View.VISIBLE
                     binding.searchDetailNoSearchParent.itemNoSuperParent.visibility = View.GONE
                     binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.VISIBLE
                 }
@@ -513,7 +538,7 @@ class SearchDetailActivity :
     }
 
     override fun onGetSearchSuperFailure(message: String) {
-
+        binding.searchDetailSwipeRefresh.isRefreshing = false
     }
 
 }

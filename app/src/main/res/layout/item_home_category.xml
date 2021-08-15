@@ -1,17 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
     android:paddingHorizontal="10dp"
     android:paddingTop="15dp"
     android:paddingBottom="10dp"
     android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/white_to_gray_ripple">
 
-    <ImageView
-        android:id="@+id/item_home_category_img"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/category_girll"/>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/item_home_category_img"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/category_girll"/>
+
+        <TextView
+            android:id="@+id/item_home_category_new"
+            android:visibility="gone"
+            android:layout_alignParentTop="true"
+            android:layout_alignEnd="@+id/item_home_category_img"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="7dp"
+            android:textSize="7sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_category"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@drawable/category_circle_new"
+            tools:ignore="SmallSp" />
+    </RelativeLayout>
+
 
     <TextView
         android:layout_marginTop="7dp"

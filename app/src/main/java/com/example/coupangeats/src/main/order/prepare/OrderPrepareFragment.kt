@@ -26,10 +26,16 @@ class OrderPrepareFragment(val fragment: OrderFragment) : BaseFragment<FragmentO
             fragment.changePastFragment()
         }
 
+        // swipeRefresh
+        binding.orderPrepareSwipeRefresh.setOnRefreshListener {
+            binding.orderPrepareSwipeRefresh.isRefreshing = true
+            OrderPrepareService(this).tryGetOrderPrepareInfo(getUserIdx())
+        }
     }
 
     override fun onResume() {
         super.onResume()
+        binding.orderPrepareSwipeRefresh.isRefreshing = true
         OrderPrepareService(this).tryGetOrderPrepareInfo(getUserIdx())
     }
 
@@ -43,6 +49,7 @@ class OrderPrepareFragment(val fragment: OrderFragment) : BaseFragment<FragmentO
     }
 
     override fun onGetOrderPrepareInfoSuccess(response: OrderPrepareInfoResponse) {
+        binding.orderPrepareSwipeRefresh.isRefreshing = false
         if(response.code == 1000 && response.result != null){
             binding.orderPrepareNot.visibility = View.GONE
             binding.orderPrepareRecyclerView.visibility = View.VISIBLE
@@ -56,13 +63,14 @@ class OrderPrepareFragment(val fragment: OrderFragment) : BaseFragment<FragmentO
     }
 
     override fun onGetOrderPrepareInfoFailure(message: String) {
+        binding.orderPrepareSwipeRefresh.isRefreshing = false
         binding.orderPrepareNot.visibility = View.VISIBLE
         binding.orderPrepareRecyclerView.visibility = View.GONE
     }
 
     fun lookReceipt(order: prepareOrder) {
         val receiptDialog = ReceiptPrepareDialog(order)
-        receiptDialog.show(requireFragmentManager(), "receipt")
+        receiptDialog.show(parentFragmentManager, "receipt")
     }
 
     fun startDeliveryStatus(){

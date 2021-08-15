@@ -1,13 +1,11 @@
 package com.example.coupangeats.src.categorySuper
 
 import com.example.coupangeats.src.categorySuper.model.CategorySuperResponse
-import com.example.coupangeats.src.main.search.category.CategorySearchFragmentRetrofitInterface
-import com.example.coupangeats.src.main.search.category.model.SuperCategoryResponse
+import com.example.coupangeats.src.main.search.model.SuperCategoryResponse
 import com.softsquared.template.kotlin.config.ApplicationClass
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Appendable
 
 class CategorySuperService(val view: CategorySuperActivityView) {
 

@@ -70,6 +70,11 @@ class SuperSearchActivity :
             startActivity(intent)
         }
 
+        // swipeRefresh
+        binding.superSearchSwipeRefresh.setOnRefreshListener {
+            startFilterSuper()
+        }
+
         // 치타 배달
         binding.homeFilterCheetah.setOnClickListener {
             if (!filterSelected[1]) {
@@ -166,6 +171,7 @@ class SuperSearchActivity :
     }
 
     fun startFilterSuper() {
+        binding.superSearchSwipeRefresh.isRefreshing = true
         if (version == 1) {
             // 할인중인 맛집
             SuperSearchService(this).tryGetDiscountSuper(
@@ -265,7 +271,7 @@ class SuperSearchActivity :
     }
 
     // 초기화 필터 체크
-    fun changeClearFilter() {
+    private fun changeClearFilter() {
         var num = 0
         for (value in filterSelected) {
             if (value) num++
@@ -280,7 +286,7 @@ class SuperSearchActivity :
         }
     }
     // 초기화
-    fun refreshFilter() {
+    private fun refreshFilter() {
         mSelectMinOrder = 5
         mSelectDelivery = 5
         // 초기화 필터 다운
@@ -314,6 +320,7 @@ class SuperSearchActivity :
     }
 
     override fun onGetNewSuperSuccess(response: NewSuperResponse) {
+        binding.superSearchSwipeRefresh.isRefreshing = false
         if (response.code == 1000 ) {
             if( response.result.totalCount > 0){
                 binding.searchRecommendRecyclerview.visibility = View.VISIBLE
@@ -327,10 +334,12 @@ class SuperSearchActivity :
     }
 
     override fun onGetNewSuperFailure(message: String) {
+        binding.superSearchSwipeRefresh.isRefreshing = false
         showCustomToast("새로들어온 매장 조회 실패")
     }
 
     override fun onGetDiscountSuperSuccess(response: DiscountSuperResponse) {
+        binding.superSearchSwipeRefresh.isRefreshing = false
         if (response.code == 1000) {
             if(response.result.totalCount > 0){
                 binding.searchRecommendRecyclerview.visibility = View.VISIBLE
@@ -345,7 +354,8 @@ class SuperSearchActivity :
     }
 
     override fun onGetDiscountSuperFailure(message: String) {
-        //showCustomToast("할인 매장 조회 실패")
+        binding.superSearchSwipeRefresh.isRefreshing = false
+        showCustomToast("할인 매장 조회 실패")
     }
 
     fun setRecycler(baseSperList: ArrayList<BaseSuperInfo>) {

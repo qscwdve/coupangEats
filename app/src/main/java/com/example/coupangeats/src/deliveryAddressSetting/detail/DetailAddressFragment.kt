@@ -197,7 +197,7 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
             } else {
                 // 상세주소 입력 바라는 다이얼로그 뿌림
                 val detailAddressBottomSheetDialog = DetailAddressBottomSheetDialog(this)
-                detailAddressBottomSheetDialog.show(requireFragmentManager(), "detailAddress")
+                detailAddressBottomSheetDialog.show(parentFragmentManager, "detailAddress")
             }
         }
     }

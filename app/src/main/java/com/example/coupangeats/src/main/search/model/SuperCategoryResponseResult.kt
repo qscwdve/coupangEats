@@ -1,4 +1,4 @@
-package com.example.coupangeats.src.main.search.category.model
+package com.example.coupangeats.src.main.search.model
 
 import com.google.gson.annotations.SerializedName
 import com.softsquared.template.kotlin.config.BaseResponse

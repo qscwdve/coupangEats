@@ -19,7 +19,7 @@ import com.example.coupangeats.src.categorySuper.dialog.FilterRecommendCategoryD
 import com.example.coupangeats.src.categorySuper.model.CategorySuperRequest
 import com.example.coupangeats.src.categorySuper.model.CategorySuperResponse
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
-import com.example.coupangeats.src.main.search.category.model.SuperCategoryResponse
+import com.example.coupangeats.src.main.search.model.SuperCategoryResponse
 import com.example.coupangeats.src.searchDetail.SearchDetailActivity
 import com.softsquared.template.kotlin.config.BaseActivity
 import kotlin.math.abs
@@ -75,6 +75,11 @@ class CategorySuperActivity :
                 this.putExtra("lon", mLon)
             }
             startActivity(intent)
+        }
+
+        // swipeRefresh
+        binding.categorySuperSwipeRefresh.setOnRefreshListener {
+            startSuperSearch()
         }
 
         // 카테고리 스크롤
@@ -237,6 +242,8 @@ class CategorySuperActivity :
             for (i in 0..4) {
                 filterSelected[i] = false
             }
+            // 로딩중 애니메이션
+            binding.categorySuperSwipeRefresh.isRefreshing = true
             CategorySuperService(this).tryGetCategorySuper(
                 mCategorySuperRequest.lat,
                 mCategorySuperRequest.lon,
@@ -346,7 +353,7 @@ class CategorySuperActivity :
     }
 
     // 초기화 필터 체크
-    fun changeClearFilter() {
+    private fun changeClearFilter() {
         var num = 0
         for (value in filterSelected) {
             if (value) num++
@@ -362,7 +369,7 @@ class CategorySuperActivity :
     }
 
     // 초기화
-    fun refreshFilter() {
+    private fun refreshFilter() {
         mSelectMinOrder = 5
         mSelectDelivery = 5
         // 초기화 필터 다운
@@ -395,7 +402,9 @@ class CategorySuperActivity :
 
     }
 
-    fun startSuperSearch() {
+    private fun startSuperSearch() {
+        // 로딩중 애니메이션
+        binding.categorySuperSwipeRefresh.isRefreshing = true
         CategorySuperService(this).tryGetCategorySuper(
             mCategorySuperRequest.lat,
             mCategorySuperRequest.lon,
@@ -418,6 +427,7 @@ class CategorySuperActivity :
     }
 
     override fun onGetCategorySuperSuccess(response: CategorySuperResponse) {
+        binding.categorySuperSwipeRefresh.isRefreshing = false
         if (response.code == 1000) {
             if (response.result.recommendStores != null) {
                 if(!mRecommendFlag){
@@ -459,7 +469,7 @@ class CategorySuperActivity :
     }
 
     override fun onGetCategorySuperFailure(message: String) {
-
+        binding.categorySuperSwipeRefresh.isRefreshing = false
     }
 
     override fun onGetSuperCategorySuccess(response: SuperCategoryResponse) {
@@ -494,7 +504,7 @@ class CategorySuperActivity :
         startActivity(intent)
     }
 
-    fun setBodyHeight() {
+    private fun setBodyHeight() {
         val vto2: ViewTreeObserver = binding.categorySuperBody.viewTreeObserver
         vto2.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -506,7 +516,7 @@ class CategorySuperActivity :
         })
     }
 
-    fun changeStickyScroll(num: Int) {
+    private fun changeStickyScroll(num: Int) {
         if (mStickyScroll < 100) {
             mStickyScroll =
                 (binding.categorySuperCategoryRecyclerView.adapter as CategorySuperAdapter).getHeight()

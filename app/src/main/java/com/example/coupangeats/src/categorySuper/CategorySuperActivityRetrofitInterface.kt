@@ -1,7 +1,7 @@
 package com.example.coupangeats.src.categorySuper
 
 import com.example.coupangeats.src.categorySuper.model.CategorySuperResponse
-import com.example.coupangeats.src.main.search.category.model.SuperCategoryResponse
+import com.example.coupangeats.src.main.search.model.SuperCategoryResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

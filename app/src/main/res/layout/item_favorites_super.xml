@@ -52,6 +52,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
+                        android:layout_gravity="center"
                         android:id="@+id/item_favorites_super_cheetah"
                         android:layout_width="70dp"
                         android:layout_height="17dp"

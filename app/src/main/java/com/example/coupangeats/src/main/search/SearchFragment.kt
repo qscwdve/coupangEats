@@ -6,27 +6,25 @@ import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentSearchBinding
 import com.example.coupangeats.src.categorySuper.CategorySuperActivity
-import com.example.coupangeats.src.deliveryAddressSetting.adapter.data.SearchAddress
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.search.adapter.ResentSearchNaviAdapter
-import com.example.coupangeats.src.main.search.category.CategorySearchFragment
+import com.example.coupangeats.src.main.search.adapter.SearchCategoryAdapter
+import com.example.coupangeats.src.main.search.model.SuperCategoryResponse
 import com.example.coupangeats.src.searchDetail.SearchDetailActivity
-import com.example.coupangeats.src.searchDetail.adapter.ResentSearchAdapter
 import com.example.coupangeats.util.ResentSearchDatabase
 import com.softsquared.template.kotlin.config.BaseFragment
 
-class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search) {
+class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::bind, R.layout.fragment_search), CategorySearchFragmentView {
 
     private var mSearchAble = false
     private lateinit var mDBHelper: ResentSearchDatabase
@@ -52,9 +50,13 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
         binding.searchResentSearchRecyclerview.adapter = ResentSearchNaviAdapter(mDBHelper.getResentDate(mDB), this)
         binding.searchResentSearchRecyclerview.layoutManager = LinearLayoutManager(requireContext())
 
-        mainActivity.supportFragmentManager.beginTransaction()
-            .replace(R.id.search_fragment, CategorySearchFragment(this))
-            .commitAllowingStateLoss()
+        // 카테고리 선택
+        binding.categorySearchCategorySwipeRefresh.isRefreshing = true
+        CategorySearchService(this).tryGetSuperCategory()
+
+        binding.categorySearchCategorySwipeRefresh.setOnRefreshListener {
+            CategorySearchService(this).tryGetSuperCategory()
+        }
 
         if(version == 1){
             binding.searchKeywordParent.visibility = View.GONE
@@ -70,7 +72,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
             if(hasFocus){
                 binding.searchKeywordParent.visibility = View.VISIBLE
                 binding.searchBackImg.visibility = View.VISIBLE
-                binding.searchFragment.visibility = View.GONE
+                binding.categorySearchCategorySwipeRefresh.visibility = View.GONE
                 mainActivity.setBottomNavigationBarGone()
                 binding.searchSearchImg.setImageResource(R.drawable.ic_nav_search)
             }
@@ -103,7 +105,7 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
         binding.searchBackImg.setOnClickListener {
             if(version == 1){
                 binding.searchKeywordParent.visibility = View.GONE
-                binding.searchFragment.visibility = View.VISIBLE
+                binding.categorySearchCategorySwipeRefresh.visibility = View.VISIBLE
                 binding.searchBackImg.visibility = View.GONE
                 mainActivity.setBottomNavigationBarVisible()
                 binding.searchEditText.clearFocus()
@@ -174,5 +176,20 @@ class SearchFragment(val mainActivity: MainActivity, val version: Int) : BaseFra
     override fun onResume() {
         super.onResume()
         binding.searchEditText.setText("")
+    }
+
+    override fun onGetSuperCategorySuccess(response: SuperCategoryResponse) {
+        binding.categorySearchCategorySwipeRefresh.isRefreshing = false
+        if(response.code == 1000){
+            // SearchCategory RecyclerView Setting
+            binding.categorySearchCategoryRecyclerview.adapter = SearchCategoryAdapter(response.result, this)
+            binding.categorySearchCategoryRecyclerview.layoutManager = GridLayoutManager(requireContext(), 3)
+
+        }
+    }
+
+    override fun onGetSuperCategoryFailure(message: String) {
+        binding.categorySearchCategorySwipeRefresh.isRefreshing = false
+        showCustomToast("검색 카테고리 가져오기 실패")
     }
 }

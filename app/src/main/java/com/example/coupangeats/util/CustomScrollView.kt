@@ -31,9 +31,6 @@ class CustomScrollView : NestedScrollView, ViewTreeObserver.OnGlobalLayoutListen
     var originHorizonScrollView: HorizontalScrollView? = null
     var stickyHorizonScrollView: HorizontalScrollView? = null
 
-    var stickListener: (View) -> Unit = {}
-    var freeListener: (View) -> Unit = {}
-
     private var mIsHeaderSticky = false
     var mHeaderInitPosition = 0f
     var mHeaderParentPosition = 0f

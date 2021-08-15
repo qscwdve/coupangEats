@@ -1,6 +1,6 @@
-package com.example.coupangeats.src.main.search.category
+package com.example.coupangeats.src.main.search
 
-import com.example.coupangeats.src.main.search.category.model.SuperCategoryResponse
+import com.example.coupangeats.src.main.search.model.SuperCategoryResponse
 import com.softsquared.template.kotlin.config.ApplicationClass
 import retrofit2.Call
 import retrofit2.Callback

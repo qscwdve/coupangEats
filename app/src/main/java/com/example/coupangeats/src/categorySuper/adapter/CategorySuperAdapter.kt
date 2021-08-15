@@ -1,7 +1,6 @@
 package com.example.coupangeats.src.categorySuper.adapter
 
 import android.graphics.Color
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
 import com.example.coupangeats.src.categorySuper.CategorySuperActivity
-import com.example.coupangeats.src.main.search.category.model.SuperCategoryResponseResult
+import com.example.coupangeats.src.main.search.model.SuperCategoryResponseResult
 
 class CategorySuperAdapter(val categoryList: ArrayList<SuperCategoryResponseResult>, val activity: CategorySuperActivity, val option: String): RecyclerView.Adapter<CategorySuperAdapter.CategorySuperViewHolder>() {
     var categoryCheck = option
