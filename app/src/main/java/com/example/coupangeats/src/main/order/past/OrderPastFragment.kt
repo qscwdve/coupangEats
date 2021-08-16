@@ -31,8 +31,6 @@ import com.softsquared.template.kotlin.config.BaseFragment
 class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPastBinding::bind, R.layout.fragment_order_past), OrderPastFragmentView {
     private var mIsSearch = false
     private var mIsSearchRequest = false
-    private var mParentHeight = 0
-    private var mEditHeight = 0
     private var mKeyword = ""
     private lateinit var imm: InputMethodManager
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -40,6 +38,10 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
 
         imm = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         binding.orderPastSearchText.clearFocus()
+
+        // 요청하기
+        binding.orderPastSearchText.setText("")
+        OrderPastService(this).tryGetOrderPastInfo(getUserIdx())
 
         binding.orderPastSearchText.setOnFocusChangeListener { v, hasFocus ->
             if(hasFocus){
@@ -138,13 +140,6 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
         binding.orderPastSearchText.hint = "주문한 메뉴/매장을 찾아보세요"
         imm.hideSoftInputFromWindow(binding.orderPastSearchText.windowToken, 0)
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // 요청하기
-        binding.orderPastSearchText.setText("")
-        OrderPastService(this).tryGetOrderPastInfo(getUserIdx())
     }
 
     fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)

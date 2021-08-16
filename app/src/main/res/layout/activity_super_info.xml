@@ -13,6 +13,7 @@
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
         <ImageView
+            android:layout_gravity="center"
             android:background="@drawable/circle_ripple_white_to_gray"
             android:padding="8dp"
             android:contentDescription="@string/image_no"
@@ -52,21 +53,21 @@
                 android:id="@+id/super_info_map"
                 android:background="@color/loginBlue"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"/>
+                android:layout_height="220dp"/>
 
             <TextView
                 android:id="@+id/super_info_super_name"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:text="매장 이름"/>
 
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,13 +79,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:text="전화번호: 0312243332"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/loginBlue"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:text="@string/phone"/>
             </LinearLayout>
 
@@ -94,7 +95,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:text="주소: 경기도 수원시 장안구 덕영대로511번길 29-2 1층 (천천동)"/>
             <TextView
                 android:id="@+id/super_info_super_ceo_name"
@@ -102,7 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:text="대표자명: 장차경"/>
             <TextView
                 android:id="@+id/super_info_super_business_number"
@@ -110,7 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:text="사업자등록번호: 422-51-00013"/>
             <TextView
                 android:id="@+id/super_info_super_company_name"
@@ -118,85 +119,85 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:text="상호명: 호식이 두마리 치킨"/>
 
             <TextView
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:text="@string/openTime"/>
             <TextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/super_info_super_open_time"
                 android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:text="월요일 ~ 일요일"/>
 
             <TextView
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:text="@string/introduction"/>
             <TextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/super_info_super_introduction"
                 android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:text="안녕하세요!"/>
 
             <TextView
                 android:id="@+id/super_info_super_notice_category"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:text="@string/notice"/>
             <TextView
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/super_info_super_notice"
                 android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:text="안녕하세요!"/>
 
             <TextView
                 android:id="@+id/super_info_super_country_of_origin_category"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:text="@string/countryInfo"/>
             <TextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:id="@+id/super_info_super_country_of_origin"
                 android:layout_marginHorizontal="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:text="안녕하세요!"/>
         </LinearLayout>
 

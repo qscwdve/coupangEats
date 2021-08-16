@@ -14,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.coupangeats.R
@@ -42,10 +44,24 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
     private var mLat = ""
     private var mLon = ""
     private lateinit var imm : InputMethodManager
-    private val MAP_ACTIVITY = 1234
     private var mEditFocus = -1
+    lateinit var mapActivityLauncher: ActivityResultLauncher<Intent>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        mapActivityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                val data = result.data
+                if (data != null) {
+                    // 배달지 주소 추가
+                    mMainAddress = data.getStringExtra("mainAddress") ?: ""
+                    mRoadAddress = data.getStringExtra("roadAddress") ?: ""
+                    mLat = data.getStringExtra("lat") ?: ""
+                    mLon = data.getStringExtra("lon") ?: ""
+                    binding.detailAddressMainAddress.text = mMainAddress
+                    binding.detailAddressRoadAddress.text = mRoadAddress
+                }
+            }
 
         imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -53,7 +69,6 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         mLat = arguments?.getString("lat") ?: ""
         mLon = arguments?.getString("lon") ?: ""
 
-        Log.d("position", "mLat : $mLat , mLon : $mLon")
         if(version == 3){
             addressIdx = arguments?.getInt("addressIdx", -1) ?: -1
             if(addressIdx != -1){
@@ -66,8 +81,6 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         } else{
             binding.detailAddressDelete.visibility = View.GONE
         }
-
-        binding.detailAddressAliasTextLine.visibility = View.GONE
 
         mMainAddress = arguments?.getString("mainAddress").toString()
         mRoadAddress = arguments?.getString("roadAddress").toString()
@@ -83,17 +96,7 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
 
         // 상세주소 커스텀
         binding.detailAddressDetailText.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                // 편집하고 있을 때 검은색으로 바뀜
-                binding.detailAddressLine.visibility = View.VISIBLE
-                binding.detailAddressText.setTextColor(Color.parseColor("#000000"))
-                mEditFocus = 1
-            } else {
-                // 원래 색깔로
-                binding.detailAddressLine.visibility = View.INVISIBLE
-                binding.detailAddressText.setTextColor(Color.parseColor("#949DA6"))   // baseColor
-                mEditFocus = -1
-            }
+            mEditFocus = if(hasFocus){ 1 } else { -1 }
         }
         binding.detailAddressDetailText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -113,17 +116,7 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         }
         // 별칭 주소 커스텀
         binding.detailAddressAliasEditText.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                // 편집 중 검은색
-                binding.detailAddressAliasText.setTextColor(Color.parseColor("#000000"))
-                binding.detailAddressAliasLine.visibility = View.VISIBLE
-                mEditFocus = 2
-            } else {
-                // 원래대로
-                binding.detailAddressAliasText.setTextColor(Color.parseColor("#949DA6"))  // baseColor
-                binding.detailAddressAliasLine.visibility = View.INVISIBLE
-                mEditFocus = -1
-            }
+            mEditFocus = if(hasFocus){ 2 } else { -1 }
         }
         binding.detailAddressAliasEditText.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -140,15 +133,14 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
             binding.detailAddressAliasEditText.setText("")
             binding.detailAddressAliaSTextCancel.visibility = View.INVISIBLE
         }
-        binding.detailAddressAliasLine.visibility = View.GONE
+
         // 카테고리 선택 커스텀  mCategory = 1 이면 집 , 2면 회사 3이면 기타
         binding.detailAddressCategoryHome.setOnClickListener {
             if(mCategory != 1){
                 categoryCustom(1, mCategory)
                 binding.detailAddressAliasParent.visibility = View.GONE
                 binding.detailAddressAliasEditText.setText("")
-                binding.detailAddressAliasLine.visibility = View.GONE
-                binding.detailAddressAliasTextLine.visibility = View.GONE
+                binding.detailAddressAliasEditLine.visibility = View.GONE
             }
         }
         binding.detailAddressCategoryCompany.setOnClickListener {
@@ -156,16 +148,14 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 categoryCustom(2, mCategory)
                 binding.detailAddressAliasParent.visibility = View.GONE
                 binding.detailAddressAliasEditText.setText("")
-                binding.detailAddressAliasLine.visibility = View.GONE
-                binding.detailAddressAliasTextLine.visibility = View.GONE
+                binding.detailAddressAliasEditLine.visibility = View.GONE
             }
         }
         binding.detailAddressCategoryGps.setOnClickListener {
             if(mCategory != 3){
                 categoryCustom(3, mCategory)
-                binding.detailAddressAliasTextLine.visibility = View.VISIBLE
                 binding.detailAddressAliasParent.visibility = View.VISIBLE
-                binding.detailAddressAliasLine.visibility = View.VISIBLE
+                binding.detailAddressAliasEditLine.visibility = View.VISIBLE
             }
         }
 
@@ -177,8 +167,9 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 this.putExtra("lon", mLon)
                 this.putExtra("version", 1)
                 this.putExtra("detailAddressVersion", version)
+                this.putExtra("mainAddress", binding.detailAddressMainAddress.text.toString())
             }
-            startActivityForResult(intent, MAP_ACTIVITY)
+            mapActivityLauncher.launch(intent)
         }
 
         // 배달지 주소 삭제
@@ -211,21 +202,6 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         super.onDestroy()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == MAP_ACTIVITY && resultCode == AppCompatActivity.RESULT_OK){
-            // 배달지 주소 추가
-            if(data != null){
-                mMainAddress = data.getStringExtra("mainAddress") ?: ""
-                mRoadAddress = data.getStringExtra("roadAddress") ?: ""
-                mLat = data.getStringExtra("lat") ?: ""
-                mLon = data.getStringExtra("lon") ?: ""
-                binding.detailAddressMainAddress.text = mMainAddress
-                binding.detailAddressRoadAddress.text = mRoadAddress
-            }
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         // 배달지 변화 있나 봄
@@ -247,14 +223,16 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
 
     fun checkHomeOrCompany() {
         // 유저가 집과 회사를 체크했는지 확인 (서버통신)
-        if(mCategory == 1) DetailAddressService(this).tryGetHomeOrCompanyChecked(getUserIdx(), "HOME")
-        else if(mCategory == 2) DetailAddressService(this).tryGetHomeOrCompanyChecked(getUserIdx(), "COMPANY")
-        else sendDataServer("ETC")
+        when(mCategory){
+            1 -> DetailAddressService(this).tryGetHomeOrCompanyChecked(getUserIdx(), "HOME")
+            2 -> DetailAddressService(this).tryGetHomeOrCompanyChecked(getUserIdx(), "COMPANY")
+            else -> sendDataServer("ETC")
+        }
     }
 
     fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
 
-    fun sendDataServer(aliasType: String) {
+    private fun sendDataServer(aliasType: String) {
         if(version == 3) {
             // 배달지 수정
             if(mModifyOrDelete){
@@ -307,13 +285,11 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         }
     }
     private fun showDialogHomeOrCompanyReplace() {
-        val homeOrCompany = if(mCategory == 1) "집" else "회사"
+        val homeOrCompany = if(mCategory == 1) "기존 등록된 '집'주소를 대체하시겠습니까?"
+                            else "기존 등록된 '회사'주소를 대체하시겠습니까?"
         val categoryChangeBinding = DialogCategoryChangeBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(requireContext())
-        categoryChangeBinding.dialogCategoryChangeText.text =
-            if(mCategory == 1) "기존 등록된 '집'주소를 대체하시겠습니까?"
-            else "기존 등록된 '회사'주소를 대체하시겠습니까?"
-
+        categoryChangeBinding.dialogCategoryChangeText.text = homeOrCompany
         builder.setView(categoryChangeBinding.root)
         builder.setCancelable(false)
 
@@ -341,7 +317,7 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         }
     }
 
-    fun categoryCustom(newClick: Int, nowClick : Int){
+    private fun categoryCustom(newClick: Int, nowClick : Int){
         // 선택함 -> 파란색으로 배경 변해야 함
         when(nowClick){
             1 -> {
@@ -403,12 +379,14 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
             binding.detailAddressMainAddress.text = response.result.address
             binding.detailAddressRoadAddress.text = response.result.roadAddress
             binding.detailAddressDetailText.setText(response.result.detailAddress ?: "")
-            val aliasType = if(response.result.aliasType == "HOME") 1
-                            else if(response.result.aliasType == "COMPANY") 2
-                            else 3
+            val aliasType = when(response.result.aliasType){
+                            "HOME" -> 1
+                            "COMPANY" -> 2
+                            else -> 3 }
             categoryCustom(aliasType, -1)
             if(aliasType == 3){
                 binding.detailAddressAliasParent.visibility = View.VISIBLE
+                binding.detailAddressAliasEditLine.visibility = View.VISIBLE
                 binding.detailAddressAliasEditText.setText(response.result.alias ?: "")
             }
             mLat = response.result.latitude
@@ -416,7 +394,7 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
         }
     }
 
-    fun returnDeliveryAddressManageHome() {
+    private fun returnDeliveryAddressManageHome() {
         (activity as DeliveryAddressSettingActivity).backClick(addressIdx)
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="135dp"
     android:layout_height="wrap_content"
     android:background="@drawable/white_to_gray_ripple"
@@ -16,7 +17,7 @@
         <ImageView
             android:id="@+id/item_new_super_img"
             android:layout_width="115dp"
-            android:layout_height="120dp"
+            android:layout_height="115dp"
             android:layout_gravity="center"
             android:adjustViewBounds="true"
             android:contentDescription="@string/image_no"
@@ -80,12 +81,43 @@
         </LinearLayout>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/item_new_super_delivery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="배달비 3,000원"
             android:textColor="@color/black"
             android:textSize="13sp" />
+
+        <!-- 할인 쿠폰 -->
+        <LinearLayout
+            android:id="@+id/item_new_super_coupon"
+            android:visibility="visible"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/dialog_login_basic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="2dp"
+            android:paddingHorizontal="5dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_discount_coupon"/>
+            <TextView
+                android:id="@+id/item_new_super_discount"
+                android:layout_marginStart="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5000원 쿠폰"
+                android:textColor="@color/loginBlue"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:ignore="SmallSp" />
+        </LinearLayout>
 
     </LinearLayout>
 

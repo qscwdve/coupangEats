@@ -5,29 +5,31 @@
     android:layout_height="wrap_content" android:paddingVertical="15dp"
     android:paddingHorizontal="25dp" android:background="@drawable/white_to_gray_ripple">
 
-    <LinearLayout
-        android:layout_marginBottom="10dp"
+    <RelativeLayout
+        android:layout_marginBottom="7dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
             android:id="@+id/item_cart_menu_name"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="최고급양삼각갈비(350g)"
             android:textSize="15sp"/>
 
         <ImageView
+            android:layout_alignParentEnd="true"
             android:background="@drawable/white_to_gray_ripple"
             android:id="@+id/item_cart_menu_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
             android:padding="6dp"
             android:src="@drawable/ic_cancel_gray"/>
-    </LinearLayout>
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/item_cart_menu_sub"
@@ -39,7 +41,7 @@
         tools:ignore="RtlSymmetry" />
 
     <LinearLayout
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="7dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

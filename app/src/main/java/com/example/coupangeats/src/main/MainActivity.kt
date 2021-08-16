@@ -34,9 +34,7 @@ import com.softsquared.template.kotlin.config.BaseActivity
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate), MainActivityView {
     private var mfragmentIndex = 1
-    private val GPS_ENABLE_REQUEST_CODE = 2001
     private val PERMISSIONS_REQUEST_CODE = 100
-    private val FAVORITES_REQUEST_CODE = 1234
     var mLat = ""
     var mLon = ""
     var REQUIRED_PERMISSIONS = arrayOf(
@@ -63,7 +61,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onCreate(savedInstanceState)
 
         gpsCheck()
-        Log.d("jwt", ApplicationClass.sSharedPreferences.getString(ApplicationClass.X_ACCESS_TOKEN, "") ?: "")
+        // Log.d("jwt", ApplicationClass.sSharedPreferences.getString(ApplicationClass.X_ACCESS_TOKEN, "") ?: "")
         // 데이터베이스 셋팅
         mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
         mDB = mDBHelper.writableDatabase
@@ -76,9 +74,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         binding.mainBtmNav.itemIconTintList = null
         val jwt = ApplicationClass.sSharedPreferences.getString(ApplicationClass.X_ACCESS_TOKEN, "null")
-        if (jwt != null) {
-            Log.d("jwt", jwt)
-        }
 
         // deliveryAddressSettingActivity Result 설정
         deliveryAddressSettingLauncher =
@@ -163,9 +158,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onBackPressed() {
         if(mfragmentIndex != 1) {
-
             setHomeFragment()
-
         } else {
             super.onBackPressed()
         }

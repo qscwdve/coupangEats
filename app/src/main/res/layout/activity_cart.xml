@@ -284,9 +284,12 @@
                 android:layout_marginHorizontal="25dp"
                 android:background="@drawable/coupon_gray_box"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="12dp">
 
                 <LinearLayout
+                    android:background="@drawable/gray_to_dark_gray_ripple"
+                    android:id="@+id/cart_coupon_text"
+                    android:layout_marginTop="3dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
@@ -301,6 +304,7 @@
                         android:textSize="13sp" />
 
                     <TextView
+                        android:textStyle="bold"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:id="@+id/cart_coupon_num"
@@ -308,7 +312,7 @@
                         android:layout_height="wrap_content"
                         android:text="0장"
                         android:textColor="@color/loginBlue"
-                        android:textSize="10sp"
+                        android:textSize="13sp"
                         tools:ignore="SmallSp" />
 
                     <ImageView
@@ -453,7 +457,7 @@
                     android:layout_alignParentStart="true"
                     android:text="총 결제금액"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="21sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -463,7 +467,7 @@
                     android:layout_alignParentEnd="true"
                     android:text="50,500원"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="21sp"
                     android:textStyle="bold" />
             </RelativeLayout>
 
@@ -478,7 +482,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="25dp"
                 android:orientation="horizontal"
-                android:paddingVertical="15dp">
+                android:paddingTop="15dp">
 
                 <TextView
                     android:layout_width="0dp"
@@ -499,19 +503,21 @@
             </LinearLayout>
 
             <TextView
+                android:layout_marginTop="7dp"
                 android:layout_marginBottom="15dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/cart_super_order_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="요청사항 내용"
                 android:gravity="center_vertical|start"
-                android:textColor="@color/lightBlack"
+                android:textColor="@color/baseColor"
                 android:layout_marginHorizontal="25dp"
                 android:textSize="13sp" />
 
             <!-- 요청사항 내용 -->
             <LinearLayout
+                android:layout_marginTop="15dp"
                 android:visibility="visible"
                 android:id="@+id/cart_request_parent"
                 android:layout_width="match_parent"
@@ -711,7 +717,7 @@
                     android:layout_weight="1"
                     android:text="구매조건 확인 및 결제대행 서비스 동의"
                     android:textColor="@color/black"
-                    android:textSize="13sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -728,7 +734,8 @@
                 android:layout_gravity="center"
                 android:background="@color/line"
                 android:gravity="center"
-                android:padding="20dp"
+                android:paddingVertical="23dp"
+                android:paddingHorizontal="20dp"
                 android:text="@string/cart_info"
                 android:textColor="@color/baseColor"
                 android:textSize="12sp" />

@@ -165,7 +165,9 @@ class DeliveryAddressSettingActivity() :
                     binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
                     binding.detailAddressUserList.visibility = View.VISIBLE
                     binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
-                    binding.detailAddressTitle.setText("배달 주소 관리")
+                    binding.detailAddressTitle.text = "배달 주소 관리"
+                    // 키보드 내림
+                    imm.hideSoftInputFromWindow(binding.deliveryAddressText.windowToken, 0)
                     mSearchTip = true
                 } else {
                     // Log.d("selected", "종료")
@@ -176,7 +178,7 @@ class DeliveryAddressSettingActivity() :
                 // Log.d("selected", "mDetailAddress")
                 binding.deliveryAddressDetailParent.visibility = View.GONE
                 binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
-                binding.detailAddressTitle.setText("배달지 주소 설정")
+                binding.detailAddressTitle.text = "배달지 주소 설정"
                 mDetailAddress = false
             } else {
                 // 뒤로 가기
@@ -211,7 +213,6 @@ class DeliveryAddressSettingActivity() :
         binding.deliveryAddressSettingBusinessParent.setOnClickListener {
             if (isCompany && version == 1) {
                 finishActivitySelectedData(mCompanyMainAddress, mCompanyaddressIdx)
-                Log.d("selected", "company 선택됨")
             } else if(isCompany && version != 1){
                 startDeliveryAddressModify(mCompanyaddressIdx)
             } else {
@@ -235,6 +236,7 @@ class DeliveryAddressSettingActivity() :
                 this.putExtra("lat", mLat.toString())
                 this.putExtra("lon", mLon.toString())
                 this.putExtra("detailAddressVersion", version)
+                this.putExtra("nowGPS", true)
             }
             mapActivityLauncher.launch(intent)
         }
@@ -420,7 +422,7 @@ class DeliveryAddressSettingActivity() :
         binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
         binding.detailAddressUserList.visibility = View.VISIBLE
         binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
-        binding.detailAddressTitle.setText("배달 주소 관리")
+        binding.detailAddressTitle.text = "배달 주소 관리"
         mSearchTip = true
         binding.deliveryAddressBusinessDetail.visibility = View.VISIBLE
         binding.deliveryAddressSettingHomeDetail.visibility = View.VISIBLE
@@ -517,7 +519,6 @@ class DeliveryAddressSettingActivity() :
     }
 
     private fun gpsCheck() : Location? {
-        var gpsCheck = false
         if(ApplicationClass.sSharedPreferences.getBoolean("gps", false)){
             // gps 사용 가능
             val mGpsControl = GpsControl(this)
@@ -540,7 +541,8 @@ class DeliveryAddressSettingActivity() :
                 binding.deliveryAddressSettingNowGpsFind.visibility = View.GONE
                 binding.detailAddressUserList.visibility = View.VISIBLE
                 binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
-                binding.detailAddressTitle.setText("배달 주소 관리")
+                binding.detailAddressTitle.text = "배달 주소 관리"
+                imm.hideSoftInputFromWindow(binding.deliveryAddressText.windowToken, 0)
                 mSearchTip = true
             } else {
                 // Log.d("selected", "종료")
@@ -551,7 +553,7 @@ class DeliveryAddressSettingActivity() :
             // Log.d("selected", "mDetailAddress")
             binding.deliveryAddressDetailParent.visibility = View.GONE
             binding.deliveryAddressNotDetailParent.visibility = View.VISIBLE
-            binding.detailAddressTitle.setText("배달지 주소 설정")
+            binding.detailAddressTitle.text = "배달지 주소 설정"
             mDetailAddress = false
         } else {
             // 뒤로 가기

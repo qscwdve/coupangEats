@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:padding="15dp"
+        android:padding="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textColor="@color/black"
             android:layout_centerInParent="true"
             android:textStyle="bold"
@@ -76,7 +76,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5sp"
-                android:background="@color/black"
+                android:background="@color/lightBlack"
                 tools:ignore="SmallSp" />
 
             <LinearLayout
@@ -91,10 +91,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/cart_menu_price"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:gravity="start"/>
 
                 <TextView
+                    android:layout_gravity="center"
                     android:id="@+id/dialog_receipt_order_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -105,7 +106,7 @@
 
             </LinearLayout>
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -116,10 +117,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/cart_delivery_price"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:gravity="start"/>
 
                 <TextView
+                    android:layout_gravity="center"
                     android:id="@+id/dialog_receipt_delivery_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -130,7 +132,7 @@
 
             </LinearLayout>
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -141,10 +143,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/disocuntPrice"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     android:gravity="start"/>
 
                 <TextView
+                    android:layout_gravity="center"
                     android:id="@+id/dialog_receipt_discount_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -158,7 +161,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="0.5sp"
-                android:background="@color/black"
+                android:background="@color/lightBlack"
                 tools:ignore="SmallSp" />
 
             <LinearLayout

@@ -94,8 +94,8 @@
     <string name="delivery_address_now_gps">현재 위치로 주소 찾기</string>
     <string name="home">집</string>
     <string name="business">회사</string>
-    <string name="searchTip">검색Tip</string>
-    <string name="searchTopRoad">*도로명</string>
+    <string name="searchTip">검색 Tip</string>
+    <string name="searchTopRoad">* 도로명</string>
     <string name="searchTopNum">+ 건물번호</string>
     <string name="searchTopRoadEx">  (예: 송파대로 570)</string>
     <string name="searchTipName">* 동/음/면/리</string>
@@ -106,7 +106,7 @@
     <string name="address_search_error_text2">지번, 도로명, 건물명을 입력해주세요.</string>
     <string name="address_search_error_text1">검색 결과가 없습니다.</string>
     <string name="detail_address">상세 주소</string>
-    <string name="detail_address_name">(아파트/동/호)</string>
+    <string name="detail_address_name">상세주소 (아파트/동/호)</string>
     <string name="ason">기타</string>
     <string name="company">회사</string>
     <string name="map_gps_check">지도에서 위치 확인하기</string>
@@ -152,7 +152,6 @@
     <string name="coupangInfo3">1670-9827</string>
     <string name="coupangInfo4">| 이메일 문의:</string>
     <string name="coupangInfo5">
-        | 이메일 문의:\n
         eatsheplp@coupang.com |\n
         쿠팡은 통신판매중개자로서 통신판매의 당사자가 아니며, 판매자가\n등록한 상품 정보, 상품의 품질 및 거래에 대한 일체의 책임을 지지
     </string>
@@ -342,4 +341,7 @@
     <string name="no_order">주문 내역이 없습니다.</string>
     <string name="coupon_eat_look">쿠팡이츠 맛집 구경가기</string>
     <string name="order_past_hint">주문한 메뉴/매장을 찾아보세요</string>
+    <string name="address_hint">주소 별칭</string>
+    <string name="complete">완료</string>
+    <string name="coupangEatsCenter">쿠팡이츠 고객센터:</string>
 </resources>

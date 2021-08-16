@@ -11,6 +11,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
         <!--Status Bar 글자색깔 false 하얀색 true 검정색-->
         <item name="android:windowLightStatusBar">true</item>
+
+        <!-- color high light -->
+        <item name="colorControlHighlight">#DF9E9EA0</item>
+
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -26,10 +30,10 @@
 
         <item name="android:textColorHighlight">@color/loginBlue</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
-    </style>
 
-    <style name="ImgRippleEffect" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorControlHighlight">@color/rippleLightGray</item>
+        <!-- color high light -->
+        <item name="colorControlHighlight">#DF9E9EA0</item>
+
     </style>
 
     <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">

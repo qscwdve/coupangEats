@@ -29,7 +29,8 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
         val delivery = itemView.findViewById<TextView>(R.id.item_new_super_delivery)
         val newParent = itemView.findViewById<LinearLayout>(R.id.item_new_super_parent)
         val thelook = itemView.findViewById<RelativeLayout>(R.id.item_new_super_end_parent)
-
+        val coupon = itemView.findViewById<LinearLayout>(R.id.item_new_super_coupon)
+        val couponText = itemView.findViewById<TextView>(R.id.item_new_super_discount)
         @SuppressLint("ClickableViewAccessibility")
         fun bind(item: NewStores?, position: Int) {
             if(item == null){
@@ -58,7 +59,13 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
                     delivery.visibility = View.VISIBLE
                     delivery.text = item.deliveryPrice
                 } else {
-                    delivery.visibility = View.INVISIBLE
+                    delivery.visibility = View.GONE
+                }
+                if(item.coupon != null){
+                    couponText.text = item.coupon
+                    coupon.visibility = View.VISIBLE
+                } else {
+                    coupon.visibility = View.GONE
                 }
 
                 itemView.setOnClickListener {

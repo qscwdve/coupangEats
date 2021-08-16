@@ -18,8 +18,8 @@ class GpsControl(val context: Context) : LocationListener {
     private val MIN_TIME_BW_UPDATES = (1000 * 60 * 1).toLong()
     var locationManager: LocationManager? = null
 
-    private val GPS_ENABLE_REQUEST_CODE = 2001
-    private val PERMISSIONS_REQUEST_CODE = 100
+    val GPS_ENABLE_REQUEST_CODE = 2001
+    val PERMISSIONS_REQUEST_CODE = 100
 
     var REQUIRED_PERMISSIONS = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,

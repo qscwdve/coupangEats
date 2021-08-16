@@ -7,10 +7,10 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:padding="15dp"
+        android:padding="10dp"
         android:id="@+id/item_super_photo_review_parent"
         android:background="@drawable/super_photo_review"
-        android:layout_width="300dp"
+        android:layout_width="280dp"
         android:layout_height="90dp"
         android:orientation="horizontal">
         <ImageView

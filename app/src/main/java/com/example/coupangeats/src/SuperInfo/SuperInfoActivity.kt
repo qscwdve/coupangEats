@@ -98,8 +98,8 @@ class SuperInfoActivity : BaseActivity<ActivitySuperInfoBinding>(ActivitySuperIn
             // 가게 위치 표시 및 지도 조정
             val marker = Marker(LatLng(superInfoResponse.latitude.toDouble(), superInfoResponse.longitude.toDouble()))
             marker.icon = OverlayImage.fromResource(R.drawable.ic_mark_super)
-            marker.width = 70
-            marker.height = 70
+            marker.width = 90
+            marker.height = 100
             marker.map = mNaverMap
             //위치 및 각도 조정
             //위치 및 각도 조정

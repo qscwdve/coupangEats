@@ -77,6 +77,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         // 할인쿠폰 보러가기
         binding.cartCouponChange.setOnClickListener { lookCouponList() }
         binding.cartCouponPrice.setOnClickListener { lookCouponList() }
+        binding.cartCouponText.setOnClickListener { lookCouponList() }
 
         // 배달 요청사항
         binding.cartRiderOrder.setOnClickListener {

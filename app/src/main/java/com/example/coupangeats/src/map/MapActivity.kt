@@ -1,7 +1,9 @@
 package com.example.coupangeats.src.map
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
@@ -10,8 +12,12 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityMapBinding
+import com.example.coupangeats.databinding.DialogGpsActiveCheckBinding
 import com.example.coupangeats.src.deliveryAddressSetting.model.DeliveryAddressAddRequest
 import com.example.coupangeats.src.deliveryAddressSetting.model.SearchAddrList.DeliveryAddressResponse
 import com.example.coupangeats.src.deliveryAddressSetting.model.UserCheckedAddressResponse
@@ -43,7 +49,8 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
     private var mGpsY = 0
     private var mDetailAddressVersion = 1  // 1이면 gps_select , 2 이면 배달지 추가 , 3이면 배달지 수정
     private val PERMISSION_REQUEST_CODE = 100
-
+    private var mNowGps = false
+    private var mMainAddress = ""
     @SuppressLint("ClickableViewAccessibility", "Recycle")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,15 +64,19 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
         mLon = intent.getStringExtra("lon") ?: ""
         nowLat = mLat
         nowLon = mLon
-        Log.d("mapActivity", "받음 : ($nowLat , $nowLon)")
+        // Log.d("mapActivity", "받음 : ($nowLat , $nowLon)")
         mDetailAddressVersion = intent.getIntExtra("detailAddressVersion", 1)
-
+        mNowGps = intent.getBooleanExtra("nowGPS", false)
+        mMainAddress = intent.getStringExtra("mainAddress") ?: ""
+        Log.d("address", "main : $mMainAddress")
         val n = intent.getIntExtra("version", -1) ?: -1
+
         if(n != -1){
             version = 1
             val text = "입력하신 배달지 위치를 확인해주세요"
             binding.mapInfo.text = text
         }
+
         //Log.d("position", "mLat : ${mLat}")
         //Log.d("position", "mLon : ${mLon}")
         // 대평초등학교 기중
@@ -74,12 +85,17 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
         locationSource = FusedLocationSource(this, PERMISSION_REQUEST_CODE)
         gpsControl = GpsControl(this)
 
+        // 현재 위치로 이동
+        binding.mapNowGps.setOnClickListener {
+            setNowGps()
+        }
+
         // 이미지 좌표 구하기
         mapView.getMapAsync(this)
 
         binding.map.setOnTouchListener { v, event ->
             if(event.action == MotionEvent.ACTION_DOWN){
-                Log.d("click", "손 누름")
+
                 if(!firstFlag){
                     binding.mapInfo.visibility = View.GONE
                     firstFlag = true
@@ -99,7 +115,6 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
                 binding.gps.getGlobalVisibleRect(rect)
                 mGpsX = (rect.left + rect.right)/2
                 mGpsY = (rect.top + rect.bottom)/2
-                Log.d("mapActivity", "X : $mGpsX , Y : $mGpsY")
 
                 val downTime = SystemClock.uptimeMillis()
                 val eventTime = SystemClock.uptimeMillis() + 2000
@@ -132,7 +147,6 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
                 this.putExtra("lat", nowLat)
                 this.putExtra("lon", nowLon)
             }
-            Log.d("mapActivity", "($nowLat , $nowLon)")
             setResult(RESULT_OK, intent)
             finish()
 
@@ -192,38 +206,38 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
 
         // 현재 위치 마크 표시
         uiSettings = mNaverMap.uiSettings
-        Log.d("position", "mLat : $mLat , mLon : $mLon")
+        mNaverMap.uiSettings.isIndoorLevelPickerEnabled = false
+        mNaverMap.uiSettings.isZoomControlEnabled = false
+        mNaverMap.uiSettings.isCompassEnabled = false
+        mNaverMap.uiSettings.isScaleBarEnabled = false
+        mNaverMap.uiSettings.isLocationButtonEnabled = false
+
+        //Log.d("position", "mLat : $mLat , mLon : $mLon")
         val lat = mLat.toDouble()
         val lon = mLon.toDouble()
         if(lat != -1.0 && lon != -1.0){
-            Log.d("mark", "마크 표시 보여야함")
-            Log.d("mark", "lat : ${lat}  , lon : ${lon}")
 
             val address : ArrayList<String>? = gpsControl.getCurrentAddressArray(lat, lon)
             if(address != null){
-                binding.mapMainAddress.text = address[1]
+                binding.mapMainAddress.text = if(mMainAddress != "") mMainAddress else address[1]
                 binding.mapAddress.text = address[0]
             }
         }
-        //val marker = Marker(LatLng(lat, lon))
-        val locationOverlay = mNaverMap.locationOverlay
-        locationOverlay.isVisible = true
-        locationOverlay.iconHeight = 60
-        locationOverlay.iconWidth = 60
-        locationOverlay.circleRadius = 50
-        locationOverlay.circleColor = Color.parseColor("#AEE0F8")
-        locationOverlay.position = LatLng(lat, lon)
+        if(mNowGps){
+            setNowGps()
+        } else {
+            //marker.map = mNaverMap
+            //위치 및 각도 조정
+            //위치 및 각도 조정
+            val cameraPosition = CameraPosition(
+                LatLng(lat, lon),  // 위치 지정
+                18.0,  // 줌 레벨
+                0.0,  // 기울임 각도
+                0.0 // 방향
+            )
+            mNaverMap.cameraPosition = cameraPosition
+        }
 
-        //marker.map = mNaverMap
-        //위치 및 각도 조정
-        //위치 및 각도 조정
-        val cameraPosition = CameraPosition(
-            LatLng(lat, lon),  // 위치 지정
-            18.0,  // 줌 레벨
-            0.0,  // 기울임 각도
-            0.0 // 방향
-        )
-        mNaverMap.setCameraPosition(cameraPosition)
         mNaverMap.setOnMapClickListener { pointF, latLng ->
             // showCustomToast("위도 : ${latLng.latitude}, 경도 : ${latLng.longitude}")
             // Log.d("click", "클릭 이벤트 naver map")
@@ -236,7 +250,103 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
         }
     }
 
-    fun resultPosition(lat: Double, lon: Double){
+    private fun setNowGps(){
+        val locationOverlay = mNaverMap.locationOverlay
+        locationOverlay.isVisible = true
+        locationOverlay.iconHeight = 60
+        locationOverlay.iconWidth = 60
+        locationOverlay.circleRadius = 50
+        locationOverlay.circleColor = Color.parseColor("#AEE0F8")
+
+        val nowLocation = GpsControl(this).getLocation()
+        if(nowLocation != null){
+            locationOverlay.position = LatLng(nowLocation.latitude, nowLocation.longitude)
+            mNaverMap.cameraPosition =  CameraPosition(
+                LatLng(nowLocation.latitude, nowLocation.longitude),  // 위치 지정
+                18.0,  // 줌 레벨
+                0.0,  // 기울임 각도
+                0.0 // 방향
+            )
+        } else {
+            val gpsCheckBinding = DialogGpsActiveCheckBinding.inflate(layoutInflater)
+            val builder = AlertDialog.Builder(this)
+            builder.setView(gpsCheckBinding.root)
+            builder.setCancelable(false)
+
+            val alertDialog = builder.create()
+            alertDialog.show()
+
+            val edit = ApplicationClass.sSharedPreferences.edit()
+            gpsCheckBinding.dialogGpsActiveCheckNo.setOnClickListener {
+                // gps 활성화 안함
+                edit.putBoolean("gps", false).apply()
+                alertDialog.dismiss()
+            }
+            gpsCheckBinding.dialogGpsActiveCheckYes.setOnClickListener {
+                // gps 활성화
+                // turnGPSOn()
+                alertDialog.dismiss()
+                // 퍼미션 검사
+                checkRunTimePermission()
+            }
+        }
+    }
+
+    private fun checkRunTimePermission() {
+        val PERMISSIONS_REQUEST_CODE = 100
+        val REQUIRED_PERMISSIONS = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+        //런타임 퍼미션 처리
+        // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
+        val hasFineLocationPermission = ContextCompat.checkSelfPermission(
+            this@MapActivity,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        val hasCoarseLocationPermission = ContextCompat.checkSelfPermission(
+            this@MapActivity,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+        if (hasFineLocationPermission == PackageManager.PERMISSION_GRANTED &&
+            hasCoarseLocationPermission == PackageManager.PERMISSION_GRANTED
+        ) {
+
+            // 2. 이미 퍼미션을 가지고 있다면
+            // ( 안드로이드 6.0 이하 버전은 런타임 퍼미션이 필요없기 때문에 이미 허용된 걸로 인식합니다.)
+            ApplicationClass.sSharedPreferences.edit().putBoolean("gps", true).apply()
+
+            // 3.  위치 값을 가져올 수 있음
+        } else {  //2. 퍼미션 요청을 허용한 적이 없다면 퍼미션 요청이 필요합니다. 2가지 경우(3-1, 4-1)가 있습니다.
+            // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
+            ApplicationClass.sSharedPreferences.edit().putBoolean("gps", false).apply()
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this@MapActivity, REQUIRED_PERMISSIONS.get(0)
+                )
+            ) {
+                // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
+                showCustomToast("이 앱을 실행하려면 위치 접근 권한이 필요합니다.")
+
+                // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                ActivityCompat.requestPermissions(
+                    this@MapActivity,
+                    REQUIRED_PERMISSIONS,
+                    PERMISSIONS_REQUEST_CODE
+                )
+            } else {
+                // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
+                // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                ActivityCompat.requestPermissions(
+                    this@MapActivity,
+                    REQUIRED_PERMISSIONS,
+                    PERMISSIONS_REQUEST_CODE
+                )
+            }
+        }
+    }
+
+    private fun resultPosition(lat: Double, lon: Double){
         nowLat = lat.toString()
         nowLon = lon.toString()
         binding.gps.setImageResource(R.drawable.ic_map_person)
@@ -247,8 +357,12 @@ class MapActivity : BaseActivity<ActivityMapBinding>(ActivityMapBinding::inflate
         if(flag){
             val address : ArrayList<String>? = gpsControl.getCurrentAddressArray(lat, lon)
             if(address != null){
-                binding.mapMainAddress.text = address[1]
-                binding.mapAddress.text = address[0]
+                val addressText = address[1]
+                if(addressText.contains("대한민국")) addressText.removePrefix("대한민국")
+                val addressText2 = address[0]
+                if(addressText2.contains("대한민국")) addressText2.removePrefix("대한민국")
+                binding.mapMainAddress.text = addressText
+                binding.mapAddress.text = addressText2
             }
             flag = false
         }

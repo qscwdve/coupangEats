@@ -47,7 +47,6 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
     private var mCouponPrice = -1
     private var mCouponIdx = -1
     private var textStoreIdx = 1
-    private val MENU_SELECT_ACTIVITY = 1234
     private var mSuperName = "동대문 엽기떡볶이"
     private var mCartMenuNum = 0
     private var mFavorites = 0
