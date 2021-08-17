@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
@@ -31,48 +33,57 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
         val thelook = itemView.findViewById<RelativeLayout>(R.id.item_new_super_end_parent)
         val coupon = itemView.findViewById<LinearLayout>(R.id.item_new_super_coupon)
         val couponText = itemView.findViewById<TextView>(R.id.item_new_super_discount)
+        val firstLine = itemView.findViewById<View>(R.id.item_new_super_first_line)
         @SuppressLint("ClickableViewAccessibility")
-        fun bind(item: NewStores?, position: Int) {
-            if(item == null){
+        fun bind(item: NewStores, last: Boolean, first: Boolean) {
+            // 첫번째는 좀 더 많이 띄움
+            firstLine.visibility = if(first) View.VISIBLE else View.GONE
+
+            // 더보기 설정
+            if(last){
                 newParent.visibility = View.GONE
                 thelook.visibility = View.VISIBLE
 
-                itemView.setOnClickListener {
+                thelook.setOnClickListener {
                     newAdapter.fragment.startNewSuper()
                 }
             } else {
-                newParent.visibility = View.VISIBLE
                 thelook.visibility = View.GONE
-                Glide.with(img).load(item.url).override(125, 90).into(img)
-                name.text = item.storeName
-                if(item.totalReview != null){
-                    star.visibility = View.VISIBLE
-                    review.text = item.totalReview
-                    dot.visibility = View.VISIBLE
-                } else {
-                    star.visibility = View.GONE
-                    review.visibility = View.GONE
-                    dot.visibility = View.GONE
-                }
-                distance.text = item.distance
-                if(item.deliveryPrice != null){
-                    delivery.visibility = View.VISIBLE
-                    delivery.text = item.deliveryPrice
-                } else {
-                    delivery.visibility = View.GONE
-                }
-                if(item.coupon != null){
-                    couponText.text = item.coupon
-                    coupon.visibility = View.VISIBLE
-                } else {
-                    coupon.visibility = View.GONE
-                }
-
-                itemView.setOnClickListener {
-                    // 매장 선택
-                    newAdapter.fragment.startSuper(item.storeIdx)
-                }
             }
+
+            // 가게 설정
+            newParent.visibility = View.VISIBLE
+            Glide.with(img).load(item.url).into(img)
+            name.text = item.storeName
+            if(item.totalReview != null){
+                star.visibility = View.VISIBLE
+                review.text = item.totalReview
+                dot.visibility = View.VISIBLE
+            } else {
+                star.visibility = View.GONE
+                review.visibility = View.GONE
+                dot.visibility = View.GONE
+            }
+            distance.text = item.distance
+            if(item.deliveryPrice != null){
+                delivery.visibility = View.VISIBLE
+                delivery.text = item.deliveryPrice
+            } else {
+                delivery.visibility = View.GONE
+            }
+            if(item.coupon != null){
+                couponText.text = item.coupon
+                coupon.visibility = View.VISIBLE
+            } else {
+                coupon.visibility = View.GONE
+            }
+
+            newParent.setOnClickListener {
+                // 매장 선택
+                newAdapter.fragment.startSuper(item.storeIdx)
+            }
+
+            // home 치타배달 관련 스크롤
             itemView.setOnTouchListener { v, event ->
                 if(!newAdapter.fragment.mScrollFinish) {
                     if (event.action == MotionEvent.ACTION_UP) {
@@ -101,11 +112,8 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
     }
 
     override fun onBindViewHolder(holder: NewViewHolder, position: Int) {
-        if(newList.size <= position){
-            holder.bind(null, position)
-        }
-        else holder.bind(newList[position], position)
+        holder.bind(newList[position], position == newList.size - 1, position == 0)
     }
 
-    override fun getItemCount(): Int = newList.size + 1
+    override fun getItemCount(): Int = newList.size
 }

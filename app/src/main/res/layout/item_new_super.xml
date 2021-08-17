@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="135dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/white_to_gray_ripple"
-    android:orientation="vertical"
-    android:paddingHorizontal="10dp">
+    android:layout_marginStart="15dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <View
+        android:id="@+id/item_new_super_first_line"
+        android:visibility="gone"
+        android:layout_width="15dp"
+        android:layout_height="match_parent"/>
 
     <LinearLayout
+        android:background="@drawable/white_to_gray_ripple"
         android:id="@+id/item_new_super_parent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="115dp"
+        android:paddingBottom="10dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="visible">
 
@@ -122,9 +130,10 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:background="@drawable/white_to_gray_ripple"
         android:id="@+id/item_new_super_end_parent"
-        android:layout_width="match_parent"
-        android:layout_height="148dp"
+        android:layout_width="115dp"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -133,24 +142,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <ImageView
+            <androidx.cardview.widget.CardView
+                android:layout_margin="6dp"
+                android:layout_width="53dp"
+                android:layout_gravity="center"
+                android:layout_height="53dp"
+                app:cardCornerRadius="75dp"
+                android:background="@drawable/white_to_gray_ripple"
+                app:cardElevation="6dp">
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/home_item_right_arrow"
+                    android:scaleType="centerCrop" />
+            </androidx.cardview.widget.CardView>
+            <TextView
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/image_no"
-                android:scaleType="center"
-                android:src="@drawable/home_the_look" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:gravity="top|center_horizontal"
-                android:text="더보기"
+                android:text="@string/theLook"
                 android:textColor="@color/black"
-                android:textSize="13sp" />
+                android:textSize="15sp" />
         </LinearLayout>
-
 
     </RelativeLayout>
 </LinearLayout>

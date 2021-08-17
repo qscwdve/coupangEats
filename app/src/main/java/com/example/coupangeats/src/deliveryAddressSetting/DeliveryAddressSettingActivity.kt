@@ -2,6 +2,7 @@ package com.example.coupangeats.src.deliveryAddressSetting
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Rect
 import android.location.GpsSatellite
 import android.location.Location
 import android.os.Bundle
@@ -49,10 +50,9 @@ class DeliveryAddressSettingActivity() :
     private var mCategory = -1
     private lateinit var imm: InputMethodManager   // 키보드 숨기기
     val GPS_SELECT = 1
-    val DELIVERY_MANAGE = 2
     var version = GPS_SELECT
     var mSelectedAddress = -1
-    private val MAP_ACTIVITY = 1234
+    var mKeyboardStatus = false
     lateinit var mapActivityLauncher : ActivityResultLauncher<Intent>
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +61,9 @@ class DeliveryAddressSettingActivity() :
         imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         showLoadingDialog(this)
         DeliveryAddressSettingService(this).tryGetUserAddressList(getUserIdx())
+
+        // 키보드 상태 확인
+        setKeyboardListener()
 
         mapActivityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -112,6 +115,8 @@ class DeliveryAddressSettingActivity() :
                     // 검색팁 보여줌
                     binding.deliveryAddressSettingSelectedParent.visibility = View.GONE
                     binding.deliveryAddressSettingSearchParent.visibility = View.VISIBLE
+                    binding.deliveryAddressSettingSearchList.visibility = View.GONE
+                    binding.deliveryAddressSettingSearchTip.visibility = View.VISIBLE
                     mSearchTip = false
                 }
                 if (!mBackOrFinish) {
@@ -153,6 +158,12 @@ class DeliveryAddressSettingActivity() :
         }
 
         binding.deliveryAddressBack.setOnClickListener {
+            // 키보드 올라가 있으면 내리기
+            if(mKeyboardStatus) {
+                imm.hideSoftInputFromWindow(binding.deliveryAddressText.windowToken, 0)
+                mKeyboardStatus = false
+            }
+            mSearchTip = true
             if (!mBackOrFinish) {
                 // 종료
                 // Log.d("selected", "종료")
@@ -166,9 +177,6 @@ class DeliveryAddressSettingActivity() :
                     binding.detailAddressUserList.visibility = View.VISIBLE
                     binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
                     binding.detailAddressTitle.text = "배달 주소 관리"
-                    // 키보드 내림
-                    imm.hideSoftInputFromWindow(binding.deliveryAddressText.windowToken, 0)
-                    mSearchTip = true
                 } else {
                     // Log.d("selected", "종료")
                     setResult(RESULT_CANCELED)
@@ -183,12 +191,10 @@ class DeliveryAddressSettingActivity() :
             } else {
                 // 뒤로 가기
                 // Log.d("selected", "뒤로가기")
-                mSearchTip = true
                 if(version == GPS_SELECT) binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
                 binding.deliveryAddressSettingSelectedParent.visibility = View.VISIBLE
                 binding.deliveryAddressSettingSearchParent.visibility = View.GONE
                 binding.deliveryAddressText.setText("")
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
                 binding.deliveryAddressText.clearFocus()
                 binding.deliveryAddressTextCancel.visibility = View.INVISIBLE
                 mBackOrFinish = false
@@ -259,6 +265,11 @@ class DeliveryAddressSettingActivity() :
     }
 
     fun changeDetailAddress(searchAddress: SearchAddress, lat: String, lon: String){
+        // 키보드 올라가 있으면 내리기
+        if(mKeyboardStatus) {
+            imm.hideSoftInputFromWindow(binding.deliveryAddressText.windowToken, 0)
+            mKeyboardStatus = false
+        }
         var latitude = lat
         var longiute = lon
         binding.deliveryAddressDetailParent.visibility = View.VISIBLE
@@ -316,11 +327,11 @@ class DeliveryAddressSettingActivity() :
             binding.deliveryAddressTextParent.visibility = View.GONE
             binding.deliveryAddressManageParent.visibility = View.VISIBLE
             binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
-            binding.detailAddressTitle.setText("배달 주소 관리")
-            mSearchTip = true
+            binding.detailAddressTitle.text = "배달 주소 관리"
             mDetailAddress = false
             mBackOrFinish = false
         }
+        mSearchTip = true
     }
 
     override fun onGetUserAddressListSuccess(response: UserAddrListResponse) {
@@ -460,6 +471,9 @@ class DeliveryAddressSettingActivity() :
             } else {
                 // 페이징 처리..
             }
+            // 검색 팁 없애고 주소 리스트 보여주기
+            binding.deliveryAddressSettingSearchList.visibility = View.VISIBLE
+            binding.deliveryAddressSettingSearchTip.visibility = View.GONE
         } else {
             // 오류
             binding.deliverySearchError.visibility = View.VISIBLE
@@ -501,6 +515,11 @@ class DeliveryAddressSettingActivity() :
 
     // 배달지 수정하러 가기
     fun startDeliveryAddressModify(addressIdx: Int) {
+        // 키보드 올라가 있으면 내리기
+        if(mKeyboardStatus) {
+            imm.hideSoftInputFromWindow(binding.deliveryAddressText.windowToken, 0)
+            mKeyboardStatus = false
+        }
         binding.deliveryAddressDetailParent.visibility = View.VISIBLE
         binding.deliveryAddressNotDetailParent.visibility = View.GONE
         binding.detailAddressTitle.text = "배달지 상세 정보"
@@ -529,6 +548,12 @@ class DeliveryAddressSettingActivity() :
     }
 
     override fun onBackPressed() {
+        // 키보드 올라가 있으면 내리기
+        if(mKeyboardStatus) {
+            imm.hideSoftInputFromWindow(binding.deliveryAddressText.windowToken, 0)
+            mKeyboardStatus = false
+        }
+        mSearchTip = true
         if (!mBackOrFinish) {
             // 종료
             // Log.d("selected", "종료")
@@ -542,8 +567,6 @@ class DeliveryAddressSettingActivity() :
                 binding.detailAddressUserList.visibility = View.VISIBLE
                 binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
                 binding.detailAddressTitle.text = "배달 주소 관리"
-                imm.hideSoftInputFromWindow(binding.deliveryAddressText.windowToken, 0)
-                mSearchTip = true
             } else {
                 // Log.d("selected", "종료")
                 setResult(RESULT_CANCELED)
@@ -558,15 +581,38 @@ class DeliveryAddressSettingActivity() :
         } else {
             // 뒤로 가기
             // Log.d("selected", "뒤로가기")
-            mSearchTip = true
             if(version == GPS_SELECT) binding.deliveryAddressBack.setImageResource(R.drawable.ic_cancel)
             binding.deliveryAddressSettingSelectedParent.visibility = View.VISIBLE
             binding.deliveryAddressSettingSearchParent.visibility = View.GONE
             binding.deliveryAddressText.setText("")
-            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
             binding.deliveryAddressText.clearFocus()
             binding.deliveryAddressTextCancel.visibility = View.INVISIBLE
             mBackOrFinish = false
+        }
+    }
+
+    private fun setKeyboardListener(){
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+
+            var navigationBarHeight = 0
+            var resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+            if (resourceId > 0) {
+                navigationBarHeight = resources.getDimensionPixelSize(resourceId)
+            }
+
+            var statusBarHeight = 0
+            resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+            if (resourceId > 0) {
+                statusBarHeight = resources.getDimensionPixelSize(resourceId)
+            }
+
+            val rect = Rect()
+            window.decorView.getWindowVisibleDisplayFrame(rect)
+
+            val keyboardHeight = binding.root.rootView.height - (statusBarHeight + navigationBarHeight + rect.height())
+
+            mKeyboardStatus = keyboardHeight > 0
+            // false : 내려간 상태 , true : 올라간 상태
         }
     }
 }

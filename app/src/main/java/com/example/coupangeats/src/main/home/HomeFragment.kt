@@ -113,6 +113,16 @@ class HomeFragment() :
             }
         }
 
+        // 주소지 화살표 클릭
+        binding.homeAddressArrow.setOnClickListener {
+            if (!loginCheck()) {
+                (activity as MainActivity).loginBottomSheetDialogShow()
+            } else {
+                // 로그인이 되어 있는 경우 배달지 주소 설정으로 넘어감
+                (activity as MainActivity).startDeliveryAddressSettingActivityResult()
+            }
+        }
+
         // 검색
         binding.homeSearch.setOnClickListener {
             val intent = Intent(requireContext(), SearchDetailActivity::class.java).apply {

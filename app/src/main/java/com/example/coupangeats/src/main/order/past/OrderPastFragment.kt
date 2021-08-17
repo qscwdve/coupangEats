@@ -3,6 +3,7 @@ package com.example.coupangeats.src.main.order.past
 import android.accessibilityservice.AccessibilityService
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
+import android.graphics.Rect
 import android.media.MediaDrm
 import android.os.Bundle
 import android.text.Editable
@@ -33,11 +34,15 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
     private var mIsSearchRequest = false
     private var mKeyword = ""
     private lateinit var imm: InputMethodManager
+    private var mKeyboardStatus = false
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         imm = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         binding.orderPastSearchText.clearFocus()
+
+        // 키보드 상태 확인
+        setKeyBoardListener()
 
         // 요청하기
         binding.orderPastSearchText.setText("")
@@ -71,7 +76,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
             }
         }
 
-        // 검색 밖 화면 터치시 포커스 해제
+        // 검은색 밖 화면 터치시 포커스 해제
         binding.orderPastTransportMenu.setOnClickListener {
             searchFocusClear()
         }
@@ -224,5 +229,42 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
         binding.orderPastSearchParent.visibility = View.VISIBLE
     }
 
+    private fun setKeyBoardListener(){
+        // 키보드 상태 확인
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
 
+            var navigationBarHeight = 0
+            var resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
+            if (resourceId > 0) {
+                navigationBarHeight = resources.getDimensionPixelSize(resourceId)
+            }
+
+            var statusBarHeight = 0
+            resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+            if (resourceId > 0) {
+                statusBarHeight = resources.getDimensionPixelSize(resourceId)
+            }
+
+            val rect = Rect()
+            mainActivity.window.decorView.getWindowVisibleDisplayFrame(rect)
+
+            val keyboardHeight = binding.root.rootView.height - (statusBarHeight + navigationBarHeight + rect.height())
+
+            if(keyboardHeight > 0){
+                // 키보드가 올라간 상태
+                mKeyboardStatus = true
+            } else {
+                // 키보드가 내려간 상태
+                if(mKeyboardStatus && binding.orderPastTransportMenu.visibility == View.VISIBLE){
+                    // 올라갔다가 내려갔을 경우
+                    mIsSearch = false
+                    binding.orderPastSearchText.setText(mKeyword)
+                    binding.orderPastSearchText.clearFocus()
+                    binding.orderPastTransportMenu.visibility = View.GONE
+                    binding.orderPastSearchText.hint = "주문한 메뉴/매장을 찾아보세요"
+                }
+                mKeyboardStatus = false
+            }
+        }
+    }
 }

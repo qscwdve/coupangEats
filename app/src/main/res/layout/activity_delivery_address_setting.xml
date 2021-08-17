@@ -102,7 +102,7 @@
                 android:src="@drawable/login_email_delete" />
         </LinearLayout>
 
-        <!-- 배달주 소 관리 -->
+        <!-- 배달주소 관리 -->
         <LinearLayout
             android:id="@+id/delivery_address_manage_parent"
             android:layout_width="match_parent"
@@ -393,6 +393,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/delivery_address_setting_search_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
                 <LinearLayout
                     android:id="@+id/delivery_address_setting_search_tip"
                     android:layout_width="match_parent"
@@ -486,10 +491,6 @@
                         android:textSize="15sp" />
                 </LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/delivery_address_setting_search_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
