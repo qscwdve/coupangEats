@@ -9,11 +9,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
+import com.example.coupangeats.src.superSearch.SuperSearchActivity
 import com.example.coupangeats.src.superSearch.model.BaseSuperInfo
 
-class BaseInfoAdapter(val baseInfoList: ArrayList<BaseSuperInfo>) :
+class BaseInfoAdapter(val baseInfoList: ArrayList<BaseSuperInfo>, val activity: SuperSearchActivity) :
     RecyclerView.Adapter<BaseInfoAdapter.BaseInfoViewHolder>() {
-    class BaseInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class BaseInfoViewHolder(itemView: View, val adapter: BaseInfoAdapter) : RecyclerView.ViewHolder(itemView) {
         val mainimg = itemView.findViewById<ImageView>(R.id.item_recommend_img)
         val subImgParent = itemView.findViewById<LinearLayout>(R.id.item_recommend_img_sub_parent)
         val sub1 = itemView.findViewById<ImageView>(R.id.item_recommend_img_sub1)
@@ -76,6 +77,7 @@ class BaseInfoAdapter(val baseInfoList: ArrayList<BaseSuperInfo>) :
             }
             itemView.setOnClickListener {
                 // 매장 선택
+                adapter.activity.startDetailSuper(item.storeIdx)
             }
         }
     }
@@ -83,7 +85,7 @@ class BaseInfoAdapter(val baseInfoList: ArrayList<BaseSuperInfo>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseInfoViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_recommend_super, parent, false)
-        return BaseInfoViewHolder(view)
+        return BaseInfoViewHolder(view, this)
     }
 
     override fun onBindViewHolder(holder: BaseInfoViewHolder, position: Int) {

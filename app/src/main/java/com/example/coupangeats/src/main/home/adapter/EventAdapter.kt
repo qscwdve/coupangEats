@@ -19,12 +19,13 @@ class EventAdapter(val eventList: ArrayList<Events>, val fragment: HomeFragment)
 
     class EventViewHolder(itemView: View, val adapter: EventAdapter) : RecyclerView.ViewHolder(itemView) {
         val eventImg = itemView.findViewById<ImageView>(R.id.item_event_img)
+        val back = itemView.findViewById<View>(R.id.item_event_click)
 
         @SuppressLint("ClickableViewAccessibility")
         fun bind(item: Events, totalNum: Int) {
-            Glide.with(adapter.fragment.requireContext()).load(item.url).into(eventImg)
+            Glide.with(adapter.fragment.requireContext()).load(item.url ?: item.urlTemp ?: R.drawable.bbq_event).into(eventImg)
 
-            itemView.setOnClickListener {
+            back.setOnClickListener {
                 adapter.fragment.startEventItem(item.eventIdx)
             }
 

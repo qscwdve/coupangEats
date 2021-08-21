@@ -9,6 +9,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivitySuperSearchBinding
+import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.main.home.HomeService
 import com.example.coupangeats.src.main.home.model.HomeInfo.HomeInfoRequest
 import com.example.coupangeats.src.searchDetail.SearchDetailActivity
@@ -359,7 +360,14 @@ class SuperSearchActivity :
     }
 
     fun setRecycler(baseSperList: ArrayList<BaseSuperInfo>) {
-        binding.searchRecommendRecyclerview.adapter = BaseInfoAdapter(baseSperList)
+        binding.searchRecommendRecyclerview.adapter = BaseInfoAdapter(baseSperList, this)
         binding.searchRecommendRecyclerview.layoutManager = LinearLayoutManager(this)
+    }
+
+    fun startDetailSuper(storeIdx: Int){
+        val intent = Intent(this, DetailSuperActivity::class.java).apply {
+            this.putExtra("storeIdx", storeIdx)
+        }
+        startActivity(intent)
     }
 }

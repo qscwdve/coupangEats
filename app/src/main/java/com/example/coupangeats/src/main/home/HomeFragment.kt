@@ -805,6 +805,12 @@ class HomeFragment() :
                 val recommend = response.result.recommendStores
                 if(events != null){
                     setEvent(events)
+                } else {
+                    // 임시 이벤트 설정
+                    setEvent(arrayListOf(
+                        Events(1, null, R.drawable.isaac_event),
+                        Events(2, null, R.drawable.bbq_event))
+                    )
                 }
                 setCategory(category)
                 if (salse != null) {

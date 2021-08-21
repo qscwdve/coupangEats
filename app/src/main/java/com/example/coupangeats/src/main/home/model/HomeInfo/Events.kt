@@ -4,5 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class Events(
     @SerializedName("eventIdx") val eventIdx: Int,
-    @SerializedName("bannerUrl") val url: String
+    @SerializedName("bannerUrl") val url: String?,
+    val urlTemp: Int? = null
 )

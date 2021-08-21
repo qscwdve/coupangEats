@@ -228,7 +228,7 @@ class MenuSelectActivity : BaseActivity<ActivityMenuSelectBinding>(ActivityMenuS
     }
 
     // 장바구니 대처 다이어로그
-    fun startChangeCartDialog(menu: CartMenuInfo){
+    private fun startChangeCartDialog(menu: CartMenuInfo){
         val cartChangeBinding = DialogCartReplaceBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(this)
         builder.setView(cartChangeBinding.root)

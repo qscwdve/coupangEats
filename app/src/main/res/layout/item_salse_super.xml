@@ -120,7 +120,7 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:background="@drawable/white_to_gray_ripple"
+        android:foreground="@drawable/white_to_gray_ripple"
         android:id="@+id/item_salse_end_parent"
         android:layout_width="115dp"
         android:layout_height="match_parent"

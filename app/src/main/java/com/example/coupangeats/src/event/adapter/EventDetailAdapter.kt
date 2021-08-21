@@ -15,12 +15,12 @@ class EventDetailAdapter(val eventList: ArrayList<EventDetail>, val activity: Ev
     class EventDetailViewHolder(itemView: View, val adapter: EventDetailAdapter) : RecyclerView.ViewHolder(itemView){
         val img = itemView.findViewById<ImageView>(R.id.item_event_detail_img)
         val endDate = itemView.findViewById<TextView>(R.id.item_event_detail_endDate)
-
+        val back = itemView.findViewById<View>(R.id.item_event_detail_back)
         fun bind(event: EventDetail){
-            Glide.with(img).load(event.bannerUrl).into(img)
+            Glide.with(img).load(event.bannerUrl ?: event.bannerTemp).into(img)
             endDate.text = event.endDate
 
-            itemView.setOnClickListener {
+            back.setOnClickListener {
                 // 이벤트 보러가야함
                 adapter.activity.startEventItem(event.eventIdx)
             }

@@ -14,8 +14,9 @@
         <ImageView
             android:id="@+id/item_event_detail_img"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:src="@drawable/category_buger"
+            android:layout_height="wrap_content"
+            android:src="@drawable/isaac_event"
+            android:adjustViewBounds="true"
             android:scaleType="fitXY"/>
 
         <TextView
@@ -35,5 +36,11 @@
             android:textSize="12sp"
             tools:ignore="SmallSp" />
 
+        <View
+            android:id="@+id/item_event_detail_back"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/item_event_detail_img"
+            android:foreground="@drawable/transport_ripple_image"/>
     </RelativeLayout>
 </LinearLayout>
