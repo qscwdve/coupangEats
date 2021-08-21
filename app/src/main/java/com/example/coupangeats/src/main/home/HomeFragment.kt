@@ -855,6 +855,7 @@ class HomeFragment() :
         binding.homeScrollView.mHeaderParentPosition = binding.homeRecommendSuper.top.toFloat()
         binding.homeScrollView.run {
             header = binding.homeFilterParent2
+            headerShadow = binding.homeFilterShadow
             position = binding.homeFilterParent
             stickyHorizonScrollView = binding.homeStickyScroll
             originHorizonScrollView = binding.homeFilterParent

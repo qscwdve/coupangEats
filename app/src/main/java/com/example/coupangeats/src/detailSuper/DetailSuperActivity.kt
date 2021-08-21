@@ -75,7 +75,9 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
         mDB = mDBHelper.writableDatabase
 
-        binding.toolbarBack.setOnClickListener { finish() }
+        binding.toolbarBack.setOnClickListener {
+            finish()
+        }
 
         mSuperIdx = intent!!.getIntExtra("storeIdx", -1)
         if(mSuperIdx != 36) textStoreIdx = 35

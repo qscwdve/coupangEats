@@ -222,12 +222,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/detail_super_coupon">
 
                     <LinearLayout
-                        android:layout_centerVertical="true"
                         android:id="@+id/detail_super_time_value1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
+                        android:layout_centerVertical="true"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -262,14 +262,14 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:padding="5dp"
-                        android:layout_centerVertical="true"
                         android:id="@+id/detail_super_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:background="@drawable/white_to_gray_ripple"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="5dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -390,14 +390,15 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:background="@drawable/transport_ripple_to_gray"
                         android:id="@+id/toolbar_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginHorizontal="5dp"
+                        android:background="@drawable/transport_circle"
                         android:padding="8dp"
                         android:src="@drawable/ic_left_arrow_black" />
+
 
                     <TextView
                         android:id="@+id/toolbar_super_name"
@@ -458,13 +459,13 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/detail_super_cart_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="@drawable/blue_to_dark_blue_ripple">
+        android:background="@drawable/blue_to_dark_blue_ripple"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="wrap_content"

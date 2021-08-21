@@ -100,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="8dp"
-                        android:background="@drawable/transport_ripple_to_gray"
+                        android:background="@drawable/transport_circle"
                         android:layout_marginHorizontal="5dp"
                         android:src="@drawable/ic_left_arrow_black" />
 

@@ -154,7 +154,7 @@
                     android:layout_below="@+id/category_super_filter"
                     android:id="@+id/category_super_filter_line"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
+                    android:layout_height="5dp"
                     android:background="@drawable/sticky_shadow"
                     android:visibility="gone" />
                 <!-- 매장 -->

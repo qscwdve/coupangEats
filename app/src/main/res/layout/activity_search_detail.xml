@@ -488,9 +488,7 @@
                     android:visibility="gone"
                     android:background="@drawable/sticky_shadow"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"/>
-
-
+                    android:layout_height="5dp"/>
 
                 <include layout="@layout/item_no_search_super"
                     android:id="@+id/searchDetailNoSearchParent"/>

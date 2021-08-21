@@ -10,7 +10,13 @@
         android:layout_width="match_parent"
         android:scaleType="fitXY"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:foreground="@drawable/image_overlay" />
+        android:foreground="@drawable/image_overlay"
+        android:fitsSystemWindows="true" />
+
+    <View
+        android:id="@+id/item_detail_super_viewpager_back"
+        android:foreground="@drawable/transport_ripple_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

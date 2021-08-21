@@ -74,7 +74,6 @@
         android:layout_height="0.7sp"
         android:background="@color/lightGray"
         tools:ignore="SmallSp" />
-
     <!-- 필터2 -->
     <LinearLayout
         android:visibility="gone"
@@ -83,6 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <HorizontalScrollView
             android:id="@+id/home_sticky_scroll"
             android:visibility="visible"
@@ -367,11 +367,10 @@
             </LinearLayout>
 
         </HorizontalScrollView>
-        <View
-            android:background="@drawable/sticky_shadow"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"/>
+
+
     </LinearLayout>
+
 
     <ScrollView
         android:visibility="gone"
@@ -1098,6 +1097,15 @@
             </LinearLayout>
         </com.example.coupangeats.util.CustomScrollView>
     </LinearLayout>
+
+    <!-- 필터2 그림자 -->
+    <View
+        android:visibility="gone"
+        android:id="@+id/home_filter_shadow"
+        android:layout_below="@+id/home_filter_parent2"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@drawable/sticky_shadow"/>
 
     <!-- 치타배달 배너 -->
     <LinearLayout
