@@ -67,9 +67,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         mDB = mDBHelper.writableDatabase
 
         loginBottomSheetDialog = LoginBottomSheetDialog(this)
+
         // 처음 화면 HomeFragment로 지정
+        val bundle = Bundle()
+        bundle.putBoolean("addressQuestion", true)
+        val homeFragment = HomeFragment()
+        homeFragment.arguments = bundle
         supportFragmentManager.beginTransaction()
-                .replace(R.id.main_frm, HomeFragment(), "homeFragment")
+                .replace(R.id.main_frm, homeFragment, "homeFragment")
                 .commitAllowingStateLoss()
 
         binding.mainBtmNav.itemIconTintList = null

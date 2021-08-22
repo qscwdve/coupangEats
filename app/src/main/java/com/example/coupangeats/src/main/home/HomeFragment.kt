@@ -6,15 +6,10 @@ import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import android.os.*
 import android.util.Log
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.Slide
-import androidx.transition.Transition
-import androidx.transition.TransitionManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentHomeBinding
@@ -37,24 +32,22 @@ import com.example.coupangeats.util.FilterSuperBottomSheetDialog
 import com.example.coupangeats.util.GpsControl
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseFragment
-import java.util.*
 import kotlin.collections.ArrayList
 
 @SuppressLint("HandlerLeak")
 class HomeFragment() :
-    BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home), HomeFragmentView {
+    BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::bind, R.layout.fragment_home),
+    HomeFragmentView {
     private var mAddress = ""
     var mScrollFlag = false
     var mScrollStart = false
     var mScrollFinish = false
     var mScrollValue = 0
-    var mStickyCount = 0
     private var countDownTimer: CountDownTimer? = null
     private lateinit var mGpsControl: GpsControl
     private var mUserAddress: UserCheckResponseResult? = null
     private var mLat = ""
     private var mLon = ""
-    private var version = 1  // 버전 1이면 그냥 홈 데이터 버전 2면 주변 맛집 필터
     var filterSelected = Array(5) { i -> false }  // 필터를 선택했는지 안했는데
     private var whiteColor = "#FFFFFF"
     private var blackColor = "#000000"
@@ -67,6 +60,13 @@ class HomeFragment() :
     private var mCheetahNum = 0
     private var mSelectDelivery = -1
     private var mSelectMini = -1
+    private var mAddressQuestion = false
+    private var mGetMainDateFirst =
+        "first" // first : firstMain , filter : recommend filter, address : address change : 3
+    private var mAddressQuestionHandler = Handler(Looper.getMainLooper())
+    private var mAddressQuestionRunnable : Runnable? = null
+    private var mAddressQuestionFlag = false
+    private var mAddressQuestionHandlerFlag = false
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -78,7 +78,11 @@ class HomeFragment() :
         mDB = mDBHelper.writableDatabase
 
         // 서버 데이터 검색 시작
-        HomeService(this).tryGetUserCheckAddress(getUserIdx())
+        HomeService(this).tryGetUserCheckAddress(getUserIdx(), "first")
+
+        // addressQuestion
+        mAddressQuestion = arguments?.getBoolean("addressQuestion", false) ?: false
+        if (mAddressQuestion) setAddressQuestion()
 
         // no address recyclerView adapter setting
         binding.homeNoAddressRecyclerview.adapter = BaseAddressAdapter(this)
@@ -90,7 +94,7 @@ class HomeFragment() :
         }
         // 이벤트 전체 보러가기
         binding.homeEventLook.setOnClickListener {
-            startActivity( Intent(requireContext(), EventActivity::class.java))
+            startActivity(Intent(requireContext(), EventActivity::class.java))
         }
 
         // 주소지 클릭
@@ -134,7 +138,8 @@ class HomeFragment() :
 
         // 배달비
         binding.homeFilterDeliveryPrice.setOnClickListener {
-            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 1, mSelectDelivery)
+            val filterSuperBottomSheetDialog =
+                FilterSuperBottomSheetDialog(this, 1, mSelectDelivery)
             filterSuperBottomSheetDialog.show(parentFragmentManager, "deliveryPrice")
         }
         // 최소주문
@@ -212,7 +217,8 @@ class HomeFragment() :
 
         // 배달비
         binding.homeFilterDeliveryPrice2.setOnClickListener {
-            val filterSuperBottomSheetDialog = FilterSuperBottomSheetDialog(this, 1, mSelectDelivery)
+            val filterSuperBottomSheetDialog =
+                FilterSuperBottomSheetDialog(this, 1, mSelectDelivery)
             filterSuperBottomSheetDialog.show(parentFragmentManager, "deliveryPrice")
         }
         // 최소주문
@@ -311,7 +317,7 @@ class HomeFragment() :
         // 스크롤 감지
         binding.homeScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             //Log.d("scrolled", "( $scrollX, $scrollY)  ,  ( $oldScrollX , $oldScrollY )")
-            if(scrollY > 550){
+            if (scrollY > 550) {
                 binding.homeScrollUpBtn.visibility = View.VISIBLE
             } else {
                 binding.homeScrollUpBtn.visibility = View.GONE
@@ -319,7 +325,9 @@ class HomeFragment() :
             lastPosUpdate(scrollY)
         }
         binding.homeRecommendRecyclerview.setOnTouchListener { v, event ->
-            if(!mScrollFinish) {
+            if (event.action == MotionEvent.ACTION_UP)
+                setAddressQuestionDown()
+            if (!mScrollFinish) {
                 if (event.action == MotionEvent.ACTION_UP) {
                     if (mScrollStart) {
                         mScrollStart = false
@@ -336,7 +344,9 @@ class HomeFragment() :
             false
         }
         binding.homeScrollView.setOnTouchListener { v, event ->
-            if(!mScrollFinish) {
+            if (event.action == MotionEvent.ACTION_UP)
+                setAddressQuestionDown()
+            if (!mScrollFinish) {
                 if (event.action == MotionEvent.ACTION_UP) {
                     if (mScrollStart) {
                         mScrollStart = false
@@ -359,7 +369,8 @@ class HomeFragment() :
         }
 
     }
-    private fun resetFilter(){
+
+    private fun resetFilter(version: String = "filter") {
         // 초기화 시키기
         mHomeInfoRequest = HomeInfoRequest(
             mUserAddress!!.latitude,
@@ -375,24 +386,27 @@ class HomeFragment() :
         for (i in 0..4) {
             filterSelected[i] = false
         }
-        HomeService(this).tryGetHomeData(mHomeInfoRequest)
+        startGetHomeDate(version)
         refreshFilter()
     }
-    private fun scrollStart(){
+
+    private fun scrollStart() {
         val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.cheetah_start)
         binding.homeCheetahBannerParent.startAnimation(animation)
         binding.homeCheetahBannerParent.visibility = View.GONE
     }
-    fun scrollFinish(){
+
+    fun scrollFinish() {
         val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.cheetah_finish)
         binding.homeCheetahBannerParent.visibility = View.VISIBLE
         binding.homeCheetahBannerParent.startAnimation(animation)
 
     }
+
     // setonTouch
-    private fun lastPosUpdate(scrollPos: Int){
+    private fun lastPosUpdate(scrollPos: Int) {
         //Log.d("scrolled", "lastPosUpdate : falg = ${mScrollFlag} , start = ${mScrollStart} , scrollPos = ${scrollPos}")
-        if(!mScrollFinish) {
+        if (!mScrollFinish) {
             if (mScrollFlag && !mScrollStart) {
                 if (mScrollValue != -1 && mScrollValue != scrollPos) {
                     // 스크롤 시작
@@ -422,7 +436,7 @@ class HomeFragment() :
     fun cartChange() {
         // 카트 담긴거 있는지 확인
         val num = mDBHelper.checkMenuNum(mDB)
-        if(num > 0){
+        if (num > 0) {
             // 카트가 있음
             binding.homeCartBag.visibility = View.VISIBLE
             binding.homeCartNum.text = num.toString()
@@ -439,7 +453,7 @@ class HomeFragment() :
 
     private fun toggle() {
         val view =
-            if(binding.homeCartBag.visibility == View.GONE) binding.homeNoticeTextParentAbove
+            if (binding.homeCartBag.visibility == View.GONE) binding.homeNoticeTextParentAbove
             else binding.homeNoticeTextCartAbove
 
         val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.check_box_down)
@@ -454,7 +468,7 @@ class HomeFragment() :
 
     // 필터 활용해서 서버한테 보내기
     fun startFilterServerSend() {
-        HomeService(this).tryGetHomeData(mHomeInfoRequest)
+        startGetHomeDate("filter")
         changeClearFilter()
     }
 
@@ -491,7 +505,7 @@ class HomeFragment() :
     // 배달비 필터 바꾸는 함수 다이얼로그에서 호출
     fun changeDeliveryFilter(value: Int, valueString: String, select: Int) {
         if (value != -1) {
-            val str =  if(valueString == "무료배달") "무료배달" else "배달비 ${valueString}원 이하"
+            val str = if (valueString == "무료배달") "무료배달" else "배달비 ${valueString}원 이하"
             binding.homeFilterDeliveryPriceBackground.setBackgroundResource(R.drawable.super_filter_click)
             binding.homeFilterDeliveryPriceText.text = str
             binding.homeFilterDeliveryPriceText.visibility = View.VISIBLE
@@ -636,19 +650,41 @@ class HomeFragment() :
         binding.homeFilterCheetahText2.visibility = View.GONE
     }
 
+    private fun setAddressQuestion() {
+        mAddressQuestionFlag = true
+        binding.homeAddressQuestion.visibility = View.VISIBLE
+        mAddressQuestionRunnable = Runnable {
+            if(mAddressQuestionFlag){
+                binding.homeAddressQuestion.visibility = View.GONE
+                mAddressQuestionFlag = false
+            }
+            mAddressQuestionHandlerFlag = false
+        }
+        mAddressQuestionHandlerFlag = true
+        mAddressQuestionHandler.postDelayed(mAddressQuestionRunnable!!, 4000)
+    }
+
+    fun setAddressQuestionDown() {
+        if (mAddressQuestionFlag) {
+            binding.homeAddressQuestion.visibility = View.GONE
+            mAddressQuestionFlag = false
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         autoScrollStart(intervalTime)
         cartChange()
     }
 
-    fun startUserAddressCheckAndGetMainDate(check: Boolean = false){
-        if(check){
-            // 토글 해야함
+    fun startUserAddressCheckAndGetMainDate(check: Boolean = false) {
+        if (check) {
+            // 토글 해야함, addressQuestion
+            setAddressQuestion()
             toggle()
             Log.d("toggle", "토글함")
+            HomeService(this).tryGetUserCheckAddress(getUserIdx(), "address")
         }
-        HomeService(this).tryGetUserCheckAddress(getUserIdx())
     }
 
     fun getUserIdx(): Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
@@ -690,7 +726,7 @@ class HomeFragment() :
                 mLat = (37.5724714912).toString()
                 mLon = (126.9911925560).toString()
             }
-            getMainData()
+            getMainData("first")
         } else {
             mUserAddress = UserCheckResponseResult(
                 0,
@@ -701,7 +737,7 @@ class HomeFragment() :
             binding.homeGpsAddress.text = mUserAddress!!.mainAddress
             mLat = (37.5724714912).toString()
             mLon = (126.9911925560).toString()
-            getMainData()
+            getMainData("first")
         }
         if (gpsCheck) {
             binding.homeNoAddress.visibility = View.GONE
@@ -712,7 +748,7 @@ class HomeFragment() :
         }
     }
 
-    fun getMainData() {
+    fun getMainData(version: String) {
         // 홈 데이터 얻음
         val re = HomeInfoRequest(
             mUserAddress!!.latitude,
@@ -727,10 +763,16 @@ class HomeFragment() :
         )
         mHomeInfoRequest = re
         (activity as MainActivity).changeAddress(mUserAddress!!.latitude, mUserAddress!!.longitude)
-        HomeService(this).tryGetHomeData(re)
+
+        startGetHomeDate(version)
     }
 
-    override fun onUserCheckAddressSuccess(response: UserCheckResponse) {
+    fun startGetHomeDate(version: String) {
+        mGetMainDateFirst = version
+        HomeService(this).tryGetHomeData(mHomeInfoRequest)
+    }
+
+    override fun onUserCheckAddressSuccess(response: UserCheckResponse, version: String) {
         if (response.code == 1000) {
             if (response.result.addressIdx != 0) {
                 // 유저가 선택한 주소 있음
@@ -738,13 +780,13 @@ class HomeFragment() :
                 binding.homeGpsAddress.text = mUserAddress!!.mainAddress
                 mLat = mUserAddress!!.latitude
                 mLon = mUserAddress!!.longitude
-                if(mAddress != "" && mAddress != mUserAddress!!.mainAddress){
+                if (mAddress != "" && mAddress != mUserAddress!!.mainAddress) {
                     toggle()
                     mAddress = mUserAddress!!.mainAddress
                 }
                 // 치타배달
                 HomeService(this).tryGetCheetahCount(mLat, mLon)
-                getMainData()  // 홈 데이터
+                getMainData(version)  // 홈 데이터
             } else {
                 // 유저가 선택한 주소 없음
                 gpsCheck()
@@ -756,7 +798,8 @@ class HomeFragment() :
 
     override fun onUserCheckAddressFailure(message: String) {
         // showCustomToast("유저 선택 주소 실패")
-        val img = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA1MjdfNTUg%2FMDAxNjIyMTEzMDg3Njc5.J0L7A04dtBVEKOcBVbdbKmJFgHq12BTAAq3fDHFlQoIg.0vN8BoEqOEQjqhU3i-Q7s6MFWbrQ4ElJiJfGWWxoeBQg.JPEG.hs_1472%2Foutput_2445714095.jpg&type=sc960_832"
+        val img =
+            "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA1MjdfNTUg%2FMDAxNjIyMTEzMDg3Njc5.J0L7A04dtBVEKOcBVbdbKmJFgHq12BTAAq3fDHFlQoIg.0vN8BoEqOEQjqhU3i-Q7s6MFWbrQ4ElJiJfGWWxoeBQg.JPEG.hs_1472%2Foutput_2445714095.jpg&type=sc960_832"
         val categoryList = ArrayList<StoreCategories>()
         categoryList.add(StoreCategories("햄버거", img))
         categoryList.add(StoreCategories("햄버거", img))
@@ -771,10 +814,58 @@ class HomeFragment() :
         salseList.add(OnSaleStores(4, img, "분식점", null, "1.0km", "5,000원"))
         salseList.add(OnSaleStores(5, img, "분식점", null, "1.5km", "3,000원"))
         val recommendList = ArrayList<RecommendStores>()
-        recommendList.add(RecommendStores(1, arrayListOf(img), "분식점", "Y","4.5", "1.7km", "2,000원", "10~20분", null))
-        recommendList.add(RecommendStores(2, arrayListOf(img), "분식점", "Y","3.5", "1.5km", "2,000원", "10~20분", null))
-        recommendList.add(RecommendStores(3, arrayListOf(img), "분식점", "N","1.5", "1km", "2,000원", "10~20분", null))
-        recommendList.add(RecommendStores(4, arrayListOf(img), "분식점", "Y","2.5", "1km", "2,000원", "10~20분", null))
+        recommendList.add(
+            RecommendStores(
+                1,
+                arrayListOf(img),
+                "분식점",
+                "Y",
+                "4.5",
+                "1.7km",
+                "2,000원",
+                "10~20분",
+                null
+            )
+        )
+        recommendList.add(
+            RecommendStores(
+                2,
+                arrayListOf(img),
+                "분식점",
+                "Y",
+                "3.5",
+                "1.5km",
+                "2,000원",
+                "10~20분",
+                null
+            )
+        )
+        recommendList.add(
+            RecommendStores(
+                3,
+                arrayListOf(img),
+                "분식점",
+                "N",
+                "1.5",
+                "1km",
+                "2,000원",
+                "10~20분",
+                null
+            )
+        )
+        recommendList.add(
+            RecommendStores(
+                4,
+                arrayListOf(img),
+                "분식점",
+                "Y",
+                "2.5",
+                "1km",
+                "2,000원",
+                "10~20분",
+                null
+            )
+        )
 
         val category = categoryList
         val salse = salseList
@@ -788,28 +879,46 @@ class HomeFragment() :
         binding.homeRecommendRecyclerview.visibility = View.VISIBLE
 
         val eventList = ArrayList<Events>()
-        eventList.add(Events(1, "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fznvkdzero.JPG?alt=media&token=9b8d4dc2-7d1a-492e-b114-c41ed1f12d53"))
-        eventList.add(Events(2,"https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fenfpwnfm.JPG?alt=media&token=1d513824-440b-4260-ac1e-5832660988e4"))
-        eventList.add(Events(3, "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fdsaaddsa.JPG?alt=media&token=9a2769bb-285e-47d8-974e-00c5dcd0f726"))
+        eventList.add(
+            Events(
+                1,
+                "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fznvkdzero.JPG?alt=media&token=9b8d4dc2-7d1a-492e-b114-c41ed1f12d53"
+            )
+        )
+        eventList.add(
+            Events(
+                2,
+                "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fenfpwnfm.JPG?alt=media&token=1d513824-440b-4260-ac1e-5832660988e4"
+            )
+        )
+        eventList.add(
+            Events(
+                3,
+                "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fdsaaddsa.JPG?alt=media&token=9a2769bb-285e-47d8-974e-00c5dcd0f726"
+            )
+        )
 
         setEvent(eventList)
     }
 
     override fun onGetHomeDataSuccess(response: HomeInfoResponse) {
         if (response.code == 1000) {
-            if (version == 1) {
+            if (mGetMainDateFirst == "first") {
+                binding.homeScrollView.scrollTo(0, 0)
                 val events = response.result.events
                 val category = response.result.storeCategories
                 val salse = response.result.onSaleStores
                 val new = response.result.newStores
                 val recommend = response.result.recommendStores
-                if(events != null){
+                if (events != null) {
                     setEvent(events)
                 } else {
                     // 임시 이벤트 설정
-                    setEvent(arrayListOf(
-                        Events(1, null, R.drawable.isaac_event),
-                        Events(2, null, R.drawable.bbq_event))
+                    setEvent(
+                        arrayListOf(
+                            Events(1, null, R.drawable.isaac_event),
+                            Events(2, null, R.drawable.bbq_event)
+                        )
                     )
                 }
                 setCategory(category)
@@ -833,26 +942,90 @@ class HomeFragment() :
                     setRecommend(recommend)
                     binding.homeRecommendRecyclerview.visibility = View.VISIBLE
                     binding.noSuperParent.itemNoSuperParent.visibility = View.GONE
+                    Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                        binding.homeScrollView.mHeaderParentPosition = binding.homeRecommendSuper.top.toFloat()
+                        binding.homeScrollView.mHeaderInitPosition =
+                            binding.homeFilterParent.top.toFloat() ?: 0f
+                        setStickyScroll()
+                    }, 200)
                 } else {
                     binding.homeRecommendRecyclerview.visibility = View.GONE
                     binding.noSuperParent.itemNoSuperParent.visibility = View.VISIBLE
+                    Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                        setStickyScroll()
+                    }, 200)
                 }
-            } else {
+                //resetFilter("second")
+                refreshFilter()
+
+            } else if (mGetMainDateFirst == "filter") {
                 // 주변 매장 맛집 필터
                 val recommend = response.result.recommendStores
                 if (recommend != null) {
-                    setRecommend(recommend)
+                    if (recommend.size > 0) {
+                        (binding.homeRecommendRecyclerview.adapter as RecommendAdapter).changeItem(
+                            recommend
+                        )
+                    }
+                    // 스크롤 맛집 필터 맨 위로 올림
+                    val position =
+                        binding.homeScrollView.mHeaderInitPosition + binding.homeScrollView.mHeaderParentPosition
+                    binding.homeScrollView.scrollTo(0, position.toInt())
+
                     binding.homeRecommendRecyclerview.visibility = View.VISIBLE
                     binding.noSuperParent.itemNoSuperParent.visibility = View.GONE
                 } else {
                     binding.homeRecommendRecyclerview.visibility = View.GONE
                     binding.noSuperParent.itemNoSuperParent.visibility = View.VISIBLE
                 }
+            } else if (mGetMainDateFirst == "address"){
+                // address 체인지
+                binding.homeScrollView.scrollTo(0, 0)
+                val result = response.result
+                if (result.newStores != null && result.newStores.size > 0) {
+                    if (binding.homeNewSuperRecyclerview.adapter == null) {
+                        setNew(result.newStores)
+                    }
+                    else (binding.homeNewSuperRecyclerview.adapter as NewAdapter).changeItem(result.newStores)
+                    binding.homeNewSuper.visibility = View.VISIBLE
+                    binding.homeNewLine.visibility = View.VISIBLE
+                } else {
+                    binding.homeNewSuper.visibility = View.GONE
+                    binding.homeNewLine.visibility = View.GONE
+                }
+                if (result.onSaleStores != null && result.onSaleStores.size > 0) {
+                    if (binding.homeDiscountSuperRecyclerview.adapter == null){
+                        setOnSalse(result.onSaleStores)
+                    }
+                    else (binding.homeDiscountSuperRecyclerview.adapter as SalseAdapter).changeItem(
+                        result.onSaleStores
+                    )
+                    binding.homeDiscountSuper.visibility = View.VISIBLE
+                    binding.homeDiscountLine.visibility = View.VISIBLE
+                } else {
+                    binding.homeDiscountSuper.visibility = View.GONE
+                    binding.homeDiscountLine.visibility = View.GONE
+                }
+                if (result.recommendStores != null && result.recommendStores.size > 0) {
+                    if (binding.homeRecommendRecyclerview.adapter == null) {
+                        setRecommend(result.recommendStores)
+                    }
+                    else (binding.homeRecommendRecyclerview.adapter as RecommendAdapter).changeItem(
+                        result.recommendStores
+                    )
+                    binding.homeRecommendRecyclerview.visibility = View.VISIBLE
+                    binding.noSuperParent.itemNoSuperParent.visibility = View.GONE
+                } else {
+                    binding.homeRecommendRecyclerview.visibility = View.GONE
+                    binding.noSuperParent.itemNoSuperParent.visibility = View.VISIBLE
+                }
+                Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                    binding.homeScrollView.mHeaderParentPosition = binding.homeRecommendSuper.top.toFloat()
+                    binding.homeScrollView.mHeaderInitPosition =
+                        binding.homeFilterParent.top.toFloat() ?: 0f
+                }, 200)
             }
-            if(mStickyCount <= 0){
-                resetFilter()
-                mStickyCount = 1
-            }
+
         }
     }
 
@@ -874,7 +1047,7 @@ class HomeFragment() :
     }
 
     override fun onGetCheetahCountSuccess(response: CheetahCountResponse) {
-        if(response.code == 1000){
+        if (response.code == 1000) {
             val cheetahText = "내 도착하는 맛집 ${response.result.count}개!"
             binding.homeCheetahBannerText.text = cheetahText
             mCheetahNum = response.result.count
@@ -926,7 +1099,7 @@ class HomeFragment() :
     }
 
     // 이벤트 상세 보기
-    fun startEventItem(eventIdx: Int){
+    fun startEventItem(eventIdx: Int) {
         val intent = Intent(requireContext(), EventItemActivity::class.java).apply {
             this.putExtra("eventIdx", eventIdx)
         }
@@ -938,7 +1111,7 @@ class HomeFragment() :
         val size = eventList.size
         binding.homeEventBannerViewpager.adapter = EventAdapter(eventList, this)
         binding.homeEventBannerViewpager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-        binding.homeEventBannerViewpager.setCurrentItem(size*50, false)
+        binding.homeEventBannerViewpager.setCurrentItem(size * 50, false)
 
         val str = " / $size"
         binding.homeEventPageNumTotal.text = str
@@ -946,27 +1119,29 @@ class HomeFragment() :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                binding.homeEventPageNum.text = (position%size + 1).toString()
+                binding.homeEventPageNum.text = (position % size + 1).toString()
             }
 
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
-                when(state){
+                when (state) {
                     // 멈춰있을 때
                     ViewPager2.SCROLL_STATE_IDLE -> autoScrollStart(intervalTime)
                     ViewPager2.SCROLL_STATE_DRAGGING -> autoScrollStop()
-                    ViewPager2.SCROLL_STATE_SETTLING -> { }
+                    ViewPager2.SCROLL_STATE_SETTLING -> {
+                    }
                 }
             }
         })
 
     }
+
     private fun autoScrollStart(intervalTime: Long) {
         myHandler.removeMessages(0) // 이거 안하면 핸들러가 1개, 2개, 3개 ... n개 만큼 계속 늘어남
         myHandler.sendEmptyMessageDelayed(0, intervalTime) // intervalTime 만큼 반복해서 핸들러를 실행하게 함
     }
 
-    private fun autoScrollStop(){
+    private fun autoScrollStop() {
         myHandler.removeMessages(0) // 핸들러를 중지시킴
     }
 
@@ -974,7 +1149,7 @@ class HomeFragment() :
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
 
-            if(msg.what == 0) {
+            if (msg.what == 0) {
                 val count = binding.homeEventBannerViewpager.currentItem + 1
                 binding.homeEventBannerViewpager.setCurrentItem(count, true) // 다음 페이지로 이동
                 autoScrollStart(intervalTime) // 스크롤을 계속 이어서 한다.
@@ -986,6 +1161,14 @@ class HomeFragment() :
     override fun onPause() {
         super.onPause()
         autoScrollStop()
+        if(mAddressQuestionFlag){
+            binding.homeAddressQuestion.visibility = View.GONE
+            mAddressQuestionFlag = false
+        }
+        if(mAddressQuestionHandlerFlag){
+            mAddressQuestionHandler.removeCallbacks(mAddressQuestionRunnable!!)
+            mAddressQuestionHandlerFlag = false
+        }
     }
 
     fun setCategory(categoryList: ArrayList<StoreCategories>) {
@@ -1006,25 +1189,16 @@ class HomeFragment() :
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 
-    fun setRecommend(recommendList: ArrayList<RecommendStores>) {
+    private fun setRecommend(recommendList: ArrayList<RecommendStores>) {
         binding.homeRecommendRecyclerview.adapter = RecommendAdapter(recommendList, this)
         binding.homeRecommendRecyclerview.layoutManager = LinearLayoutManager(requireContext())
 
-        if(mStickyCount != 0){
-            // 스크롤 올림
-            if(mStickyCount > 1){
-                val position = binding.homeScrollView.mHeaderInitPosition + binding.homeScrollView.mHeaderParentPosition
-                binding.homeScrollView.scrollTo(0, position.toInt())
-            } else {
-                mStickyCount++
-            }
-        }
     }
 
-    fun priceIntToString(value: Int) : String {
+    fun priceIntToString(value: Int): String {
         val target = value.toString()
         val size = target.length
-        return if(size > 3){
+        return if (size > 3) {
             val last = target.substring(size - 3 until size)
             val first = target.substring(0..(size - 4))
             "$first,$last"

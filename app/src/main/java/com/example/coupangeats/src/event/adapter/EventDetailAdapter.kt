@@ -18,7 +18,12 @@ class EventDetailAdapter(val eventList: ArrayList<EventDetail>, val activity: Ev
         val back = itemView.findViewById<View>(R.id.item_event_detail_back)
         fun bind(event: EventDetail){
             Glide.with(img).load(event.bannerUrl ?: event.bannerTemp).into(img)
-            endDate.text = event.endDate
+            if(event.endDate == null){
+                endDate.visibility = View.GONE
+            } else {
+                endDate.visibility = View.VISIBLE
+                endDate.text = event.endDate
+            }
 
             back.setOnClickListener {
                 // 이벤트 보러가야함

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:paddingHorizontal="15dp"
@@ -9,6 +9,7 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:id="@+id/item_event_detail_parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
@@ -36,11 +37,14 @@
             android:textSize="12sp"
             tools:ignore="SmallSp" />
 
-        <View
-            android:id="@+id/item_event_detail_back"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignBottom="@+id/item_event_detail_img"
-            android:foreground="@drawable/transport_ripple_image"/>
     </RelativeLayout>
-</LinearLayout>
+
+    <View
+        android:id="@+id/item_event_detail_back"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:foreground="@drawable/transport_ripple_image"
+        android:layout_alignBottom="@+id/item_event_detail_parent"/>
+
+</RelativeLayout>

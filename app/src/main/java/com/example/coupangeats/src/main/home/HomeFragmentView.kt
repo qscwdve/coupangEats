@@ -5,7 +5,7 @@ import com.example.coupangeats.src.main.home.model.cheetahCount.CheetahCountResp
 import com.example.coupangeats.src.main.home.model.userCheckAddress.UserCheckResponse
 
 interface HomeFragmentView {
-    fun onUserCheckAddressSuccess(response: UserCheckResponse)
+    fun onUserCheckAddressSuccess(response: UserCheckResponse, version: String)
     fun onUserCheckAddressFailure(message: String)
 
     fun onGetHomeDataSuccess(response: HomeInfoResponse)

@@ -19,7 +19,7 @@ import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.main.home.model.HomeInfo.OnSaleStores
 import org.w3c.dom.Text
 
-class SalseAdapter(val saleList: ArrayList<OnSaleStores>, val fragment: HomeFragment) : RecyclerView.Adapter<SalseAdapter.SalseViewHolder>() {
+class SalseAdapter(var saleList: ArrayList<OnSaleStores>, val fragment: HomeFragment) : RecyclerView.Adapter<SalseAdapter.SalseViewHolder>() {
 
     class SalseViewHolder(itemView: View, val salseAdapter: SalseAdapter) : RecyclerView.ViewHolder(itemView) {
         val img = itemView.findViewById<ImageView>(R.id.item_salse_super_img)
@@ -66,10 +66,13 @@ class SalseAdapter(val saleList: ArrayList<OnSaleStores>, val fragment: HomeFrag
 
             slaseParent.setOnClickListener {
                 // 가게 선택함
+                salseAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
                 salseAdapter.fragment.startSuper(item.storeIdx)
             }
 
             itemView.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_UP)
+                    salseAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
                 if(!salseAdapter.fragment.mScrollFinish) {
                     if (event.action == MotionEvent.ACTION_UP) {
                         if (salseAdapter.fragment.mScrollStart) {
@@ -101,4 +104,9 @@ class SalseAdapter(val saleList: ArrayList<OnSaleStores>, val fragment: HomeFrag
     }
 
     override fun getItemCount(): Int = saleList.size
+
+    fun changeItem(array: ArrayList<OnSaleStores>){
+        saleList = array
+        notifyDataSetChanged()
+    }
 }

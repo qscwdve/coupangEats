@@ -19,7 +19,7 @@ import com.example.coupangeats.src.main.home.model.HomeInfo.NewStores
 import org.w3c.dom.DocumentFragment
 import org.w3c.dom.Text
 
-class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment): RecyclerView.Adapter<NewAdapter.NewViewHolder>() {
+class NewAdapter(var newList: ArrayList<NewStores>, val fragment: HomeFragment): RecyclerView.Adapter<NewAdapter.NewViewHolder>() {
 
     class NewViewHolder(itemView: View, val newAdapter: NewAdapter) : RecyclerView.ViewHolder(itemView) {
         val img = itemView.findViewById<ImageView>(R.id.item_new_super_img)
@@ -80,11 +80,14 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
 
             newParent.setOnClickListener {
                 // 매장 선택
+                newAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
                 newAdapter.fragment.startSuper(item.storeIdx)
             }
 
             // home 치타배달 관련 스크롤
             itemView.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_UP)
+                    newAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
                 if(!newAdapter.fragment.mScrollFinish) {
                     if (event.action == MotionEvent.ACTION_UP) {
                         if (newAdapter.fragment.mScrollStart) {
@@ -116,4 +119,9 @@ class NewAdapter(val newList: ArrayList<NewStores>, val fragment: HomeFragment):
     }
 
     override fun getItemCount(): Int = newList.size
+
+    fun changeItem(array: ArrayList<NewStores>){
+        newList = array
+        notifyDataSetChanged()
+    }
 }

@@ -14,7 +14,7 @@ import com.example.coupangeats.R
 import com.example.coupangeats.src.main.home.HomeFragment
 import com.example.coupangeats.src.main.home.model.HomeInfo.RecommendStores
 
-class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragment: HomeFragment) : RecyclerView.Adapter<RecommendAdapter.RecommendViewHolder>(){
+class RecommendAdapter(var recommendList: ArrayList<RecommendStores>, val fragment: HomeFragment) : RecyclerView.Adapter<RecommendAdapter.RecommendViewHolder>(){
     var stickyFlag = false
     class RecommendViewHolder(itemView: View, val recommendAdapter: RecommendAdapter) : RecyclerView.ViewHolder(itemView) {
         val mainimg = itemView.findViewById<ImageView>(R.id.item_recommend_img)
@@ -83,6 +83,8 @@ class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragme
                 couponParent.visibility = View.GONE
             }
             itemView.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_UP)
+                    recommendAdapter.fragment.setAddressQuestionDown()   // 배달주소 맞는지 물어보는거 내림
                 if(!recommendAdapter.fragment.mScrollFinish) {
                     if (event.action == MotionEvent.ACTION_UP) {
                         if (recommendAdapter.fragment.mScrollStart) {
@@ -121,4 +123,9 @@ class RecommendAdapter(val recommendList: ArrayList<RecommendStores>, val fragme
     }
 
     override fun getItemCount(): Int = recommendList.size
+
+    fun changeItem(array : ArrayList<RecommendStores>){
+        recommendList = array
+        notifyDataSetChanged()
+    }
 }

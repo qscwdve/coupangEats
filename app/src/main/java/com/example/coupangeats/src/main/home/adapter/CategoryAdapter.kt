@@ -33,6 +33,7 @@ class CategoryAdapter(val categoryList: ArrayList<StoreCategories>, val fragment
             }
 
             itemView.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_UP) categoryAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
                 if(!categoryAdapter.fragment.mScrollFinish) {
                     if (event.action == MotionEvent.ACTION_UP) {
                         if (categoryAdapter.fragment.mScrollStart) {
@@ -50,6 +51,7 @@ class CategoryAdapter(val categoryList: ArrayList<StoreCategories>, val fragment
                 false
             }
             itemView.setOnClickListener {
+                categoryAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
                 categoryAdapter.fragment.startCategorySuper(item.categoryName)
             }
 

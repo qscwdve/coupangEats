@@ -13,7 +13,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class HomeService(val view: HomeFragmentView) {
-    fun tryGetUserCheckAddress(userIdx: Int){
+    fun tryGetUserCheckAddress(userIdx: Int, version: String){
         val homeRetrofitInterface = ApplicationClass.sRetrofit.create(HomeRetrofitInterface::class.java)
         homeRetrofitInterface.getUserCheckAddress(userIdx)
             .enqueue(object : Callback<UserCheckResponse>{
@@ -21,7 +21,7 @@ class HomeService(val view: HomeFragmentView) {
                     call: Call<UserCheckResponse>,
                     response: Response<UserCheckResponse>
                 ) {
-                    view.onUserCheckAddressSuccess(response.body() as UserCheckResponse)
+                    view.onUserCheckAddressSuccess(response.body() as UserCheckResponse, version)
                 }
 
                 override fun onFailure(call: Call<UserCheckResponse>, t: Throwable) {

@@ -26,10 +26,12 @@ class EventAdapter(val eventList: ArrayList<Events>, val fragment: HomeFragment)
             Glide.with(adapter.fragment.requireContext()).load(item.url ?: item.urlTemp ?: R.drawable.bbq_event).into(eventImg)
 
             back.setOnClickListener {
+                adapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
                 adapter.fragment.startEventItem(item.eventIdx)
             }
 
             itemView.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_UP) adapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
                 if(!adapter.fragment.mScrollFinish) {
                     if (event.action == MotionEvent.ACTION_UP) {
                         if (adapter.fragment.mScrollStart) {
