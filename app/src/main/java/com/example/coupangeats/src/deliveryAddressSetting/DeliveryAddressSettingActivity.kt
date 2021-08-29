@@ -282,7 +282,7 @@ class DeliveryAddressSettingActivity() :
                 latitude = address.latitude.toString()
                 longiute = address.longitude.toString()
             }
-            Log.d("addressSetting", "subAdress : ${searchAddress.subAddress}, main : ${searchAddress.mainAddress}")
+            // Log.d("addressSetting", "subAdress : ${searchAddress.subAddress}, main : ${searchAddress.mainAddress}")
         }
 
         if(latitude != "" && longiute != ""){

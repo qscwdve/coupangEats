@@ -92,7 +92,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         }
 
         // 뒤로가기 누름
-        binding.basicLoginBack.setOnClickListener { finish() }
+        binding.basicLoginBack.setOnClickListener {
+            setResult(RESULT_CANCELED)
+            finish()
+        }
 
         // 로그인 하기
         binding.loginSend.setOnClickListener {
@@ -143,6 +146,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
                 edit.apply()
                 Log.d("jwt", "${result.jwt}")
                 mLoginCheck = true
+                setResult(RESULT_OK)
                 finish()
             }
             else {
@@ -210,5 +214,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(ActivityLoginBinding::i
         loginCheckBinding.dialogLoginCheckOkBtn.setOnClickListener {
             alertDialog.dismiss()
         }
+    }
+
+    override fun onBackPressed() {
+        setResult(RESULT_CANCELED)
+        super.onBackPressed()
     }
 }

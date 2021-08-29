@@ -23,7 +23,7 @@ class LoginBottomSheetDialog(val mainActivity: MainActivity) : BottomSheetDialog
 
         binding.dialogLoginSignUpParent.setOnClickListener {
             // 회원가입
-            startActivity(Intent(activity, SignUpActivity::class.java))
+            startActivity(Intent(mainActivity, SignUpActivity::class.java))
         }
         binding.dialogLoginBasic.setOnClickListener {
             // 쿠팡 아이디로 로그인

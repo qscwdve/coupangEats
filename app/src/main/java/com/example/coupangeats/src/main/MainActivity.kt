@@ -183,6 +183,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
     fun loginBottomSheetDialogDismiss() {
         loginBottomSheetDialog.dismiss()
+        val home = supportFragmentManager.findFragmentByTag("homeFragment") as HomeFragment
+        home.startUserCheckAddress()
     }
     fun loginBottomSheetDialogShow(){
         loginBottomSheetDialog.show(supportFragmentManager, "Login")
@@ -362,8 +364,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         if(response.code == 1000){
             setLoginUserIdxAndJwt(response.result.userIdx, response.result.jwt)
             val home = supportFragmentManager.findFragmentByTag("homeFragment") as HomeFragment
-            home.startUserAddressCheckAndGetMainDate()
-
+            home.startUserCheckAddress()
         } else {
             showCustomToast("카카오 로그인에 실패하였습니다.")
         }

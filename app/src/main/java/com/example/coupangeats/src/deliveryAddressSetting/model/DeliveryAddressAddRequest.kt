@@ -8,5 +8,7 @@ data class DeliveryAddressAddRequest(
     @SerializedName("detailAddress") val detailAddress : String? = null,
     @SerializedName("aliasType") val aliasType : String,
     @SerializedName("alias") val alias : String? = null,
-    @SerializedName("userIdx") val userIdx : Int
+    @SerializedName("userIdx") val userIdx : Int,
+    @SerializedName("latitude") val latitude: String,
+    @SerializedName("longitude") val longitude: String
 )

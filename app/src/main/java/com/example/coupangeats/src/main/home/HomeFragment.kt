@@ -682,9 +682,13 @@ class HomeFragment() :
             // 토글 해야함, addressQuestion
             setAddressQuestion()
             toggle()
-            Log.d("toggle", "토글함")
+            // Log.d("toggle", "토글함")
             HomeService(this).tryGetUserCheckAddress(getUserIdx(), "address")
         }
+    }
+
+    fun startUserCheckAddress(){
+        HomeService(this).tryGetUserCheckAddress(getUserIdx(), "first")
     }
 
     fun getUserIdx(): Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)

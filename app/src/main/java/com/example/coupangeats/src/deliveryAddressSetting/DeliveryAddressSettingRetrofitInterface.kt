@@ -18,7 +18,7 @@ interface DeliveryAddressSettingRetrofitInterface {
     @PATCH("/users/{userIdx}/pick/addresses/{addressIdx}")
     fun pathUserCheckedAddress(@Path("userIdx") userIdx: Int, @Path("addressIdx") addressIdx: Int) : Call<UserCheckedAddressResponse>
 
-    @POST("/addresses")
+    @POST("/address")
     fun postDeliveryAddressAdd(@Body param: DeliveryAddressAddRequest) : Call<DeliveryAddressResponse>
 
     // 도로명주소 API

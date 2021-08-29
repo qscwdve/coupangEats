@@ -241,7 +241,7 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
                 val roadAddress = binding.detailAddressRoadAddress.text.toString()
                 val detailAddress = if(binding.detailAddressDetailText.text.toString().isNotEmpty()) binding.detailAddressDetailText.text.toString() else null
                 val alias = if(binding.detailAddressAliasEditText.text.toString() == "") null else binding.detailAddressAliasEditText.text.toString()
-                val deliveryAddressModifyRequest = DeliveryAddressModifyRequest(address, roadAddress, detailAddress, aliasType, alias)
+                val deliveryAddressModifyRequest = DeliveryAddressModifyRequest(address, roadAddress, detailAddress, aliasType, alias, setAddressString(mLat), setAddressString(mLon))
                 DetailAddressService(this).tryDeliveryAddressModify(getUserIdx(), addressIdx, deliveryAddressModifyRequest)
             } else {
                 // delete
@@ -253,10 +253,24 @@ class DetailAddressFragment : BaseFragment<FragmentDeliveryDetailAddressBinding>
             // if(aliasType == "HOME") mMainAddress = "집" else if(aliasType == "COMPANY") mMainAddress = "회사"
             val mainAddress = binding.detailAddressMainAddress.text.toString()
             val roadAddress = binding.detailAddressRoadAddress.text.toString()
-            val deliveryAddressAddRequest = DeliveryAddressAddRequest(mainAddress, roadAddress, detailAddress, aliasType, alias, getUserIdx())
+            val deliveryAddressAddRequest = DeliveryAddressAddRequest(mainAddress, roadAddress, detailAddress, aliasType, alias, getUserIdx(), setAddressString(mLat), setAddressString(mLon))
             (activity as DeliveryAddressSettingActivity).startDeliveryAdd(deliveryAddressAddRequest)
         }
 
+    }
+    private fun setAddressString(address: String) : String {
+        var str = ""
+        var count = 0
+        var flag = false
+        for(element in address){
+            str += element
+            if(element == '.') flag = true
+            if(flag){
+                count++
+                if(count > 10) break
+            }
+        }
+        return str
     }
     private fun showDialogDetailAddressDelete() {
         val detailAddressDeleteBinding = DialogDetailAddressDeleteBinding.inflate(layoutInflater)

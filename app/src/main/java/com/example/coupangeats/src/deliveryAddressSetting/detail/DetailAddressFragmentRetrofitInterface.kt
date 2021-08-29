@@ -14,6 +14,6 @@ interface DetailAddressFragmentRetrofitInterface {
     @PATCH("/users/{userIdx}/addresses/{addressIdx}/status")
     fun pathDeliveryAddressDelete(@Path("userIdx") userIdx: Int, @Path("addressIdx") addressIdx : Int) : Call<DeliveryAddressDeleteResponse>
 
-    @PATCH("/users/{userIdx}/addresses/{addressIdx}")
+    @PATCH("/users/{userIdx}/address/{addressIdx}")
     fun pathDeliveryAddressModify(@Path("userIdx") userIdx: Int, @Path("addressIdx") addressIdx : Int, @Body params: DeliveryAddressModifyRequest) : Call<DeliveryAddressModifyResponse>
 }
