@@ -937,10 +937,8 @@ class HomeFragment() :
                 if (new != null) {
                     setNew(new)
                     binding.homeNewSuper.visibility = View.VISIBLE
-                    binding.homeNewLine.visibility = View.VISIBLE
                 } else {
                     binding.homeNewSuper.visibility = View.GONE
-                    binding.homeNewLine.visibility = View.GONE
                 }
                 if (recommend != null) {
                     setRecommend(recommend)
@@ -992,10 +990,8 @@ class HomeFragment() :
                     }
                     else (binding.homeNewSuperRecyclerview.adapter as NewAdapter).changeItem(result.newStores)
                     binding.homeNewSuper.visibility = View.VISIBLE
-                    binding.homeNewLine.visibility = View.VISIBLE
                 } else {
                     binding.homeNewSuper.visibility = View.GONE
-                    binding.homeNewLine.visibility = View.GONE
                 }
                 if (result.onSaleStores != null && result.onSaleStores.size > 0) {
                     if (binding.homeDiscountSuperRecyclerview.adapter == null){
@@ -1078,7 +1074,7 @@ class HomeFragment() :
             this.putExtra("categoryName", option)
             this.putExtra("cheetah", mCheetahNum)
         }
-        Log.d("위도", "lat: $mLat 경도: $mLon")
+        // Log.d("위도", "lat: $mLat 경도: $mLon")
         startActivity(intent)
     }
 

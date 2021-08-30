@@ -9,7 +9,7 @@ data class prepareOrder(
     @SerializedName("imageUrl") val imageUrl: String?,
     @SerializedName("orderDate") val orderDate: String,
     @SerializedName("status") val status: String,
-    @SerializedName("orderMenus") val orderMenus: ArrayList<orderMenu>,
+    @SerializedName("orderMenus") val OrderMenus: ArrayList<OrderMenu>,
     @SerializedName("orderPrice") val orderPrice: String,
     @SerializedName("deliveryPrice") val deliveryPrice: String,
     @SerializedName("discountPrice") val discountPrice: String,

@@ -7,16 +7,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
-import com.example.coupangeats.src.main.order.model.orderMenu
+import com.example.coupangeats.src.main.order.model.OrderMenu
 
-class OrderMenuAdapter(val orderMenuList: ArrayList<orderMenu>) : RecyclerView.Adapter<OrderMenuAdapter.OrderMenuViewHolder>(){
+class OrderMenuAdapter(val orderMenuList: ArrayList<OrderMenu>) : RecyclerView.Adapter<OrderMenuAdapter.OrderMenuViewHolder>(){
     class OrderMenuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val num = itemView.findViewById<TextView>(R.id.item_order_menu_num)
         val name = itemView.findViewById<TextView>(R.id.item_order_menu_name)
         val side = itemView.findViewById<TextView>(R.id.item_order_menu_side)
         val like = itemView.findViewById<ImageView>(R.id.item_order_menu_like)
 
-        fun bind(menu: orderMenu) {
+        fun bind(menu: OrderMenu) {
             num.text = menu.count.toString()
             name.text = menu.menuName
             if(menu.menuDetail == null || menu.menuDetail == ""){

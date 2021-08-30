@@ -1,7 +1,6 @@
 package com.example.coupangeats.src.main.order.past.adapter
 
 import android.graphics.Color
-import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BackgroundColorSpan
@@ -12,8 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
-import com.example.coupangeats.src.main.order.adapter.OrderMenuAdapter
-import com.example.coupangeats.src.main.order.model.orderMenu
 import com.example.coupangeats.src.main.order.past.model.PastOrderMenu
 
 class PastOrderMenuAdapter(val orderMenuList: ArrayList<PastOrderMenu>, val keyword: String? = null) : RecyclerView.Adapter<PastOrderMenuAdapter.PastOrderMenuViewHolder>(){

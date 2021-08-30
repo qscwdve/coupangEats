@@ -1,25 +1,24 @@
 package com.example.coupangeats.src.main.order.past
 
-import android.accessibilityservice.AccessibilityService
+import android.app.Activity
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.graphics.Rect
-import android.media.MediaDrm
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
-import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.FragmentOrderPastBinding
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
 import com.example.coupangeats.src.main.MainActivity
 import com.example.coupangeats.src.main.order.dialog.ReceiptPastDialog
-import com.example.coupangeats.src.main.order.model.pastOrder
+import com.example.coupangeats.src.main.order.model.PastOrder
 import com.example.coupangeats.src.main.order.past.adapter.PastOrderAdapter
 import com.example.coupangeats.src.main.order.past.model.OrderPastInfoResponse
 import com.example.coupangeats.src.main.order.past.model.PastOrderMenu
@@ -29,18 +28,30 @@ import com.example.coupangeats.src.searchDetail.SearchDetailActivity
 import com.softsquared.template.kotlin.config.ApplicationClass
 import com.softsquared.template.kotlin.config.BaseFragment
 
-class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentOrderPastBinding>(FragmentOrderPastBinding::bind, R.layout.fragment_order_past), OrderPastFragmentView {
+class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentOrderPastBinding>(
+    FragmentOrderPastBinding::bind,
+    R.layout.fragment_order_past
+), OrderPastFragmentView {
     private var mIsSearch = false
     private var mIsSearchRequest = false
     private var mKeyword = ""
     private lateinit var imm: InputMethodManager
     private var mKeyboardStatus = false
+    lateinit var reviewWriteLauncher: ActivityResultLauncher<Intent>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         imm = requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         binding.orderPastSearchText.clearFocus()
 
+        // 리뷰 쓰러가기 result
+        reviewWriteLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    // refresh 필요
+                    OrderPastService(this).tryGetOrderPastInfo(getUserIdx())
+                }
+            }
         // 키보드 상태 확인
         setKeyBoardListener()
 
@@ -49,8 +60,8 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
         OrderPastService(this).tryGetOrderPastInfo(getUserIdx())
 
         binding.orderPastSearchText.setOnFocusChangeListener { v, hasFocus ->
-            if(hasFocus){
-                if(!mIsSearch){
+            if (hasFocus) {
+                if (!mIsSearch) {
                     mIsSearch = true
                     binding.orderPastTransportMenu.visibility = View.VISIBLE
                     binding.orderPastSearchText.hint = "메뉴/매장명 입력"
@@ -67,7 +78,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
         // 검색 아이콘 선택
         binding.orderPastSearchImg.setOnClickListener {
             val keyword = binding.orderPastSearchText.text.toString()
-            if(keyword != ""){
+            if (keyword != "") {
                 mKeyword = keyword
                 // 요청중..
                 mIsSearchRequest = true
@@ -83,7 +94,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
 
         binding.orderPastSearchDelete.setOnClickListener {
             // 엑스 버튼 누름
-            if(mIsSearch){
+            if (mIsSearch) {
                 binding.orderPastSearchText.setText("")
                 binding.orderPastSearchDelete.visibility = View.GONE
             } else {
@@ -96,11 +107,11 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
         }
 
         binding.orderPastSearchText.setOnKeyListener { v, keyCode, event ->
-            if((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+            if ((event.action == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 // 엔터키가 눌림
                 // showCustomToast("엔터키 눌림")
                 val keyword = binding.orderPastSearchText.text.toString()
-                if(keyword != ""){
+                if (keyword != "") {
                     mKeyword = keyword
                     // 요청중..
                     mIsSearchRequest = true
@@ -111,18 +122,21 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
             } else false
         }
 
-        binding.orderPastSearchText.addTextChangedListener(object : TextWatcher{
+        binding.orderPastSearchText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(mIsSearch && binding.orderPastSearchText.text.toString() == ""){
+                if (mIsSearch && binding.orderPastSearchText.text.toString() == "") {
                     binding.orderPastSearchText.requestFocus()
                 }
-               if((binding.orderPastSearchText.text.toString().isNotEmpty() && binding.orderPastSearchText.text.toString() != "")){
-                   binding.orderPastSearchDelete.visibility = View.VISIBLE
-               } else {
-                   binding.orderPastSearchDelete.visibility = View.GONE
-               }
+                if ((binding.orderPastSearchText.text.toString()
+                        .isNotEmpty() && binding.orderPastSearchText.text.toString() != "")
+                ) {
+                    binding.orderPastSearchDelete.visibility = View.VISIBLE
+                } else {
+                    binding.orderPastSearchDelete.visibility = View.GONE
+                }
             }
+
             override fun afterTextChanged(s: Editable?) {}
         })
 
@@ -137,7 +151,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
         }
     }
 
-    fun searchFocusClear(){
+    fun searchFocusClear() {
         mIsSearch = false
         binding.orderPastSearchText.setText(mKeyword)
         binding.orderPastSearchText.clearFocus()
@@ -147,47 +161,48 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
 
     }
 
-    fun getUserIdx() : Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
+    fun getUserIdx(): Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
 
-    fun lookReceipt(order: pastOrder) {
+    fun lookReceipt(order: PastOrder) {
         val receiptDialog = ReceiptPastDialog(order)
         receiptDialog.show(parentFragmentManager, "receipt")
     }
 
-    fun startDetailSuper(storeIdx: Int){
+    fun startDetailSuper(storeIdx: Int) {
         val intent = Intent(requireContext(), DetailSuperActivity::class.java).apply {
             this.putExtra("storeIdx", storeIdx)
         }
         startActivity(intent)
     }
 
-    fun startReviewWrite(orderIdx: Int, reviewIdx: Int){
-        val intent = Intent(requireContext(), ReviewWriteActivity::class.java).apply {
+    fun startReviewWrite(orderIdx: Int, reviewIdx: Int) {
+
+        reviewWriteLauncher.launch(
+            Intent(requireContext(), ReviewWriteActivity::class.java).apply {
             this.putExtra("orderIdx", orderIdx)
             this.putExtra("reviewIdx", reviewIdx)
-        }
-        startActivity(intent)
+        })
     }
 
-    fun startMyReview(orderIdx: Int, reviewIdx: Int){
-        val intent = Intent(requireContext(), MyReviewActivity::class.java).apply {
+    fun startMyReview(orderIdx: Int, reviewIdx: Int) {
+        startActivity( Intent(requireContext(), MyReviewActivity::class.java).apply {
             this.putExtra("orderIdx", orderIdx)
             this.putExtra("reviewIdx", reviewIdx)
-        }
-        startActivity(intent)
+        })
     }
 
     override fun onGetOrderPastInfoSuccess(response: OrderPastInfoResponse) {
-        if(response.code == 1000){
+        if (response.code == 1000) {
             binding.orderPastMenu.visibility = View.VISIBLE
-            if(mIsSearchRequest){
+            if (mIsSearchRequest) {
                 mIsSearchRequest = false
-                if(response.result != null){
+                if (response.result != null) {
                     binding.orderPastNoContent.visibility = View.GONE
                     binding.orderPastSearchParent.visibility = View.VISIBLE
                     binding.orderPastNotSearch.visibility = View.GONE
 
-                    binding.orderPastMenu.adapter = PastOrderAdapter(response.result, this, mKeyword)
+                    binding.orderPastMenu.adapter =
+                        PastOrderAdapter(response.result, this, mKeyword)
                     binding.orderPastMenu.layoutManager = LinearLayoutManager(requireContext())
                 } else {
                     // 맛집 결과 없음
@@ -196,8 +211,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
                     binding.orderPastNoContent.visibility = View.GONE
                     binding.orderPastMenu.visibility = View.GONE
                 }
-            }
-            else if(response.result != null){
+            } else if (response.result != null) {
                 binding.orderPastNoContent.visibility = View.GONE
                 binding.orderPastSearchParent.visibility = View.VISIBLE
                 binding.orderPastNotSearch.visibility = View.GONE
@@ -217,10 +231,27 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
     }
 
     override fun onGetOrderPastInfoFailure(message: String) {
-        val array = ArrayList<pastOrder>()
+        val array = ArrayList<PastOrder>()
         val orderMenus = ArrayList<PastOrderMenu>()
         orderMenus.add(PastOrderMenu(2, "마라탕", null, "3,000원", "Y"))
-        array.add(pastOrder(1,1,"마라탕 탕화쿵푸", null, "2020-09-02 12:22","배달완료", orderMenus, "37,000원", "3,000원", "3,000원", "37,000원","만나서 결제", null, null))
+        array.add(
+            PastOrder(
+                1,
+                1,
+                "마라탕 탕화쿵푸",
+                null,
+                "2020-09-02 12:22",
+                "배달완료",
+                orderMenus,
+                "37,000원",
+                "3,000원",
+                "3,000원",
+                "37,000원",
+                "만나서 결제",
+                null,
+                null
+            )
+        )
 
         binding.orderPastMenu.adapter = PastOrderAdapter(array, this)
         binding.orderPastMenu.layoutManager = LinearLayoutManager(requireContext())
@@ -229,7 +260,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
         binding.orderPastSearchParent.visibility = View.VISIBLE
     }
 
-    private fun setKeyBoardListener(){
+    private fun setKeyBoardListener() {
         // 키보드 상태 확인
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
 
@@ -248,14 +279,15 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
             val rect = Rect()
             mainActivity.window.decorView.getWindowVisibleDisplayFrame(rect)
 
-            val keyboardHeight = binding.root.rootView.height - (statusBarHeight + navigationBarHeight + rect.height())
+            val keyboardHeight =
+                binding.root.rootView.height - (statusBarHeight + navigationBarHeight + rect.height())
 
-            if(keyboardHeight > 0){
+            if (keyboardHeight > 0) {
                 // 키보드가 올라간 상태
                 mKeyboardStatus = true
             } else {
                 // 키보드가 내려간 상태
-                if(mKeyboardStatus && binding.orderPastTransportMenu.visibility == View.VISIBLE){
+                if (mKeyboardStatus && binding.orderPastTransportMenu.visibility == View.VISIBLE) {
                     // 올라갔다가 내려갔을 경우
                     mIsSearch = false
                     binding.orderPastSearchText.setText(mKeyword)

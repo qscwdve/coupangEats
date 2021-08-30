@@ -175,23 +175,9 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
         overridePendingTransition( R.anim.horiaon_exit, R.anim.horizon_enter)
     }
 
-    fun setStar(num: Double) {
-        binding.reviewStar1.setImageResource(R.drawable.ic_big_star_no)
-        binding.reviewStar2.setImageResource(R.drawable.ic_big_star_no)
-        binding.reviewStar3.setImageResource(R.drawable.ic_big_star_no)
-        binding.reviewStar4.setImageResource(R.drawable.ic_big_star_no)
-        binding.reviewStar5.setImageResource(R.drawable.ic_big_star_no)
-        if (num >= 0.0) binding.reviewStar1.setImageResource(R.drawable.ic_big_star)
-        if (num >= 1.0) binding.reviewStar2.setImageResource(R.drawable.ic_big_star)
-        if (num >= 2.0) binding.reviewStar3.setImageResource(R.drawable.ic_big_star)
-        if (num >= 3.0) binding.reviewStar4.setImageResource(R.drawable.ic_big_star)
-        if (num >= 4.0) binding.reviewStar5.setImageResource(R.drawable.ic_big_star)
-    }
-
-    fun startReviewInfo() {
+    private fun startReviewInfo() {
         val type = if(mPhotoReview) "photo" else null
         ReviewService(this).tryGetReviewInfo(mStoreIdx, type, mSort)
-
     }
 
     fun changeRecommendFilter(sort: String, text: String, sortNum: Int){
@@ -203,16 +189,13 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
         ReviewService(this).tryGetReviewInfo(mStoreIdx, type, mSort)
     }
 
-    fun changeReviewScroll(value: Int){
-        binding.reviewStickyScrollView.scrollTo(0, value)
-    }
-
     override fun onGetReviewInfoSuccess(response: ReviewInfoResponse) {
         if(response.code == 1000){
             binding.toolbarSuperName.text = response.result.title
             binding.reviewRating.text = response.result.totalRating.toString()  // 별점 점수
             binding.reviewNum.text = response.result.reviewCount   // 리뷰 수
-            setStar(response.result.totalRating)  // 별점
+            binding.reviewStarRating.rating = response.result.totalRating.toFloat()  // 별점
+            binding.reviewStarRating.isClickable = false
 
             val position = binding.reviewStickyScrollView.mHeaderInitPosition + binding.reviewStickyScrollView.mHeaderParentPosition
             binding.reviewStickyScrollView.scrollTo(0, position.toInt())

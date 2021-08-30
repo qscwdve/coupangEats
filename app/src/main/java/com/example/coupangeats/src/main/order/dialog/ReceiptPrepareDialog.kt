@@ -36,7 +36,7 @@ class ReceiptPrepareDialog(val menuData: prepareOrder) : DialogFragment()  {
 
         binding.dialogReceiptStoreName.text = menuData.storeName
         binding.dialogReceiptDate.text = menuData.orderDate
-        binding.dialogReceiptMenuRecyclerView.adapter = ReceiptMenuAdapter(menuData.orderMenus)
+        binding.dialogReceiptMenuRecyclerView.adapter = ReceiptMenuAdapter(menuData.OrderMenus)
         binding.dialogReceiptMenuRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val orderPrice = "${menuData.orderPrice}원"

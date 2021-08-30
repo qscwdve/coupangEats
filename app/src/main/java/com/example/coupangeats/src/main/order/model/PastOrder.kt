@@ -3,7 +3,7 @@ package com.example.coupangeats.src.main.order.model
 import com.example.coupangeats.src.main.order.past.model.PastOrderMenu
 import com.google.gson.annotations.SerializedName
 
-data class pastOrder(
+data class PastOrder(
     @SerializedName("orderIdx") val orderIdx: Int,
     @SerializedName("storeIdx") val storeIdx: Int,
     @SerializedName("storeName") val storeName: String,

@@ -2,7 +2,6 @@ package com.example.coupangeats.src.main.order.past.adapter
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.BackgroundColorSpan
@@ -16,14 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
-import com.example.coupangeats.src.main.order.adapter.OrderMenuAdapter
-import com.example.coupangeats.src.main.order.model.pastOrder
+import com.example.coupangeats.src.main.order.model.PastOrder
 import com.example.coupangeats.src.main.order.past.OrderPastFragment
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderPastFragment, val keyword: String? = null) : RecyclerView.Adapter<PastOrderAdapter.PastOrderViewHolder>() {
+class PastOrderAdapter(val orderList: ArrayList<PastOrder>, val fragment: OrderPastFragment, val keyword: String? = null) : RecyclerView.Adapter<PastOrderAdapter.PastOrderViewHolder>() {
     data class StringIndex(var start: Int, var end: Int)
     @SuppressLint("SimpleDateFormat")
     class PastOrderViewHolder(itemView: View, val fragment: OrderPastFragment, val adapter: PastOrderAdapter) : RecyclerView.ViewHolder(itemView){
@@ -47,7 +45,7 @@ class PastOrderAdapter(val orderList: ArrayList<pastOrder>, val fragment: OrderP
         val receipt = itemView.findViewById<TextView>(R.id.item_past_order_receipt)
         val superParent = itemView.findViewById<LinearLayout>(R.id.item_past_order_super_parent)
 
-        fun bind(order: pastOrder) {
+        fun bind(order: PastOrder) {
             storeName.text = setTextBackgroundColor(order.storeName)
             //setTextBackgroundColor(storeName.text as Spannable, order.storeName)
             date.text = order.orderDate

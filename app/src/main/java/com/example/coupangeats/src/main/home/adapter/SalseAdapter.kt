@@ -44,6 +44,26 @@ class SalseAdapter(var saleList: ArrayList<OnSaleStores>, val fragment: HomeFrag
                     // 할인 중인 맛집 더보기
                     salseAdapter.fragment.startSalseSuper()
                 }
+                thelook.setOnTouchListener { v, event ->
+                    if (event.action == MotionEvent.ACTION_UP)
+                        salseAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
+                    if(!salseAdapter.fragment.mScrollFinish) {
+                        if (event.action == MotionEvent.ACTION_UP) {
+                            if (salseAdapter.fragment.mScrollStart) {
+                                salseAdapter.fragment.scrollFinish()
+                                salseAdapter.fragment.mScrollStart = false
+                                salseAdapter.fragment.mScrollFlag = false
+                            } else {
+                                salseAdapter.fragment.mScrollFlag = false
+                            }
+                        } else if (event.action == MotionEvent.ACTION_DOWN) {
+                            // 누름
+                            salseAdapter.fragment.mScrollFlag = true
+                            salseAdapter.fragment.mScrollValue = -1
+                        }
+                    }
+                    false
+                }
             } else {
                 thelook.visibility = View.GONE
             }
@@ -69,7 +89,26 @@ class SalseAdapter(var saleList: ArrayList<OnSaleStores>, val fragment: HomeFrag
                 salseAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
                 salseAdapter.fragment.startSuper(item.storeIdx)
             }
-
+            slaseParent.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_UP)
+                    salseAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
+                if(!salseAdapter.fragment.mScrollFinish) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        if (salseAdapter.fragment.mScrollStart) {
+                            salseAdapter.fragment.scrollFinish()
+                            salseAdapter.fragment.mScrollStart = false
+                            salseAdapter.fragment.mScrollFlag = false
+                        } else {
+                            salseAdapter.fragment.mScrollFlag = false
+                        }
+                    } else if (event.action == MotionEvent.ACTION_DOWN) {
+                        // 누름
+                        salseAdapter.fragment.mScrollFlag = true
+                        salseAdapter.fragment.mScrollValue = -1
+                    }
+                }
+                false
+            }
             itemView.setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_UP)
                     salseAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림

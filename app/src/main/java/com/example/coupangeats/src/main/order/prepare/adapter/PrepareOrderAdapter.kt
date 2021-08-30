@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.coupangeats.R
 import com.example.coupangeats.src.main.order.adapter.OrderMenuAdapter
-import com.example.coupangeats.src.main.order.dialog.ReceiptPrepareDialog
 import com.example.coupangeats.src.main.order.model.prepareOrder
 import com.example.coupangeats.src.main.order.prepare.OrderPrepareFragment
 
@@ -36,7 +35,7 @@ class PrepareOrderAdapter(val prepareOrderList: ArrayList<prepareOrder>, val fra
                 img.visibility = View.VISIBLE
             } else img.visibility = View.GONE
             totalPrice.text = order.totalPrice
-            menuRecyclerView.adapter = OrderMenuAdapter(order.orderMenus)
+            menuRecyclerView.adapter = OrderMenuAdapter(order.OrderMenus)
             menuRecyclerView.layoutManager = LinearLayoutManager(itemView.context)
 
             receipt.setOnClickListener {

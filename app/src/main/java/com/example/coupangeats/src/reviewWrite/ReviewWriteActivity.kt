@@ -88,7 +88,10 @@ class ReviewWriteActivity :
             binding.reviewWriteApply.text = "수정하기"
         }
         // 뒤로 가기
-        binding.reviewWriteBack.setOnClickListener { finish() }
+        binding.reviewWriteBack.setOnClickListener {
+            setResult(RESULT_CANCELED)
+            finish()
+        }
 
         binding.reviewWriteStar1.setOnClickListener {
             setStar(
@@ -255,7 +258,7 @@ class ReviewWriteActivity :
         binding.reviewWritePhotoAdd.visibility = View.VISIBLE
     }
 
-    fun setMenuAdapter(menu: ArrayList<orderMenus>) {
+    private fun setMenuAdapter(menu: ArrayList<orderMenus>) {
         val menuList = ArrayList<ReviewWriteMenu>()
         for (index in menu.indices) {
             val value = menu[index]
@@ -293,7 +296,7 @@ class ReviewWriteActivity :
         }
     }
 
-    fun startReviewModifyApply(){
+    private fun startReviewModifyApply(){
         val reviewWriteModifyApplyRequest = ReviewWriteModifyApplyRequest(
             mRatingCount,
             getRatingBadReason(),
@@ -303,7 +306,7 @@ class ReviewWriteActivity :
             mMenuAdapter.getMenuReviewData(),
             getDeliveryReview()
         )
-        Log.d("리뷰 수정 적용", "reviewWriteModifyApplyRequest: $reviewWriteModifyApplyRequest")
+        // Log.d("리뷰 수정 적용", "reviewWriteModifyApplyRequest: $reviewWriteModifyApplyRequest")
         // 리뷰 수정 작성
         ReviewWriteService(this).tryGetReviewWriteModifyApply(getUserIdx(), mReviewIdx, reviewWriteModifyApplyRequest)
     }
@@ -321,13 +324,13 @@ class ReviewWriteActivity :
         return mPhotoAdapter.getPhotoList()
     }
 
-    fun getDeliveryReview(): DeliveryReview {
+    private fun getDeliveryReview(): DeliveryReview {
         val deliveryLiked: String? =
             if (mIsDeliveryBad == null) null else if (mIsDeliveryBad == true) "BAD" else "GOOD"
         return DeliveryReview(deliveryLiked, getDeliveryBadReason(), mDeliveryEtcString)
     }
 
-    fun getDeliveryBadReason(): String? {
+    private fun getDeliveryBadReason(): String? {
         var badReason: String? = ""
         for (index in mDeliveryBadCheck.indices) {
             if (mDeliveryBadCheck[index]) {
@@ -341,7 +344,7 @@ class ReviewWriteActivity :
         return badReason
     }
 
-    fun getRatingBadReason(): String? {
+    private fun getRatingBadReason(): String? {
         var badReason: String? = ""
         for (index in mRatingBadCheck.indices) {
             if (mRatingBadCheck[index]) {
@@ -404,7 +407,7 @@ class ReviewWriteActivity :
         }
     }
 
-    fun startEtcDialog(version: Int) {
+    private fun startEtcDialog(version: Int) {
         // 1이면 rating 2이면 delivery
         val opinion: String = when (version) {
             1 -> {
@@ -434,7 +437,7 @@ class ReviewWriteActivity :
         }
     }
 
-    fun setStar(num: Int, starNo: Int, starYes: Int) {
+    private fun setStar(num: Int, starNo: Int, starYes: Int) {
         binding.reviewWriteContentParent.visibility = View.VISIBLE
         binding.reviewWriteStar1.setImageResource(starNo)
         binding.reviewWriteStar2.setImageResource(starNo)
@@ -461,7 +464,8 @@ class ReviewWriteActivity :
     override fun onPostReviewWriteCreateSuccess(response: ReviewWriteCreateResponse) {
         if (response.code != 1000) showCustomToast("리뷰 작성에 실패하였습니다")
         else {
-            showCustomToast("리뷰작성 성공")
+            // showCustomToast("리뷰작성 성공")
+            setResult(RESULT_OK)
             finish()
         }
     }
@@ -543,6 +547,7 @@ class ReviewWriteActivity :
     // 리뷰 수정 적용
     override fun onGetReviewWriteModifyApplySuccess(response: BaseResponse) {
         if(response.code == 1000){
+            setResult(RESULT_OK)
             finish()
         }
     }
@@ -551,7 +556,7 @@ class ReviewWriteActivity :
 
     }
 
-    fun setDeliveryOpinion(badReason: String) {
+    private fun setDeliveryOpinion(badReason: String) {
         val viewList = arrayOf(
             binding.reviewWriteLate,
             binding.reviewWriteMessy,
@@ -575,7 +580,7 @@ class ReviewWriteActivity :
         }
     }
 
-    fun getMenuOpinion(badReason: String?): ArrayList<Boolean> {
+    private fun getMenuOpinion(badReason: String?): ArrayList<Boolean> {
         val menuOpinion: ArrayList<Boolean> = arrayListOf(false, false, false, false, false)
         if (badReason != null) {
             val token = badReason.split(',')
@@ -591,7 +596,7 @@ class ReviewWriteActivity :
         return menuOpinion
     }
 
-    fun setRatingCheck(badReason: String) {
+    private fun setRatingCheck(badReason: String) {
         val viewList = arrayOf(
             binding.reviewWriteRatingLateFood, binding.reviewWriteRatingOrderMiss,
             binding.reviewWriteRatingMenuMiss, binding.reviewWriteRatingPackLoss,
@@ -613,5 +618,10 @@ class ReviewWriteActivity :
                 changeRatingBadCheck(5, viewList[5])
             }
         }
+    }
+
+    override fun onBackPressed() {
+        setResult(RESULT_CANCELED)
+        super.onBackPressed()
     }
 }
