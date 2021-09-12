@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,13 +14,16 @@ import android.os.Message
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.WindowManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityDetailSuperBinding
+import com.example.coupangeats.databinding.DialogDeliveryDetailBinding
 import com.example.coupangeats.src.SuperInfo.SuperInfoActivity
 import com.example.coupangeats.src.cart.CartActivity
 import com.example.coupangeats.src.detailSuper.adapter.CategoryNameAdapter
@@ -95,6 +99,13 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
                 this.putExtra("storeIdx", mSuperIdx)
             }
             startActivity(intent)
+        }
+        // 자세히
+        binding.detailSuperDeliveryPriceDetail.setOnClickListener {
+            showDialogDeliveryDetail(
+                binding.detailSuperDeliveryPrice.text.toString(),
+                binding.detailSuperMinorderPrice.text.toString() + "~"
+            )
         }
         // 쿠폰
         binding.detailSuperCoupon.setOnClickListener {
@@ -225,6 +236,30 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
             this.putExtra("reviewIdx", reviewIdx)
         }
         startActivity(intent)
+    }
+
+    private fun showDialogDeliveryDetail(delivery:String, minOrder: String) {
+        val deliveryDetailBinding = DialogDeliveryDetailBinding.inflate(layoutInflater)
+        val builder = AlertDialog.Builder(this)
+        builder.setView(deliveryDetailBinding.root)
+        builder.setCancelable(true)
+
+        deliveryDetailBinding.deliveryDetailMinOrder.text = minOrder
+        deliveryDetailBinding.deliveryDetailDeliveryPrice.text = delivery
+        val alertDialog = builder.create()
+        val window = alertDialog.window
+        if(window != null){
+            val params = window.attributes
+            params.width = WindowManager.LayoutParams.MATCH_PARENT
+            params.height = WindowManager.LayoutParams.WRAP_CONTENT
+            alertDialog.window!!.attributes = params
+            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+        alertDialog.show()
+
+        deliveryDetailBinding.deliveryDetailCheck.setOnClickListener {
+            alertDialog.dismiss()
+        }
     }
 
     override fun finish() {
@@ -452,7 +487,7 @@ class DetailSuperActivity : BaseActivity<ActivityDetailSuperBinding>(ActivityDet
         val deliveryPrice = if(result.deliveryPrice == 0) "무료 배달" else "${priceIntToString(result.deliveryPrice)}원"
         binding.detailSuperDeliveryPrice.text = deliveryPrice
         val orderMinPrice = "${priceIntToString(result.minPrice)}원"
-        binding.detailSuperDeliveryPrice.text = orderMinPrice
+        binding.detailSuperMinorderPrice.text = orderMinPrice
 
         // 포토 리뷰
         if(result.photoReview != null){

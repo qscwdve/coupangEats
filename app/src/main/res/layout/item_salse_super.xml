@@ -10,7 +10,7 @@
     <View
         android:id="@+id/item_salse_super_first_line"
         android:visibility="gone"
-        android:layout_width="15dp"
+        android:layout_width="5dp"
         android:layout_height="match_parent"/>
 
     <LinearLayout

@@ -2,16 +2,13 @@ package com.example.coupangeats.src.superSearch
 
 import android.content.Intent
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivitySuperSearchBinding
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
-import com.example.coupangeats.src.main.home.HomeService
-import com.example.coupangeats.src.main.home.model.HomeInfo.HomeInfoRequest
 import com.example.coupangeats.src.searchDetail.SearchDetailActivity
 import com.example.coupangeats.src.superSearch.adapter.BaseInfoAdapter
 import com.example.coupangeats.src.superSearch.model.BaseSuperInfo
@@ -20,10 +17,7 @@ import com.example.coupangeats.src.superSearch.model.FilterRequest
 import com.example.coupangeats.src.superSearch.model.NewSuperResponse
 import com.example.coupangeats.src.superSearch.util.FilterRecommendSuperSearch
 import com.example.coupangeats.src.superSearch.util.FilterSuperSearch
-import com.example.coupangeats.util.FilterRecommendBottomSheetDialog
-import com.example.coupangeats.util.FilterSuperBottomSheetDialog
 import com.softsquared.template.kotlin.config.BaseActivity
-import java.util.logging.Filter
 
 class SuperSearchActivity :
     BaseActivity<ActivitySuperSearchBinding>(ActivitySuperSearchBinding::inflate),
@@ -148,18 +142,29 @@ class SuperSearchActivity :
             refreshFilter()
         }
 
-        // 스크롤
-        binding.searchRecommendRecyclerview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            Log.d("scroll", "y : $scrollY")
-            if(scrollY > 400){
-                binding.superSearchScrollUpBtn.visibility = View.VISIBLE
-            } else {
-                binding.superSearchScrollUpBtn.visibility = View.GONE
+        var scrollY = 0
+        binding.searchRecommendRecyclerview.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                scrollY += dy
+                if (scrollY > 400) {
+                    binding.superSearchScrollUpBtn.visibility = View.VISIBLE
+                } else {
+                    binding.superSearchScrollUpBtn.visibility = View.GONE
+                }
+                if (scrollY > 3) {
+                    binding.superSearchFilterShadow.visibility = View.VISIBLE
+                } else {
+                    binding.superSearchFilterShadow.visibility = View.GONE
+                }
             }
-        }
+        })
 
         binding.superSearchScrollUpBtn.setOnClickListener {
-            binding.searchRecommendRecyclerview.scrollTo(0, 0)
+            binding.superSearchSwipeRefresh.scrollTo(0, 0)
+            binding.searchRecommendRecyclerview.scrollToPosition(0)
+            binding.superSearchFilterShadow.visibility = View.GONE
+            scrollY = 0
         }
 
         // 종료

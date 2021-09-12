@@ -31,6 +31,7 @@ class DeliveryStatusActivity : BaseActivity<ActivityDeliveryStatusBinding>(Activ
     lateinit var mNaverMap : NaverMap
     private lateinit var mapView: MapView
     private var mAnimationCheck = arrayOf(false, false, false)
+    private var version = 1   // 1 : 주문 후 바로 요청됨 , 2 : 배달 완료까지 진행되는 요청
     private lateinit var locationSource: FusedLocationSource
     private enum class CollapsingToolbarLayoutState {
         EXPANDED, COLLAPSED, INTERNEDIATE
@@ -47,13 +48,15 @@ class DeliveryStatusActivity : BaseActivity<ActivityDeliveryStatusBinding>(Activ
         mapView.onCreate(savedInstanceState)
         mapView.getMapAsync(this)
 
+        // version
+        version = intent.getIntExtra("version", 1)
+
         animTransTwits1 = AnimationUtils.loadAnimation(this, R.anim.delivery_status_pivot)
 
         animTransTwits1.setAnimationListener(object : Animation.AnimationListener{
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationEnd(animation: Animation?) {
                 if(mAnimationCheck[0]){
-                    Log.d("mAnimation0", "value : ${mAnimationCheck[0]}")
                     binding.status2Img.startAnimation(animTransTwits1)
                 }
             }
@@ -66,7 +69,6 @@ class DeliveryStatusActivity : BaseActivity<ActivityDeliveryStatusBinding>(Activ
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationEnd(animation: Animation?) {
                 if(mAnimationCheck[1]){
-                    Log.d("mAnimation0", "value : ${mAnimationCheck[1]}")
                     binding.status3Img.startAnimation(animTransTwits2)
                 }
             }
@@ -79,25 +81,17 @@ class DeliveryStatusActivity : BaseActivity<ActivityDeliveryStatusBinding>(Activ
             override fun onAnimationStart(animation: Animation?) {}
             override fun onAnimationEnd(animation: Animation?) {
                 if(mAnimationCheck[2]){
-                    Log.d("mAnimation0", "value : ${mAnimationCheck[2]}")
                     binding.status4Img.startAnimation(animTransTwits3)
                 }
             }
             override fun onAnimationRepeat(animation: Animation?) {}
         })
 
-        binding.statusTest.setOnClickListener {
-           /* if(mAnimationCheck[0]){
-                changeStatus(2)
-            } else if(mAnimationCheck[1]){
-                changeStatus(3)
-            } else if(mAnimationCheck[2]){
-                changeStatus(4)
-            }*/
+        if(version == 1){
+            changeStatus(1)
+        } else {
+
         }
-
-        //changeStatus(1)
-
         binding.toolbarBack.setOnClickListener { finish() }
 
         setSupportActionBar(binding.toolbar)
@@ -156,7 +150,7 @@ class DeliveryStatusActivity : BaseActivity<ActivityDeliveryStatusBinding>(Activ
         okImageView.setImageResource(R.drawable.ic_delivery_status_ok)
         if(num != null) {
             mAnimationCheck[num] = false
-            Log.d("mAnimation", " mAnimationCheck[${num}] : ${mAnimationCheck[num]}")
+            //Log.d("mAnimation", " mAnimationCheck[${num}] : ${mAnimationCheck[num]}")
         }
     }
 

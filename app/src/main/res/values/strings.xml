@@ -346,4 +346,6 @@
     <string name="coupangEatsCenter">쿠팡이츠 고객센터:</string>
     <string name="theLook">더보기</string>
     <string name="address_question">배달 주소가 이곳이 맞나요?</string>
+    <string name="delivery_detail">배달비 안내</string>
+    <string name="order_price">주문금액</string>
 </resources>

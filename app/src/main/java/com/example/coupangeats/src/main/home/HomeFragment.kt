@@ -56,7 +56,7 @@ class HomeFragment() :
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
     private var myHandler = MyHandler()
-    private val intervalTime = 2000.toLong() // 몇초 간격으로 페이지를 넘길것인지 (1500 = 1.5초)
+    private val intervalTime = 3000.toLong() // 몇초 간격으로 페이지를 넘길것인지 (1500 = 1.5초)
     private var mCheetahNum = 0
     private var mSelectDelivery = -1
     private var mSelectMini = -1
@@ -673,7 +673,9 @@ class HomeFragment() :
 
     override fun onResume() {
         super.onResume()
-        autoScrollStart(intervalTime)
+        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+            autoScrollStart(intervalTime)
+        }, 1000)
         cartChange()
     }
 

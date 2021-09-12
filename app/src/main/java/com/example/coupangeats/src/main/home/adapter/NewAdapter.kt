@@ -47,6 +47,26 @@ class NewAdapter(var newList: ArrayList<NewStores>, val fragment: HomeFragment):
                 thelook.setOnClickListener {
                     newAdapter.fragment.startNewSuper()
                 }
+                thelook.setOnTouchListener { v, event ->
+                    if (event.action == MotionEvent.ACTION_UP)
+                        newAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
+                    if(!newAdapter.fragment.mScrollFinish) {
+                        if (event.action == MotionEvent.ACTION_UP) {
+                            if (newAdapter.fragment.mScrollStart) {
+                                newAdapter.fragment.scrollFinish()
+                                newAdapter.fragment.mScrollStart = false
+                                newAdapter.fragment.mScrollFlag = false
+                            } else {
+                                newAdapter.fragment.mScrollFlag = false
+                            }
+                        } else if (event.action == MotionEvent.ACTION_DOWN) {
+                            // 누름
+                            newAdapter.fragment.mScrollFlag = true
+                            newAdapter.fragment.mScrollValue = -1
+                        }
+                    }
+                    false
+                }
             } else {
                 thelook.visibility = View.GONE
             }
@@ -85,6 +105,27 @@ class NewAdapter(var newList: ArrayList<NewStores>, val fragment: HomeFragment):
             }
 
             // home 치타배달 관련 스크롤
+            newParent.setOnTouchListener { v, event ->
+                if (event.action == MotionEvent.ACTION_UP)
+                    newAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림
+                if(!newAdapter.fragment.mScrollFinish) {
+                    if (event.action == MotionEvent.ACTION_UP) {
+                        if (newAdapter.fragment.mScrollStart) {
+                            newAdapter.fragment.scrollFinish()
+                            newAdapter.fragment.mScrollStart = false
+                            newAdapter.fragment.mScrollFlag = false
+                        } else {
+                            newAdapter.fragment.mScrollFlag = false
+                        }
+                    } else if (event.action == MotionEvent.ACTION_DOWN) {
+                        // 누름
+                        newAdapter.fragment.mScrollFlag = true
+                        newAdapter.fragment.mScrollValue = -1
+                    }
+                }
+                false
+            }
+
             itemView.setOnTouchListener { v, event ->
                 if (event.action == MotionEvent.ACTION_UP)
                     newAdapter.fragment.setAddressQuestionDown()  // 배달주소 맞는지 물어보는거 내림

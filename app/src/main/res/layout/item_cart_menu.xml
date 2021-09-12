@@ -25,9 +25,8 @@
             android:layout_alignParentEnd="true"
             android:background="@drawable/white_to_gray_ripple"
             android:id="@+id/item_cart_menu_cancel"
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:padding="6dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:src="@drawable/ic_cancel_gray"/>
     </RelativeLayout>
 
@@ -78,7 +77,7 @@
                 android:layout_height="match_parent"
                 android:textColor="@color/black"
                 android:text="▼"
-                android:textSize="10sp"/>
+                android:textSize="13sp"/>
 
         </LinearLayout>
     </LinearLayout>

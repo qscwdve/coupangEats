@@ -11,8 +11,7 @@
         android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp">
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_marginStart="@dimen/actionBarImageMarginStar"
@@ -46,7 +45,7 @@
             android:scaleType="fitEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="15dp"
+            android:padding="17dp"
             android:src="@drawable/ic_nav_click_search"/>
     </LinearLayout>
 
@@ -355,7 +354,6 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_below="@+id/super_search_filter_parent"
-                android:paddingVertical="10dp"
                 android:id="@+id/search_recommend_recyclerview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -370,6 +368,13 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_below="@+id/super_search_filter_parent"
+                android:id="@+id/super_search_filter_shadow"
+                android:visibility="gone"
+                android:background="@drawable/sticky_shadow"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"/>
         </RelativeLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

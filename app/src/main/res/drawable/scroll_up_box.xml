@@ -3,9 +3,9 @@
     <item android:id="@android:id/background">
         <shape android:shape="oval">
             <stroke
-                android:color="@color/searchHint"
+                android:color="@color/lightGray"
                 android:width="0.5dp"/>
-            <solid android:color="#AFFFFFFF" /> <!-- background color -->
+            <solid android:color="#6FFFFFFF" /> <!-- background color -->
         </shape>
     </item>
 </selector>

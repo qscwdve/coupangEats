@@ -43,7 +43,6 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
         binding.favoritesModify.setOnClickListener {
             if(mIsCount > 0){
                 if(mIsModify){
-                    Log.d("modify", "$mIsModify")
                     // true -> false
                     mIsModify = false
                     binding.favoritesModify.text = "수정"
@@ -52,7 +51,6 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
                     mAdapter.changeVersion(1)
                 } else {
                     // false -> true
-                    Log.d("modify", "$mIsModify")
                     mIsModify = true
                     binding.favoritesModify.text = "취소"
                     binding.favoritesInfo.visibility = View.GONE
@@ -154,7 +152,6 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
             this.putExtra("storeIdx", storeIdx)
         }
         startActivity(intent)
-        finish()
     }
 
     private fun setDummyDate(){
