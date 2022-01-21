@@ -42,7 +42,7 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
     var mSortNum = 1
     var mDeleteItem = -1
     var mType : String? = null
-    private var mCartMenuNum = 0
+    var mCartMenuNum = 0
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +57,7 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
         // 리뷰 불러오기
         mStoreIdx = intent.getIntExtra("storeIdx", -1)
         mReviewIdx = intent.getIntExtra("reviewIdx", -1)
-        Log.d("scrolled", "reviewIdx : ${mReviewIdx}")
+        //Log.d("scrolled", "reviewIdx : ${mReviewIdx}")
         ReviewService(this).tryGetReviewInfo(mStoreIdx, null, null)
 
         binding.toolbarBack.setOnClickListener { finish() }
@@ -183,8 +183,7 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
     fun changeRecommendFilter(sort: String, text: String, sortNum: Int){
         mSort = sort
         mSortNum = sortNum
-        val filterText = "$text ∨"
-        binding.reviewFilterText.text = filterText
+        binding.reviewFilterText.text = text
         val type = if(mPhotoReview) "photo" else null
         ReviewService(this).tryGetReviewInfo(mStoreIdx, type, mSort)
     }

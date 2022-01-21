@@ -336,6 +336,8 @@ class DeliveryAddressSettingActivity() :
 
     override fun onGetUserAddressListSuccess(response: UserAddrListResponse) {
         dismissLoadingDialog()
+        binding.deliveryAddressSettingHomeChecked.visibility = View.INVISIBLE
+        binding.deliveryAddressBusinessChecked.visibility = View.INVISIBLE
         // 어댑터 생성!!
         if(response.code == 1000){
             val home = response.result.home
@@ -354,6 +356,10 @@ class DeliveryAddressSettingActivity() :
                 mHomeMainAddress = response.result.home.mainAddress
                 mHomeaddressIdx = response.result.home.addressIdx
 
+                // 현재 유저의 주소가 집일때 선택 이미지 띄우기
+                if(home.addressIdx == response.result.selectedAddressIdx){
+                    binding.deliveryAddressSettingHomeChecked.visibility = View.VISIBLE
+                }
             } else {
                 binding.deliveryAddressSettingHomeDetail.visibility = View.GONE
                 binding.deliveryAddressSettingHomeChecked.visibility = View.INVISIBLE
@@ -373,9 +379,13 @@ class DeliveryAddressSettingActivity() :
                 if(version != GPS_SELECT){
                     binding.deliveryAddressBusinessChecked.visibility = View.INVISIBLE
                 }
+                // 현재 유저의 주소가 집일때 선택 이미지 띄우기
+                if(company.addressIdx == response.result.selectedAddressIdx){
+                    binding.deliveryAddressBusinessChecked.visibility = View.VISIBLE
+                }
             } else {
                 isCompany = false
-                binding.deliveryAddressSettingHomeChecked.visibility = View.INVISIBLE
+                binding.deliveryAddressBusinessDetail.visibility = View.INVISIBLE
                 binding.deliveryAddressBusinessDetail.visibility = View.GONE
             }
             if (addressList != null) {
@@ -387,6 +397,7 @@ class DeliveryAddressSettingActivity() :
                 binding.deliveryAddressSettingListRecyclerView.layoutManager = LinearLayoutManager(this)
             }
             mSelectedAddress = response.result.selectedAddressIdx
+
         }
     }
 

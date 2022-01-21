@@ -166,7 +166,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         }
     }
 
-    fun lookCouponList() {
+    private fun lookCouponList() {
         val intent = Intent(this, DiscountActivity::class.java).apply {
             this.putExtra("storeIdx", getStoreIdx())
             this.putExtra("selectCouponIdx", mCouponIdx)
@@ -175,7 +175,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         discountActivityLauncher.launch(intent)
     }
 
-    fun resultDiscountActivity(data: Intent) {
+    private fun resultDiscountActivity(data: Intent) {
         if (data.getBooleanExtra("exist", false)) {
             val price = data.getStringExtra("coupon") ?: ""
 
@@ -203,7 +203,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         }
     }
 
-    fun changeCouponNo() {
+    private fun changeCouponNo() {
         if (mCouponCount == 0) {
             // 쿠폰 적용 가능한 것이 없음
             binding.cartCouponStatusImg.visibility = View.GONE
@@ -223,7 +223,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         changeCouponPrice()
     }
 
-    fun getOrderMenu(): ArrayList<OrderMenu> {
+    private fun getOrderMenu(): ArrayList<OrderMenu> {
         val array = ArrayList<OrderMenu>()
         val orderMenuList = mDBHelper.menuSelect(mDB)
         for (item in orderMenuList) {
@@ -233,9 +233,9 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
     }
 
     fun getUserIdx(): Int = ApplicationClass.sSharedPreferences.getInt("userIdx", -1)
-    fun getStoreIdx(): Int = ApplicationClass.sSharedPreferences.getInt("storeIdx", -1)
+    private fun getStoreIdx(): Int = ApplicationClass.sSharedPreferences.getInt("storeIdx", -1)
 
-    fun menuSetting() {
+    private fun menuSetting() {
         // 메뉴 세팅
 
         // 메뉴 불러오기
@@ -261,7 +261,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         binding.cartOk.text = total
     }
 
-    fun changeCouponPrice() {
+    private fun changeCouponPrice() {
         // 총 결제 금액
         mTotalPrice = mMenuPrice + mDeliveryPrice - mCouponPrice
         val superTotalPrice = "${priceIntToString(mTotalPrice)}원"
@@ -315,7 +315,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         dismissLoadingDialog()
         if (response.code == 1000) {
             // 주문내역 다 삭제
-            mDBHelper.deleteTotal(mDB)
+            // mDBHelper.deleteTotal(mDB)
             // 알림 띄우기
             CustomNotification(this).createAlarmNotification(response.result.createIdx)
             val intent = Intent(this, DeliveryStatusActivity::class.java)
@@ -329,7 +329,7 @@ class CartActivity : BaseActivity<ActivityCartBinding>(ActivityCartBinding::infl
         //showCustomToast("결제하기 실패")
     }
 
-    fun couponSetting(coupon: CartCoupon) {
+    private fun couponSetting(coupon: CartCoupon) {
         if (coupon.redeemStatus == null) {
             binding.cartCouponStatus.visibility = View.GONE
             binding.cartCouponStatusImg.visibility = View.GONE

@@ -9,8 +9,13 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 
 // 앱이 실행될때 1번만 실행이 됩니다.
@@ -22,8 +27,7 @@ class ApplicationClass : Application() {
 
     // 실 서버 주소
     val API_URL = "https://prod.hellosilver.shop/"
-    // 도로명 팝업 API : devU01TX0FVVEgyMDIxMDUyNDIyMjAwMDExMTE5ODk=
-    // 주소 검색 API : devU01TX0FVVEgyMDIxMDgwODIwMDcxMTExMTQ5ODY=
+    // 주소 검색 API : devU01TX0FVVEgyMDIyMDEyMTIzMjQxMDExMjE2Nzc=
 
     val SEARCH_ADDRESS_URL = "https://www.juso.go.kr/"
     // 코틀린의 전역변수 문법
@@ -35,7 +39,7 @@ class ApplicationClass : Application() {
         val X_ACCESS_TOKEN = "X-ACCESS-TOKEN"
 
         // 도로명 주소 API Key 값
-        val SEARCH_API_KEY = "devU01TX0FVVEgyMDIxMDYyNTE1MzM1MzExMTMyNTk="
+        val SEARCH_API_KEY = "devU01TX0FVVEgyMDIyMDEyMTIzMjQxMDExMjE2Nzc="
         val SEARCH_XY_KEY = "devU01TX0FVVEgyMDIxMDgwODIwMDcxMTExMTQ5ODY="
         val KAKAO_NATIVE_KEY = "acf919d14f1072fd5b7524916b93db20"
 
@@ -60,8 +64,8 @@ class ApplicationClass : Application() {
     // 연결 타임아웃시간은 5초로 지정이 되어있고, HttpLoggingInterceptor를 붙여서 어떤 요청이 나가고 들어오는지를 보여줍니다.
     private fun initRetrofitInstance() {
         val tlsSpecs: List<ConnectionSpec> = listOf(ConnectionSpec.MODERN_TLS)
-
-        val client: OkHttpClient = OkHttpClient.Builder()
+        // OkHttpClient.Builder()
+        val client: OkHttpClient = getUnsafeOkHttpClient()
             .connectionSpecs(tlsSpecs)
             .readTimeout(5000, TimeUnit.MILLISECONDS)
             .connectTimeout(5000, TimeUnit.MILLISECONDS)
@@ -80,7 +84,7 @@ class ApplicationClass : Application() {
     }
 
     private fun initSearchRetrofitInstance() {
-        val client: OkHttpClient = OkHttpClient.Builder()
+        val client: OkHttpClient = getUnsafeOkHttpClient()
             .readTimeout(5000, TimeUnit.MILLISECONDS)
             .connectTimeout(5000, TimeUnit.MILLISECONDS)
             // 로그캣에 okhttp.OkHttpClient로 검색하면 http 통신 내용을 보여줍니다.
@@ -95,5 +99,35 @@ class ApplicationClass : Application() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+    }
+
+    /**
+     * Retrofit SSL 우회 접속 통신
+     */
+    fun getUnsafeOkHttpClient(): OkHttpClient.Builder {
+        val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+            override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+
+            }
+
+            override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+
+            }
+
+            override fun getAcceptedIssuers(): Array<X509Certificate> {
+                return arrayOf()
+            }
+        })
+
+        val sslContext = SSLContext.getInstance("SSL")
+        sslContext.init(null, trustAllCerts, SecureRandom())
+
+        val sslSocketFactory = sslContext.socketFactory
+
+        val builder = OkHttpClient.Builder()
+        builder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
+        builder.hostnameVerifier { hostname, session -> true }
+
+        return builder
     }
 }

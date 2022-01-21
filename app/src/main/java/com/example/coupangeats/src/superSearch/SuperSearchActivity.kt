@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivitySuperSearchBinding
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
+import com.example.coupangeats.src.main.home.model.HomeInfo.RecommendStores
 import com.example.coupangeats.src.searchDetail.SearchDetailActivity
 import com.example.coupangeats.src.superSearch.adapter.BaseInfoAdapter
 import com.example.coupangeats.src.superSearch.model.BaseSuperInfo
@@ -336,12 +337,14 @@ class SuperSearchActivity :
                 binding.searchRecommendRecyclerview.visibility = View.GONE
                 binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.VISIBLE
             }
+            binding.searchRecommendRecyclerview.scrollTo(0,0)
         }
     }
 
     override fun onGetNewSuperFailure(message: String) {
         binding.superSearchSwipeRefresh.isRefreshing = false
-        showCustomToast("새로들어온 매장 조회 실패")
+        //showCustomToast("새로들어온 매장 조회 실패")
+        setDumyData()
     }
 
     override fun onGetDiscountSuperSuccess(response: DiscountSuperResponse) {
@@ -361,7 +364,48 @@ class SuperSearchActivity :
 
     override fun onGetDiscountSuperFailure(message: String) {
         binding.superSearchSwipeRefresh.isRefreshing = false
-        showCustomToast("할인 매장 조회 실패")
+        //showCustomToast("할인 매장 조회 실패")
+        setDumyData()
+    }
+
+    fun setDumyData(){
+        val recommendList = ArrayList<BaseSuperInfo>()
+        recommendList.add(BaseSuperInfo(
+            1, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/qneo.png?alt=media&token=2204fe56-3be0-46d0-a405-f554aba00f19", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/dbreowkd.jpg?alt=media&token=d549713a-b673-45d9-9404-3db41b5d4f3b", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/EJrrnr.jpg?alt=media&token=b05bb795-91d1-4b1c-977d-712286720c4e")
+            ,"든든한끼 정식", "치타배달", "4.5", "0.7km",
+            "2,000원", "10~20분", "3,000원"
+        ))
+        recommendList.add(BaseSuperInfo(
+            2, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/tkaruq.jpg?alt=media&token=cc1dc826-43c4-4f0c-9041-24559ccc1a24")
+            ,"꼬꼬방집", "Y", "2.5", "2.7km",
+            "3,000원", "20~30분", "3,000원"
+        ))
+        recommendList.add(BaseSuperInfo(
+            3, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/EJrrnr.jpg?alt=media&token=b05bb795-91d1-4b1c-977d-712286720c4e")
+            ,"국수나무", "신규", "3.5", "1.7km",
+            "3,000원", "20~30분", "3,000원"
+        ))
+        recommendList.add(BaseSuperInfo(
+            4, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/dlxkffldk.jpg?alt=media&token=3740442c-6d97-40ba-a486-0f756c4fa0ff", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/EJrrnr.jpg?alt=media&token=b05bb795-91d1-4b1c-977d-712286720c4e", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/qneo.png?alt=media&token=2204fe56-3be0-46d0-a405-f554aba00f19")
+            ,"우아한 아침", "Y", "3.6", "2.5km",
+            "3,000원", "10~20분", "4,000원"
+        ))
+        recommendList.add(BaseSuperInfo(
+            5, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/qneo.png?alt=media&token=2204fe56-3be0-46d0-a405-f554aba00f19")
+            ,"찌개의 정석", "신규", "3.0", "1.4km",
+            "3,000원", "30~40분", "2,000원"
+        ))
+        recommendList.add(BaseSuperInfo(
+            2, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/ekfrqkf.jpg?alt=media&token=ee65ead3-0f0c-4036-9605-43459745690f")
+            ,"싱싱 육회", "치타배달", "4.2", "0.9km",
+            "3,000원", "10~30분", "1,000원"
+        ))
+
+        binding.searchRecommendRecyclerview.visibility = View.VISIBLE
+        binding.searchDetailNoFilterParent.itemNoSuperParent.visibility = View.GONE
+        setRecycler(recommendList)
+
+        binding.searchRecommendRecyclerview.scrollTo(0,0)
     }
 
     fun setRecycler(baseSperList: ArrayList<BaseSuperInfo>) {

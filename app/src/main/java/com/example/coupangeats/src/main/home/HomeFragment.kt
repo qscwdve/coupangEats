@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.coupangeats.R
@@ -45,7 +46,7 @@ class HomeFragment() :
     var mScrollValue = 0
     private var countDownTimer: CountDownTimer? = null
     private lateinit var mGpsControl: GpsControl
-    private var mUserAddress: UserCheckResponseResult? = null
+    private var mUserAddress: UserCheckResponseResult = UserCheckResponseResult(-1, "37.268672042686546", "127.00278199205103", "경기도 수원시 팔달구 매산로1가 향교로 13")
     private var mLat = ""
     private var mLon = ""
     var filterSelected = Array(5) { i -> false }  // 필터를 선택했는지 안했는데
@@ -317,7 +318,7 @@ class HomeFragment() :
         // 스크롤 감지
         binding.homeScrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             //Log.d("scrolled", "( $scrollX, $scrollY)  ,  ( $oldScrollX , $oldScrollY )")
-            if (scrollY > 550) {
+            if (scrollY > 800) {
                 binding.homeScrollUpBtn.visibility = View.VISIBLE
             } else {
                 binding.homeScrollUpBtn.visibility = View.GONE
@@ -724,25 +725,25 @@ class HomeFragment() :
             } else {
                 mUserAddress = UserCheckResponseResult(
                     0,
-                    (37.5724714912).toString(),
-                    (126.9911925560).toString(),
-                    "종로구 종로1.2.3.4가동 164-7"
+                    (37.268672042686546).toString(),
+                    (127.00278199205103).toString(),
+                    "경기도 수원시 팔달구 매산로1가 향교로 13"
                 )
                 binding.homeGpsAddress.text = mUserAddress!!.mainAddress
-                mLat = (37.5724714912).toString()
-                mLon = (126.9911925560).toString()
+                mLat = (37.268672042686546).toString()
+                mLon = (127.00278199205103).toString()
             }
             getMainData("first")
         } else {
             mUserAddress = UserCheckResponseResult(
                 0,
-                (37.5724714912).toString(),
-                (126.9911925560).toString(),
-                "종로구 종로1.2.3.4가동 164-7"
+                (37.268672042686546).toString(),
+                (127.00278199205103).toString(),
+                "경기도 수원시 팔달구 매산로1가 향교로 13"
             )
             binding.homeGpsAddress.text = mUserAddress!!.mainAddress
-            mLat = (37.5724714912).toString()
-            mLon = (126.9911925560).toString()
+            mLat = (37.268672042686546).toString()
+            mLon = (127.00278199205103).toString()
             getMainData("first")
         }
         if (gpsCheck) {
@@ -807,71 +808,85 @@ class HomeFragment() :
         val img =
             "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA1MjdfNTUg%2FMDAxNjIyMTEzMDg3Njc5.J0L7A04dtBVEKOcBVbdbKmJFgHq12BTAAq3fDHFlQoIg.0vN8BoEqOEQjqhU3i-Q7s6MFWbrQ4ElJiJfGWWxoeBQg.JPEG.hs_1472%2Foutput_2445714095.jpg&type=sc960_832"
         val categoryList = ArrayList<StoreCategories>()
-        categoryList.add(StoreCategories("햄버거", img))
-        categoryList.add(StoreCategories("햄버거", img))
-        categoryList.add(StoreCategories("돈까스", img))
-        categoryList.add(StoreCategories("정식", img))
-        categoryList.add(StoreCategories("불고기", img))
-        categoryList.add(StoreCategories("분식", img))
+        categoryList.add(StoreCategories("신규 맛집", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_new.png?alt=media&token=4b476b9a-ab86-4577-b114-c9b9fe6ac674"))
+        categoryList.add(StoreCategories("1인분", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_one.png?alt=media&token=8b966c78-266f-48ea-a794-ba9604d83ada"))
+        categoryList.add(StoreCategories("한식", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_korea.png?alt=media&token=ddae262b-93d9-4a24-8350-da29d0d1b740"))
+        categoryList.add(StoreCategories("치킨", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_chicken.png?alt=media&token=59b2d3c9-ddd8-4c2e-a2cc-39870c242d32"))
+        categoryList.add(StoreCategories("분식", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_snackbar.png?alt=media&token=4f7fba7d-6c46-4aa4-927a-e118a0390bf8"))
+        categoryList.add(StoreCategories("돈까스", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_pork.png?alt=media&token=01abe6ea-04c6-491d-98ea-6119825d2e9d"))
+        categoryList.add(StoreCategories("족발/보쌈", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_porkfeet.png?alt=media&token=cc1c1fd1-7ec2-4ba5-a8ca-6643e6d8c8fb"))
+        categoryList.add(StoreCategories("찜/탕", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_steamed.png?alt=media&token=1a7a1214-a8d5-4663-83d5-78f9cf60fc5b"))
+        categoryList.add(StoreCategories("구이", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_girll.png?alt=media&token=d427657a-a9ba-4771-9fc3-c6c1399118bc"))
+        categoryList.add(StoreCategories("피자", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_pizza.jpg?alt=media&token=da1479d3-6a2c-4a48-8e1b-1d00d511541e"))
+        categoryList.add(StoreCategories("중식", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_china.png?alt=media&token=bf4106b2-43cc-493a-8053-b4d514c9a781"))
+        categoryList.add(StoreCategories("일식", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_japan.png?alt=media&token=c98e802b-8c3e-4aad-a010-d67502a8098c"))
+        categoryList.add(StoreCategories("회/해물", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_seafood.png?alt=media&token=557775e1-9fac-4371-a935-aa14de4df839"))
+        categoryList.add(StoreCategories("양식", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_western.png?alt=media&token=3207834b-a36f-46a9-8fbe-17368105f5d0"))
+        categoryList.add(StoreCategories("커피/차", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_cha.png?alt=media&token=06c5c630-4581-4864-9b0f-0fdad5fd1bae"))
+        categoryList.add(StoreCategories("디저트", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_dessert.png?alt=media&token=ecffe007-0159-44e1-b247-c8f747b83d68"))
+        categoryList.add(StoreCategories("간식", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_snack.png?alt=media&token=d784db43-cce7-4e81-b69c-c0f3686fd2cc"))
+        categoryList.add(StoreCategories("아시안", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_asian.png?alt=media&token=55a56695-d41a-4e22-8c5c-7c0cc9dcd000"))
+        categoryList.add(StoreCategories("샌드위치", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_sandwich.png?alt=media&token=22427d8a-a491-46e8-8afb-923aa3918a3a"))
+        categoryList.add(StoreCategories("샐러드", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_salad.png?alt=media&token=b8636554-6652-47d2-b25f-be6ae867022a"))
+        categoryList.add(StoreCategories("버거", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_buger.png?alt=media&token=b3e892a7-776b-4650-a7ac-1ba069a8198c"))
+        categoryList.add(StoreCategories("멕시칸", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_mexican.png?alt=media&token=22df2540-3529-4ca3-857e-b42426905e2c"))
+        categoryList.add(StoreCategories("도시락", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_lunchbox.png?alt=media&token=e4d7aff1-6b3f-4bed-93e4-6f7554436292"))
+        categoryList.add(StoreCategories("죽", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_rice.png?alt=media&token=8efdebc6-7e0c-492d-98ce-2591bfc655f0"))
+        categoryList.add(StoreCategories("프랜차이즈", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/category_franchise.png?alt=media&token=fc05bb7e-0a16-4423-92cd-5dcedb3c16a1"))
+
         val salseList = ArrayList<OnSaleStores>()
-        salseList.add(OnSaleStores(1, img, "분식점", null, "1.2km", "2,000원"))
-        salseList.add(OnSaleStores(2, img, "분식점", null, "1.2km", "7,000원"))
-        salseList.add(OnSaleStores(3, img, "분식점", null, "1.2km", "1,000원"))
-        salseList.add(OnSaleStores(4, img, "분식점", null, "1.0km", "5,000원"))
-        salseList.add(OnSaleStores(5, img, "분식점", null, "1.5km", "3,000원"))
+        salseList.add(OnSaleStores(1, "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/qneo.png?alt=media&token=2204fe56-3be0-46d0-a405-f554aba00f19", "든든한끼", "4.5(10)", "1.2km", "2,000원"))
+        salseList.add(OnSaleStores(2, "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/dbreowkd.jpg?alt=media&token=d549713a-b673-45d9-9404-3db41b5d4f3b", "국밥정신", "5.0(42)", "0.2km", "7,000원"))
+        salseList.add(OnSaleStores(3, "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/dbrghl.jpg?alt=media&token=68d5c99e-f96e-41a4-96d6-88d3ba489e70", "생싱생싱 육회", "4.2(78)", "2.2km", "1,000원"))
+        salseList.add(OnSaleStores(4, "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/ekfrqkf.jpg?alt=media&token=ee65ead3-0f0c-4036-9605-43459745690f", "닭발지존", null, "1.5km", "5,000원"))
+        salseList.add(OnSaleStores(5, "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/tkaruq.jpg?alt=media&token=cc1dc826-43c4-4f0c-9041-24559ccc1a24", "맜있는 생고기", "4.0(42)", "1.7km", "3,000원"))
+
+        val newList = ArrayList<NewStores>()
+        newList.add(NewStores(1,"https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/qneo.png?alt=media&token=2204fe56-3be0-46d0-a405-f554aba00f19", "든든한끼", "5.0(2)", "1.2km", null, "배달비 2,000원"))
+        newList.add(NewStores(2, img, "꼬꼬방집", null, "0.2km", null, "배달비 1,000원"))
+        newList.add(NewStores(3, "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/dlxkffldk.jpg?alt=media&token=3740442c-6d97-40ba-a486-0f756c4fa0ff", "그레잇 브런치", "4.5(7)", "1.5km", null, "배달비 3,000원"))
+        newList.add(NewStores(4,"https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/dbrghl.jpg?alt=media&token=68d5c99e-f96e-41a4-96d6-88d3ba489e70", "생싱생싱 육회", null, "0.8km", null, "배달비 2,000원"))
+        setNew(newList)
         val recommendList = ArrayList<RecommendStores>()
-        recommendList.add(
-            RecommendStores(
-                1,
-                arrayListOf(img),
-                "분식점",
-                "Y",
-                "4.5",
-                "1.7km",
-                "2,000원",
-                "10~20분",
-                null
-            )
-        )
-        recommendList.add(
-            RecommendStores(
-                2,
-                arrayListOf(img),
-                "분식점",
-                "Y",
-                "3.5",
-                "1.5km",
-                "2,000원",
-                "10~20분",
-                null
-            )
-        )
-        recommendList.add(
-            RecommendStores(
-                3,
-                arrayListOf(img),
-                "분식점",
-                "N",
-                "1.5",
-                "1km",
-                "2,000원",
-                "10~20분",
-                null
-            )
-        )
-        recommendList.add(
-            RecommendStores(
-                4,
-                arrayListOf(img),
-                "분식점",
-                "Y",
-                "2.5",
-                "1km",
-                "2,000원",
-                "10~20분",
-                null
-            )
-        )
+        recommendList.add(RecommendStores(
+            1, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/qneo.png?alt=media&token=2204fe56-3be0-46d0-a405-f554aba00f19", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/dbreowkd.jpg?alt=media&token=d549713a-b673-45d9-9404-3db41b5d4f3b", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/EJrrnr.jpg?alt=media&token=b05bb795-91d1-4b1c-977d-712286720c4e")
+            ,"든든한끼 정식", "치타배달", "4.5", "0.7km",
+            "2,000원", "10~20분", null
+        ))
+        recommendList.add(RecommendStores(
+            2, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/tkaruq.jpg?alt=media&token=cc1dc826-43c4-4f0c-9041-24559ccc1a24")
+            ,"꼬꼬방집", "Y", "2.5", "2.7km",
+            "3,000원", "20~30분", "3,000원"
+        ))
+        recommendList.add(RecommendStores(
+            3, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/EJrrnr.jpg?alt=media&token=b05bb795-91d1-4b1c-977d-712286720c4e")
+            ,"국수나무", "신규", "3.5", "1.7km",
+            "3,000원", "20~30분", "3,000원"
+        ))
+        recommendList.add(RecommendStores(
+            4, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/dlxkffldk.jpg?alt=media&token=3740442c-6d97-40ba-a486-0f756c4fa0ff", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/EJrrnr.jpg?alt=media&token=b05bb795-91d1-4b1c-977d-712286720c4e", "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/qneo.png?alt=media&token=2204fe56-3be0-46d0-a405-f554aba00f19")
+            ,"우아한 아침", "Y", "3.6", "2.5km",
+            "3,000원", "10~20분", "4,000원"
+        ))
+        recommendList.add(RecommendStores(
+            5, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/qneo.png?alt=media&token=2204fe56-3be0-46d0-a405-f554aba00f19")
+            ,"찌개의 정석", "신규", "3.0", "1.4km",
+            "3,000원", "30~40분", "2,000원"
+        ))
+        recommendList.add(RecommendStores(
+            2, arrayListOf("https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/ekfrqkf.jpg?alt=media&token=ee65ead3-0f0c-4036-9605-43459745690f")
+            ,"싱싱 육회", "치타배달", "4.2", "0.9km",
+            "3,000원", "10~30분", "1,000원"
+        ))
+
+
+        // 스티키 헤더 설정
+        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+            binding.homeScrollView.mHeaderParentPosition = binding.homeRecommendSuper.top.toFloat()
+            binding.homeScrollView.mHeaderInitPosition =
+                binding.homeFilterParent.top.toFloat() ?: 0f
+            setStickyScroll()
+        }, 200)
 
         val category = categoryList
         val salse = salseList
@@ -884,27 +899,13 @@ class HomeFragment() :
         setRecommend(recommend)
         binding.homeRecommendRecyclerview.visibility = View.VISIBLE
 
-        val eventList = ArrayList<Events>()
-        eventList.add(
-            Events(
-                1,
-                "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fznvkdzero.JPG?alt=media&token=9b8d4dc2-7d1a-492e-b114-c41ed1f12d53"
+        // 임시 이벤트 설정
+        setEvent(
+            arrayListOf(
+                Events(1, null, R.drawable.isaac_event),
+                Events(2, null, R.drawable.bbq_event)
             )
         )
-        eventList.add(
-            Events(
-                2,
-                "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fenfpwnfm.JPG?alt=media&token=1d513824-440b-4260-ac1e-5832660988e4"
-            )
-        )
-        eventList.add(
-            Events(
-                3,
-                "https://firebasestorage.googleapis.com/v0/b/coupangeats-721e3.appspot.com/o/images%2Fdsaaddsa.JPG?alt=media&token=9a2769bb-285e-47d8-974e-00c5dcd0f726"
-            )
-        )
-
-        setEvent(eventList)
     }
 
     override fun onGetHomeDataSuccess(response: HomeInfoResponse) {

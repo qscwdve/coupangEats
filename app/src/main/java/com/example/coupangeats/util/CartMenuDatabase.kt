@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.example.coupangeats.src.cart.model.CartMenuInfo
+import com.example.coupangeats.src.main.order.model.OrderMenu
 
 class CartMenuDatabase(
     context: Context?,
@@ -59,6 +60,20 @@ class CartMenuDatabase(
         c.close()
         return array
     }
+
+    // 메뉴 꺼내기
+    fun menuSelect2(db: SQLiteDatabase) : ArrayList<OrderMenu>{
+        val array = ArrayList<OrderMenu>()
+
+        val query = "SELECT * FROM $mTableName;"
+        val c = db.rawQuery(query,null)
+        while(c.moveToNext()) {
+            array.add(OrderMenu(c.getInt(c.getColumnIndex(mNum)), c.getString(c.getColumnIndex(mMenuName)), c.getString(c.getColumnIndex(mMenuSide)), c.getInt(c.getColumnIndex(mPrice)).toString()))
+        }
+        c.close()
+        return array
+    }
+
     // 총 결제 금액
     fun menuTotalPrice(db: SQLiteDatabase) : Int {
         var totalPrice = 0

@@ -308,4 +308,21 @@
         android:background="@color/lightGray"
         tools:ignore="SmallSp" />
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/item_review_cart_space"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="17dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/look_cart"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </LinearLayout>

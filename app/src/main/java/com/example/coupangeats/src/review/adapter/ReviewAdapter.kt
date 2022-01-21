@@ -47,8 +47,16 @@ class ReviewAdapter(var reviewList: ArrayList<Review>, val reviewActivity: Revie
         val modify = itemView.findViewById<LinearLayout>(R.id.item_review_modify)
         val cancel = itemView.findViewById<LinearLayout>(R.id.item_review_cancel)
         val evaluation = itemView.findViewById<LinearLayout>(R.id.item_review_evaluation_parent)
+        val cartSpace = itemView.findViewById<LinearLayout>(R.id.item_review_cart_space)
 
         fun bind(review: Review, position: Int) {
+            // 카트 보기가 존재할 경우
+            if(reviewActivity.mCartMenuNum > 0 && position == adapter.reviewList.lastIndex){
+                cartSpace.visibility = View.VISIBLE
+            } else {
+                cartSpace.visibility = View.GONE
+            }
+
             adapter.parentList[position] = reviewParent
 
             name.text = review.writerName  // 이름

@@ -48,12 +48,12 @@
         android:layout_below="@+id/review_toolbar"
         android:id="@+id/review_stickyScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <!-- 매장 정보 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/reviewPhotoReview"
                         android:textColor="@color/loginBlue"
-                        android:textSize="13dp"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -211,7 +211,7 @@
     </com.example.coupangeats.util.CustomScrollView>
 
     <RelativeLayout
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_gravity="bottom"
         android:id="@+id/review_cart_parent"
         android:layout_alignParentBottom="true"

@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.animation.StateListAnimator
 import android.annotation.SuppressLint
+import android.database.sqlite.SQLiteDatabase
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,10 +13,14 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.coupangeats.R
 import com.example.coupangeats.databinding.ActivityDeliveryStatusBinding
 import com.example.coupangeats.src.detailSuper.DetailSuperActivity
+import com.example.coupangeats.src.main.order.adapter.ReceiptMenuAdapter
 import com.example.coupangeats.src.map.MapActivityView
+import com.example.coupangeats.util.CartMenuDatabase
 import com.google.android.material.appbar.AppBarLayout
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
@@ -40,7 +45,9 @@ class DeliveryStatusActivity : BaseActivity<ActivityDeliveryStatusBinding>(Activ
     private lateinit var animTransTwits1 : Animation
     private lateinit var animTransTwits2 : Animation
     private lateinit var animTransTwits3 : Animation
-
+    private lateinit var mDBHelper: CartMenuDatabase
+    private lateinit var mDB: SQLiteDatabase
+    
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +57,10 @@ class DeliveryStatusActivity : BaseActivity<ActivityDeliveryStatusBinding>(Activ
 
         // version
         version = intent.getIntExtra("version", 1)
+
+        // 데이터베이스 셋팅
+        mDBHelper = CartMenuDatabase(this, "Menu.db", null, 1)
+        mDB = mDBHelper.writableDatabase
 
         animTransTwits1 = AnimationUtils.loadAnimation(this, R.anim.delivery_status_pivot)
 
@@ -89,9 +100,19 @@ class DeliveryStatusActivity : BaseActivity<ActivityDeliveryStatusBinding>(Activ
 
         if(version == 1){
             changeStatus(1)
+            // 사이드 메뉴 추가
+            binding.deliveryStatusMenuRecyclerView.adapter = ReceiptMenuAdapter(mDBHelper.menuSelect2(mDB))
+            binding.deliveryStatusMenuRecyclerView.layoutManager = LinearLayoutManager(this)
+
+            val totalPrice = priceIntToString(mDBHelper.menuTotalPrice(mDB))
+            binding.deliveryStatusMenuTotalPrice.text = totalPrice
+
+            // 사이드 메뉴 삭제
+            mDBHelper.deleteTotal(mDB)
         } else {
 
         }
+
         binding.toolbarBack.setOnClickListener { finish() }
 
         setSupportActionBar(binding.toolbar)
@@ -233,5 +254,15 @@ class DeliveryStatusActivity : BaseActivity<ActivityDeliveryStatusBinding>(Activ
 
         //mNaverMap.cameraPosition = cameraPosition
         mNaverMap.extent = bounds
+    }
+
+    private fun priceIntToString(value: Int) : String {
+        val target = value.toString()
+        val size = target.length
+        return if(size > 3){
+            val last = target.substring(size - 3 until size)
+            val first = target.substring(0..(size - 4))
+            "$first,$last"
+        } else target
     }
 }
