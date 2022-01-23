@@ -41,7 +41,7 @@ class ReceiptPrepareDialog(val menuData: prepareOrder) : DialogFragment()  {
 
         val orderPrice = "${menuData.orderPrice}원"
         val deliveryPrice = "+${menuData.deliveryPrice}원"
-        val discountPrice = if(menuData.discountPrice.toInt() == 0) "${menuData.discountPrice}원" else "-${menuData.discountPrice}원"
+        val discountPrice = if(menuData.discountPrice == "0") "${menuData.discountPrice}원" else "-${menuData.discountPrice}원"
         val totalPrice = "${menuData.totalPrice}원"
         binding.dialogReceiptOrderPrice.text = orderPrice
         binding.dialogReceiptDeliveryPrice.text = deliveryPrice
@@ -51,5 +51,13 @@ class ReceiptPrepareDialog(val menuData: prepareOrder) : DialogFragment()  {
         binding.dialogReceiptPayType.text = menuData.payType
     }
 
-
+    fun priceIntToString(value: Int): String {
+        val target = value.toString()
+        val size = target.length
+        return if (size > 3) {
+            val last = target.substring(size - 3 until size)
+            val first = target.substring(0..(size - 4))
+            "$first,$last"
+        } else target
+    }
 }

@@ -74,6 +74,7 @@ class SalseAdapter(var saleList: ArrayList<OnSaleStores>, val fragment: HomeFrag
             name.text = item.storeName
             if(item.totalReview != null){
                 star.visibility = View.VISIBLE
+                review.visibility = View.VISIBLE
                 review.text = item.totalReview
                 dot.visibility = View.VISIBLE
             } else {

@@ -348,4 +348,5 @@
     <string name="address_question">배달 주소가 이곳이 맞나요?</string>
     <string name="delivery_detail">배달비 안내</string>
     <string name="order_price">주문금액</string>
+    <string name="menu_prepare">메뉴 준비중입니다.</string>
 </resources>

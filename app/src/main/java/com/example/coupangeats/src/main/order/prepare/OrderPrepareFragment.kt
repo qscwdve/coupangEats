@@ -63,6 +63,7 @@ class OrderPrepareFragment(val fragment: OrderFragment) : BaseFragment<FragmentO
     fun lookReceipt(order: prepareOrder) {
         val receiptDialog = ReceiptPrepareDialog(order)
         receiptDialog.show(parentFragmentManager, "receipt")
+
     }
 
     fun startDeliveryStatus(){

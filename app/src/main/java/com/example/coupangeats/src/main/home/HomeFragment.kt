@@ -56,7 +56,6 @@ class HomeFragment() :
     private var mRecommSelect = 1
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
-    private var myHandler = MyHandler()
     private val intervalTime = 3000.toLong() // 몇초 간격으로 페이지를 넘길것인지 (1500 = 1.5초)
     private var mCheetahNum = 0
     private var mSelectDelivery = -1
@@ -674,9 +673,6 @@ class HomeFragment() :
 
     override fun onResume() {
         super.onResume()
-        Handler(Looper.getMainLooper()).postDelayed(Runnable {
-            autoScrollStart(intervalTime)
-        }, 1000)
         cartChange()
     }
 
@@ -1124,46 +1120,13 @@ class HomeFragment() :
                 super.onPageSelected(position)
                 binding.homeEventPageNum.text = (position % size + 1).toString()
             }
-
-            override fun onPageScrollStateChanged(state: Int) {
-                super.onPageScrollStateChanged(state)
-                when (state) {
-                    // 멈춰있을 때
-                    ViewPager2.SCROLL_STATE_IDLE -> autoScrollStart(intervalTime)
-                    ViewPager2.SCROLL_STATE_DRAGGING -> autoScrollStop()
-                    ViewPager2.SCROLL_STATE_SETTLING -> {
-                    }
-                }
-            }
         })
 
-    }
-
-    private fun autoScrollStart(intervalTime: Long) {
-        myHandler.removeMessages(0) // 이거 안하면 핸들러가 1개, 2개, 3개 ... n개 만큼 계속 늘어남
-        myHandler.sendEmptyMessageDelayed(0, intervalTime) // intervalTime 만큼 반복해서 핸들러를 실행하게 함
-    }
-
-    private fun autoScrollStop() {
-        myHandler.removeMessages(0) // 핸들러를 중지시킴
-    }
-
-    private inner class MyHandler : Handler(Looper.getMainLooper()) {
-        override fun handleMessage(msg: Message) {
-            super.handleMessage(msg)
-
-            if (msg.what == 0) {
-                val count = binding.homeEventBannerViewpager.currentItem + 1
-                binding.homeEventBannerViewpager.setCurrentItem(count, true) // 다음 페이지로 이동
-                autoScrollStart(intervalTime) // 스크롤을 계속 이어서 한다.
-            }
-        }
     }
 
     // 다른 페이지로 떠나있는 동안 스크롤이 동작할 필요는 없음. 정지
     override fun onPause() {
         super.onPause()
-        autoScrollStop()
         if(mAddressQuestionFlag){
             binding.homeAddressQuestion.visibility = View.GONE
             mAddressQuestionFlag = false

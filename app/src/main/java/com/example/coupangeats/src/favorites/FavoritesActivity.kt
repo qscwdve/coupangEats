@@ -96,6 +96,7 @@ class FavoritesActivity : BaseActivity<ActivityFavoritesBinding>(ActivityFavorit
             } else {
                 // 즐겨찾기가 없을 경우
                 binding.favoritesNoContent.visibility = View.VISIBLE
+                binding.favoritesSelectParent.visibility = View.GONE
                 mIsCount = 0
             }
         } else {

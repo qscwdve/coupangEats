@@ -59,7 +59,7 @@
             android:textStyle="bold"
             android:textSize="13sp"
             android:textColor="#555555"
-            android:text="@string/deliveryCompleteMent"
+            android:text="@string/orderCheck"
             tools:ignore="RtlSymmetry" />
         <TextView
             android:layout_marginTop="5dp"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:textSize="12sp"
             android:textColor="@color/black"
-            android:text="@string/goodEat"
+            android:text="@string/menu_prepare"
             tools:ignore="RtlSymmetry,SmallSp" />
 
     </LinearLayout>
