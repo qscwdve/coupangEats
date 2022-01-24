@@ -47,10 +47,9 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
         // 리뷰 쓰러가기 result
         reviewWriteLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    // refresh 필요
-                    OrderPastService(this).tryGetOrderPastInfo(getUserIdx())
-                }
+                // refresh 필요
+                OrderPastService(this).tryGetOrderPastInfo(getUserIdx())
+                //showCustomToast("refresh")
             }
         // 키보드 상태 확인
         setKeyBoardListener()
@@ -185,7 +184,7 @@ class OrderPastFragment(val mainActivity: MainActivity) : BaseFragment<FragmentO
     }
 
     fun startMyReview(orderIdx: Int, reviewIdx: Int) {
-        startActivity( Intent(requireContext(), MyReviewActivity::class.java).apply {
+        reviewWriteLauncher.launch( Intent(requireContext(), MyReviewActivity::class.java).apply {
             this.putExtra("orderIdx", orderIdx)
             this.putExtra("reviewIdx", reviewIdx)
         })

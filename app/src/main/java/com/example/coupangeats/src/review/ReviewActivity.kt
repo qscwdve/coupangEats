@@ -14,6 +14,8 @@ import android.util.Log
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import android.widget.LinearLayout
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -43,6 +45,7 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
     var mDeleteItem = -1
     var mType : String? = null
     var mCartMenuNum = 0
+    lateinit var reviewModifyLauncher : ActivityResultLauncher<Intent>
     private lateinit var mDBHelper: CartMenuDatabase
     private lateinit var mDB: SQLiteDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +62,15 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
         mReviewIdx = intent.getIntExtra("reviewIdx", -1)
         //Log.d("scrolled", "reviewIdx : ${mReviewIdx}")
         ReviewService(this).tryGetReviewInfo(mStoreIdx, null, null)
+
+        // 리뷰 수정 고치기
+        reviewModifyLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if(result.resultCode == RESULT_OK){
+                    // 리뷰 다시 불러오기
+                    ReviewService(this).tryGetReviewInfo(mStoreIdx, null, null)
+                }
+            }
 
         binding.toolbarBack.setOnClickListener { finish() }
 
@@ -270,7 +282,7 @@ class ReviewActivity : BaseActivity<ActivityReviewBinding>(ActivityReviewBinding
             this.putExtra("reviewIdx", reviewIdx)
             this.putExtra("orderIdx", -1)
         }
-        startActivity(intent)
+        reviewModifyLauncher.launch(intent)
     }
 
     override fun onPatchReviewDeleteSuccess(response: ReviewDeleteResponse) {
